@@ -1,0 +1,88 @@
+\section{Related Work}
+\vspace{-8pt}
+% \subsection{Graph Learning Benchmarks}
+
+% Open Graph Benchmark~\cite{hu2020open}: data & comparative analysis
+% The quality and scale of benchmark datasets on one hand and robust evaluation protocols on the other hand have drive derived advancement of graph machine learning.
+% In addition to a variety of datasets and tasks, OGB also offers unified protocol, metrics, and data splits to promote robust evaluation of learning models.
+% LRGB~\cite{dwivedi2022long}: data & comprative ananlyis
+%Dwivedi et al. ~\cite{dwivedi2022long} argue that the available graph datasets mainly consists of interactions in a close proximity of each nodes, the utility of trendy Transformer-based models requires presence of long-range interactions.Therefore, they present LRGB~\cite{dwivedi2022long} that encompasses novel graph datasets with long-range interactions.LRGB~\cite{dwivedi2022long} also comes with comparative analysis of GNN- as well as Transformer-based models to shows the actual merits of the models that captures long-range interactions.
+
+
+%\wh{should be "fine-grained"}
+
+% \textbf{Static Graph Benchmarks}
+% The availability of public and large scale benchmarks as well as robust evaluation protocols have driven significant advancement in the field of graph machine learning. 
+% OGB~\cite{hu2020open} is a seminal work that presented realistic and diverse datasets to accelerate reproducible research on graphs. In addition to datasets, OGB also provides unified protocol, metrics, and data splits for evaluation. However, OGB is designed specifically for static graphs thus lacking the fine-grained time information seen in temporal graphs. Inspired by OGB, our proposed \name aims to provide diverse and challenging datasets as well as practical and reproducible evaluation protocols for temporal graph learning. We also consider simple yet competitive baselines in our benchmark to provide a more informative comparison with SOTA methods. Other example static graph datasets include the Long Range Graph Benchmark~(LRGB)~\cite{dwivedi2022long}, which encompasses graph datasets with long-range interactions and TUDataset~\cite{morris2020tudataset}, a collection of wide range of datasets for supervised learning with graphs. Again, these datasets are missing the timestamped information seen in \name and are therefore not suitable for the benchmarking of TG methods.
+
+%\wh{No need to mention others? If you mention others, always say how TGB is different, in this case all of them are static.}
+
+
+
+%Regarding temporal graphs, Poursafaei et al.~\cite{poursafaeitowards} contribute six datasets that are especially curated for link prediction on continuous time dynamic graphs. % EdgeBank~\cite{poursafaeitowards} is a simple and efficient models for dynamic link prediction that infers the existence of an edge based on the history of the observed edges.
+
+% \wh{nit: real world -> real-world when used as adjective} \wh{Nice that you mentioned the difference}
+%\wh{Isn't this a novelty of TGB?}
+%\wh{paragraph too long}
+% Bench-DGNN
+
+\textbf{Temporal Graph Datasets and Libraries.}
+Recently, Poursafaei \emph{et al.}~\cite{poursafaeitowards} collected six novel datasets for link prediction on continuous-time dynamic graphs while proposing more difficult negative samples for evaluation. \changed{In comparison, we curated seven novel temporal graph datasets spanning both edge and node level tasks for realistic evaluation of machine learning on temporal graphs.} Yu \emph{et al.}~\cite{yu2023towards} presented DyGLib, a platform for reproducible training and evaluation of existing TG models on common benchmark datasets. DyGLib demonstrates the discrepancy of the model performance across different datasets and argues that diverse evaluation protocols of previous works caused an inconsistency in performance reports. Similarly, Skarding \emph{et al.}~\cite{skarding2022robust} provided a comprehensive comparative analysis of heuristics, static GNNs, discrete dynamic GNN, and continuous dynamic GNN on dynamic link prediction task. They showed that dynamic models outperforms their static counterparts consistently and heuristic approaches can achieve strong performance. In all of the above benchmarks, the included datasets only contain a few million edges. In comparison, \name datasets are orders of magnitude larger in scale in terms of number of nodes, edges and timestamps. \name also includes both node and edge-level tasks. \changed{Huang \emph{et al.}~\cite{huang2022dgraph} collected a novel dynamic graph dataset for anomalous node detection in financial networks and compared the performance of different graph anomaly detection methods. In this work, \name datasets have more edges and timestamps while covering both edge and node tasks.}
+
+
+
+% Zhou et al. \cite{zhou2022tgl} propose the \textit{TGL} library for the training of temporal GNN on large-scale data. However, TGL also follows the same evaluation protocols and models achieves over-optimistic performance on all datasets. 
+% They have also provide a new data structure together with a neighborhood parallel sampler to efficiently form the training mini-batches. However, TGL also follows the same evaluation protocols; i.e., the test set consists of equal number of positive and negative edges. 
+% Adopting the previous evaluation protocols results in achieving very high and almost similar performance by different models across datasets.
+
+
+% In comparison, \name datasets are much larger in scale with the \sky dataset having more than 67 million edges. \name datasets also contains significantly more nodes and timestamps with \reddit containing one million nodes over 30 million timestamps. 
+% \ah{discussed the scale advantage of \name, can further reduce the text here if needed, might need to go into that much detail of the exact scale?}
+%They empirically demonstrated that simple heuristic approaches have considerably strong performance, while dynamic models defeat their static counterparts consistently. 
+
+% With respect to discrete time dynamic graph models, ROLAND~\cite{you2022roland} is a framework for aiming to accelerate the extension of static GNN to dynamic setting.
+% \wh{Here you just introduced Yu et al, Skarding et al., and ROLAND without emphasizing how TGB is different.}
+
+
+
+
+% \wh{Paragraph too long. Also, it just explains a list of methods, without clear message how how they relate with TGB. IMO, we do not need to explain everything in detail. Just say these are a bunch of temporal graph methods based on GNNs/RNNs, but TGB helps ... or TGB is different because of ...}
+
+\textbf{Temporal Graph Methods.}
+% \ah{added how \name helps with model differentiation}
+With the growing interest in temporal graph learning, several recent models achieved outstanding performance on existing benchmark datasets. However, due to the limitations of the current evaluation, many methods achieve over-optimistic and similar performance for the dynamic link prediction task~\cite{wanginductive,rossi2020temporal,congwe,souza2022provably,luoneighborhood,kumar2019predicting}. In this work, \name datasets and evaluation show a clear distinction between SOTA model performance, which helps facilitate future advancement of TG learning methods. Temporal graphs are categorized into discrete-time and continuous-time Temporal graphs~\cite{kazemi2020representation}. In this work, we focus on the continuous-time temporal graphs as it is more general. Continuous-time TG methods can be divided into node or edge representation learning methods. Node-based models such as \textit{TGN}~\cite{rossi2020temporal}, \textit{DyRep}~\cite{trivedi2019dyrep} and \textit{TCL}~\cite{wang2021tcl} first leverage the node information such as temporal neighborhood or previous node history to generate node embeddings and then aggregate node embeddings from both source and destination node of an edge to predict its existence. In comparison, edge-based methods such as \textit{CAWN}~\cite{wanginductive} and \textit{GraphMixer}~\cite{congwe} aim to directly generate embeddings for the edge of interest and then predict its existence. Lastly, the simple memory-based heuristic \emph{EdgeBank}~\cite{poursafaeitowards} without any learning component has shown surprising performance based on existing evaluation. We compare these methods on \name datasets in Section~\ref{sec:exp}. \changed{For more discussion on TG methods see Appendix~\ref{app:methods}.}
+
+% We benchmarked TGN, DyRep, TCL, CAWN, GraphMixer and EdgeBank on \name datasets.
+%More details on the TG methods are presented in Appendix~\ref{app:methods}. 
+% \wh{Say how these methods related to TGB.} 
+
+% To learn the dynamic representations, \textit{JODIE}~\cite{kumar2019predicting} updates the node representations after each interaction by two decoupled RNNs with time-dependent projection.
+% \textit{DyRep}~\cite{trivedi2019dyrep} is temporal point process-based model that propagates interaction messages via RNNs to update the node representations.
+% \textit{TGN}~\cite{rossi2020temporal} is a general framework for learning on continuous time dynamic graphs.
+% Similar to TGAT \cite{xu2020inductive}, it employs a temporal graph attention module to capture temporal and structural information.
+% TGN also has a RNN-based memory module to store the history of the events in which a node was involved.
+% \textit{CAWN}~\cite{wanginductive} predicts dynamic links using casual anonymous walks.
+% First, it relabels nodes with encoding temporal anonymous walks starting at the nodes involved in an interaction.
+% Then, the temporal walks themselves are encoded using the generated node labels and encodings of the elapsed times.
+% Finally, the existence of a link is predicted based on aggregating the walks encoding through a pooling module.
+% \textit{TCL}~\cite{wang2021tcl} employs a transfomer module to generate temporal neighborhood representations for nodes involved in an interaction. 
+% It then models the inter-dependencies with a co-attentional transfomer at a semantic level.
+% \textit{PINT}~\cite{souza2022provably} first categorizes temporal graph network models into two main categories namely message passing- and temporal random walk-based models, and investigates the strength and limitations of each categories.
+% Then, it extends the 1-WL (Weisfeiler-Leman) test to temporal graphs.
+% Finally, the authors combine injective temporal message passing and relative positional encoding to propose a powerful and more expressive temporal graph learning model.
+% \textit{NAT}~\cite{luoneighborhood} stores node-level and link-level representations for each node.
+% The authors designed a especial data structure that facilitates fast construction of joint neighborhood structural features.
+% The proposed model provides a good model scalability by incorporating dictionary-type neighborhood representations and helps to achieve fast link prediction.
+% \textit{GraphMixer}~\cite{congwe} is a straightforward models for dynamic link prediction consisting of three main modules: 
+% a node-encoder to summarize the node information, 
+% a link-encoder to summarize the temporal link information,
+% and a link predictor module.
+
+
+
+
+
+
+
+
+

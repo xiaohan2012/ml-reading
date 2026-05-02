@@ -1,0 +1,93 @@
+% \documentclass{article}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+% \begin{document}
+\begin{tikzpicture}[-Latex,auto,node distance =0.3 cm and 0.3 cm,semithick,every node/.style={scale=0.2},
+    state/.style ={ellipse, draw, minimum width = 1.0 cm},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}]
+    \node[state] (1) {$z^{(3)}$};
+    \node[state] (2) [right =of 1] {$z^{(4)}$};
+    \node[state] (4) [above =of 1,xshift=-0.7cm] {$z^{(1)}$};
+    \node[state] (5) [above =of 2,xshift=-0.7cm] {$z^{(2)}$};
+    \node[state,fill=gray!40!white] (6) [above right =of 2,yshift=0.2cm,xshift=-0.7cm] {$x^{(2)}$};
+    \node[state,fill=gray!40!white,xshift=0.7cm] (7) [above =of 4] {$x^{(1)}$};
+    \node[state,fill=gray!40!white,xshift=0.7cm] (8) [above =of 5] {$y$};
+
+    \path (1) edge (4);
+    \path (1) edge (5);
+    \path (2) edge (5);
+    \path (2) edge (6);
+    
+    \path (5) edge (7);
+    
+    \path (5) edge (8);
+\end{tikzpicture}
+% \documentclass{article}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+% \begin{document}
+\begin{tikzpicture}[-Latex,auto,node distance =0.3 cm and 0.3 cm,semithick,every node/.style={scale=0.2},
+    state/.style ={ellipse, draw, minimum width = 1.0 cm},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}]
+    \node[state] (1) {$z^{(3)}$};
+    \node[state] (2) [right =of 1] {$z^{(4)}$};
+    \node[state,fill=gray!40!white] (3) [above left =of 1,yshift=0.2cm] {$x^{(1)}$};
+    \node[state,fill=gray!40!white] (4) [above =of 1] {$x^{(2)}$};
+    \node[state] (5) [above =of 2] {$z^{(2)}$};
+    \node[state,fill=gray!40!white] (6) [above right =of 2,yshift=0.2cm] {$x^{(3)}$};
+    \node[state] (7) [above =of 4] {$z^{(1)}$};
+    \node[state,fill=gray!40!white] (8) [above =of 5] {$y$};
+
+    \path (1) edge (3);
+    \path (1) edge (5);
+    \path (2) edge (3);
+    \path (2) edge (6);
+    
+    \path (3) edge (7);
+    \path (5) edge (7);
+    \path (4) edge (7);
+    
+    \path (6) edge (8);
+    \path (5) edge (8);
+\end{tikzpicture}
+% \documentclass{article}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+% \begin{document}
+\begin{tikzpicture}[-Latex,auto,node distance =0.3 cm and 0.3 cm,semithick,every node/.style={scale=0.2},
+    state/.style ={ellipse, draw, minimum width = 1.0 cm},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}]
+    \node[state] (1) {$z^{(5)}$};
+    \node[state] (2) [right =of 1] {$z^{(6)}$};
+    \node[state] (3) [above left =of 1,yshift=0.2cm] {$z^{(4)}$};
+    \node[state,fill=gray!40!white] (4) [above =of 1] {$x^{(1)}$};
+    \node[state,fill=gray!40!white] (5) [above =of 2] {$x^{(2)}$};
+    \node[state] (6) [above right =of 2,yshift=0.2cm] {$z^{(5)}$};
+    \node[state] (7) [above =of 4] {$z^{(3)}$};
+    \node[state,fill=gray!40!white] (8) [above =of 5] {$y$};
+    \node[state] (9) [above =of 7] {$z^{(1)}$};
+    \node[state] (10) [above =of 8] {$z^{(2)}$};
+
+    \path (1) edge (3);
+    \path (1) edge (4);
+    \path (1) edge (5);
+    \path (2) edge (5);
+    \path (2) edge (6);
+    
+    \path (3) edge (7);
+    \path (5) edge (7);
+    \path (4) edge (7);
+    
+    \path (4) edge (8);
+    \path (6) edge (8);
+    
+    \path (7) edge (9);
+    \path (8) edge (10);
+    \path (7) edge (10);
+\end{tikzpicture}

@@ -1,0 +1,9 @@
+\begin{abstract}
+\vspace{-10pt}
+ We present \relbench, a public benchmark for solving predictive tasks over relational databases with graph neural networks. \relbench provides databases and tasks spanning diverse domains and scales, and is intended to be a foundational infrastructure for future research.
+%into deep learning on relational databases. 
+We use \relbench to conduct the first comprehensive study of Relational Deep Learning (RDL)~\citep{fey2023relational}, which combines graph neural network predictive models with (deep) tabular models that extract initial entity-level representations from raw tables.
+%as recently proposed as Relational Deep Learning (RDL)~\citep{fey2023relational}.  
+End-to-end learned RDL models fully exploit the predictive signal encoded in primary-foreign key links, marking a significant shift away from the dominant paradigm of manual feature engineering combined with tabular models. To thoroughly evaluate RDL against this prior gold-standard, we conduct an in-depth user study where an experienced data scientist manually engineers features for each task. In this study, RDL learns better models whilst reducing human work needed by more than an order of magnitude. This demonstrates the power of deep learning for solving predictive tasks over relational databases, opening up many new research opportunities enabled by \relbench. 
+%\wh{Here we are focusing too much on GNNs, but IMO, we should say we implement relational deep learning (that utilizes GNNs as a core component). This applies throughout the paper.}
+\end{abstract}

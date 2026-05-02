@@ -1,0 +1,16 @@
+{
+  "enabledPlugins": {
+    "wiki-skills@wiki-skills": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(curl -L \"https://arxiv.org/src/*\")",
+      "Bash(mkdir -p \"/Users/hanxiao/docs/ml-reading/wiki/raw/*\")",
+      "Bash(mkdir -p /Users/hanxiao/docs/ml-reading/wiki/raw/*)",
+      "Bash(tar -xzf \"/Users/hanxiao/docs/ml-reading/wiki/raw/*\")",
+      "Bash(tar -xzf /Users/hanxiao/docs/ml-reading/wiki/raw/*)",
+      "Bash(grep -E * \"/Users/hanxiao/docs/ml-reading/wiki/raw/*\")",
+      "Bash(ls /Users/hanxiao/docs/ml-reading/wiki/raw/* | grep *)"
+    ]
+  }
+}

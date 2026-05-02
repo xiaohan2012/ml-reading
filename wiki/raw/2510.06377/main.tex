@@ -1,0 +1,112 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference}
+\usepackage{times}
+\setcitestyle{numbers,square}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{catchfile}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{microtype}
+\floatplacement{figure}{t}
+\floatplacement{table}{t}
+
+% Reduce spacing before \paragraph headings
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}{\z@}{-1em}{\normalsize\bf}}
+\makeatother
+
+% Reduce spacing around floats and captions to fit page limit
+\setlength{\textfloatsep}{12pt plus 2pt minus 4pt}
+\setlength{\floatsep}{12pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\captionsetup{skip=5pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
+
+\def\A{{\mathbf{A}}}
+\def\M{{\mathbf{M}}}
+\def\Q{{\mathbf{Q}}}
+\def\K{{\mathbf{K}}}
+\def\V{{\mathbf{V}}}
+\def\1{{\mathbf{1}}}
+\def\X{{\mathbf{X}}}
+\def\W{{\mathbf{W}}}
+\def\Th{{\mathbf{\theta}}}
+\def\x{{\mathbf{x}}}
+\def\r{{\mathbf{r}}}
+\def\m{{\mathbf{m}}}
+
+\newcommand{\hide}[1]{}
+\newcommand{\rr}[1]{\textcolor{blue}{(\textbf{RR:} #1)}}
+\newcommand{\jure}[1]{\textcolor{red}{(\textbf{Jure:} #1)}}
+\newcommand{\ck}[1]{\textcolor{orange}{(\textbf{CK:} #1)}}
+\newcommand{\vh}[1]{\textcolor{olive}{(\textbf{VH:} #1)}}
+\newcommand{\mf}[1]{\textcolor{purple}{(\textbf{MF:} #1)}}
+\newcommand{\vd}[1]{\textcolor{darkgreen}{(\textbf{VD:} #1)}}
+\newcommand{\rev}[1]{{#1}}
+
+\title{
+Relational Transformer:
+Toward Zero-Shot Foundation Models for Relational Data
+}
+
+\author{Rishabh Ranjan$^0$\thanks{Work done partly as an intern at SAP Labs LLC.
+$^\dagger$ Work done while at Stanford University.}
+,
+Valter Hudovernik$^{1\dagger}$,
+Mark Znidar$^{2\dagger}$,
+Charilaos Kanatsoulis$^0$,\\
+\textbf{Roshan Upendra$^3$,
+Mahmoud Mohammadi$^3$,
+Joe Meyer$^3$,
+Tom Palczewski$^3$,
+}\\
+\textbf{Carlos Guestrin$^0$,
+Jure Leskovec$^0$
+}\\
+$^0$Stanford University,
+$^1$Kumo AI,
+$^2$University of Oxford,
+$^3$SAP Labs LLC\\
+\texttt{\{ranjanr,guestrin,jure\}@stanford.edu}
+}
+
+\iclrfinalcopy
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract.tex}
+\input{sections/introduction.tex}
+\input{sections/background.tex}
+\input{sections/method.tex}
+\input{sections/results.tex}
+\input{sections/analysis.tex}
+\input{sections/related_work.tex}
+\input{sections/conclusion.tex}
+\input{sections/acknowledgements.tex}
+
+\bibliography{references}
+\bibliographystyle{iclr2026_conference}
+
+\newpage
+\appendix
+\input{sections/appendix.tex}
+
+\end{document}

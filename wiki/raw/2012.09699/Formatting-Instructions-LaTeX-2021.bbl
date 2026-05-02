@@ -1,0 +1,260 @@
+\begin{thebibliography}{40}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem[{Abbe(2017)}]{abbe2017community}
+Abbe, E. 2017.
+\newblock Community detection and stochastic block models: recent developments.
+\newblock \emph{The Journal of Machine Learning Research} 18(1): 6446--6531.
+
+\bibitem[{Ba, Kiros, and Hinton(2016)}]{ba2016layer}
+Ba, J.~L.; Kiros, J.~R.; and Hinton, G.~E. 2016.
+\newblock Layer normalization.
+\newblock \emph{NeurIPS workshop on Deep Learning} .
+
+\bibitem[{Bahdanau, Cho, and Bengio(2014)}]{bahdanau2014neural}
+Bahdanau, D.; Cho, K.; and Bengio, Y. 2014.
+\newblock Neural machine translation by jointly learning to align and
+  translate.
+\newblock \emph{arXiv preprint arXiv:1409.0473} .
+
+\bibitem[{Belkin and Niyogi(2003)}]{belkin2003laplacian}
+Belkin, M.; and Niyogi, P. 2003.
+\newblock Laplacian eigenmaps for dimensionality reduction and data
+  representation.
+\newblock \emph{Neural computation} 15(6): 1373--1396.
+
+\bibitem[{Bresson and Laurent(2017)}]{bresson2017residual}
+Bresson, X.; and Laurent, T. 2017.
+\newblock Residual gated graph convnets.
+\newblock \emph{arXiv preprint arXiv:1711.07553} .
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell et~al.}]{brown2020language}
+Brown, T.~B.; Mann, B.; Ryder, N.; Subbiah, M.; Kaplan, J.; Dhariwal, P.;
+  Neelakantan, A.; Shyam, P.; Sastry, G.; Askell, A.; et~al. 2020.
+\newblock Language models are few-shot learners.
+\newblock \emph{arXiv preprint arXiv:2005.14165} .
+
+\bibitem[{Chami et~al.(2020)Chami, Wolf, Juan, Sala, Ravi, and
+  R{\'e}}]{chami2020low}
+Chami, I.; Wolf, A.; Juan, D.-C.; Sala, F.; Ravi, S.; and R{\'e}, C. 2020.
+\newblock Low-Dimensional Hyperbolic Knowledge Graph Embeddings.
+\newblock \emph{arXiv preprint arXiv:2005.00545} .
+
+\bibitem[{Cranmer et~al.(2019)Cranmer, Xu, Battaglia, and
+  Ho}]{cranmer2019learning}
+Cranmer, M.~D.; Xu, R.; Battaglia, P.; and Ho, S. 2019.
+\newblock Learning Symbolic Physics with Graph Networks.
+\newblock \emph{arXiv preprint arXiv:1909.05862} .
+
+\bibitem[{Defferrard, Bresson, and Vandergheynst(2016)}]{NIPS2016_6081}
+Defferrard, M.; Bresson, X.; and Vandergheynst, P. 2016.
+\newblock Convolutional Neural Networks on Graphs with Fast Localized Spectral
+  Filtering.
+\newblock In \emph{Advances in Neural Information Processing Systems 29},
+  3844--3852.
+
+\bibitem[{Devlin et~al.(2018)Devlin, Chang, Lee, and
+  Toutanova}]{devlin2018bert}
+Devlin, J.; Chang, M.-W.; Lee, K.; and Toutanova, K. 2018.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock \emph{arXiv preprint arXiv:1810.04805} .
+
+\bibitem[{Dwivedi et~al.(2020)Dwivedi, Joshi, Laurent, Bengio, and
+  Bresson}]{dwivedi2020benchmarking}
+Dwivedi, V.~P.; Joshi, C.~K.; Laurent, T.; Bengio, Y.; and Bresson, X. 2020.
+\newblock Benchmarking graph neural networks.
+\newblock \emph{arXiv preprint arXiv:2003.00982} .
+
+\bibitem[{Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl}]{gilmer2017neural}
+Gilmer, J.; Schoenholz, S.~S.; Riley, P.~F.; Vinyals, O.; and Dahl, G.~E. 2017.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine
+  Learning-Volume 70}, 1263--1272. JMLR. org.
+
+\bibitem[{Hu et~al.(2020)Hu, Dong, Wang, and Sun}]{hu2020heterogeneous}
+Hu, Z.; Dong, Y.; Wang, K.; and Sun, Y. 2020.
+\newblock Heterogeneous graph transformer.
+\newblock In \emph{Proceedings of The Web Conference 2020}, 2704--2710.
+
+\bibitem[{Ioffe and Szegedy(2015)}]{ioffe2015batch}
+Ioffe, S.; and Szegedy, C. 2015.
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock \emph{arXiv preprint arXiv:1502.03167} .
+
+\bibitem[{Irwin et~al.(2012)Irwin, Sterling, Mysinger, Bolstad, and
+  Coleman}]{irwin2012zinc}
+Irwin, J.~J.; Sterling, T.; Mysinger, M.~M.; Bolstad, E.~S.; and Coleman, R.~G.
+  2012.
+\newblock ZINC: a free tool to discover chemistry for biology.
+\newblock \emph{Journal of chemical information and modeling} 52(7):
+  1757--1768.
+
+\bibitem[{Joshi(2020)}]{joshi2020transformers}
+Joshi, C. 2020.
+\newblock Transformers are Graph Neural Networks.
+\newblock \emph{The Gradient} .
+
+\bibitem[{Kipf and Welling(2017)}]{kipf2017semi}
+Kipf, T.~N.; and Welling, M. 2017.
+\newblock Semi-Supervised Classification with Graph Convolutional Networks.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}.
+
+\bibitem[{Li et~al.(2020)Li, Wang, Wang, and Leskovec}]{li2020distance}
+Li, P.; Wang, Y.; Wang, H.; and Leskovec, J. 2020.
+\newblock Distance Encoding--Design Provably More Powerful GNNs for Structural
+  Representation Learning.
+\newblock \emph{arXiv preprint arXiv:2009.00142} .
+
+\bibitem[{Li et~al.(2019)Li, Liang, Hu, Chen, and Xing}]{li2019graph}
+Li, Y.; Liang, X.; Hu, Z.; Chen, Y.; and Xing, E.~P. 2019.
+\newblock Graph Transformer.
+\newblock \urlprefix\url{https://openreview.net/forum?id=HJei-2RcK7}.
+
+\bibitem[{Li et~al.(2015)Li, Tarlow, Brockschmidt, and Zemel}]{li2015gated}
+Li, Y.; Tarlow, D.; Brockschmidt, M.; and Zemel, R. 2015.
+\newblock Gated graph sequence neural networks.
+\newblock \emph{arXiv preprint arXiv:1511.05493} .
+
+\bibitem[{Monti et~al.(2017)Monti, Boscaini, Masci, Rodola, Svoboda, and
+  Bronstein}]{Monti_2017}
+Monti, F.; Boscaini, D.; Masci, J.; Rodola, E.; Svoboda, J.; and Bronstein,
+  M.~M. 2017.
+\newblock Geometric Deep Learning on Graphs and Manifolds Using Mixture Model
+  CNNs.
+\newblock \emph{2017 IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)} \doi{10.1109/cvpr.2017.576}.
+
+\bibitem[{Monti et~al.(2019)Monti, Frasca, Eynard, Mannion, and
+  Bronstein}]{monti2019fake}
+Monti, F.; Frasca, F.; Eynard, D.; Mannion, D.; and Bronstein, M.~M. 2019.
+\newblock Fake news detection on social media using geometric deep learning.
+\newblock \emph{arXiv preprint arXiv:1902.06673} .
+
+\bibitem[{Murphy et~al.(2019)Murphy, Srinivasan, Rao, and
+  Ribeiro}]{murphy2019relational}
+Murphy, R.; Srinivasan, B.; Rao, V.; and Ribeiro, B. 2019.
+\newblock Relational Pooling for Graph Representations.
+\newblock In \emph{International Conference on Machine Learning}, 4663--4673.
+
+\bibitem[{Nguyen, Nguyen, and Phung(2019)}]{Nguyen2019U2GNN}
+Nguyen, D.~Q.; Nguyen, T.~D.; and Phung, D. 2019.
+\newblock {Universal Self-Attention Network for Graph Classification}.
+\newblock \emph{arXiv preprint arXiv:1909.11855} .
+
+\bibitem[{Niepert, Ahmed, and Kutzkov(2016)}]{niepert2016learning}
+Niepert, M.; Ahmed, M.; and Kutzkov, K. 2016.
+\newblock Learning convolutional neural networks for graphs.
+\newblock In \emph{International conference on machine learning}, 2014--2023.
+
+\bibitem[{Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan,
+  Killeen, Lin, Gimelshein, Antiga, Desmaison, Köpf, Yang, DeVito, Raison,
+  Tejani, Chilamkurthy, Steiner, Fang, Bai, and Chintala}]{paszke2019pytorch}
+Paszke, A.; Gross, S.; Massa, F.; Lerer, A.; Bradbury, J.; Chanan, G.; Killeen,
+  T.; Lin, Z.; Gimelshein, N.; Antiga, L.; Desmaison, A.; Köpf, A.; Yang, E.;
+  DeVito, Z.; Raison, M.; Tejani, A.; Chilamkurthy, S.; Steiner, B.; Fang, L.;
+  Bai, J.; and Chintala, S. 2019.
+\newblock PyTorch: An Imperative Style, High-Performance Deep Learning Library.
+
+\bibitem[{Radford et~al.(2018)Radford, Narasimhan, Salimans, and
+  Sutskever}]{radford2018improving}
+Radford, A.; Narasimhan, K.; Salimans, T.; and Sutskever, I. 2018.
+\newblock Improving language understanding by generative pre-training.
+
+\bibitem[{Sanchez-Gonzalez et~al.(2020)Sanchez-Gonzalez, Godwin, Pfaff, Ying,
+  Leskovec, and Battaglia}]{sanchez2020learning}
+Sanchez-Gonzalez, A.; Godwin, J.; Pfaff, T.; Ying, R.; Leskovec, J.; and
+  Battaglia, P.~W. 2020.
+\newblock Learning to simulate complex physics with graph networks.
+\newblock \emph{arXiv preprint arXiv:2002.09405} .
+
+\bibitem[{Schlichtkrull et~al.(2018)Schlichtkrull, Kipf, Bloem, Van Den~Berg,
+  Titov, and Welling}]{schlichtkrull2018modeling}
+Schlichtkrull, M.; Kipf, T.~N.; Bloem, P.; Van Den~Berg, R.; Titov, I.; and
+  Welling, M. 2018.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In \emph{European Semantic Web Conference}, 593--607. Springer.
+
+\bibitem[{Srinivasan and Ribeiro(2020)}]{srinivasan2019equivalence}
+Srinivasan, B.; and Ribeiro, B. 2020.
+\newblock On the Equivalence between Node Embeddings and Structural Graph
+  Representations.
+\newblock \emph{International Conference on Learning Representations} .
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{vaswani2017attention}
+Vaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones, L.; Gomez, A.~N.;
+  Kaiser, {\L}.; and Polosukhin, I. 2017.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in neural information processing systems},
+  5998--6008.
+
+\bibitem[{Veli{\v{c}}kovi{\'{c}} et~al.(2018)Veli{\v{c}}kovi{\'{c}}, Cucurull,
+  Casanova, Romero, Li{\`{o}}, and Bengio}]{velickovic2018graph}
+Veli{\v{c}}kovi{\'{c}}, P.; Cucurull, G.; Casanova, A.; Romero, A.; Li{\`{o}},
+  P.; and Bengio, Y. 2018.
+\newblock {Graph Attention Networks}.
+\newblock \emph{International Conference on Learning Representations} .
+
+\bibitem[{Wang et~al.(2019)Wang, Yu, Zheng, Gan, Gai, Ye, Li, Zhou, Huang, Ma,
+  Huang, Guo, Zhang, Lin, Zhao, Li, Smola, and Zhang}]{wang2019dgl}
+Wang, M.; Yu, L.; Zheng, D.; Gan, Q.; Gai, Y.; Ye, Z.; Li, M.; Zhou, J.; Huang,
+  Q.; Ma, C.; Huang, Z.; Guo, Q.; Zhang, H.; Lin, H.; Zhao, J.; Li, J.; Smola,
+  A.~J.; and Zhang, Z. 2019.
+\newblock Deep Graph Library: Towards Efficient and Scalable Deep Learning on
+  Graphs.
+\newblock \emph{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds} .
+
+\bibitem[{Xu et~al.(2019)Xu, Hu, Leskovec, and Jegelka}]{xu2018how}
+Xu, K.; Hu, W.; Leskovec, J.; and Jegelka, S. 2019.
+\newblock How Powerful are Graph Neural Networks?
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Xu et~al.(2018)Xu, Li, Tian, Sonobe, Kawarabayashi, and
+  Jegelka}]{xu2018representation}
+Xu, K.; Li, C.; Tian, Y.; Sonobe, T.; Kawarabayashi, K.-i.; and Jegelka, S.
+  2018.
+\newblock Representation learning on graphs with jumping knowledge networks.
+\newblock \emph{arXiv preprint arXiv:1806.03536} .
+
+\bibitem[{Xu, Joshi, and Bresson(2019)}]{xu2019multi}
+Xu, P.; Joshi, C.~K.; and Bresson, X. 2019.
+\newblock Multi-graph transformer for free-hand sketch recognition.
+\newblock \emph{arXiv preprint arXiv:1912.11258} .
+
+\bibitem[{You, Ying, and Leskovec(2019)}]{you2019position}
+You, J.; Ying, R.; and Leskovec, J. 2019.
+\newblock Position-aware graph neural networks.
+\newblock \emph{International Conference on Machine Learning} .
+
+\bibitem[{Yun et~al.(2019)Yun, Jeong, Kim, Kang, and Kim}]{yun2019graph}
+Yun, S.; Jeong, M.; Kim, R.; Kang, J.; and Kim, H.~J. 2019.
+\newblock Graph transformer networks.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  11983--11993.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Zhang, Sun, and Xia}]{zhang2020graph}
+Zhang, J.; Zhang, H.; Sun, L.; and Xia, C. 2020.
+\newblock Graph-Bert: Only Attention is Needed for Learning Graph
+  Representations.
+\newblock \emph{arXiv preprint arXiv:2001.05140} .
+
+\bibitem[{Zhou et~al.(2020)Zhou, Zheng, Han, and He}]{zhou2020data}
+Zhou, D.; Zheng, L.; Han, J.; and He, J. 2020.
+\newblock A Data-Driven Graph Generative Model for Temporal Interaction
+  Networks.
+\newblock In \emph{Proceedings of the 26th ACM SIGKDD International Conference
+  on Knowledge Discovery \& Data Mining}, 401--411.
+
+\end{thebibliography}

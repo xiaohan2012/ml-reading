@@ -1,0 +1,105 @@
+\subsection{Loss landscape on GDELT-ne}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{figure}[t]
+% \centering
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/gdelt_lite.pdf}
+%     \vspace{-6mm}
+%     \caption{Evaluation average precision}
+%     % \label{fig:first}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/gdelt_lite_train.pdf}
+%     \vspace{-6mm}
+%     \caption{Train average precision}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/gdelt_lite_train_valid_diff.pdf}
+%     \vspace{-6mm}
+%     \caption{Generalization gap}
+% \end{subfigure}
+% \vspace{-2mm}
+% \caption{Comparison of the link prediction average precision (AP) on \textbf{GDELT (-)} dataset.}
+% \label{fig:average_precision_per_epochs_gdelt}
+% \end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_tgat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_dysat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_mixer_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{blue}{Contour}) on \textbf{GDELT-ne } Dataset.}
+\label{fig:landscape_2d_gdelt_lite}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_tgat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_dysat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_gdelt_lite_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/gdelt_lite_landscape_mixer_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{red}{Surface}) on \textbf{GDELT-ne} Dataset.}
+\label{fig:landscape_3d_gdelt_lite}
+\end{figure}

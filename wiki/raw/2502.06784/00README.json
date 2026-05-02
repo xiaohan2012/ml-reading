@@ -1,0 +1,44 @@
+{
+   "stamp" : true,
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "icml2025.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/link_ablation.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/link_prediction.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/node_classification.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/node_cls_ablation.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/node_reg_ablation.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/node_regression.tex"
+      }
+   ],
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

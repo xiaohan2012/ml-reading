@@ -1,0 +1,252 @@
+\begin{thebibliography}{49}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Beaini et~al.(2024)Beaini, Huang, Cunha, Li, Moisescu-Pareja, Dymov, Maddrell-Mander, McLean, Wenkel, M{\"u}ller, et~al.]{beaini2024towards}
+Dominique Beaini, Shenyang Huang, Joao~Alex Cunha, Zhiyi Li, Gabriela Moisescu-Pareja, Oleksandr Dymov, Samuel Maddrell-Mander, Callum McLean, Frederik Wenkel, Luis M{\"u}ller, et~al.
+\newblock Towards foundational models for molecular learning on large-scale multi-task datasets.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem[Black et~al.(2024)Black, Wan, Mishne, Nayyeri, and Wang]{black2024comparing}
+Mitchell Black, Zhengchao Wan, Gal Mishne, Amir Nayyeri, and Yusu Wang.
+\newblock Comparing graph transformers via positional encodings.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  4103--4139. PMLR, 2024.
+
+\bibitem[Bommasani et~al.(2022)]{bommasani2022foundation}
+Rishi Bommasani et~al.
+\newblock On the opportunities and risks of foundation models, 2022.
+\newblock URL \url{https://arxiv.org/abs/2108.07258}.
+
+\bibitem[Chen et~al.(2025)Chen, Kanatsoulis, and Leskovec]{relgnn}
+Tianlang Chen, Charilaos Kanatsoulis, and Jure Leskovec.
+\newblock Rel{GNN}: Composite message passing for relational deep learning.
+\newblock In \emph{Forty-second International Conference on Machine Learning}, 2025.
+
+\bibitem[Chen \& Guestrin(2016)Chen and Guestrin]{chen2016xgboost}
+Tianqi Chen and Carlos Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining}, pp.\  785--794, 2016.
+
+\bibitem[Dao et~al.(2022)Dao, Fu, Ermon, Rudra, and R{\'e}]{flash_attention}
+Tri Dao, Dan Fu, Stefano Ermon, Atri Rudra, and Christopher R{\'e}.
+\newblock Flashattention: Fast and memory-efficient exact attention with io-awareness.
+\newblock \emph{Advances in neural information processing systems}, 35:\penalty0 16344--16359, 2022.
+
+\bibitem[Devlin et~al.(2019)Devlin, Chang, Lee, and Toutanova]{bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock Bert: Pre-training of deep bidirectional transformers for language understanding.
+\newblock In \emph{Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)}, pp.\  4171--4186, 2019.
+
+\bibitem[Dong et~al.(2024)Dong, Feng, Guessous, Liang, and He]{flex_attention}
+Juechu Dong, Boyuan Feng, Driss Guessous, Yanbo Liang, and Horace He.
+\newblock Flex attention: A programming model for generating optimized attention kernels, 2024.
+\newblock URL \url{https://arxiv.org/abs/2412.05496}.
+
+\bibitem[Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and Houlsby]{vit}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock In \emph{International Conference on Learning Representations}, 2021.
+
+\bibitem[Dwivedi \& Bresson(2021)Dwivedi and Bresson]{dwivedi2021generalization}
+Vijay~Prakash Dwivedi and Xavier Bresson.
+\newblock A generalization of transformer networks to graphs.
+\newblock \emph{AAAI Workshop on Deep Learning on Graphs: Methods and Applications}, 2021.
+
+\bibitem[Dwivedi et~al.(2025{\natexlab{a}})Dwivedi, Jaladi, Shen, López, Kanatsoulis, Puri, Fey, and Leskovec]{relgt}
+Vijay~Prakash Dwivedi, Sri Jaladi, Yangyi Shen, Federico López, Charilaos~I. Kanatsoulis, Rishi Puri, Matthias Fey, and Jure Leskovec.
+\newblock Relational graph transformer, 2025{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2505.10960}.
+
+\bibitem[Dwivedi et~al.(2025{\natexlab{b}})Dwivedi, Kanatsoulis, Huang, and Leskovec]{dwivedi2025relational}
+Vijay~Prakash Dwivedi, Charilaos Kanatsoulis, Shenyang Huang, and Jure Leskovec.
+\newblock Relational deep learning: Challenges, foundations and next-generation architectures.
+\newblock In \emph{Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V. 2}, pp.\  5999--6009, 2025{\natexlab{b}}.
+
+\bibitem[Eremeev et~al.(2025)Eremeev, Bazhenov, Platonov, Babenko, and Prokhorenkova]{G2T-FM}
+Dmitry Eremeev, Gleb Bazhenov, Oleg Platonov, Artem Babenko, and Liudmila Prokhorenkova.
+\newblock Turning tabular foundation models into graph foundation models, 2025.
+\newblock URL \url{https://arxiv.org/pdf/2508.20906v1}.
+
+\bibitem[Fatemi et~al.(2024)Fatemi, Halcrow, and Perozzi]{fatemitalk}
+Bahare Fatemi, Jonathan Halcrow, and Bryan Perozzi.
+\newblock Talk like a graph: Encoding graphs for large language models.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem[Fey et~al.(2024)Fey, Hu, Huang, Lenssen, Ranjan, Robinson, Ying, You, and Leskovec]{rdl}
+Matthias Fey, Weihua Hu, Kexin Huang, Jan~Eric Lenssen, Rishabh Ranjan, Joshua Robinson, Rex Ying, Jiaxuan You, and Jure Leskovec.
+\newblock Position: Relational deep learning - graph representation learning on relational databases.
+\newblock In \emph{Forty-first International Conference on Machine Learning}, 2024.
+
+\bibitem[Fey et~al.(2025)Fey, Kocijan, Lopez, Lenssen, and Leskovec]{kumorfm}
+Matthias Fey, Vid Kocijan, Federico Lopez, Jan~Eric Lenssen, and Jure Leskovec.
+\newblock Kumorfm: A foundation model for in-context learning on relational data, 2025.
+
+\bibitem[Galkin et~al.(2024)Galkin, Yuan, Mostafa, Tang, and Zhu]{galkintowards}
+Mikhail Galkin, Xinyu Yuan, Hesham Mostafa, Jian Tang, and Zhaocheng Zhu.
+\newblock Towards foundation models for knowledge graph reasoning.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem[Gu et~al.(2026)Gu, Ranjan, Kanatsoulis, Tang, Jurkovic, Hudovernik, Znidar, Chaturvedi, Shroff, Li, and Leskovec]{gu2026relbenchv2}
+Justin Gu, Rishabh Ranjan, Charilaos Kanatsoulis, Haiming Tang, Martin Jurkovic, Valter Hudovernik, Mark Znidar, Pranshu Chaturvedi, Parth Shroff, Fengyu Li, and Jure Leskovec.
+\newblock {RelBench} v2: A large-scale benchmark and repository for relational data, 2026.
+\newblock URL \url{https://arxiv.org/abs/2602.12606}.
+
+\bibitem[Hollmann et~al.(2023)Hollmann, M{\"u}ller, Eggensperger, and Hutter]{tabpfn}
+Noah Hollmann, Samuel M{\"u}ller, Katharina Eggensperger, and Frank Hutter.
+\newblock Tab{PFN}: A transformer that solves small tabular classification problems in a second.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+
+\bibitem[Hollmann et~al.(2025)Hollmann, M{\"u}ller, Purucker, Krishnakumar, K{\"o}rfer, Hoo, Schirrmeister, and Hutter]{tabpfnv2}
+Noah Hollmann, Samuel M{\"u}ller, Lennart Purucker, Arjun Krishnakumar, Max K{\"o}rfer, Shi~Bin Hoo, Robin~Tibor Schirrmeister, and Frank Hutter.
+\newblock Accurate predictions on small data with a tabular foundation model.
+\newblock \emph{Nature}, 637\penalty0 (8045):\penalty0 319--326, 2025.
+
+\bibitem[Huang et~al.(2023)Huang, Ren, Chen, Kr{\v{z}}manc, Zeng, Liang, and Leskovec]{huang2023prodigy}
+Qian Huang, Hongyu Ren, Peng Chen, Gregor Kr{\v{z}}manc, Daniel Zeng, Percy~S Liang, and Jure Leskovec.
+\newblock Prodigy: Enabling in-context learning over graphs.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:\penalty0 16302--16317, 2023.
+
+\bibitem[Huang et~al.(2024)Huang, Lu, Robinson, Yang, Zhang, Jegelka, and Li]{huangstability}
+Yinan Huang, William Lu, Joshua Robinson, Yu~Yang, Muhan Zhang, Stefanie Jegelka, and Pan Li.
+\newblock On the stability of expressive positional encodings for graphs.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem[Kanatsoulis et~al.(2025)Kanatsoulis, Choi, Jegelka, Leskovec, and Ribeiro]{kanatsoulis2025learning}
+Charilaos~I Kanatsoulis, Evelyn Choi, Stephanie Jegelka, Jure Leskovec, and Alejandro Ribeiro.
+\newblock Learning efficient positional encodings with graph neural networks.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Kim et~al.(2024)Kim, Grinsztajn, and Varoquaux]{carte}
+Myung~Jun Kim, Leo Grinsztajn, and Gael Varoquaux.
+\newblock Carte: Pretraining and transfer for tabular learning.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  23843--23866. PMLR, 2024.
+
+\bibitem[Lam et~al.(2021)Lam, Buesser, Min, Minh, Wistuba, Khurana, Bramble, Salonidis, Wang, and Samulowitz]{lam2021automated}
+Hoang~Thanh Lam, Beat Buesser, Hong Min, Tran~Ngoc Minh, Martin Wistuba, Udayan Khurana, Gregory Bramble, Theodoros Salonidis, Dakuo Wang, and Horst Samulowitz.
+\newblock Automated data science for relational data.
+\newblock In \emph{2021 IEEE 37th International Conference on Data Engineering (ICDE)}, pp.\  2689--2692. IEEE, 2021.
+
+\bibitem[Lim et~al.(2022)Lim, Robinson, Zhao, Smidt, Sra, Maron, and Jegelka]{limsign}
+Derek Lim, Joshua~David Robinson, Lingxiao Zhao, Tess Smidt, Suvrit Sra, Haggai Maron, and Stefanie Jegelka.
+\newblock Sign and basis invariant networks for spectral graph representation learning.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2022.
+
+\bibitem[Nafar et~al.(2025)Nafar, Venable, and Kordjamshidi]{nafar2025learning}
+Aliakbar Nafar, K~Brent Venable, and Parisa Kordjamshidi.
+\newblock Learning vs retrieval: The role of in-context examples in regression with large language models.
+\newblock In \emph{Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)}, pp.\  8206--8229, 2025.
+
+\bibitem[Peleška \& Šír(2024)Peleška and Šír]{dbformer}
+Jakub Peleška and Gustav Šír.
+\newblock Transformers meet relational databases, 2024.
+\newblock URL \url{https://arxiv.org/abs/2412.05218}.
+
+\bibitem[Perozzi et~al.(2024)Perozzi, Fatemi, Zelle, Tsitsulin, Kazemi, Al-Rfou, and Halcrow]{perozzi2024let}
+Bryan Perozzi, Bahare Fatemi, Dustin Zelle, Anton Tsitsulin, Mehran Kazemi, Rami Al-Rfou, and Jonathan Halcrow.
+\newblock Let your graph do the talking: Encoding structured data for llms, 2024.
+\newblock URL \url{https://arxiv.org/abs/2402.05862}.
+
+\bibitem[QU et~al.(2025)QU, Holzm{\"u}ller, Varoquaux, and Morvan]{tabicl}
+Jingang QU, David Holzm{\"u}ller, Ga{\"e}l Varoquaux, and Marine~Le Morvan.
+\newblock Tab{ICL}: A tabular foundation model for in-context learning on large data.
+\newblock In \emph{Forty-second International Conference on Machine Learning}, 2025.
+
+\bibitem[Ramp{\'a}{\v{s}}ek et~al.(2022)Ramp{\'a}{\v{s}}ek, Galkin, Dwivedi, Luu, Wolf, and Beaini]{rampavsek2022recipe}
+Ladislav Ramp{\'a}{\v{s}}ek, Michael Galkin, Vijay~Prakash Dwivedi, Anh~Tuan Luu, Guy Wolf, and Dominique Beaini.
+\newblock Recipe for a general, powerful, scalable graph transformer.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 14501--14515, 2022.
+
+\bibitem[Ranjan et~al.(2024)Ranjan, Garg, Raman, Guestrin, and Lipton]{ranjan2024post}
+Rishabh Ranjan, Saurabh Garg, Mrigank Raman, Carlos Guestrin, and Zachary Lipton.
+\newblock Post-hoc reversal: Are we selecting models prematurely?
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:\penalty0 91460--91491, 2024.
+
+\bibitem[Reimers \& Gurevych(2019)Reimers and Gurevych]{sentence_transformers}
+Nils Reimers and Iryna Gurevych.
+\newblock Sentence-bert: Sentence embeddings using siamese bert-networks.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)}, pp.\  3982--3992, 2019.
+
+\bibitem[Robinson et~al.(2024)Robinson, Ranjan, Hu, Huang, Han, Dobles, Fey, Lenssen, Yuan, Zhang, et~al.]{relbench}
+Joshua Robinson, Rishabh Ranjan, Weihua Hu, Kexin Huang, Jiaqi Han, Alejandro Dobles, Matthias Fey, Jan~Eric Lenssen, Yiwen Yuan, Zecheng Zhang, et~al.
+\newblock Relbench: A benchmark for deep learning on relational databases.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:\penalty0 21330--21341, 2024.
+
+\bibitem[Shwartz-Ziv \& Armon(2022)Shwartz-Ziv and Armon]{shwartz2022tabular}
+Ravid Shwartz-Ziv and Amitai Armon.
+\newblock Tabular data: Deep learning is not all you need.
+\newblock \emph{Information Fusion}, 81:\penalty0 84--90, 2022.
+
+\bibitem[Spinaci et~al.(2024)Spinaci, Polewczyk, Hoffart, Kohler, Thelin, and Klein]{portal}
+Marco Spinaci, Marek Polewczyk, Johannes Hoffart, Markus~C. Kohler, Sam Thelin, and Tassilo Klein.
+\newblock Portal: Scalable tabular foundation models via content-specific tokenization, 2024.
+\newblock URL \url{https://arxiv.org/abs/2410.13516}.
+
+\bibitem[Team \& DeepMind(2025)Team and DeepMind]{gemma3}
+Gemma Team and Google DeepMind.
+\newblock Gemma 3 technical report, 2025.
+\newblock URL \url{https://arxiv.org/abs/2503.19786}.
+
+\bibitem[Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozière, Goyal, Hambro, Azhar, Rodriguez, Joulin, Grave, and Lample]{llama}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, Aurelien Rodriguez, Armand Joulin, Edouard Grave, and Guillaume Lample.
+\newblock Llama: Open and efficient foundation language models, 2023.
+\newblock URL \url{https://arxiv.org/abs/2302.13971}.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin]{attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Vogel et~al.(2022)Vogel, Hilprecht, and Binnig]{vogel2022towards}
+Liane Vogel, Benjamin Hilprecht, and Carsten Binnig.
+\newblock Towards foundation models for relational databases [vision paper].
+\newblock In \emph{NeurIPS 2022 First Table Representation Workshop}, 2022.
+
+\bibitem[Wang et~al.(2021)Wang, Bao, Huang, Dong, and Wei]{minilmv2}
+Wenhui Wang, Hangbo Bao, Shaohan Huang, Li~Dong, and Furu Wei.
+\newblock Minilmv2: Multi-head self-attention relation distillation for compressing pretrained transformers.
+\newblock In \emph{Findings of the Association for Computational Linguistics: ACL-IJCNLP 2021}, pp.\  2140--2151, 2021.
+
+\bibitem[Wang et~al.(2025)Wang, Wang, Gan, Wang, Yang, Wipf, and Zhang]{griffin}
+Yanbo Wang, Xiyuan Wang, Quan Gan, Minjie Wang, Qibin Yang, David Wipf, and Muhan Zhang.
+\newblock Griffin: Towards a graph-centric relational database foundation model.
+\newblock In \emph{Forty-second International Conference on Machine Learning}, 2025.
+
+\bibitem[Wu et~al.(2025)Wu, Dwivedi, and Leskovec]{relllm}
+Fang Wu, Vijay~Prakash Dwivedi, and Jure Leskovec.
+\newblock Large language models are good relational learners, 2025.
+\newblock URL \url{https://arxiv.org/abs/2506.05725}.
+
+\bibitem[Wydmuch et~al.(2024)Wydmuch, Łukasz Borchmann, and Graliński]{snowflake2024relational}
+Marek Wydmuch, Łukasz Borchmann, and Filip Graliński.
+\newblock Tackling prediction tasks in relational databases with llms, 2024.
+\newblock URL \url{https://arxiv.org/abs/2411.11829}.
+
+\bibitem[Xia et~al.(2023)Xia, Zhao, Hu, Gao, Tan, Liu, Li, and Li]{xia2023mole}
+Jun Xia, Chengshuai Zhao, Bozhen Hu, Zhangyang Gao, Cheng Tan, Yue Liu, Siyuan Li, and Stan~Z Li.
+\newblock Mole-bert: Rethinking pre-training graph neural networks for molecules.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2023.
+
+\bibitem[Ying et~al.(2021)Ying, Cai, Luo, Zheng, Ke, He, Shen, and Liu]{ying2021transformers}
+Chengxuan Ying, Tianle Cai, Shengjie Luo, Shuxin Zheng, Guolin Ke, Di~He, Yanming Shen, and Tie-Yan Liu.
+\newblock Do transformers really perform badly for graph representation?
+\newblock \emph{Advances in neural information processing systems}, 34:\penalty0 28877--28888, 2021.
+
+\bibitem[Zhao et~al.(2025{\natexlab{a}})Zhao, Zhu, Galkin, Mostafa, Bronstein, and Tang]{zhaofully}
+Jianan Zhao, Zhaocheng Zhu, Mikhail Galkin, Hesham Mostafa, Michael~M Bronstein, and Jian Tang.
+\newblock Fully-inductive node classification on arbitrary graphs.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025{\natexlab{a}}.
+
+\bibitem[Zhao et~al.(2025{\natexlab{b}})Zhao, Ren, Li, Liu, He, and Xu]{zhaographgpt}
+Qifang Zhao, Weidong Ren, Tianyu Li, Hong Liu, Xingsheng He, and Xiaoxiao Xu.
+\newblock Graphgpt: Generative pre-trained graph eulerian transformer.
+\newblock In \emph{Forty-second International Conference on Machine Learning}, 2025{\natexlab{b}}.
+
+\bibitem[Zhou et~al.(2024)Zhou, Li, Li, Yu, Liu, Wang, Zhang, Ji, Yan, He, et~al.]{zhou2024comprehensive}
+Ce~Zhou, Qian Li, Chen Li, Jun Yu, Yixin Liu, Guangjing Wang, Kai Zhang, Cheng Ji, Qiben Yan, Lifang He, et~al.
+\newblock A comprehensive survey on pretrained foundation models: A history from bert to chatgpt.
+\newblock \emph{International Journal of Machine Learning and Cybernetics}, pp.\  1--65, 2024.
+
+\end{thebibliography}

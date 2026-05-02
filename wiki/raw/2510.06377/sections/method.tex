@@ -1,0 +1,198 @@
+\section{Relational Transformer}
+\label{sec:architecture}
+
+% \ck{ready for review}
+
+\hide{
+\jure{This is the key section of the paper. It needs to provide more details, mode insights and be expanded. You can talk about design decisions, intuition behind different attention mechanisms, you can talk more concretely about each attention mechanism (not just  in Fig  1 but also with math)}
+}
+
+% \begin{figure}
+% \centering
+% \includegraphics[scale=0.25]{manual-figures/architecture.pdf}
+% \caption{
+% The Relational Transformer (RT) architecture.
+% \textbf{Left:}
+% RT comprises cell encoder/decoder modules
+% and a transformer backbone.
+% Each transformer block has
+% column-, feature-, and neighbor-attention layers
+% in addition to the standard global attention layer.
+% \textbf{Right:}
+% A cell attends to,
+% (1) cells in the same column (\textit{column attention}),
+% (2) cells in the same row as well as F$\to$P linked rows (\textit{feature attention}),
+% (3) P$\to$F linked rows (\textit{neighbor attention}),
+% and (4) all cells (\textit{global attention}).
+% }
+% \label{fig:architecture}
+% \end{figure}
+
+We introduce the Relational Transformer (RT, Fig.~\ref{fig:intro1}), a transformer architecture designed for relational data. The design of RT is guided by three core principles:
+(i) effectively \emph{capture relational structure} while preserving the \emph{natural symmetries of relational data}, (ii) support flexible \emph{self-supervised pretraining}, and (iii) enable \emph{zero-shot generalization} across heterogeneous schemas.
+
+% RT is designed as a \emph{cell-level transformer}, where each database cell is represented as a token.  
+% This formulation enables flexible pretraining via MTP and supports schema generalization, since primitive datatypes (e.g., numeric, text) are universal across RDBs.  
+% To handle downstream tasks, RT integrates task tables into the context, enabling zero-shot prompting across diverse schemas.  
+% Finally, RT employs a Relational Attention mechanism that captures dependencies across cells, rows, and tables, explicitly leveraging the structure of relational databases.
+
+
+
+
+
+
+
+\subsection{Input Representation}
+\label{subsec:input-representation}
+RT introduces two key innovations in input representation:  
+(i) \textit{task table prompting}, where prediction tasks are represented as additional tables appended to the database, and  
+(ii) \textit{cell-level tokenization}, where each database cell is modeled as an individual token.  
+Task table prompting augments the database input with task-specific context, enabling zero-shot predictions across diverse schemas.  
+Cell-level tokenization then provides a unified view of relational data, allowing all downstream tasks to be cast as MTP and thereby supporting flexible and scalable self-supervised learning.
+\paragraph{Task table prompting.}
+For each task, we attach a dedicated task table to the database. Only one task table is active at a time, ensuring that sampling is task-specific. Rows from the task table serve as \emph{seed rows} for context construction, and from the model’s perspective task tables are treated as ordinary relational tables. This allows downstream tasks to be seamlessly expressed in the same input space as pretraining. 
+
+\paragraph{Context window for zero-shot prompting.}
+Given a seed row, RT constructs a context window of $n$ cells by expanding across primary–foreign key links. Following the intuition that relevant information is concentrated in nearby hops, we apply a bounded-width breadth-first search (BFS) with three modifications:  
+(1) all parent rows (F$\to$P) are always included,  
+(2) child rows (P$\to$F) are subsampled with a BFS-width bound $w$, and  
+(3) rows with timestamps later than the seed row are excluded to prevent temporal leakage.  
+Once a row is selected, all of its non-missing feature cells are added to the context. A more detailed discussion of the sampling procedure is provided in App.~\ref{app:sampler}.
+
+\paragraph{Cell token encoding.}
+A cell is represented by $(v, c, t)$, where $v$ is the cell value, $c$ is the column name, and $t$ is the table name. The value $v$ can be numeric, boolean, datetime, or text; other modalities (e.g., image) can be handled analogously to text.
+
+\begin{itemize}
+\item \textbf{Numeric/boolean:} Normalize to obtain $\mathbf{r} = (v - \mu_c)/\sigma_c\in \mathbb{R}$, where $\mu_c$ and $\sigma_c$ are the column mean and standard deviation computed on the training split.
+\item \textbf{Datetime:} Convert to seconds and normalize globally: $\mathbf{r} = (v - \mu_T)/\sigma_T$, where $\mu_T$ and $\sigma_T\in \mathbb{R}$ are the global mean and standard deviation of timestamps in the training split.
+\item \textbf{Text:} Embed using a frozen text encoder $\mathcal{E}^{\text{text}}$: $\mathbf{r} = \mathcal{E}^{\text{text}}(v) \in \mathbb{R}^{d_{\text{text}}}$.
+\end{itemize}
+
+Schema semantics are incorporated via a text embedding of the phrase ``\texttt{<column\_name> of <table\_name>}'',
+e.g., ``\texttt{price of product}'', ``\texttt{age of user}'', using $\mathcal{E}^{\text{schema}}$. The token embedding is
+$
+\mathbf{x} \;=\; \W_d\,\mathbf{r} \;+\; \W\,\mathcal{E}^{\text{schema}}(c,t),
+$
+where $\W_d$ is datatype-specific and $\W$ is shared. For masked cells, the value embedding $\W_d\r$ is replaced with a learned mask vector $\mathbf{m}_d$.
+% \[
+% \mathbf{x} \;=\; \mathbf{m}_d \;+\; \W\,\mathcal{E}^{\text{schema}}(c,t).
+% \]
+
+\paragraph{Permutation invariance for tables, rows and columns.}
+To preserve the natural symmetries of relational data,
+RT does not incorporate positional encodings~\citep{limsign,huangstability,kanatsoulis2025learning,black2024comparing}.
+Relational structure is captured by Relational Attention layers (\S~\ref{subsec:relational_attention})
+which are invariant to the ordering of tables, rows and columns.
+This is a crucial driver of sample-efficient generalization from limited schemas in pretraining (see App.~\ref{app:expressive_power} for an expanded discussion).
+
+\subsection{Relational Attention}
+\label{subsec:relational_attention}
+
+The core of RT is a novel \emph{Relational Attention} mechanism in which the fundamental processing unit is the \emph{cell token}. This formulation enables flexible pretraining via MTP, and stands in contrast to Graph Transformers~\citep{dwivedi2021generalization, rampavsek2022recipe, ying2021transformers}, which tokenize at the row level, but can be viewed as a natural extension of Tabular Transformers~\citep{tabpfn, tabpfnv2}.
+By operating at the cell level, RT can explicitly model one-to-one dependencies between attributes across rows, columns, and tables, while also supporting zero-shot generalization across schemas.  
+RT follows the standard transformer design, but augments each block with Relational Attention layers that effectively encode relational structure and inductive bias.  
+Other architectural details (normalization, activations, etc.) follow the design choices of LLaMA~\citep{llama}.
+
+The main operation in RT is the \textit{scaled dot-product attention (SDPA)}
+with \textit{masking},
+given by:
+\begin{equation*}
+\text{SDPA}(\Q, \K, \V; \M)
+= \text{Softmax}\left(\frac{\text{Mask}\left(\Q\K^\top; \M\right)}{\sqrt{d_k}}\right) \V, \text{~~~}
+\text{Mask}(\A; \M)_{ij}
+= \begin{cases}
+    \A_{ij} \text{~~if } \M_{i,j} = 1\\
+    -\infty \text{ if } \M_{i,j} = 0
+\end{cases}
+% \text{MHA}(\X; \M)
+% &= \text{Concat}\left(\langle
+% \text{Attention}(\X \W_Q^i, \X \W_K^i, \X \W_V^i; \M) \rangle_{i=1}^h,
+% \right) \W_O,
+\end{equation*}
+Here,
+$\Q \in \mathbb{R}^{n \times d_k}$, $\K \in \mathbb{R}^{n \times d_k}$, $\V \in \mathbb{R}^{n \times d_v}$
+are the \textit{query}, \textit{key}, and \textit{value} matrices,
+and $n$ is the context length.
+$\M \in \{0, 1\}^{n \times n}$ is the \textit{attention mask},
+which controls token-to-token visibility.
+$\M[q, k] = 1$ means the $q$-th token can attend to the $k$-th token,
+and $\M[q, k] = 0$ means it cannot.
+For example,
+auto-regressive language models use a \textit{causal} attention mask,
+given by $\M^{\text{causal}}[q, k] = \1\{k \le q\}$,
+where $\1\{\cdot\}$ is the indicator function.
+
+\paragraph{Relational Attention masks.}
+Using specialized masks, we define four attention types: \emph{column}, \emph{feature}, \emph{neighbor}, and \emph{global}. For the cell corresponding to token $i$, let $\text{Col}(i)$ be its column, $\text{Row}(i)$ its row, and $\text{OutLinks}(i)$ the set of rows,
+possibly in different tables,
+which are pointed to by foreign keys of $\text{Row}(i)$.
+\begin{itemize}
+\item \textbf{Column attention:}
+For any query token,
+this layer allows attention only to key-value tokens from the same column, resulting in the mask: $\M^{\text{column}}[q, k] = \1\{\text{Col}(k) = \text{Col}(q)\}$. Column attention helps model the distribution of values in each column.
+
+\item \textbf{Feature attention:}
+For any query token,
+this layer allows attention to key-value tokens from the same row,
+as well as from F$\to$P linked rows with the attention mask given by: $\M^{\text{feature}}[q, k] = \1\{
+\text{Row}(k) = \text{Row}(q) \lor \text{Row}(k) \in \text{OutLinks}(q)
+\}$. Feature attention is equivalent to row-wise attention
+after joining each table with its parent tables,
+and enables feature mixing for entities.
+
+\item \textbf{Neighbor attention:}
+For any query token, 
+this layer allows attention to key-value tokens from P$\to$F linked rows, defined by the attention mask: $\M^{\text{neighbor}}[q, k] = \1\{\text{Row}(q) \in \text{OutLinks}(k)\}$. Neighbor attention captures information from incoming links to an entity, enabling the model to aggregate signals from its child rows. This module acts analogously to message-passing in GNNs.
+
+
+\item \textbf{Full attention:}
+Finally, a standard bidirectional layer allows full pairwise interactions: $\M^{\text{full}}[q,k] = 1$. Full attention confers the expressive power of standard Transformers, complementing the relationally constrained layers above.
+\end{itemize}
+
+Taken together, the proposed attention layers provide the model with an explicit encoding of database structure
+with high expressive power (App.~\ref{app:expressive_power}). These layers are implemented with sparse attention masks,
+and compiled to efficient FlashAttention-based~\citep{flash_attention} kernels
+using FlexAttention~\citep{flex_attention}. 
+The proposed transformer block in RT is summarized in Alg.~\ref{alg:transformer_block}.
+
+\subsection{Output Decoding and Training Objective}
+
+\paragraph{Cell decoders / prediction heads.}
+An output token embedding $e'$ from the transformer backbone
+is processed by multiple cell decoders (also called prediction heads),
+one for each datatype, into a cell representation $r'$.
+The decoder to select for final prediction depends on the task type,
+or equivalently on the datatype of the masked cell.
+Binary classification corresponds to the boolean datatype,
+and regression corresponds to the numeric datatype.
+
+\paragraph{Loss.}
+Having separate decoders for different datatypes
+allows us to use custom loss functions for each task type.
+In this work, we only mask cells in boolean or numeric columns
+as RelBench tasks are either binary classification or regression.
+For a masked cell $c$ with value $v$, representation $r$ (as defined in \S~\ref{subsec:input-representation}), and decoder output $r'$, 
+we apply $\text{HuberLoss}(r, r')$ for regression and
+binary cross-entropy loss $\text{BCE}(\mathbf{1}{\{r > 0\}}, r')$ for binary classification.
+The overall loss is the mean over all masked cells in the batch.  
+This formulation is used in both pretraining and fine-tuning, ensuring consistency between objectives and contributing to sample efficiency.
+
+
+
+% For a masked cell $c$ with value $v$,
+% whose representation is $r$ as described in the cell encoder section,
+% and for which the output representation from the cell decoder is $r'$,
+% the loss is HuberLoss$(r, r')$.
+% For text datatype, where $r, r' \in \mathbb{R}^{d_\text{text}}$,
+% HuberLoss is computed as the mean of the Huber losses for each dimension.
+% Finally, the overall loss is the mean of the losses over all masked cells
+% in the batch.
+
+% Note that this applies to both pretraining and fine-tuning.
+% In particular, when fine-tuning on binary classification tasks,
+% where the target column has numeric values $0.0$ and $1.0$,
+% we do not use a binary cross-entropy loss,
+% and instead stick with the Huber loss on the normalized numeric values.
+% This makes the fine-tuning objective seamless with the pretraining objective,
+% and contributes to sample-efficiency.
+

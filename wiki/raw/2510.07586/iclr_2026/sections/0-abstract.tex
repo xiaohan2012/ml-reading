@@ -1,0 +1,16 @@
+\begin{abstract}
+
+Well-designed open-source software drives progress in Machine Learning~(ML) research. While static graph ML enjoys mature frameworks like PyTorch Geometric and DGL, ML for temporal graphs (TG), networks that evolve over time, lacks comparable infrastructure. Existing TG libraries are often tailored to specific architectures, hindering support for diverse models in this rapidly evolving field. Additionally, the divide between continuous- and discrete-time dynamic graph methods (CTDG and DTDG) limits direct comparisons and idea transfer. To address these gaps, we introduce Temporal Graph Modelling (\name), a research-oriented library for ML on temporal graphs, the first to unify CTDG and DTDG approaches. \name offers first-class support for dynamic node features, time-granularity conversions, and native handling of link-, node-, and graph-level tasks. Empirically, \name achieves an average 7.8× speedup across multiple models, datasets, and tasks compared to the widely used DyGLib, and an average 175× speedup on graph discretization relative to available implementations. Beyond efficiency, we show in our experiments how \name unlocks entirely new research possibilities by enabling dynamic graph property prediction and time-driven training paradigms, opening the door to questions previously impractical to study.
+% The \name library is publicly available at \url{https://github.com/tgm-team/tgm}. 
+
+\vspace{0.4em}
+\raisebox{-0.2\height}{\hspace{0.7cm}\includegraphics[width=0.44cm]{iclr_2026/artifacts/logo/github.png}} \small \hspace{0.04cm}\textbf{\mbox{Code:}} \href{https://github.com/tgm-team/TGM}{tgm-team/tgm}
+% \vspace{-6em}
+\hspace{5em}
+\raisebox{-0.2\height}{\includegraphics[width=0.37cm]{iclr_2026/artifacts/logo/book.png}} \small \textbf{\mbox{ Documentation:}} \href{https://tgm.readthedocs.io/en/latest}{tgm.readthedocs.io}
+% \vspace{4em}
+
+\end{abstract}
+
+
+% While deep learning on static graphs has benefited from standardized libraries like PyTorch Geometric and DGL, machine learning on Temporal Graphs~(TG), networks that evolve over time, lacks comparable infrastructure. Existing libraries are often tied to specific algorithms, hindering reproducibility and exploration in a field where models are highly heterogeneous. We introduce Temporal Graph Modelling (\name), a research-oriented framework designed to close this gap. \name provides first-class support for both discrete- and continuous-time methods, dynamic node features, and natively handles link-, node-, and graph-level tasks. A modular hook system allows researchers to easily reuse and extend components, enabling high-quality implementations and accelerating community adoption. \name achieves 5–10× faster end-to-end training compared with the widely used DyGLib, establishing a strong foundation for the next generation of temporal graph research.

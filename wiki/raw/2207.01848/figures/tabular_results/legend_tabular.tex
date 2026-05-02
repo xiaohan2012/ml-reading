@@ -1,0 +1,46 @@
+% This file was created with tikzplotlib v0.9.12.
+\begin{tikzpicture}
+\begin{axis}[
+hide axis,
+width=1.\textwidth,
+height=.2\textwidth,
+legend columns=4,legend style={draw=none,column sep=5ex},
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black, /tikz/every even column/.append style={column sep=0.1cm}},
+log basis x={10},
+tick align=outside,
+tick pos=left,
+x grid style={white!69.0196078431373!black},
+xlabel={Training time per task},
+xmin=0.005, xmax=300,
+xmode=log,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={Negative Log Likelihood},
+ymin=-1, ymax=15,
+ytick style={color=black}
+]
+
+\addlegendimage{ultra thick, color3}
+\addlegendentry{\methodname{}}
+\addlegendimage{ultra thick, color0}
+\addlegendentry{KNN}
+\addlegendimage{ultra thick, color1}
+\addlegendentry{Reg. Cocktails}
+\addlegendimage{ultra thick, color2}
+\addlegendentry{Log}
+\addlegendimage{ultra thick, color4}
+\addlegendentry{Catboost}
+\addlegendimage{ultra thick, color5}
+\addlegendentry{SAINT}
+\addlegendimage{ultra thick, color6}
+\addlegendentry{LightGBM}
+\addlegendimage{ultra thick, white!49.8039215686275!black}
+\addlegendentry{XGBoost}
+\addlegendimage{ultra thick, color7}
+\addlegendentry{Autogluon}
+\addlegendimage{ultra thick, color8}
+\addlegendentry{Auto-sklearn 2.0}
+\end{axis}
+
+\end{tikzpicture}

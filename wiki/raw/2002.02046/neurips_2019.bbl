@@ -1,0 +1,249 @@
+\begin{thebibliography}{31}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arik and Pfister(2019)]{arik2019tabnet}
+Sercan~O Arik and Tomas Pfister.
+\newblock Tabnet: Attentive interpretable tabular learning.
+\newblock \emph{arXiv preprint arXiv:1908.07442}, 2019.
+\newblock URL \url{https://arxiv.org/abs/1908.07442}.
+
+\bibitem[Asay(2016)]{asay_nosql_2016}
+Matt Asay.
+\newblock {NoSQL} keeps rising, but relational databases still dominate big
+  data, April 2016.
+\newblock URL
+  \url{https://www.techrepublic.com/article/nosql-keeps-rising-but-relational-databases-still-dominate-big-data/}.
+
+\bibitem[Atwood and Towsley(2016)]{atwood2016diffusion}
+James Atwood and Don Towsley.
+\newblock Diffusion-convolutional neural networks.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  1993--2001, 2016.
+
+\bibitem[Battaglia et~al.(2018)Battaglia, Hamrick, Bapst, Sanchez-Gonzalez,
+  Zambaldi, Malinowski, Tacchetti, Raposo, Santoro, Faulkner,
+  et~al.]{battaglia_relational_2018}
+Peter~W Battaglia, Jessica~B Hamrick, Victor Bapst, Alvaro Sanchez-Gonzalez,
+  Vinicius Zambaldi, Mateusz Malinowski, Andrea Tacchetti, David Raposo, Adam
+  Santoro, Ryan Faulkner, et~al.
+\newblock Relational inductive biases, deep learning, and graph networks.
+\newblock \emph{arXiv preprint arXiv:1806.01261}, 2018.
+\newblock URL \url{https://arxiv.org/abs/1806.01261}.
+
+\bibitem[Getoor and Taskar(2007)]{getoor_introduction_2007}
+Lise Getoor and Ben Taskar.
+\newblock \emph{Introduction to {Statistical} {Relational} {Learning}}.
+\newblock MIT Press, 2007.
+\newblock ISBN 978-0-262-07288-5.
+
+\bibitem[Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl]{gilmer_neural_2017}
+Justin Gilmer, Samuel~S. Schoenholz, Patrick~F. Riley, Oriol Vinyals, and
+  George~E. Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine
+  Learning - Volume 70}, ICML'17, pages 1263--1272. JMLR.org, 2017.
+\newblock URL \url{http://dl.acm.org/citation.cfm?id=3305381.3305512}.
+
+\bibitem[Guo and Viktor(2008)]{guo_multirelational_2008}
+Hongyu Guo and Herna~L Viktor.
+\newblock Multirelational classification: a multiple view approach.
+\newblock \emph{Knowledge and Information Systems}, 17\penalty0 (3):\penalty0
+  287--312, 2008.
+
+\bibitem[Hamilton et~al.(2017)Hamilton, Ying, and
+  Leskovec]{hamilton2017inductive}
+Will Hamilton, Zhitao Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  1024--1034, 2017.
+\newblock URL \url{https://arxiv.org/abs/1706.02216}.
+
+\bibitem[Howard et~al.(2018)]{howard2018fastai}
+Jeremy Howard et~al.
+\newblock Fastai.
+\newblock \url{https://github.com/fastai/fastai}, 2018.
+
+\bibitem[{International Organization for
+  Standardization}(2016)]{international_organization_for_standardization_iso/iec_2016}
+{International Organization for Standardization}.
+\newblock {ISO}/{IEC} 9075-1:2016: {Information} technology -- {Database}
+  languages -- {SQL} -- {Part} 1: {Framework} ({SQL}/{Framework}), December
+  2016.
+\newblock URL
+  \url{http://www.iso.org/cms/render/live/en/sites/isoorg/contents/data/standard/06/35/63555.html}.
+
+\bibitem[{Kaggle, Inc.}(2017)]{kaggle_inc_state_2017}
+{Kaggle, Inc.}
+\newblock The {State} of {ML} and {Data} {Science} 2017, 2017.
+\newblock URL \url{https://www.kaggle.com/surveys/2017}.
+
+\bibitem[Kanter and Veeramachaneni(2015)]{kanter_deep_2015}
+James~Max Kanter and Kalyan Veeramachaneni.
+\newblock Deep feature synthesis: {Towards} automating data science endeavors.
+\newblock In \emph{2015 {IEEE} {International} {Conference} on {Data} {Science}
+  and {Advanced} {Analytics} ({DSAA})}, pages 1--10, October 2015.
+\newblock \doi{10.1109/DSAA.2015.7344858}.
+\newblock URL \url{https://www.jmaxkanter.com/static/papers/DSAA_DSM_2015.pdf}.
+
+\bibitem[Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and
+  Liu]{ke2017lightgbm}
+Guolin Ke, Qi~Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei
+  Ye, and Tie-Yan Liu.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  3146--3154, 2017.
+\newblock URL
+  \url{https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree.pdf}.
+
+\bibitem[Kipf and Welling(2016)]{kipf2016semi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In \emph{International Conference on Learning Representations}, 2016.
+\newblock URL \url{https://arxiv.org/abs/1609.02907}.
+
+\bibitem[Koller et~al.(2007)Koller, Friedman, D{\v{z}}eroski, Sutton, McCallum,
+  Pfeffer, Abbeel, Wong, Heckerman, Meek, et~al.]{koller2007introduction}
+Daphne Koller, Nir Friedman, Sa{\v{s}}o D{\v{z}}eroski, Charles Sutton, Andrew
+  McCallum, Avi Pfeffer, Pieter Abbeel, Ming-Fai Wong, David Heckerman, Chris
+  Meek, et~al.
+\newblock \emph{Introduction to statistical relational learning}, chapter~2,
+  pages 129--174.
+\newblock MIT press, 2007.
+
+\bibitem[Lam et~al.(2017)Lam, Thiebaut, Sinn, Chen, Mai, and
+  Alkan]{lam_one_2017}
+Hoang~Thanh Lam, Johann-Michael Thiebaut, Mathieu Sinn, Bei Chen, Tiep Mai, and
+  Oznur Alkan.
+\newblock One button machine for automating feature engineering in relational
+  databases.
+\newblock \emph{arXiv:1706.00327 [cs]}, June 2017.
+\newblock URL \url{http://arxiv.org/abs/1706.00327}.
+\newblock arXiv: 1706.00327.
+
+\bibitem[Lam et~al.(2018)Lam, Minh, Sinn, Buesser, and
+  Wistuba]{lam_neural_2018}
+Hoang~Thanh Lam, Tran~Ngoc Minh, Mathieu Sinn, Beat Buesser, and Martin
+  Wistuba.
+\newblock Neural {Feature} {Learning} {From} {Relational} {Database}.
+\newblock \emph{arXiv:1801.05372 [cs]}, January 2018.
+\newblock URL \url{http://arxiv.org/abs/1801.05372}.
+\newblock arXiv: 1801.05372.
+
+\bibitem[Li et~al.(2016)Li, Tarlow, Brockschmidt, and Zemel]{ggnnpaper}
+Yujia Li, Daniel Tarlow, Marc Brockschmidt, and Richard Zemel.
+\newblock Gated graph sequence neural networks.
+\newblock In \emph{International Conference on Learning Representations}, 2016.
+\newblock URL \url{https://arxiv.org/abs/1511.05493}.
+
+\bibitem[Loshchilov and Hutter(2017)]{adamw}
+Ilya Loshchilov and Frank Hutter.
+\newblock Decoupled weight decay regularization.
+\newblock In \emph{International Conference on Learning Representations}, 2017.
+\newblock URL \url{https://arxiv.org/abs/1711.05101}.
+
+\bibitem[Luzhnica et~al.(2019)Luzhnica, Day, and Li{\`o}]{Luzhnica2019OnGC}
+Enxhell Luzhnica, Ben Day, and Pietro Li{\`o}.
+\newblock On graph classification networks, datasets and baselines.
+\newblock \emph{ArXiv}, abs/1905.04682, 2019.
+\newblock URL \url{https://arxiv.org/abs/1905.04682}.
+
+\bibitem[Murphy et~al.(2019)Murphy, Srinivasan, Rao, and
+  Ribeiro]{murphy2019relational}
+Ryan Murphy, Balasubramaniam Srinivasan, Vinayak Rao, and Bruno Ribeiro.
+\newblock Relational pooling for graph representations.
+\newblock In Kamalika Chaudhuri and Ruslan Salakhutdinov, editors,
+  \emph{Proceedings of the 36th International Conference on Machine Learning},
+  volume~97 of \emph{Proceedings of Machine Learning Research}, pages
+  4663--4673, Long Beach, California, USA, 09--15 Jun 2019. PMLR.
+\newblock URL \url{http://proceedings.mlr.press/v97/murphy19a.html}.
+
+\bibitem[Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan,
+  Killeen, Lin, Gimelshein, Antiga, Desmaison, Kopf, Yang, DeVito, Raison,
+  Tejani, Chilamkurthy, Steiner, Fang, Bai, and Chintala]{pytorchpaper}
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory
+  Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban
+  Desmaison, Andreas Kopf, Edward Yang, Zachary DeVito, Martin Raison, Alykhan
+  Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu~Fang, Junjie Bai, and Soumith
+  Chintala.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock In H.~Wallach, H.~Larochelle, A.~Beygelzimer, F.~d'Alch\'{e} Buc,
+  E.~Fox, and R.~Garnett, editors, \emph{Advances in Neural Information
+  Processing Systems 32}, pages 8024--8035. Curran Associates, Inc., 2019.
+\newblock URL
+  \url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}.
+
+\bibitem[Schlichtkrull et~al.(2018)Schlichtkrull, Kipf, Bloem, Van Den~Berg,
+  Titov, and Welling]{Schlichtkrull2017ModelingRD}
+Michael Schlichtkrull, Thomas~N Kipf, Peter Bloem, Rianne Van Den~Berg, Ivan
+  Titov, and Max Welling.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In \emph{European Semantic Web Conference}, pages 593--607. Springer,
+  2018.
+\newblock URL \url{https://arxiv.org/abs/1703.06103}.
+
+\bibitem[Shi et~al.(2016)Shi, Li, Zhang, Sun, and Philip]{shi2016survey}
+Chuan Shi, Yitong Li, Jiawei Zhang, Yizhou Sun, and S~Yu Philip.
+\newblock A survey of heterogeneous information network analysis.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering},
+  29\penalty0 (1):\penalty0 17--37, 2016.
+\newblock URL \url{https://arxiv.org/pdf/1511.04854.pdf}.
+
+\bibitem[{Stack Exchange, Inc.}(2018)]{stack_exchange_inc_stack_2018}
+{Stack Exchange, Inc.}
+\newblock Stack {Overflow} {Developer} {Survey} 2018, 2018.
+\newblock URL \url{https://insights.stackoverflow.com/survey/2018/}.
+
+\bibitem[Veličković et~al.(2018)Veličković, Cucurull, Casanova, Romero,
+  Lio, and Bengio]{gatpaper}
+Petar Veličković, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro
+  Lio, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock In \emph{International Conference on Learning Representations}, 2018.
+\newblock URL \url{https://openreview.net/forum?id=rJXMpikCZ}.
+
+\bibitem[Wang et~al.(2019{\natexlab{a}})Wang, Yu, Zheng, Gan, Gai, Ye, Li,
+  Zhou, Huang, Ma, Huang, Guo, Zhang, Lin, Zhao, Li, Smola, and
+  Zhang]{dglpaper}
+Minjie Wang, Lingfan Yu, Da~Zheng, Quan Gan, Yu~Gai, Zihao Ye, Mufei Li,
+  Jinjing Zhou, Qi~Huang, Chao Ma, Ziyue Huang, Qipeng Guo, Hao Zhang, Haibin
+  Lin, Junbo Zhao, Jinyang Li, Alexander~J Smola, and Zheng Zhang.
+\newblock Deep graph library: Towards efficient and scalable deep learning on
+  graphs.
+\newblock \emph{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds}, 2019{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/1909.01315}.
+
+\bibitem[Wang et~al.(2019{\natexlab{b}})Wang, Ji, Shi, Wang, Ye, Cui, and
+  Yu]{wang2019heterogeneous}
+Xiao Wang, Houye Ji, Chuan Shi, Bai Wang, Yanfang Ye, Peng Cui, and Philip~S
+  Yu.
+\newblock Heterogeneous graph attention network.
+\newblock In \emph{The World Wide Web Conference}, pages 2022--2032. ACM,
+  2019{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/1903.07293}.
+
+\bibitem[Wolpert(1992)]{wolpert1992stacked}
+David~H Wolpert.
+\newblock Stacked generalization.
+\newblock \emph{Neural networks}, 5\penalty0 (2):\penalty0 241--259, 1992.
+
+\bibitem[Wu et~al.(2019)Wu, Pan, Chen, Long, Zhang, and
+  Yu]{wu_comprehensive_2019}
+Zonghan Wu, Shirui Pan, Fengwen Chen, Guodong Long, Chengqi Zhang, and Philip~S
+  Yu.
+\newblock A comprehensive survey on graph neural networks.
+\newblock \emph{arXiv preprint arXiv:1901.00596}, 2019.
+\newblock URL \url{https://arxiv.org/abs/1901.00596}.
+
+\bibitem[Xu et~al.(2019)Xu, Hu, Leskovec, and Jegelka]{ginpaper}
+Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka.
+\newblock How powerful are graph neural networks?
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+\newblock URL \url{https://openreview.net/forum?id=ryGs6iA5Km}.
+
+\end{thebibliography}

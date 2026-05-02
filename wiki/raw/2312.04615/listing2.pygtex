@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{task} \PYG{o}{=} \PYG{n}{dataset}\PYG{o}{.}\PYG{n}{get\PYGZus{}task}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}rel\PYGZhy{}amazon\PYGZhy{}ltv\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{task}\PYG{o}{.}\PYG{n}{train\PYGZus{}table}\PYG{p}{,} \PYG{n}{task}\PYG{o}{.}\PYG{n}{val\PYGZus{}table}\PYG{p}{,} \PYG{n}{task}\PYG{o}{.}\PYG{n}{test\PYGZus{}table} \PYG{c+c1}{\PYGZsh{} training/validation/testing tables}
+\end{Verbatim}

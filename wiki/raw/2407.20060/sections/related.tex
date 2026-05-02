@@ -1,0 +1,12 @@
+\section{Related Work}
+\label{sec:related}
+
+\xhdr{Graph Machine Learning Benchmarks} Challenging and realistic benchmarks drive innovation in methodology. A classic example is the ImageNet~\citep{deng2009imagenet},  introduced prior to the rise of deep learning, which was a key catalyst for the seminal work of \cite{krizhevsky2017imagenet}. In graph machine learning, benchmarks such as the Open Graph Benchmark \citep{hu2020open}, TUDataset \citep{morris2020tudataset}, and more recently, the Temporal Graph Benchmark \citep{huang2024temporal} have sustained the growth and maturation of graph machine learning as a field.
+%used common graph data sources including small molecules, bioinformatics, and social networks. 
+\relbench differs since instead of collecting together tasks are already recognized as graph machine learning tasks, \relbench presents existing tasks typically solved using other methods, as graph ML tasks. As a consequence, \relbench significantly expands the space of problems solvable using graph ML. Whilst graph ML is a key part of this benchmark, relational deep learning is a \emph{new problem}, requiring only need good GNNs, but also innovation on tabular learning to fuse multimodal input data with the GNN, temporal learning, and even graph construction. We believe that advancing the state-of-the-art on \relbench will involve progress in all of these directions.
+
+
+
+\xhdr{Relational Deep Learning}
+Several works have proposed to use graph neural networks for learning on relational data~\citep{schlichtkrull2018relational, cvitkovic2020supervisedrd, vsir2021deep, zahradnik2023deep}. They explored different graph neural network architectures on (heterogeneous) graphs, leveraging relational structure. Recently, \cite{fey2023relational} proposed a general end-to-end learnable framework for solving predictive tasks on relational databases, treating temporality as a core concept. 
+\relbench provides a comprehensive testbed to develop these ideas further. 

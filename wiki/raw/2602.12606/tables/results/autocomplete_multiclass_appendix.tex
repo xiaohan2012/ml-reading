@@ -1,0 +1,33 @@
+\begin{tabular}{lllrrrr}
+\toprule
+Dataset & Task & Split & Random & Majority & LightGBM & GNN \\
+\midrule
+\multirow[c]{17}{*}{\texttt{rel-salt}} & \multirow[c]{2}{*}{\texttt{item-incoterms}} & Val & $34.49$ & $66.46$ & $66.43_{\pm 0.01}$ & $\bm{80.23}_{\pm 0.48}$ \\
+ &  & Test & $30.33$ & $58.05$ & $58.05_{\pm 0.00}$ & $\bm{69.36}_{\pm 0.77}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{item-plant}} & Val & $33.19$ & $60.95$ & $60.97_{\pm 0.04}$ & $\bm{99.70}_{\pm 0.16}$ \\
+ &  & Test & $32.38$ & $59.69$ & $59.69_{\pm 0.00}$ & $\bm{99.46}_{\pm 0.12}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{item-shippoint}} & Val & $8.20$ & $2.34$ & $4.72_{\pm 0.02}$ & $\bm{98.54}_{\pm 0.13}$ \\
+ &  & Test & $6.53$ & $1.99$ & $5.67_{\pm 5.18}$ & $\bm{98.39}_{\pm 0.08}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-group}} & Val & $0.90$ & $0.86$ & $0.70_{\pm 0.12}$ & $\bm{18.43}_{\pm 0.22}$ \\
+ &  & Test & $0.85$ & $0.75$ & $0.94_{\pm 1.32}$ & $\bm{15.76}_{\pm 0.30}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-incoterms}} & Val & $31.83$ & $61.00$ & $60.53_{\pm 0.09}$ & $\bm{69.07}_{\pm 1.46}$ \\
+ &  & Test & $29.39$ & $56.63$ & $56.63_{\pm 0.00}$ & $\bm{62.23}_{\pm 0.53}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-office}} & Val & $50.01$ & $\bm{99.91}$ & $99.90_{\pm 0.00}$ & $99.91_{\pm 0.00}$ \\
+ &  & Test & $49.71$ & $\bm{99.88}$ & $59.93_{\pm 54.71}$ & $99.88_{\pm 0.00}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-payterms}} & Val & $0.32$ & $0.65$ & $1.85_{\pm 0.33}$ & $\bm{39.88}_{\pm 0.19}$ \\
+ &  & Test & $0.24$ & $0.47$ & $5.64_{\pm 5.14}$ & $\bm{37.47}_{\pm 0.43}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-shipcond}} & Val & $16.49$ & $27.61$ & $31.92_{\pm 0.04}$ & $\bm{59.21}_{\pm 1.87}$ \\
+ &  & Test & $15.64$ & $26.30$ & $4.91_{\pm 0.00}$ & $\bm{56.85}_{\pm 1.32}$ \\
+\cmidrule{1-7} \cmidrule{2-7}
+\multirow[c]{2}{*}{\texttt{rel-stack}} & \multirow[c]{2}{*}{\texttt{badges-class}} & Val & $11.59$ & $20.68$ & $1.93_{\pm 0.13}$ & $\bm{79.97}_{\pm 0.05}$ \\
+ &  & Test & $10.49$ & $18.34$ & $2.51_{\pm 0.00}$ & $\bm{82.83}_{\pm 0.18}$ \\
+% \cmidrule{1-7} \cmidrule{2-7}
+\bottomrule
+\end{tabular}

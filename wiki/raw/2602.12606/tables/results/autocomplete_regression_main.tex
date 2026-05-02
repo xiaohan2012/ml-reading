@@ -1,0 +1,31 @@
+\begin{tabular}{lllrrrrrrr}
+\toprule
+Dataset & Task & Split & Zero & Mean & Median & Ent. Mean & Ent. Med. & LightGBM & GNN \\
+\midrule
+\multirow[c]{2}{*}{\texttt{rel-amazon}} & \multirow[c]{2}{*}{\texttt{review-rating}} & Val & $4.416$ & $0.779$ & $\bm{0.584}$ & $4.416$ & $4.416$ & $0.584$ & $0.586$ \\
+ &  & Test & $4.453$ & $0.762$ & $\bm{0.547}$ & $2.907$ & $2.907$ & $0.547$ & $0.549$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{2}{*}{\texttt{rel-event}} & \multirow[c]{2}{*}{\texttt{users-birthyear}} & Val & $1987.058$ & $5.668$ & $5.885$ & $1987.058$ & $1987.058$ & $\bm{5.144}$ & $5.193$ \\
+ &  & Test & $1986.094$ & $5.588$ & $6.198$ & $1986.094$ & $1986.094$ & $5.752$ & $\bm{5.224}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+ \multirow[c]{4}{*}{\texttt{rel-f1}} & \multirow[c]{2}{*}{\texttt{qualifying-position}} & Val & $10.943$ & $5.266$ & $5.280$ & $10.943$ & $10.943$ & $\bm{4.411}$ & $5.190$ \\
+ &  & Test & $11.142$ & $5.358$ & $5.342$ & $11.142$ & $11.142$ & $7.048$ & $\bm{5.312}$ \\
+\cmidrule{2-10}
+ & \multirow[c]{2}{*}{\texttt{results-position}} & Val & $8.587$ & $4.251$ & $4.257$ & $8.587$ & $8.587$ & $3.167$ & $\bm{2.779}$ \\
+ &  & Test & $9.504$ & $4.822$ & $4.877$ & $9.504$ & $9.504$ & $8.377$ & $\bm{3.139}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{2}{*}{\texttt{rel-hm}} & \multirow[c]{2}{*}{\texttt{transactions-price}} & Val & $0.034$ & $0.015$ & $0.015$ & $0.034$ & $0.034$ & $0.015$ & $\bm{0.004}$ \\
+ &  & Test & $0.034$ & $0.015$ & $0.015$ & $0.034$ & $0.034$ & $0.015$ & $\bm{0.004}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{2}{*}{\texttt{rel-ratebeer}} & \multirow[c]{2}{*}{\texttt{beer\_ratings-total\_score}} & Val & $3.444$ & $0.530$ & $0.520$ & $3.444$ & $3.444$ & $0.520$ & $\bm{0.355}$ \\
+ &  & Test & $3.470$ & $0.457$ & $0.431$ & $3.470$ & $3.470$ & $0.447$ & $\bm{0.323}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{2}{*}{\texttt{rel-trial}} & \multirow[c]{2}{*}{\texttt{studies-enrollment}} & Val & $3782.463$ & $5893.531$ & $3754.731$ & $3782.463$ & $3782.463$ & $3734.843$ & $\bm{3709.484}$ \\
+ &  & Test & $17660.073$ & $19949.874$ & $17635.281$ & $17660.073$ & $17660.073$ & $17770.098$ & $\bm{17604.633}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multicolumn{2}{c}{\multirow{2}{*}{Average}} & Val
+& $828.135$ & $844.291$ & $538.753$ & $828.135$ & $828.135$ & $535.526$ & $531.942$ \\
+ &  & Test & $2810.681$ & $2852.411$ & $2521.813$ & $2810.461$ & $2810.461$ & $2541.755$ & $2517.026$ \\
+% \cmidrule{1-10} \cmidrule{2-10}
+\bottomrule
+\end{tabular}

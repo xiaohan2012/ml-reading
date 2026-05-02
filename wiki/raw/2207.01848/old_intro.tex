@@ -1,0 +1,65 @@
+Many real-world applications in medicine, finance, research, predictive maintenance or sensor data modelling rely on strong Machine Learning (ML) algorithms for tabular data. 
+%
+While neural networks excel on many ML tasks, Gradient-Boosted Decision Trees (GBDT) still dominate the landscape of supervised ML for tabular data~\citep{GBDT,nnsfortabular2}, largely due to their short training time and robustness.
+
+However, given that tree-based models are not differentiable, they cannot easily be composed and jointly trained with other blocks based on Deep Learning (DL).
+% Furthermore, DL algorithms have been highly optimized to use efficient parallel computation devices such as GPUs and TPUs, potentially leading to large speedups over GBDT methods.
+While many DL-based works claim superior performance for small and medium-sized datasets ($\approx$10\,000 samples), GBDT methods still outperform deep learning based approaches while also running significantly faster \citep{grinsztajn2022why}.
+
+%In practical applications, h
+Automated Machine Learning (AutoML) systems for tabular data have improved on GBDT approaches even 
+%by yielding predictions at the push of a button
+further~\citep{thornton-kdd13a,hutter-book19a,erickson-arxiv20a}. %  trading off human time with compute time in a specified time budget.% by automatically taking into account past performance on similar datasets, and by constructing ensembles from the models evaluated during the optimization.
+% To achieve this, AutoML systems automatically evaluate and combine a large set of different ML algorithms, thus requiring substantial resources and becoming increasingly complex. % and take a long time to yield results.
+State-of-the-art AutoML tools combine several classifiers (such as GBDTs and NNs), various preprocessing tools, advanced hyperparameter optimization methods~\citep{falkner-icml18a}, meta-learning~\citep{feurer-aaai15a,yang-kdd19a} and ensembling~\citep{escalante-jmlr09a,feurer-nips15a,olson-gecco16a,feurer-arxiv20v2,erickson-arxiv20a}. This, however, requires substantial resources, is not differentiable and becomes increasingly complex.
+% These stacked complexities can lead to system failures on the user side~\citep{erickson-arxiv20a} that can be hard to understand.
+%Thus, newer systems add even more complexity to catch these failures~\citep{feurer-arxiv20v2}.
+%This complicated setup is run on the machine of the user.
+AutoML systems are usually evaluated for several hours~\citep{gijsbers-automl2019,amlb}, and in our experiments, an AutoML training on a small dataset took at least a full minute, which makes real-time applications such as instant classification in a spreadsheet infeasible.
+
+We propose a radical change, not only to tabular classifiers but the entire AutoML pipeline, that slashes the required time for training and hyperparameter tuning to \textit{a single second} and simplifies the application to a neural network (NN) forward-pass, a stable, differentiable and highly portable standard procedure. % that could even be run on handheld devices.
+%that is highly portable and can be easily parallelized on compute architectures like GPUs.
+%We do this by meta-learning a NN to become an AutoML system, which unlike previous work is probabilistically founded.
+
+Our method builds on Prior-Data Fitted Networks (PFNs)~\citep{muller-iclr22a}, which learn the training and prediction algorithm itself.
+PFNs approximate Bayesian inference given any prior one can sample from and yield the posterior predictive distribution (PPD) directly. 
+% The PPD is a prediction distribution for unknown labels in our case, based on Bayesian reasoning.
+Thus, PFNs approximate the probability distributions of classification labels by implicitly weighting all explanations for the data that are entailed in the prior.
+%PFNs work for any prior that we are able to sample data from.
+% By defining a Bayesian prior, the models inductive biases can be set explicitly.
+While inductive biases in NNs and GBDTs depend on them being efficient to implement (e.g. through $L_2$ regularization, dropout \citep{srivastava14a} or limited tree-depth), in PFNs, one simply has to design a dataset generating algorithm encoding the desired prior. This fundamentally changes the way we can design learning algorithms.
+
+In the original PFN paper~\citep{muller-iclr22a}, PPD approximation with PFNs was, amongst other experiments, demonstrated on binary classification for very small, balanced tabular datasets with only up to $30$ training examples and very few features.
+We build on this work to create a state-of-the-art model for tabular multi-class classification tasks that we evaluate on real-world datasets with of up to $1\,000$ training samples, $100$ features and $10$ classes, comprising mixed feature types, missing data and unbalanced targets.
+
+We use a prior based on Bayesian Neural Networks (BNNs; ~\citealt{neal-bayes96a,gal-phdthesis16a}) and Structural Causal Models (SCMs;~\citealt{pearl_2009,causalinferencelearningbook}) to model complex feature dependencies and potential causal mechanisms underlying tabular data.
+Our prior also takes ideas from Occam\textquotesingle{s} razor: explanations based on simpler SCMs and BNNs have a higher likelihood in our prior.
+In our prior, we define the hyperparameters describing our priors hypotheses via probability distributions, e.g. a Normal distribution for the average number of nodes in data-generating SCMs.
+% We define our priors via probability distributions, e.g. a Normal distribution for the number of SCM nodes or a multinomial distribution for activation functions. To generate datasets for prior-fitting, we then sample from these distributions to obtain instantiations of concrete SCMs or BNNs (hypotheses) which we can use to generate data (see \ref{sec:prior_fitted_intro}).
+% The resulting PPD implicitly models uncertainty over these hyperparameters, weighting them by their likelihood given the data and their prior probability.
+The resulting PPD implicitly models uncertainty over these hyperparameters, weighting them by their likelihood given the data and their prior probability.
+By obtaining the PPD, \methodname{} approximates an infinitely large ensemble of hyperparameters in a single forward-pass and requires no cross-validation.
+
+Finally, we analyze the performance and behavior of the \methodname{} on different tasks and compare it to previous approaches for tabular classification on small datasets. We find that our method yields distinctly different predictions compared to existing approaches, likely due to the novelty and inductive biases introduced.
+% By assuming a causal structure and a notion of simplicity in our prior, the PFN performs Bayesian inference over a space of hypotheses that is modelled through a structural causal framework and weighted by simplicity.
+
+% Common regularization techniques to mitigate overfitting include data augmentation [1, 2], dropout [3, 4, 5], adversarial training [6], label smoothing [7], and layer-wise strategies [8, 9, 10] to name a few. However, these methods are agnostic of the causal relationships between variables limiting their potential to identify optimal predictors based on graphical topology, such as the causal parents of the target variable.
+
+% Finally, since there are many decisions to be made when building a prior like this, we broadly hyperparameterize our prior, learn a single NN to support this broad prior and accept hyperparameters of the prior during inference time. We introduce a gradient-based methodology to tune these hyperparameters post hoc on real (meta-validation) datasets. 
+% in a fully trained neural network.
+%and even allow gradient-based methods to tune these hyperparameters. 
+% This simplifies the development of PFN priors and reduces the number of models to be trained to one.
+\iffalse
+In this paper, we make the following contributions:
+\begin{itemize}
+    \item We present a state-of-the-art AutoML method for small, tabular datasets that yields more than $1000\times$ speedup over previous methods.
+    \item We demonstrate the applicability of PFNs to real-world tasks. The PFN approach makes designing learning algorithms with explicit inductive biases possible by defining a prior sampling scheme.
+    \item We introduce a prior over a large family of Structural Causal Models.
+    \item We show that combining distinct priors is viable for PFNs and improves real-world performance.
+    \item We show that the novelty and inductive biases of our approach lead to distinct predictions compared to baseline approaches, making it an ideal candidate for ensembling.
+    \item We analyze the performance and behavior of the \methodname{} on different tasks and compare it to previous approaches for tabular classification.
+\end{itemize}
+\fi
+
+% 30s per small dataset is usual in SOTA, we do 0.5s
+% half a minute to half a second 

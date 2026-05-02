@@ -1,0 +1,22 @@
+Link prediction deals with prediction of new facts (i.e. triples \textit{(subject, relation, object)}). Formally, the knowledge base is represented by a directed, labeled graph $G = (\mathcal{V},\mathcal{E},\mathcal{R})$. Rather than the full set of edges $\mathcal{E}$, we are given only an incomplete subset $\hat{\mathcal{E}}$. The task is to assign scores $f(s,r,o)$ to possible edges $(s,r,o)$ in order to determine how likely those edges are to belong to $\mathcal{E}$.
+
+In order to tackle this problem, we introduce a graph auto-encoder model, comprised of an entity encoder and a scoring function (decoder). The encoder maps each entity $v_i \in \mathcal{V}$ to a real-valued vector $e_i \in \mathbb{R}^d$. The decoder reconstructs edges of the graph relying on the vertex representations; in other words, it scores \textit{(subject, relation, object)}-triples through a function $s: \mathbb{R}^d \times \mathcal{R} \times \mathbb{R}^d \to \mathbb{R}$. Most existing approaches to link prediction (for example, tensor and neural factorization methods~\cite{socher2013reasoning,lin2015modeling,toutanova2016compositional,distmult-embedding_entities_and_relations,complex-complex_embeddings_for_simple_link_prediction}) can be interpreted under this framework. The crucial distinguishing characteristic of our work is the reliance on an encoder. Whereas most previous approaches use a single, real-valued vector $e_i$ for every $v_i \in \mathcal{V}$ optimized directly in training, %(i.e.~using the identity function as an encoder model) -- IT I do not think it is clear at that stage
+we compute representations through an R-GCN encoder with $e_i = h_i^{(L)}$, similar to the graph auto-encoder model introduced in \citet{kipf2016variational} for unlabeled undirected graphs.
+Our full link prediction model is schematically depicted in Figure~\ref{fig:model-c}.
+
+In our experiments, we use the DistMult factorization~\cite{distmult-embedding_entities_and_relations} as the scoring function, which is known to perform well on standard link prediction benchmarks when used on its own.
+In DistMult, every relation $r$ is associated with a diagonal matrix $R_r
+\in \mathbb{R}^{d \times d}$ and a triple $(s, r, o)$ is scored as
+\begin{equation}
+f(s, r, o) = e_s^T R_r e_o \, .
+\end{equation}
+
+As in  previous work on factorization~\cite{distmult-embedding_entities_and_relations,complex-complex_embeddings_for_simple_link_prediction}, we train the model with negative sampling. For each observed example we sample $\omega$ negative ones. We sample by randomly corrupting either the subject or the object of each positive example.
+We optimize for cross-entropy loss to push the model to score observable triples higher than the negative ones:
+\begin{equation}
+\begin{split}
+\mathcal{L} = - \frac{1}{ (1+\omega) |\mathcal{\hat{E}}|}\sum\limits_{(s,r,o,y) \in \mathcal{T}} y \log l\bigl(f(s,r,o)\bigr) + \\
+(1-y) \log\bigl(1-l\bigl(f(s,r,o)\bigr)\bigr) \, ,
+\end{split}
+\end{equation}
+where $\mathcal{T}$ is the total set of real and corrupted triples, $l$ is the logistic sigmoid function, and $y$ is an indicator set to $y=1$ for positive triples and $y=0$ for negative ones.

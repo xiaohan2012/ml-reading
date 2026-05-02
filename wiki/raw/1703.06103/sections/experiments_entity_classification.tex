@@ -1,0 +1,45 @@
+Here, we consider the task of classifying entities in a knowledge base. In order to infer, for example, the type of an entity (e.g. person or company), a successful model needs to reason about the relations with other entities that this entity is involved in.
+
+\paragraph{Datasets}
+We evaluate our model on four datasets\footnote{http://dws.informatik.uni-mannheim.de/en/research/a-collection-of-benchmark-datasets-for-ml} in Resource Description Framework (RDF) format \cite{ristoski2016collection}: AIFB, MUTAG, BGS, and AM. Relations in these datasets need not necessarily encode directed subject-object relations, but are also used to encode the presence, or absence, of a specific feature for a given entity. In each dataset, the targets to be classified are properties of a group of entities represented as nodes. The exact statistics of the datasets can be found in Table \ref{table:classification_datasets}. For a more detailed description of the datasets the reader is referred to \citet{ristoski2016collection}. We remove relations that were used to create entity labels: \textit{employs} and \textit{affiliation} for AIFB, \textit{isMutagenic} for MUTAG, \textit{hasLithogenesis} for BGS, and \textit{objectCategory} and \textit{material} for AM.
+
+\begin{table}[htp!]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+Dataset & AIFB & MUTAG & BGS & AM  \\ \midrule
+Entities    & 8,285 & 23,644 & 333,845 & 1,666,764 \\
+Relations   & 45 & 23 & 103 & 133 \\
+Edges   & 29,043 & 74,227 & 916,199& 5,988,321 \\
+Labeled  & 176 & 340 & 146 &  1,000 \\
+Classes  & 4 & 2 & 2 &  11 \\
+
+ \bottomrule
+\end{tabular}
+\caption{Number of entities, relations, edges and classes along with the number of labeled entities for each of the datasets. \textit{Labeled} denotes the subset of entities that have labels and that are to be classified.}
+\label{table:classification_datasets}
+\end{table}
+
+\paragraph{Baselines}
+As a baseline for our experiments, we compare against recent state-of-the-art classification results from RDF2Vec embeddings \cite{ristoski2016rdf2vec}, Weisfeiler-Lehman kernels (WL) \cite{shervashidze2011weisfeiler,de2015substructure}, and hand-designed feature extractors (Feat) \cite{paulheim2012unsupervised}. Feat assembles a feature vector from the in- and out-degree (per relation) of every labeled entity. RDF2Vec extracts walks on labeled graphs which are then processed using the Skipgram \cite{mikolov2013distributed} model to generate entity embeddings, used for subsequent classification. See \citet{ristoski2016rdf2vec} for an in-depth description and discussion of these baseline approaches. All entity classification experiments were run on CPU nodes with 64GB of memory.
+
+\paragraph{Results}
+All results in Table \ref{table:classification_results} are reported on the train/test benchmark splits from \citet{ristoski2016collection}. We further set aside 20\% of the training set as a validation set for hyperparameter tuning. For R-GCN, we report performance of a 2-layer model with 16 hidden units (10 for AM), basis function decomposition (Eq. \ref{eq:basis}), and trained with Adam \cite{kingma2014adam} for 50 epochs using a learning rate of $0.01$.  The normalization constant is chosen as $c_{i,r}=|\mathcal{N}_i^r|$. Further details on (baseline) models and hyperparameter choices are provided in the supplementary material.
+
+\begin{table}[htp!]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & AIFB & MUTAG & BGS & AM  \\ \midrule
+Feat & $55.55$ & $77.94$ & $72.41$ & $66.66$ \\
+WL		& $80.55$ & $\mathbf{80.88}$ & $86.20$ & $87.37$  \\
+RDF2Vec  & $88.88$ & $67.20$ & $\mathbf{87.24}$ & $88.33$ \\
+R-GCN			& $\mathbf{95.83}$ & $73.23$ & $83.10$  & $\mathbf{89.29}$ \\\bottomrule
+
+\end{tabular}
+\caption{Entity classification results in accuracy (averaged over 10 runs) for a feature-based baseline (see main text for details), WL \cite{shervashidze2011weisfeiler,de2015substructure}, RDF2Vec \cite{ristoski2016rdf2vec}, and R-GCN (this work). Test performance is reported on the train/test set splits provided by \citet{ristoski2016collection}. \label{table:classification_results}} %R-GCN: Version of our model that uses a featurized version of the graph ('type' relations are transformed into node feature vectors). -- AIFB and AM are knowledge graphs, MUTAG are molecular graphs in RDF format, BGS is a feature table in RDF format. Note for R-GCN BGS (clean): same hyperparameters as in BGS.
+\end{table}
+
+Our model achieves state-of-the-art results on AIFB and AM. To explain the gap in performance on MUTAG and BGS it is important to understand the nature of these datasets. MUTAG is a dataset of molecular graphs, which was later converted to RDF format, where relations either indicate atomic bonds or merely the presence of a certain feature. BGS is a dataset of rock types with hierarchical feature descriptions which was similarly converted to RDF format, where relations encode the presence of a certain feature or feature hierarchy. Labeled entities in MUTAG and BGS are only connected via high-degree hub nodes that encode a certain feature.
+
+We conjecture that the fixed choice of normalization constant for the aggregation of messages from neighboring nodes is partly to blame for this behavior, which can be particularly problematic for nodes of high degree. A potential way to overcome this limitation is to introduce an attention mechanism, i.e. to replace the normalization constant $1/c_{i,r}$ with data-dependent attention weights $a_{ij,r}$, where $\sum_{j,r}a_{ij,r}=1$. We expect this to be a promising avenue for future research.

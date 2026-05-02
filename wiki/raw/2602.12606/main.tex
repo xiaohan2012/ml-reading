@@ -1,0 +1,943 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+%% additional packages:
+ \usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode} 
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{xspace}
+\usepackage{bbm}
+\usepackage{cleveref}
+\crefformat{equation}{eq.~(#2#1#3)}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{adjustbox}
+
+
+\newcommand{\mr}[2]{\multirow{#1}{*}{#2}}
+\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+
+\newcommand{\amazon}{\texttt{rel-amazon}\xspace}
+\newcommand{\fone}{\texttt{rel-f1}\xspace}
+\newcommand{\event}{\texttt{rel-event}\xspace}
+\newcommand{\avito}{\texttt{rel-avito}\xspace}
+\newcommand{\stack}{\texttt{rel-stack}\xspace}
+\newcommand{\relbench}{\textsc{RelBench}\xspace}
+\newcommand{\syntherela}{\textsc{SyntheRela}\xspace}
+\newcommand{\salt}{\texttt{rel-salt}\xspace}
+\newcommand{\ratebeer}{\texttt{rel-ratebeer}\xspace}
+\newcommand{\mimic}{\texttt{rel-mimic}\xspace}
+\newcommand{\arxiv}{\texttt{rel-arxiv}\xspace}
+
+
+\newcommand{\valtimestamp}{\textsc{val\_timestamp}\xspace}
+\newcommand{\testtimestamp}{\textsc{test\_timestamp}\xspace}
+
+
+\newcommand{\itemPlant}{\texttt{item-plant}\xspace}
+\newcommand{\itemShippoint}{\texttt{item-shippoint}\xspace}
+\newcommand{\itemIncoterms}{\texttt{item-incoterms}\xspace}
+\newcommand{\SalesOffice}{\texttt{sales-office}\xspace}
+\newcommand{\SalesGroup}{\texttt{sales-group}\xspace}
+\newcommand{\SalesPayterms}{\texttt{sales-payterms}\xspace}
+\newcommand{\SalesShipcond}{\texttt{sales-shipcond}\xspace}
+\newcommand{\SalesIncoterms}{\texttt{sales-incoterms}\xspace}
+
+
+\newcommand{\resultsPosition}{\texttt{results-position}\xspace}
+\newcommand{\qualifyingPosition}{\texttt{qualifying-position}\xspace}
+\newcommand{\reviewRating}{\texttt{review-rating}\xspace}
+
+\newcommand{\searchstreamClick}{\texttt{searchstream-click}\xspace}
+\newcommand{\searchinfoLoggedon}{\texttt{searchinfo-isuserloggedon}\xspace}
+\newcommand{\eventInterested}{\texttt{event\_interest-interested}\xspace}
+
+\newcommand{\badgesClass}{\texttt{badges-class}\xspace}
+
+
+\title{\relbench v2: A Large-Scale Benchmark and Repository for Relational Data}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{Justin Gu$^1$,
+Rishabh Ranjan$^1$,
+Charilaos Kanatsoulis$^1$,
+Haiming Tang$^2$,
+Martin Jurkovic$^3$,\\
+\textbf{Valter Hudovernik$^4$,
+Mark Znidar$^5$,
+Pranshu Chaturvedi$^1$,
+Parth Shroff$^1$,
+Fengyu Li$^1$,}\\
+\textbf{Jure Leskovec$^1$}\\
+% \thanks{ Use footnote for providing further information about author (webpage, alternative address)---\emph{not} for acknowledging funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+$^1$Stanford University,
+$^2$National University of Singapore,
+$^3$University of Ljubljana,
+$^4$Kumo AI,\\
+$^5$University of Oxford\\
+\texttt{\{justingu,ranjanr,jure\}@stanford.edu} \\
+Website: \textcolor{cyan}{\url{https://relbench.stanford.edu}}
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Relational deep learning (RDL) has emerged as a powerful paradigm for learning directly on relational databases by modeling entities and their relationships across multiple interconnected tables. As this paradigm evolves toward larger models and relational foundation models, scalable and realistic benchmarks are essential for enabling systematic evaluation and progress. In this paper, we introduce \relbench v2, a major expansion of the \relbench benchmark for RDL. \relbench v2 adds four large-scale relational datasets spanning scholarly publications, enterprise resource planning, consumer platforms, and clinical records, increasing the benchmark to 11 datasets comprising over 22 million rows across 29 tables. We further introduce autocomplete tasks, a new class of predictive objectives that require models to infer missing attribute values directly within relational tables while respecting temporal constraints, expanding beyond traditional forecasting tasks constructed via SQL queries. In addition, \relbench v2 expands beyond its native datasets by integrating external benchmarks and evaluation frameworks: we translate event streams from the Temporal Graph Benchmark into relational schemas for unified relational–temporal evaluation, interface with ReDeLEx to provide uniform access to 70+ real-world databases suitable for pretraining, and incorporate 4DBInfer datasets and tasks to broaden multi-table evaluation coverage. Experimental results demonstrate that RDL models consistently outperform single-table baselines across autocomplete, forecasting, and recommendation tasks, highlighting the importance of modeling relational structure explicitly. 
+
+% In addition, \relbench v2 integrates temporal interaction datasets from the Temporal Graph Benchmark by translating event streams into normalized relational schemas, enabling unified evaluation of relational and temporal learning methods within a common framework. Experimental results demonstrate that RDL models consistently outperform single-table baselines across autocomplete, forecasting, and recommendation tasks, highlighting the importance of modeling relational structure explicitly. 
+% \relbench v2 provides a comprehensive benchmark for advancing RDL and enabling the development and evaluation of relational foundation models.
+\end{abstract}
+
+
+\section{Introduction} \label{sec:intro}
+Relational databases are the primary storage abstraction for structured data across enterprise, scientific, and healthcare systems. They organize information across multiple tables interconnected via primary–foreign key relationships, capturing rich structural and temporal dependencies between entities. Forecasting tasks such as predicting customer churn, estimating sales, recommending products, and anticipating system or patient outcomes are central to real-world decision making and have driven significant interest in applying machine learning to relational data. 
+
+
+% However, traditional machine learning pipelines typically rely on manually flattening relational schemas into single tables through feature engineering and aggregation. This process is labor-intensive, requires substantial domain expertise, and often fails to fully exploit the relational structure and multi-table dependencies inherent in the data.
+
+Relational deep learning (RDL) \citep{relbench, rdl} has emerged as a powerful paradigm for learning directly on relational databases, reducing the human effort and engineering complexity of traditional machine learning pipelines that rely on manually flattening relational schemas into single tables through feature engineering and aggregation. Instead, RDL treats relational databases as heterogeneous graphs and applies graph neural networks \citep{relbench,chen2025relgnn} and other relational representation learning architectures \citep{dwivedi2025relational,dwivedi2025relational2} to model entities and their relationships directly. RDL models have demonstrated state-of-the-art performance in forecasting tasks over relational data.
+
+% Relational deep learning (RDL) \cite{relbench}, \cite{rdl} has emerged as a promising paradigm for learning directly on relational databases, shifting away from traditional machine learning pipelines typically rely on manually flattening relational schemas into single tables through feature engineering and aggregation. RDL treats relational schemas as heterogeneous graphs and applying graph neural networks or other relational representation learning architectures. Recent work has demonstrated that relational deep learning models can outperform traditional feature-engineered tabular models across a wide range of predictive tasks while significantly reducing human effort and engineering complexity.
+
+% At the same time, the machine learning landscape has shifted toward foundation models, which are pretrained on large and diverse datasets to learn transferable representations. This paradigm has transformed natural language processing and computer vision, and has recently extended to tabular data, where pretrained models have demonstrated strong performance on forecasting and predictive tasks across datasets \cite{tabpfn,tabpfnv2,tabicl}. These results highlight the potential of large-scale pretraining but only focus on single table data.
+
+% More recently, early efforts have begun to develop foundation models for relational databases~\citep{kumorfm, griffin, ranjan2025relational}, leveraging relational deep learning architectures to learn representations across multiple tables and their interdependencies. Relational databases represent a natural next frontier for foundation models due to their ubiquity, structural complexity, and broad coverage of real-world applications. However, progress in this direction critically depends on the availability of benchmarks and datasets with sufficient scale, diversity, and well-defined training objectives to enable the learning and evaluation of transferable relational representations.
+
+At the same time, the machine learning landscape has shifted toward foundation models, which are pretrained on large and diverse datasets to learn transferable representations. This paradigm has transformed natural language processing and computer vision, and has recently extended to tabular data, where pretrained models achieve strong performance across predictive tasks \citep{tabpfn,tabpfnv2,tabicl}. However, these approaches focus on single-table data and do not capture the multi-table structure of relational databases. To address this limitation, recent efforts~\citep{kumorfm, griffin, ranjan2025relational} develop foundation models for relational databases, leveraging RDL architectures to model entities and their interdependencies across tables. Given their ubiquity and structural richness, relational databases represent a natural next frontier for foundation models, motivating benchmarks that capture realistic relational structure and predictive tasks.
+
+To support machine learning research for forecasting on relational databases, \cite{relbench} introduced  \relbench, the first benchmark for RDL. \relbench v1 provided a collection of real-world relational databases along with forecasting tasks that require predicting future outcomes such as entity churn, sales, or recommendations. These tasks enabled standardized evaluation of relational learning models and demonstrated the effectiveness of RDL compared to traditional approaches.
+
+In this work, we introduce  \relbench v2, a significant expansion of the benchmark that introduces new datasets, new task types, and a new paradigm for relational prediction. \relbench v2 adds four new large-scale relational datasets spanning diverse domains, increasing the total number of datasets to eleven. These include \arxiv, a scholarly publication database capturing papers, authors, categories, and citation relationships; \salt, an enterprise resource planning dataset modeling sales orders and business workflows; \ratebeer, a consumer platform dataset containing user interactions, product information, and reviews; and \mimic, a clinical dataset derived from electronic health records. Together, these datasets introduce new relational structures, domains, and predictive challenges, and collectively contain over 22 million rows across 29 tables. 
+
+In addition to expanding the datasets, \relbench v2 introduces new predictive tasks and extends the benchmark with multiple strategic integrations of diverse external benchmarks and diagnostic frameworks. Most notably, \relbench v2 introduces autocomplete tasks, where the objective is to predict values of existing columns in relational tables at a given timestamp, requiring models to infer missing values from relational and temporal context while preventing information leakage. In addition, as subsequent efforts following \relbench v1 have expanded the scale and diversity of relational benchmarks, we integrate several of these into \relbench v2. These include temporal interaction datasets from the Temporal Graph Benchmark (TGB) \citep{rossi2020temporal}, widespread RDL evaluation on 70+ relational databases via ReDeLEx \citep{peleska2025redelex}, and the 4D design space for graph-centric relational modeling from 4DBInfer \citep{wang20244dbinfer}. Additional discussion on RDL and relational foundation models can be found in Appendix \ref{sec:related-work}.
+
+
+% In addition to expanding the datasets, \relbench v2 introduces new predictive tasks and extends the benchmark to support temporal interaction datasets from the Temporal Graph Benchmark (TGB) \citep{rossi2020temporal}. Most notably, \relbench v2 introduces autocomplete tasks, where the objective is to predict values of existing columns in relational tables at a given timestamp, requiring models to infer missing values from relational and temporal context while preventing information leakage. \relbench v2 also incorporates TGB datasets by translating temporal interaction streams into normalized relational schemas consisting of entity and event tables with primary–foreign key relationships and timestamp cutoffs. This enables evaluation of RDL models on large-scale temporal interaction data within the same database abstraction and temporal evaluation framework used throughout \relbench. 
+
+% \textbf{Related work (Multi-table learning benchmarks):} \relbench~\citep{relbench} introduced the first standardized benchmark for forecasting over relational databases, enabling end-to-end evaluation of RDL methods on real-world multi-table datasets. Subsequent efforts have expanded the scale and diversity of relational benchmarks. ReDeLEx~\citep{peleska2025redelex} provides a large-scale experimental framework evaluating GNN-based models on more than 70 relational databases, significantly increasing dataset coverage. It builds on the CTU Relational Learning Repository~\citep{motl2025ctupraguerelationallearning} and integrates these SQL datasets into the \relbench ecosystem. Similarly, 4DBInfer~\citep{wang20244dbinfer} introduces a benchmarking toolbox spanning multiple datasets, tasks, graph construction strategies, and predictive models. By systematically comparing graph-based and tabular approaches on shared relational datasets, it provides insights into when exploiting relational structure improves performance. Several datasets from these efforts have been incorporated into \relbench, further strengthening its role as a unified evaluation framework. Additional discussion on RDL and relational foundation models can be found in Appendix \ref{sec:related-work}.
+
+% In addition, 
+% \relbench v2 expands the benchmark with four new large-scale relational datasets spanning scientific publications, enterprise resource planning systems, consumer platforms, and healthcare records, bringing the total to eleven datasets. The benchmark now supports forecasting, autocomplete, and recommendation tasks within a unified framework, enabling evaluation of relational models across a diverse range of prediction settings.
+
+
+
+
+% \section{Related Work} \label{sec:related-work}
+
+% \textbf{Relational deep learning (RDL).} RDL studies how to train neural models directly on relational databases by leveraging their multi-table structure. RDL represents a relational database as a heterogeneous graph, where rows correspond to entities and foreign-key relationships define edges between them \citep{rdl}. Early works applied graph neural networks to such relational graphs and demonstrated substantial improvements over feature-engineered baselines on forecasting, recommendation, and prediction tasks \citep{relbench, chen2025relgnn}. More recent approaches have explored transformer-based architectures to better capture long-range and higher-order dependencies across tables \citep{dbformer, dwivedi2025relational}.
+
+% \textbf{Multi-table learning benchmarks.} \relbench~\citep{relbench} introduced the first standardized benchmark for forecasting over relational databases, enabling end-to-end evaluation of relational deep learning methods on real-world multi-table datasets. Subsequent efforts have expanded the scale and diversity of relational benchmarks. ReDeLEx~\citep{peleska2025redelex} provides a large-scale experimental framework evaluating GNN-based models on more than 70 relational databases, significantly increasing dataset coverage. It builds on the CTU Relational Learning Repository~\citep{motl2025ctupraguerelationallearning} and integrates these SQL datasets into the \relbench ecosystem. Similarly, 4DBInfer~\citep{wang20244dbinfer} introduces a benchmarking toolbox spanning multiple datasets, tasks, graph construction strategies, and predictive models. By systematically comparing graph-based and tabular approaches on shared relational datasets, it provides insights into when exploiting relational structure improves performance. Several datasets from these efforts have been incorporated into \relbench, further strengthening its role as a unified evaluation framework.
+
+% \textbf{Foundation models for tabular and relational data.} Recent tabular foundation models demonstrate strong performance, including in-context learning~\citep{tabpfn, tabicl} and efficient fine-tuning~\citep{carte}. These models leverage supervised~\citep{tabpfn, tabpfnv2} or self-supervised~\citep{portal, carte} pretraining on real and synthetic tabular datasets. Extending such models to relational databases is challenging due to the presence of multiple tables connected via foreign-key relationships. To address this, relational foundation models have recently been proposed. For example, \citet{kumorfm} introduce a graph-transformer-based architecture capable of in-context learning and fine-tuning. Similarly, \citet{griffin} pretrain a model on both tabular and relational datasets, combining table-level encoders with graph neural networks for cross-table reasoning. More recent approaches operate directly at the cell level and use attention mechanisms to explicitly represent foreign-key relationships, enabling unified reasoning across the entire relational database without requiring intermediate aggregation \citep{ranjan2025relational}.
+
+
+
+\section{Overview and Design} \label{sec:overview-design}
+
+\relbench v1 \citep{relbench} laid the framework for creating a benchmark for deep learning
+on relational databases. The benchmark consists of two key components: a collection of diverse real-world relational databases, and each database's corresponding set of realistic predictive tasks. 
+
+\begin{itemize}[leftmargin=0.6cm,itemsep=3pt, parsep=0pt]
+    \item \textbf{Relational databases}, consisting of a set of tables connected via primary–foreign key
+    relationships. Tables store diverse information about entities, and some include time columns
+    indicating when rows are created (e.g., transaction date). Each database is associated with fixed
+    \valtimestamp and \testtimestamp cutoffs: models are trained on data up to \valtimestamp, validated
+    on rows between \valtimestamp and \testtimestamp, and tested on rows after \testtimestamp. Data
+    beyond the test cutoff is hidden during inference to prevent test-time leakage \citep{kapoor2023leakage},
+    using the temporal neighbor sampling strategy of \citet{rdl}.
+
+    \item \textbf{Predictive tasks} are defined per database via a training table \citep{rdl}. Each training
+    table specifies an entity ID, a seed time, and target labels. The seed time determines when the
+    prediction is made and filters out future information. Importantly, the \valtimestamp and
+    \testtimestamp cutoffs are shared across all tasks within a dataset, enabling multi-task learning
+    and pre-training across predictive tasks defined on the same relational database.
+\end{itemize}
+
+\textbf{Autocomplete tasks}: \relbench v2 introduces autocomplete tasks, a new paradigm of predictive tasks. These tasks allow for making predictions on the existing columns within tables in the dataset, as opposed to the previous \textbf{forecasting tasks} that predict on target labels constructed via SQL queries. However, like forecasting tasks, autocomplete tasks are still temporal in nature. Autocomplete tasks can be thought of as adding a new row to the database, filling some columns, and then trying to predict the remaining columns without access to future data.
+
+Autocomplete tasks expand the utility of the benchmark and widen the scope of real-world RDL applications; in order to successfully predict on autocomplete tasks, models need to deeply understand the relational context of the data. They have many real-world applications. In fact, these tasks were inspired by the SALT \citep{sap-salt} sales order autocomplete task (see Figure \ref{fig:autocomplete-example}), where the SAP S/4HANA Sales Order user interface recommends a payment category based on answers to other data fields and contextual knowledge from the relational schema.
+
+A key consideration for autocomplete tasks involves preventing information leakage, as some columns in a table may be highly correlated. Therefore, designing autocomplete tasks requires dropping the columns that correlate with the specified target column. For instance, in the \texttt{review-rating} task for the \amazon dataset, we must drop the 'review\_text' column, which otherwise would provide intertwined signals with the review ratings. This prevents such interdependent columns from guiding predictions on the target column, hence preserving the authenticity of each predictive task and maintaining its real-world applicability.
+
+\textbf{RDL implementation}: \relbench v2 utilizes the same RDL framework defined by \citet{relbench}. To reiterate, we first encode raw row-level data into initial node embeddings via PyTorch Frame \citep{hu2024pytorch}, specifically with the ResNet tabular model \citep{gorishniy2021revisiting}. We perform temporal-aware subgraph sampling \citep{rdl} around each entity node at a given seed time, where the embeddings are passed into a heterogeneous GraphSAGE model \citep{hamilton2017inductive, fey2019fast} with sum-based neighbor aggregation to iteratively update node embeddings. Finally, task-specific prediction heads turn output embeddings into predictions.
+
+The rest of this paper is organized as follows. Section \ref{sec:datasets} describes the new \relbench relational databases. Sections \ref{sec:autocomplete-tasks} and \ref{sec:forecasting-tasks} introduce the new autocomplete and forecasting predictive tasks for each \relbench dataset, including results from benchmarking our RDL implementation against baselines. Finally, Section \ref{sec0:tgb_relbench} describes the expansion of the \relbench ecosystem through the integration of external datasets and multi-dimensional RDL benchmarking tools.
+
+\section{\relbench Datasets} \label{sec:datasets}
+
+In \relbench v2, we introduce four new datasets, bringing the total number of datasets in the benchmark to eleven. These new datasets expand \relbench into new domains such as scholarly citations and enterprise operations, widening the breadth of data the benchmark covers and strengthening its position as a core benchmark for foundation models in RDL. Each dataset's predictive autocomplete and forecasting tasks are explained in more detail in Sections \ref{sec:autocomplete-tasks} and \ref{sec:forecasting-tasks}, respectively. Detailed statistics for the new datasets can be found in Table \ref{tab:stats_datasets}.
+
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Statistics of  new \relbench datasets.} Datasets vary significantly in the number of tables, total number of rows, and number of columns. In this table, we only count rows available for test inference, i.e., rows up to the test time cutoff.
+  }
+  \renewcommand{\arraystretch}{1.1}
+  \label{tab:stats_datasets}
+  \scriptsize
+  \vspace{-5pt}
+  \resizebox{\textwidth}{!}{
+    \input{tables/stats_datasets}
+  }
+  \vspace{-10pt}
+\end{table}
+
+
+\subsection{\arxiv}
+
+The arXiv-physics dataset \citep{arxiv_physics_dataset} is a large-scale relational benchmark of over 222,000 research papers published between 2018 and 2023, designed to expand \relbench into the domain of scholarly network analysis. It captures the complex evolution of scientific research through 1.5 million directed citation links, paper-author relationships mapped via unique ORCID identifiers, and a hierarchical taxonomy of 53 physics categories. By modeling these dense many-to-many relations between 143,000 authors and their respective research areas, the dataset provides a rich, high-fidelity structure for evaluating relational deep learning (RDL) models within the academic citation ecosystem.
+
+% The arXiv-physics is a large-scale relational dataset of physics research papers published on arXiv between 2018 and 2023, designed for RDL and scholarly network analysis. It contains over 222,000 papers, 143,000 authors, 53 hierarchical physics categories, and more than 1.5 million directed citation links, organized in a normalized relational schema capturing papers, authorship, categories, and citations.
+
+% The \arxiv dataset expands \relbench into the domain of academic research citations, whose many-to-many relations between papers and authors, categories, and other papers provide a rich relational structure. It captures the complex evolution of scientific research through modeling the network of citations, mapping paper-author relationships with unique ORCID identifiers, and precisely classifying hierarchical physics categories via a taxonomy of research areas.
+
+
+\subsection{\salt}
+
+The Sales Autocompletion Linked Business Tables (SALT) \citep{sap-salt} database, released by SAP AI Research, provides an authentic relational dataset of end-to-end business transactions captured from an enterprise resource planning (ERP) system. Centered on sales document headers and line items linked to customer and address master data, SALT models internal enterprise workflows including sales offices, shipping points, and payment terms. Each record is timestamped by creation time to facilitate temporal modeling, with predictive tasks focused on multiclass classification of operational variables in real-world supply chain and order fulfillment settings. By contributing minimally processed industry data, SALT offers a unique business perspective to the \relbench ecosystem and broader relational database research.
+
+% The Sales Autocompletion Linked Business Tables (SALT) \citep{sap-salt} database is an enterprise sales order relational dataset released by SAP AI Research. It models end-to-end business transactions centered on sales document headers and line items, and linked to customer and address master data. The dataset captures structured information such as sales offices and groups, plants and shipping points, payment terms, shipping conditions, and Incoterms classifications. Each sales document and item is timestamped by creation time, enabling temporal modeling of business processes. SALT is designed to support multi-table relational learning tasks, particularly categorical prediction problems in real-world supply chain and order fulfillment settings.
+
+% The SALT dataset uses real-world industry data collected by an enterprise resource planning (ERP) system that records sales orders, which has been minimally processed to protect privacy. This contributes uniquely authentic operational data from a business perspective to both \relbench and also the broader academic research into relational databases. The SALT dataset models internal enterprise sales workflows, focusing on how sales documents are created and processed inside a company. Its predictive tasks center around multiclass classification of enterprise-level item and sales variables.
+
+\subsection{\ratebeer}
+
+The RateBeer dataset provides over two decades of user interactions across distinct tables for beers, places, users, and brewers. Linked through well-defined foreign keys, these attribute-rich tables contain over 30 columns of multi-modal features—including text, categorical, and temporal data—while interaction tables offer granular feedback through multi-aspect sub-scores and textual reviews. \ratebeer contributes a dataset with strong potential for capturing user preferences in multiple ways; by mapping users to beers, the dataset provides powerful signals for modeling preferences via both explicit rating scores and implicit "Favorites" lists.
+
+% The RateBeer dataset captures over two decades of user interaction with beer-related entities, and it is uniquely structured to support relational and temporal learning. It features high normalization, with separate tables for entities like beers, places, users, and brewers, linked through well-defined foreign keys. Additionally, many entity tables are attribute-rich, with Places, Beers, and Brewers each containing over 30 columns that capture text, categorical, numerical, and temporal features. Finally, interaction tables are also highly detailed, offering multi-aspect feedback (e.g., sub-scores for flavor, aroma, ambiance) and textual reviews.
+
+% In particular, linking users to beers and places allows the RateBeer dataset to have strong potential for capturing user preferences. Specifically, it provides two forms of signals of users' beer preferences through explicit rating scores as well as an implicit "Favorites" list.
+
+\subsection{\mimic}
+
+The Medical Information Mart for Intensive Care IV (MIMIC-IV) \citep{johnson2024mimic} is a large, deidentified electronic health record (EHR) dataset containing clinical data from patients at the Beth Israel Deaconess Medical Center. Designed to support clinical research and machine learning, the \relbench implementation allows for deep customization, including parameters to limit patient or table counts, drop specific columns, and filter by features like age. While the standard \relbench download utilizes a subset of 20,000 patients, the dataset also supports integration with Google BigQuery for accessing the full MIMIC-IV v3.1 data. Due to the sensitive nature of real-world medical data, users must obtain proper credentials through \href{https://physionet.org/content/mimiciv/3.1/}{PhysioNet} to access the dataset.
+
+% The Medical Information Mart for Intensive Care IV (MIMIC-IV) \citep{johnson2024mimic} is a large, deidentified electronic health record (EHR) dataset comprising clinical data for patients admitted to the emergency department and intensive care units at the Beth Israel Deaconess Medical Center in Boston, Massachusetts. It includes a comprehensive collection of information such as patient demographics, vital signs, laboratory test results, diagnoses, procedures, medication administrations, provider orders, and other clinical events collected during routine hospital care. The database spans many years of care and is designed to support a wide range of clinical research, epidemiology, and machine learning applications that require comprehensive, real-world medical data while protecting patient privacy.
+
+% \mimic offers the ability for \relbench users to deeply customize the dataset for their individual needs. While the pre-prepared 
+% \relbench MIMIC-IV download uses only a subset of 20,000 patients instead of the full data, the dataset itself allows for specifying parameters to set limits on the number of patients or the number of tables, detail which columns to drop per table, and filter for patient features such as age, among other customizations. Additionally, the dataset offers integration with Google BigQuery, utilizing the MIMIC-IV v3.1 data available on BigQuery.
+
+% Because the nature of this dataset is real-world medical data, usage of this dataset requires receiving the proper credentials through \href{https://physionet.org/content/mimiciv/3.1/}{PhysioNet}. 
+
+
+
+\section{Autocomplete tasks} \label{sec:autocomplete-tasks}
+
+
+\relbench v2 introduces 23 autocomplete tasks for both existing and new datasets.  Autocomplete tasks are grouped into two task types: autocomplete classification (Section \ref{sec:autocomplete-classification}) and autocomplete regression (Section \ref{sec:autocomplete-regression}). Tasks are named based on the table and column used as the target labels for the predictions. A full list of autocomplete tasks is given in Table \ref{tab:tasks_autocomplete}, with high-level descriptions given in Appendix \ref{sec:task_info}.
+%(and our
+%\href{https://relbench.stanford.edu/}{website}).
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Full list of new autocomplete tasks.} Autocomplete tasks aim to make predictions on existing columns in the dataset.}
+  \label{tab:tasks_autocomplete}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \vspace{-5pt}
+  \resizebox{\textwidth}{!}{
+    \input{tables/tasks_autocomplete}
+  }
+  \vspace{-10pt}
+\end{table}
+
+\subsection{Autocomplete classification} \label{sec:autocomplete-classification}
+
+Autocomplete classification tasks aim to predict labels for existing categorical columns in a dataset. Because categorical data often comes in both binary and multiclass situations, autocomplete tasks support both binary classification and multiclass classification. For binary classification, we use the ROC-AUC \citep{hanley1983method} metric for evaluation, where higher scores are better. For multiclass classification, we use accuracy as the evaluation metric, where higher is also better. As a baseline to compare our heterogeneous GraphSAGE model against, we utilize a LightGBM classifier baseline over the raw entity table features.
+
+\textbf{Experimental results}. Classification results for the new autocomplete tasks are given in Table \ref{tab:autocomplete_classification_main} for binary classification and Table \ref{tab:autocomplete_multiclass_main} for multiclass classification. In both types of classification, RDL strongly outperforms the LightGBM baseline in all cases. On some tasks, such as \texttt{item-shippoint} from \salt or \texttt{badges-class} from \stack, RDL's high accuracy indicates that relational context gives highly informative signal to predict missing attributes.
+
+For other tasks such as \texttt{sales-office} from \salt, comparison with the majority-class baseline suggests a strong class imbalance in the target labels, with the majority baseline already achieving very high accuracy. Despite this, the GNN matches or slightly improves upon the majority baseline while maintaining strong performance on other tasks, whereas LightGBM shows unstable behavior and substantially worse test performance, suggesting limited generalization. Overall, these results highlight the ability of RDL to exploit relational structure for autocomplete tasks, even in the presence of class imbalance or sparse feature information.
+
+
+%% AUTOCOMPLETE CLASSIFICATION RESULTS MAIN %%
+\begin{table}[t]
+  \centering
+  \caption{{\bf Autocomplete binary classification results on \relbench.} Binary classification uses the AUROC metric (higher is better). Best values are in bold. Standard baselines of random choice and majority class both correspond to AUROC values of approximately $50.00$, so we exclude them below. See Table \ref{tab:autocomplete_classification_appendix} for standard deviations.}
+  \label{tab:autocomplete_classification_main}
+  \renewcommand{\arraystretch}{1.1}
+    % \resizebox{\textwidth}{!}{
+    \vspace{-5pt}
+    \begin{adjustbox}{max width=0.6\textwidth, center}
+    \input{tables/results/autocomplete_classification_main}
+    \end{adjustbox}
+  % }
+  \vspace{-10pt}
+\end{table}
+
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Autocomplete multiclass classification results on \relbench.} Multiclass classification uses the accuracy metric (higher is better). Best values are in bold. See Table \ref{tab:autocomplete_multiclass_appendix} for std. devs.}
+  \label{tab:autocomplete_multiclass_main}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \vspace{-5pt}
+    \begin{adjustbox}{max width=0.65\textwidth, center}
+    \input{tables/results/autocomplete_multiclass_main}
+    \end{adjustbox}
+  % \vspace{-10pt}
+\end{table}
+
+\subsection{Autocomplete regression} \label{sec:autocomplete-regression}
+
+Autocomplete regression tasks involve predicting numerical labels of an entity at a given seed time. For our evaluation metric, we use $R^2$, where higher values are better. We compare our RDL approach against four baselines. Global zero predicts zero for all entities. Global mean/median calculates the global mean/median label value for the target column in the training data and predicts that mean/median for every entity. Entity mean/median calculates the mean/median value with respect to each entity, and predicts that mean/median for the entity. LightGBM joins the entity table with the task table to get raw features from both, then learns a LightGBM \citep{ke2017lightgbm} regressor over those raw features to predict numerical targets.
+
+\textbf{Experimental results}. Autocomplete regression results are reported in Table \ref{tab:autocomplete_regression_main}. Additionally, MAE metrics for autocomplete regression tasks are reported in Table \ref{tab:autocomplete_regression_appendix} in Appendix \ref{sec:appendix_task_results}. Across most tasks, RDL achieves higher $R^2$ values, outperforming both feature-based and aggregation baselines, indicating that capturing relational context improves explanatory power.
+
+
+%% AUTOCOMPLETE REGRESSION RESULTS MAIN %%
+\begin{table}[t]
+  \centering
+  \caption{{\bf Autocomplete regression results on \relbench.} Regression uses the $R^2$ metric (higher is better). Best values are in bold. See Table \ref{tab:autocomplete_regression_r2_appendix} for standard deviations and Table \ref{tab:autocomplete_regression_appendix} for MAE results.}
+  \label{tab:autocomplete_regression_main}
+  \renewcommand{\arraystretch}{1.1}
+  \vspace{-5pt}
+  \scriptsize
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/autocomplete_regression_r2_main}
+    }
+  \vspace{-10pt}
+\end{table}
+
+
+
+
+\section{New forecasting tasks} \label{sec:forecasting-tasks}
+
+Forecasting tasks were the original predictive tasks defined in \relbench v1, and version 2 introduces 13 new ones. Forecasting tasks are split into three types: entity classification, entity regression, and entity recommendation (link prediction). These tasks use SQL queries to construct new task target columns. Forecasting tasks also include recommendation tasks, which aim to predict the next temporal links between two sets of entities for a given link type, such as whether users will purchase a certain product.
+
+We define forecasting tasks for the new datasets \arxiv, \ratebeer, and \mimic, and we add a new recommendation task for \fone. New forecasting tasks are shown in Table \ref{tab:tasks_forecasting}.
+
+\begin{table}[t]
+  \centering
+  \caption{\textbf{Full list of new forecasting tasks}. Forecasting tasks make predictions on new target columns created using SQL queries.}
+  \label{tab:tasks_forecasting}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \vspace{-5pt}
+  \resizebox{\textwidth}{!}{
+    \input{tables/tasks_forecasting}
+  }
+  \vspace{-10pt}
+\end{table}
+
+
+
+
+
+
+% \begin{table}[t]
+%   \centering
+%   \caption{{Full list of new autocompletion tasks for each \relbench dataset (introduced in Table~\ref{tab:datasets_stats} and ~\citep{relbench}).}  }
+%   \label{tab:task_stats}
+%   \renewcommand{\arraystretch}{1.1}
+%   \setlength{\tabcolsep}{4pt}
+%   \resizebox{\linewidth}{!}{
+%   % \tiny
+%   \begin{tabular}{llccclll}
+%     \toprule
+%       \mr{2}{\textbf{Dataset}} & \mr{2}{\textbf{Task name}} & \mc{3}{c}{\textbf{\#Rows of training table}} & \#Unique & \%train/test & \#Dst \\
+%       & & Train & Validation & Test & Entities & Entity Overlap  & Entities \\
+%     \midrule
+%       \mr{3}{\salt}
+%       & \itemIncoterms & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0 & --- \\
+%    \bottomrule
+%   \end{tabular}%
+%   }
+% \end{table}
+
+
+
+\subsection{Entity Classification}
+
+%% ENTITY CLASSIFICATION RESULTS MAIN %%
+In \relbench v1, all entity-level classification tasks were binary classification. In \relbench v2, we broaden to the multiclass case with the first entity multiclass classification task, \arxiv's \texttt{author-category} task. For entity-level forecasting tasks, both binary and multiclass classification are evaluated with the same metrics as their autocomplete counterparts, with entity binary classification using ROC-AUC \citep{hanley1983method} and multiclass classification using accuracy (for both, higher is better). We again compare to a LightGBM classifier baseline over the raw entity table features, but here only information from the single entity table is used.
+
+\textbf{Experimental results}. Entity classification results for the new forecasting tasks are given in Table \ref{tab:entity_classification_main} for binary classification and Table \ref{tab:entity_multiclass_main} for multiclass classification, with RDL outperforming the LightGBM baseline in all cases. Notably, RDL vastly outperforms LightGBM on the multiclass \texttt{author-category} task, where predicting an author’s research area benefits from aggregating relational signals from coauthorship, citation patterns, and publication context. This suggests that as classification tasks become more complex, leveraging relational context becomes more important.
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Entity binary classification results on \relbench.} Binary classification uses the AUROC metric (higher is better). Best values are in bold. Standard baselines of random choice and majority class both correspond to AUROC values of approximately $50.00$, so we exclude them below. See Table \ref{tab:entity_classification_appendix} for standard deviations.}
+  \label{tab:entity_classification_main}
+  \renewcommand{\arraystretch}{1.1}
+  \vspace{-5pt}
+  \scriptsize
+    \begin{adjustbox}{max width=0.6\textwidth, center}
+    \input{tables/results/entity_classification_main}
+    \end{adjustbox}
+  % \vspace{-10pt}
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Entity multiclass classification results on \relbench.} Multiclass classification uses the accuracy metric (higher is better). Best values are in bold. See Table \ref{tab:entity_multiclass_appendix} for standard deviations.}
+  \label{tab:entity_multiclass_main}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \vspace{-5pt}
+    \begin{adjustbox}{max width=0.65\textwidth, center}
+    \input{tables/results/entity_multiclass_main}
+    \end{adjustbox}
+  \vspace{-10pt}
+\end{table}
+
+
+\subsection{Entity Regression}
+
+%% ENTITY REGRESSION RESULTS MAIN %%
+Entity-level regression tasks involve predicting numerical labels of an entity at a given seed time. Like for autocomplete regression, our evaluation metric is $R^2$, where higher values are better. We compare our RDL approach against essentially the same baselines as described in Section \ref{sec:autocomplete-regression}. The only modification is that for the LightGBM baseline for entity regression, only the raw features from the single entity table are used to predict the numerical targets.
+
+\textbf{Experimental results}. The entity regression results in Table \ref{tab:entity_regression_main} show our RDL implementation outperforms the
+baselines across all new forecasting regression tasks. RDL achieves higher $R^2$ values, indicating improved explanatory power when relational information is incorporated. Additionally, MAE metrics are reported in Appendix \ref{sec:appendix_task_results} (Table \ref{tab:entity_regression_appendix}), where RDL consistently achieves lower errors. These results suggest that relational modeling provides consistent benefits for numeric prediction at the entity level, even when the target variable is defined on a single entity table.
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Entity regression results on \relbench.} Regression uses the $R^2$ metric (higher is better). Best values are in bold. See Table \ref{tab:entity_regression_r2_appendix} for standard deviations and Table \ref{tab:entity_regression_appendix} for MAE results.}
+  \label{tab:entity_regression_main}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \vspace{-5pt}
+    \begin{adjustbox}{max width=0.95\textwidth, center}
+    \input{tables/results/entity_regression_r2_main}
+    \end{adjustbox}
+  \vspace{-10pt}
+\end{table}
+
+
+\subsection{Recommendation}
+
+%% RECOMMENDATION RESULTS MAIN %%
+Recommendation tasks involve predicting, for each source entity and seed time, a ranked list of the top-$K$ target entities. This requires calculating pairwise scores between source and target entities.
+
+We evaluate two GNN-based models. In GraphSAGE \citep{hamilton2017inductive}, source and target embeddings are learned via message passing, and pairwise scores are computed using their inner product, with training performed using the Bayesian Personalized Ranking loss \citep{rendle2012bpr}. In ID-GNN \citep{you2021identity}, target embeddings are passed through a source-specific MLP prediction head to produce pairwise scores, and the model is trained with cross-entropy loss \citep{you2021identity}.
+
+We report Mean Average Precision (MAP) @$K$ (higher is better), with $K$ set per task. Baselines include Past Visit, which ranks targets by how often they were previously visited by each source entity. Global Popularity ranks targets by overall frequency in the training data. LightGBM \citep{ke2017lightgbm} predicts source–target links using concatenated entity features, augmented with popularity and past-visit rank features.
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Recommendation results on \relbench.} Recommendation uses the MAP metric, where higher values are better. Best values are in bold. See Table \ref{tab:recommendation_appendix} for standard deviations.}
+  \label{tab:recommendation_main}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \vspace{-5pt}
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/recommendation_main}
+    }
+  \vspace{-10pt}
+\end{table}
+
+
+\textbf{Experimental results}. Results are given in Table \ref{tab:recommendation_main}. In general, we observe that either the RDL implementation using GraphSAGE \citep{hamilton2017inductive}, or ID-GNN \citep{you2021identity} as the GNN component performs best, often by a very significant margin. ID-GNN excels in settings where predictions are highly entity-specific, whereas the plain GNN performs better when such specificity is less critical. This behavior reflects the inductive biases of the two models: GraphSAGE primarily captures structural and neighborhood-based patterns, while ID-GNN explicitly incorporates node identity information. Additionally, increasing the number of layers in the RDL models from two layers to four tended to yield improved performance across both GNN-based models, although the four-layer GraphSAGE model encountered CUDA memory errors on an 80GB Nvidia A100. These results highlight the multi-hop nature of recommendation tasks.
+
+
+\section{Integrating External Benchmarks into \relbench} \label{sec0:tgb_relbench}
+
+\relbench~\citep{relbench} introduced the first standardized benchmark for forecasting over relational databases, enabling end-to-end evaluation of RDL methods on real-world multi-table datasets. Subsequent efforts have expanded the scale and diversity of relational benchmarks. In addition to the new relational databases and tasks introduced in \relbench v2, we also extend \relbench with direct integration of external benchmarks and diagnostic frameworks. These include a suite of large-scale \emph{temporal interaction} datasets sourced from the Temporal Graph Benchmark (TGB) \citep{rossi2020temporal}, widespread evaluation of RDL models on 70+ relational databases via ReDeLex \citep{peleska2025redelex}, and a 4D benchmarking toolbox spanning multiple datasets, tasks, graph construction strategies, and predictive models from 4DBInfer \citep{wang20244dbinfer}.
+
+\subsection{Temporal Graph Benchmark (TGB)} \label{sec:tgb_datasets}
+
+The Temporal Graph Benchmark (TGB) is a benchmark centered on learning from time-stamped event streams (temporal edges), with evaluation protocols that enforce strict chronological generalization. By translating TGB datasets into the \relbench database and task abstraction, we enable direct comparisons between (i) \emph{temporal GNN} baselines that operate on event streams and (ii) \emph{relational deep learning} baselines that operate on a multi-table schema with explicit primary/foreign key structure. Following the principle of normalization in database theory, we make the decision to translate each node and edge type into its own table. We focus on TGB datasets, excluding knowledge graphs that require additional adjustments, and naturally map the remaining datasets to relational event logs targeting the following downstream tasks:
+(i) Dynamic Link Property Prediction (\texttt{tgbl-*}),
+(ii) Dynamic Node Property Prediction (\texttt{tgbn-*}), and
+(iii) Temporal Heterogeneous Graph Link Prediction (\texttt{thgl-*}).
+
+% We intentionally exclude temporal knowledge graph tasks (\texttt{tkgl-*}) in this technical report, as they require additional schema elements (relation vocabularies, static triples) and evaluation conventions that are orthogonal to the main \relbench task families.
+
+
+The converted TGB datasets cover diverse domains and scales, from small bipartite interaction graphs to multi-relational, multi-entity temporal databases with tens of millions of events. The key outcome of the conversion is that each dataset becomes a \relbench \texttt{Database} (parquet tables plus schema metadata) together with temporal cutoffs and tasks, enabling training and evaluation under the same leakage-safe conventions used elsewhere in \relbench. The dataset statistics can be found in Table \ref{tab:stats_tgb_datasets}. Additional details about the \relbench TGB datasets and experiments can be found in App. \ref{sec:tgb_relbench}. 
+
+% \paragraph{Dataset descriptions.}
+% \texttt{tgbl-wiki-v2} captures Wikipedia co-edit interactions over a short horizon and is naturally bipartite; \texttt{tgbl-review-v2} is a long-range e-commerce interaction graph derived from Amazon review activity; \texttt{tgbl-coin} consists of cryptocurrency transactions; \texttt{tgbl-comment} models a large-scale Reddit comment interaction stream; and \texttt{tgbl-flight} is a decades-long flight network event log.
+% For node property prediction, \texttt{tgbn-trade} models annual UN trade interactions, \texttt{tgbn-genre} is a LastFM user--genre interaction stream, \texttt{tgbn-reddit} is a temporal Reddit hyperlink network, and \texttt{tgbn-token} represents blockchain user--token interactions.
+% Finally, the heterogeneous family \texttt{thgl-*} includes GitHub interaction streams (\texttt{thgl-software}, \texttt{thgl-github}), a Reddit interaction stream (\texttt{thgl-forum}), and an app-market interaction stream (\texttt{thgl-myket}), each with explicit node/edge type constraints.
+
+% --- Table: stats_tgb_datasets (no resizebox; scriptsize only) ---                                                                                                                                                                                        
+\begin{table}[t]                                                                                                                                                                                                                                         
+    \centering                                                                                                                                                                                                                                               
+    \caption{{\bf Statistics of TGB datasets translated into \relbench.}                                                                                                                                                                                     
+    We report the relational size of each translated dataset as stored in parquet:                                                                                                                                                                           
+    number of tables, total number of rows (summed across all tables, up to the test-time cutoff), and total number of columns (summed across all tables).                                                                                                   
+    }                                                                                                                                                                                                                                                        
+    \label{tab:stats_tgb_datasets}                                                                                                                                                                                                                           
+    \begingroup                                                                                                                                                                                                                                              
+    \scriptsize  
+    \vspace{-5pt}
+    \setlength{\tabcolsep}{3pt}                                                                                                                                                                                                                              
+    \renewcommand{\arraystretch}{1.1}                                                                                                                                                                                                                        
+    \begin{tabular}{llrrr}                                                                                                                                                                                                                                   
+      \toprule                                                                                                                                                                                                                                               
+      Task family & Dataset & \#Tables & \#Rows & \#Cols \\                                                                                                                                                                                                  
+      \midrule                                                                                                                                                                                                                                               
+      \mr{5}{\texttt{tgbl-*} (link)} &                                                                                                                                                                                                                       
+        \texttt{tgbl-wiki-v2}   & 3  & 166,701    & 7  \\                                                                                                                                                                                                    
+      & \texttt{tgbl-review-v2} & 2  & 5,226,177  & 6  \\                                                                                                                                                                                                    
+      & \texttt{tgbl-coin}      & 2  & 23,447,972 & 6  \\                                                                                                                                                                                                    
+      & \texttt{tgbl-comment}   & 2  & 45,309,297 & 6  \\                                                                                                                                                                                                    
+      & \texttt{tgbl-flight}    & 2  & 67,187,713 & 6  \\                                                                                                                                                                                                    
+      \midrule                                                                                                                                                                                                                                               
+      \mr{4}{\texttt{tgbn-*} (node)} &                                                                                                                                                                                                                       
+        \texttt{tgbn-trade}  & 5 & 934,072     & 14 \\                                                                                                                                                                                                       
+      & \texttt{tgbn-genre}  & 5 & 20,858,841  & 14 \\                                                                                                                                                                                                       
+      & \texttt{tgbn-reddit} & 5 & 43,669,153  & 14 \\                                                                                                                                                                                                       
+      & \texttt{tgbn-token}  & 5 & 81,663,534  & 14 \\                                                                                                                                                                                                       
+      \midrule                                                                                                                                                                                                                                               
+      \mr{4}{\texttt{thgl-*} (hetero link)} &                                                                                                                                                                                                                
+        \texttt{thgl-software} & 18 & 2,171,733   & 74 \\                                                                                                                                                                                                    
+      & \texttt{thgl-forum}    & 4  & 23,910,523  & 12 \\                                                                                                                                                                                                    
+      & \texttt{thgl-github}   & 18 & 23,356,342  & 74 \\                                                                                                                                                                                                    
+      & \texttt{thgl-myket}    & 4  & 55,163,623  & 12 \\                                                                                                                                                                                                    
+      \bottomrule                                                                                                                                                                                                                                            
+    \end{tabular}                                                                                                                                                                                                                                       
+    \endgroup                                                                                                                                                                                                                            
+    \vspace{-10pt}                                                                                                                                                                                                                                           
+\end{table}                                                                                                                                                                  
+
+\subsection{Relational Deep Learning Exploration (ReDeLex)} \label{sec:redelex}
+
+Relational Deep Learning Exploration (ReDeLEx)~\citep{peleska2025redelex} is a large-scale experimental framework for systematically evaluating Relational Deep Learning (RDL) on real-world relational databases. From the CTU Relational Learning Repository~\citep{motl2025ctupraguerelationallearning}, ReDeLEx integrates over 70 datasets into a unified pipeline that connects directly to SQL databases, infers attribute semantics, and represents relational schemas as heterogeneous graphs. These datasets span domains such as healthcare, government, education, sports, and business applications, vastly increasing \relbench's coverage of data. RDL models in ReDeLEx follow a modular design that combines attribute encoders, optional tabular models, graph neural network layers, and task-specific prediction heads. These models enable controlled comparisons across architectures such as linear GraphSAGE, Tabular ResNet–augmented GNNs, and Transformer-based models.
+
+\subsection{4DBInfer} \label{sec:4dbinfer}
+
+4DBInfer~\citep{wang20244dbinfer} is a large-scale benchmarking effort focused on predictive modeling over multi-table relational databases. 4DBInfer introduces an explicit four-dimensional evaluation framework: datasets, tasks, relational-to-graph construction strategies, and predictive model families. These are designed to expose how modeling choices across the full pipeline impact performance. While 4DBInfer explores this design space through extensive empirical comparisons, its datasets and task formulations provide a valuable foundation for unified evaluation. As part of \relbench~v2, we incorporate 7 4DBInfer datasets and 12 tasks, allowing \relbench to inherit the scale and diversity of 4DBInfer while enforcing consistent experimental conventions across relational, temporal, and graph-based learning settings.
+
+
+\section{Conclusion}
+In this work, we introduced \relbench v2, a major expansion of the \relbench benchmark for relational deep learning (RDL). \relbench v2 adds four large-scale relational datasets spanning academic, enterprise, consumer, and clinical domains, substantially increasing the scale and diversity of real-world relational data. We further introduced autocomplete tasks, a new class of predictive objectives that require models to infer missing attribute values directly within relational tables under temporal constraints, complementing traditional forecasting and recommendation tasks. In addition, we integrated temporal interaction datasets from the Temporal Graph Benchmark (TGB), and relational databases from Relational Deep Learning Exploration (ReDeLEx) and 4DBInfer, enabling unified evaluation across relational and temporal learning settings. Experimental results show that RDL models consistently outperform single-table baselines across autocomplete, forecasting, and recommendation tasks, highlighting the importance of modeling relational structure explicitly. \relbench v2 provides a scalable and realistic benchmark to support the development and evaluation of RDL systems and relational foundation models.
+
+
+\bibliography{iclr2026_conference}
+\bibliographystyle{iclr2026_conference}
+
+\newpage
+\appendix
+\section{Related Work} \label{sec:related-work}
+
+\textbf{Relational deep learning (RDL).} RDL studies how to train neural models directly on relational databases by leveraging their multi-table structure. RDL represents a relational database as a heterogeneous graph, where rows correspond to entities and foreign-key relationships define edges between them \citep{rdl}. Early works applied graph neural networks to such relational graphs and demonstrated substantial improvements over feature-engineered baselines on forecasting, recommendation, and prediction tasks \citep{relbench, chen2025relgnn}. More recent approaches have explored transformer-based architectures to better capture long-range and higher-order dependencies across tables \citep{dbformer, dwivedi2025relational}, as well as positional encoding methods designed to improve representation learning on relational graphs \citep{kanatsoulis2025learningefficientpositionalencodings}.
+
+% \textbf{Multi-table learning benchmarks.} \relbench~\citep{relbench} introduced the first standardized benchmark for forecasting over relational databases, enabling end-to-end evaluation of relational deep learning methods on real-world multi-table datasets. Subsequent efforts have expanded the scale and diversity of relational benchmarks. ReDeLEx~\citep{peleska2025redelex} provides a large-scale experimental framework evaluating GNN-based models on more than 70 relational databases, significantly increasing dataset coverage. It builds on the CTU Relational Learning Repository~\citep{motl2025ctupraguerelationallearning} and integrates these SQL datasets into the \relbench ecosystem. Similarly, 4DBInfer~\citep{wang20244dbinfer} introduces a benchmarking toolbox spanning multiple datasets, tasks, graph construction strategies, and predictive models. By systematically comparing graph-based and tabular approaches on shared relational datasets, it provides insights into when exploiting relational structure improves performance. Several datasets from these efforts have been incorporated into \relbench, further strengthening its role as a unified evaluation framework.
+
+\textbf{Foundation models for tabular and relational data.} Recent tabular foundation models demonstrate strong performance, including in-context learning~\citep{tabpfn, tabicl} and efficient fine-tuning~\citep{carte}. These models leverage supervised~\citep{tabpfn, tabpfnv2} or self-supervised~\citep{portal, carte} pretraining on real and synthetic tabular datasets. Extending such models to relational databases is challenging due to the presence of multiple tables connected via foreign-key relationships. To address this, relational foundation models have recently been proposed. For example, \citet{kumorfm} introduce KumoRFM, a graph-transformer-based architecture capable of in-context learning and fine-tuning. Similarly, \citet{griffin} pretrain the Griffin model on both tabular and relational datasets, combining table-level encoders with graph neural networks for cross-table reasoning. More recent approaches operate directly at the cell level and use attention mechanisms to explicitly represent foreign-key relationships, enabling unified reasoning across the entire relational database without requiring intermediate aggregation \citep{ranjan2025relational}.
+To circumvent real-data limitations for large-scale pretraining, recent works have explored generating privacy-preserving versions of real databases with diffusion models~\citep{hudovernik2025reldiff,ketata2025joint} as well as generating synthetic databases from scratch using random graphs and Structural Causal Models (SCMs)~\citep{kothapalli2026plurel}. In contrast, in \relbench v2 we collect a large number of realistic databases in a uniformly accessible manner.
+
+\section{Dataset schemas} \label{sec:dataset_schemas}
+
+\input{sections/appendix-dataset-schemas}
+
+
+\newpage
+
+\section{Additional Task Information} \label{sec:task_info}
+
+\input{sections/appendix-task-descriptions}
+
+
+\newpage
+
+\section{Additional results and experiment details} \label{sec:appendix_task_results}
+
+\input{sections/appendix-task-std}
+
+
+
+% \section{Submission of conference papers to ICLR 2026}
+
+% ICLR requires electronic submissions, processed by
+% \url{https://openreview.net/}. See ICLR's website for more instructions.
+
+% If your paper is ultimately accepted, the statement {\tt
+%   {\textbackslash}iclrfinalcopy} should be inserted to adjust the
+% format to the camera ready requirements.
+
+% The format for the submissions is a variant of the NeurIPS format.
+% Please read carefully the instructions below, and follow them
+% faithfully.
+
+% \subsection{Style}
+
+% Papers to be submitted to ICLR 2026 must be prepared according to the
+% instructions presented here.
+
+% %% Please note that we have introduced automatic line number generation
+% %% into the style file for \LaTeXe. This is to help reviewers
+% %% refer to specific lines of the paper when they make their comments. Please do
+% %% NOT refer to these line numbers in your paper as they will be removed from the
+% %% style file for the final version of accepted papers.
+
+% Authors are required to use the ICLR \LaTeX{} style files obtainable at the
+% ICLR website. Please make sure you use the current files and
+% not previous versions. Tweaking the style files may be grounds for rejection.
+
+% \subsection{Retrieval of style files}
+
+% The style files for ICLR and other conference information are available online at:
+% \begin{center}
+%    \url{http://www.iclr.cc/}
+% \end{center}
+% The file \verb+iclr2026_conference.pdf+ contains these
+% instructions and illustrates the
+% various formatting requirements your ICLR paper must satisfy.
+% Submissions must be made using \LaTeX{} and the style files
+% \verb+iclr2026_conference.sty+ and \verb+iclr2026_conference.bst+ (to be used with \LaTeX{}2e). The file
+% \verb+iclr2026_conference.tex+ may be used as a ``shell'' for writing your paper. All you
+% have to do is replace the author, title, abstract, and text of the paper with
+% your own.
+
+% The formatting instructions contained in these style files are summarized in
+% sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+
+% \section{General formatting instructions}
+% \label{gen_inst}
+
+% The text must be confined within a rectangle 5.5~inches (33~picas) wide and
+% 9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).
+% Use 10~point type with a vertical spacing of 11~points. Times New Roman is the
+% preferred typeface throughout. Paragraphs are separated by 1/2~line space,
+% with no indentation.
+
+% Paper title is 17~point, in small caps and left-aligned.
+% All pages should start at 1~inch (6~picas) from the top of the page.
+
+% Authors' names are
+% set in boldface, and each name is placed above its corresponding
+% address. The lead author's name is to be listed first, and
+% the co-authors' names are set to follow. Authors sharing the
+% same address can be on the same line.
+
+% Please pay special attention to the instructions in section \ref{others}
+% regarding figures, tables, acknowledgments, and references.
+
+
+% \section{Headings: first level}
+% \label{headings}
+
+% First level headings are in small caps,
+% flush left and in point size 12. One line space before the first level
+% heading and 1/2~line space after the first level heading.
+
+% \subsection{Headings: second level}
+
+% Second level headings are in small caps,
+% flush left and in point size 10. One line space before the second level
+% heading and 1/2~line space after the second level heading.
+
+% \subsubsection{Headings: third level}
+
+% Third level headings are in small caps,
+% flush left and in point size 10. One line space before the third level
+% heading and 1/2~line space after the third level heading.
+
+% \section{Citations, figures, tables, references}
+% \label{others}
+
+% These instructions apply to everyone, regardless of the formatter being used.
+
+% \subsection{Citations within the text}
+
+% Citations within the text should be based on the \texttt{natbib} package
+% and include the authors' last names and year (with the ``et~al.'' construct
+% for more than two authors). When the authors or the publication are
+% included in the sentence, the citation should not be in parenthesis using \verb|\citet{}| (as
+% in ``See \citet{Hinton06} for more information.''). Otherwise, the citation
+% should be in parenthesis using \verb|\citep{}| (as in ``Deep learning shows promise to make progress
+% towards AI~\citep{Bengio+chapter2007}.'').
+
+% The corresponding references are to be listed in alphabetical order of
+% authors, in the \textsc{References} section. As to the format of the
+% references themselves, any style is acceptable as long as it is used
+% consistently.
+
+% \subsection{Footnotes}
+
+% Indicate footnotes with a number\footnote{Sample of the first footnote} in the
+% text. Place the footnotes at the bottom of the page on which they appear.
+% Precede the footnote with a horizontal rule of 2~inches
+% (12~picas).\footnote{Sample of the second footnote}
+
+% \subsection{Figures}
+
+% All artwork must be neat, clean, and legible. Lines should be dark
+% enough for purposes of reproduction; art work should not be
+% hand-drawn. The figure number and caption always appear after the
+% figure. Place one line space before the figure caption, and one line
+% space after the figure. The figure caption is lower case (except for
+% first word and proper nouns); figures are numbered consecutively.
+
+% Make sure the figure caption does not get separated from the figure.
+% Leave sufficient space to avoid splitting the figure and figure caption.
+
+% You may use color figures.
+% However, it is best for the
+% figure captions and the paper body to make sense if the paper is printed
+% either in black/white or in color.
+% \begin{figure}[h]
+% \begin{center}
+% %\framebox[4.0in]{$\;$}
+% \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+% \end{center}
+% \caption{Sample figure caption.}
+% \end{figure}
+
+% \subsection{Tables}
+
+% All tables must be centered, neat, clean and legible. Do not use hand-drawn
+% tables. The table number and title always appear before the table. See
+% Table~\ref{sample-table}.
+
+% Place one line space before the table title, one line space after the table
+% title, and one line space after the table. The table title must be lower case
+% (except for first word and proper nouns); tables are numbered consecutively.
+
+% \begin{table}[t]
+% \caption{Sample table title}
+% \label{sample-table}
+% \begin{center}
+% \begin{tabular}{ll}
+% \multicolumn{1}{c}{\bf PART}  &\multicolumn{1}{c}{\bf DESCRIPTION}
+% \\ \hline \\
+% Dendrite         &Input terminal \\
+% Axon             &Output terminal \\
+% Soma             &Cell body (contains cell nucleus) \\
+% \end{tabular}
+% \end{center}
+% \end{table}
+
+
+
+
+
+
+
+
+
+
+
+% \section{Default Notation}
+
+% In an attempt to encourage standardized notation, we have included the
+% notation file from the textbook, \textit{Deep Learning}
+% \cite{goodfellow2016deep} available at
+% \url{https://github.com/goodfeli/dlbook_notation/}.  Use of this style
+% is not required and can be disabled by commenting out
+% \texttt{math\_commands.tex}.
+
+
+% \centerline{\bf Numbers and Arrays}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1in}p{3.25in}}
+% $\displaystyle a$ & A scalar (integer or real)\\
+% $\displaystyle \va$ & A vector\\
+% $\displaystyle \mA$ & A matrix\\
+% $\displaystyle \tA$ & A tensor\\
+% $\displaystyle \mI_n$ & Identity matrix with $n$ rows and $n$ columns\\
+% $\displaystyle \mI$ & Identity matrix with dimensionality implied by context\\
+% $\displaystyle \ve^{(i)}$ & Standard basis vector $[0,\dots,0,1,0,\dots,0]$ with a 1 at position $i$\\
+% $\displaystyle \text{diag}(\va)$ & A square, diagonal matrix with diagonal entries given by $\va$\\
+% $\displaystyle \ra$ & A scalar random variable\\
+% $\displaystyle \rva$ & A vector-valued random variable\\
+% $\displaystyle \rmA$ & A matrix-valued random variable\\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+% \centerline{\bf Sets and Graphs}
+% \bgroup
+% \def\arraystretch{1.5}
+
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle \sA$ & A set\\
+% $\displaystyle \R$ & The set of real numbers \\
+% $\displaystyle \{0, 1\}$ & The set containing 0 and 1 \\
+% $\displaystyle \{0, 1, \dots, n \}$ & The set of all integers between $0$ and $n$\\
+% $\displaystyle [a, b]$ & The real interval including $a$ and $b$\\
+% $\displaystyle (a, b]$ & The real interval excluding $a$ but including $b$\\
+% $\displaystyle \sA \backslash \sB$ & Set subtraction, i.e., the set containing the elements of $\sA$ that are not in $\sB$\\
+% $\displaystyle \gG$ & A graph\\
+% $\displaystyle \parents_\gG(\ervx_i)$ & The parents of $\ervx_i$ in $\gG$
+% \end{tabular}
+% \vspace{0.25cm}
+
+
+% \centerline{\bf Indexing}
+% \bgroup
+% \def\arraystretch{1.5}
+
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle \eva_i$ & Element $i$ of vector $\va$, with indexing starting at 1 \\
+% $\displaystyle \eva_{-i}$ & All elements of vector $\va$ except for element $i$ \\
+% $\displaystyle \emA_{i,j}$ & Element $i, j$ of matrix $\mA$ \\
+% $\displaystyle \mA_{i, :}$ & Row $i$ of matrix $\mA$ \\
+% $\displaystyle \mA_{:, i}$ & Column $i$ of matrix $\mA$ \\
+% $\displaystyle \etA_{i, j, k}$ & Element $(i, j, k)$ of a 3-D tensor $\tA$\\
+% $\displaystyle \tA_{:, :, i}$ & 2-D slice of a 3-D tensor\\
+% $\displaystyle \erva_i$ & Element $i$ of the random vector $\rva$ \\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+
+% \centerline{\bf Calculus}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% % NOTE: the [2ex] on the next line adds extra height to that row of the table.
+% % Without that command, the fraction on the first line is too tall and collides
+% % with the fraction on the second line.
+% $\displaystyle\frac{d y} {d x}$ & Derivative of $y$ with respect to $x$\\ [2ex]
+% $\displaystyle \frac{\partial y} {\partial x} $ & Partial derivative of $y$ with respect to $x$ \\
+% $\displaystyle \nabla_\vx y $ & Gradient of $y$ with respect to $\vx$ \\
+% $\displaystyle \nabla_\mX y $ & Matrix derivatives of $y$ with respect to $\mX$ \\
+% $\displaystyle \nabla_\tX y $ & Tensor containing derivatives of $y$ with respect to $\tX$ \\
+% $\displaystyle \frac{\partial f}{\partial \vx} $ & Jacobian matrix $\mJ \in \R^{m\times n}$ of $f: \R^n \rightarrow \R^m$\\
+% $\displaystyle \nabla_\vx^2 f(\vx)\text{ or }\mH( f)(\vx)$ & The Hessian matrix of $f$ at input point $\vx$\\
+% $\displaystyle \int f(\vx) d\vx $ & Definite integral over the entire domain of $\vx$ \\
+% $\displaystyle \int_\sS f(\vx) d\vx$ & Definite integral with respect to $\vx$ over the set $\sS$ \\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+% \centerline{\bf Probability and Information Theory}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle P(\ra)$ & A probability distribution over a discrete variable\\
+% $\displaystyle p(\ra)$ & A probability distribution over a continuous variable, or over
+% a variable whose type has not been specified\\
+% $\displaystyle \ra \sim P$ & Random variable $\ra$ has distribution $P$\\% so thing on left of \sim should always be a random variable, with name beginning with \r
+% $\displaystyle  \E_{\rx\sim P} [ f(x) ]\text{ or } \E f(x)$ & Expectation of $f(x)$ with respect to $P(\rx)$ \\
+% $\displaystyle \Var(f(x)) $ &  Variance of $f(x)$ under $P(\rx)$ \\
+% $\displaystyle \Cov(f(x),g(x)) $ & Covariance of $f(x)$ and $g(x)$ under $P(\rx)$\\
+% $\displaystyle H(\rx) $ & Shannon entropy of the random variable $\rx$\\
+% $\displaystyle \KL ( P \Vert Q ) $ & Kullback-Leibler divergence of P and Q \\
+% $\displaystyle \mathcal{N} ( \vx ; \vmu , \mSigma)$ & Gaussian distribution %
+% over $\vx$ with mean $\vmu$ and covariance $\mSigma$ \\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+% \centerline{\bf Functions}
+% \bgroup
+% \def\arraystretch{1.5}
+% \begin{tabular}{p{1.25in}p{3.25in}}
+% $\displaystyle f: \sA \rightarrow \sB$ & The function $f$ with domain $\sA$ and range $\sB$\\
+% $\displaystyle f \circ g $ & Composition of the functions $f$ and $g$ \\
+%   $\displaystyle f(\vx ; \vtheta) $ & A function of $\vx$ parametrized by $\vtheta$.
+%   (Sometimes we write $f(\vx)$ and omit the argument $\vtheta$ to lighten notation) \\
+% $\displaystyle \log x$ & Natural logarithm of $x$ \\
+% $\displaystyle \sigma(x)$ & Logistic sigmoid, $\displaystyle \frac{1} {1 + \exp(-x)}$ \\
+% $\displaystyle \zeta(x)$ & Softplus, $\log(1 + \exp(x))$ \\
+% $\displaystyle || \vx ||_p $ & $\normlp$ norm of $\vx$ \\
+% $\displaystyle || \vx || $ & $\normltwo$ norm of $\vx$ \\
+% $\displaystyle x^+$ & Positive part of $x$, i.e., $\max(0,x)$\\
+% $\displaystyle \1_\mathrm{condition}$ & is 1 if the condition is true, 0 otherwise\\
+% \end{tabular}
+% \egroup
+% \vspace{0.25cm}
+
+
+
+% \section{Final instructions}
+% Do not change any aspects of the formatting parameters in the style files.
+% In particular, do not modify the width or length of the rectangle the text
+% should fit into, and do not change font sizes (except perhaps in the
+% \textsc{References} section; see below). Please note that pages should be
+% numbered.
+
+% \section{Preparing PostScript or PDF files}
+
+% Please prepare PostScript or PDF files with paper size ``US Letter'', and
+% not, for example, ``A4''. The -t
+% letter option on dvips will produce US Letter files.
+
+% Consider directly generating PDF files using \verb+pdflatex+
+% (especially if you are a MiKTeX user).
+% PDF figures must be substituted for EPS figures, however.
+
+% Otherwise, please generate your PostScript and PDF files with the following commands:
+% \begin{verbatim}
+% dvips mypaper.dvi -t letter -Ppdf -G0 -o mypaper.ps
+% ps2pdf mypaper.ps mypaper.pdf
+% \end{verbatim}
+
+% \subsection{Margins in LaTeX}
+
+% Most of the margin problems come from figures positioned by hand using
+% \verb+\special+ or other commands. We suggest using the command
+% \verb+\includegraphics+
+% from the graphicx package. Always specify the figure width as a multiple of
+% the line width as in the example below using .eps graphics
+% \begin{verbatim}
+%    \usepackage[dvips]{graphicx} ...
+%    \includegraphics[width=0.8\linewidth]{myfile.eps}
+% \end{verbatim}
+% or % Apr 2009 addition
+% \begin{verbatim}
+%    \usepackage[pdftex]{graphicx} ...
+%    \includegraphics[width=0.8\linewidth]{myfile.pdf}
+% \end{verbatim}
+% for .pdf graphics.
+% See section~4.4 in the graphics bundle documentation (\url{http://www.ctan.org/tex-archive/macros/latex/required/graphics/grfguide.ps})
+
+% A number of width problems arise when LaTeX cannot properly hyphenate a
+% line. Please give LaTeX hyphenation hints using the \verb+\-+ command.
+
+% \subsubsection*{Author Contributions}
+% If you'd like to, you may include  a section for author contributions as is done
+% in many journals. This is optional and at the discretion of the authors.
+
+% \subsubsection*{Acknowledgments}
+% Use unnumbered third level headings for the acknowledgments. All
+% acknowledgments, including those to funding agencies, go at the end of the paper.
+
+
+
+
+
+\end{document}

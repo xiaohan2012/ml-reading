@@ -1,0 +1,69 @@
+# Wiki Index — ML reading and research (GNN & Interpretability)
+
+### Sources
+- [tabpfnv2](pages/tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
+- [tabicl](pages/tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
+- [carte](pages/carte.md) — CARTE: graph-per-row + YAGO pretraining; edge-augmented attention; no schema matching; string tables; ICML 2024 _(ingested 2026-04-29)_
+- [tgat](pages/tgat.md) — TGAT: Bochner functional time encoding + masked self-attention over temporal neighborhoods; inductive CTDG; ICLR 2020 _(ingested 2026-04-29)_
+- [tgn](pages/tgn.md) — TGN: memory module + temporal graph attention; unifies TGAT/Jodie/DyRep; 30× faster than TGAT; SOTA 2020 _(ingested 2026-04-29)_
+- [dygformer](pages/dygformer.md) — DyGFormer: first-hop Transformer + patching + neighbor co-occurrence encoding; NeurIPS 2023 SOTA _(ingested 2026-04-29)_
+- [gcn](pages/gcn.md) — GCN: spectral GNN via Chebyshev approximation; renormalization trick; transductive; O(|E|); ICLR 2017 _(ingested 2026-04-29)_
+- [graphsage](pages/graphsage.md) — GraphSAGE: inductive GNN via neighborhood sampling; Mean/LSTM/Max aggregators; HeteroGraphSAGE = RDL baseline; NeurIPS 2017 _(ingested 2026-04-29)_
+- [gat](pages/gat.md) — GAT: learned attention weights α_{ij} per neighbor; multi-head; inductive; ICLR 2018 _(ingested 2026-04-29)_
+- [gin](pages/gin.md) — GIN: sum+MLP achieves WL-level expressive power; proves GCN/GraphSAGE mean is not injective; ICLR 2019 _(ingested 2026-04-29)_
+- [graphormer](pages/graphormer.md) — Graphormer: SPD spatial encoding + centrality + edge path encoding; full Transformer; SOTA OGB-LSC; subsumes GCN/GIN; NeurIPS 2021 _(ingested 2026-04-29)_
+- [san](pages/san.md) — SAN: full Laplacian spectrum LPE; fully-connected attention; exceeds 1-WL provably; NeurIPS 2021 _(ingested 2026-04-29)_
+- [mpnn](pages/mpnn.md) — MPNN: unified message passing framework; edge features; unifies 8+ GNN models; SOTA QM9; ICML 2017 _(ingested 2026-04-29)_
+- [rgcn](pages/rgcn.md) — R-GCN: relation-specific weight matrices; basis/block decomposition; knowledge graph completion; ESWC 2018 _(ingested 2026-04-29)_
+- [k-gnn](pages/k-gnn.md) — k-GNN: 1-GNNs ≡ 1-WL; k-tuples message passing exceeds 1-WL; hierarchical 1-k-GNN; AAAI 2019 _(ingested 2026-04-29)_
+- [tgb](pages/tgb.md) — TGB: large-scale temporal benchmark (4M-67M edges); temporal negative sampling; finds simple baselines often best; NeurIPS 2023 _(ingested 2026-04-29)_
+- [tabpfnv1](pages/tabpfnv1.md) — TabPFN v1: PFN paradigm; SCM+BNN prior; N≤1000 ICL classification; 5700× faster than AutoML; ICLR 2023 _(ingested 2026-04-29)_
+- [saint](pages/saint.md) — SAINT: column + intersample attention; contrastive pretraining; beats boosted trees on average; 2021 _(ingested 2026-04-29)_
+- [cvitkovic2020](pages/cvitkovic2020.md) — First RDB-as-GNN paper; RDBToGraph algorithm; node classification = supervised learning on RDB; 2020 _(ingested 2026-04-29)_
+- [dyrep](pages/dyrep.md) — DyRep: two-process (Association/Communication) temporal point process; recurrent+structural+temporal embedding; ICLR 2019 _(ingested 2026-04-29)_
+- [graphmixer](pages/graphmixer.md) — GraphMixer: MLP link-encoder + mean-pooling node-encoder; no RNN/attention; matches TGAT/TGN/DyGFormer; ICLR 2023 _(ingested 2026-04-29)_
+- [relational-deep-learning-position](pages/relational-deep-learning-position.md) — RDL blueprint: REG + Training Table + temporal neighbor sampling; GNN=SQL JOIN+AGG _(ingested 2026-04-29)_
+- [relbench-v1](pages/relbench-v1.md) — RelBench v1: 7 databases, 30 tasks; RDL beats data-scientist baseline with 96% fewer human hours _(ingested 2026-04-29)_
+- [graphgps](pages/graphgps.md) — GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E); SOTA on 11/16 diverse benchmarks _(ingested 2026-04-29)_
+- [hgt](pages/hgt.md) — HGT: meta-relation triplet parameterization + RTE; WWW 2020; foundation for heterogeneous graph Transformers _(ingested 2026-04-29)_
+- [generalization-transformer-graphs](pages/generalization-transformer-graphs.md) — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge×attention _(ingested 2026-04-29)_
+- [relgnn](pages/relgnn.md) — Bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks _(ingested 2026-04-29)_
+- [griffin](pages/griffin.md) — First pretrained RDB foundation model; unified text+float encoders + hierarchical aggregation; 150M+ node pretraining _(ingested 2026-04-29)_
+- [relational-graph-transformer](pages/relational-graph-transformer.md) — First GT for relational databases; 5-element tokenization + hybrid local-global attention _(ingested 2026-04-28)_
+- [tgm-temporal-graph-modelling](pages/tgm-temporal-graph-modelling.md) — First unified CTDG+DTDG library; 7.8× speedup; hook-based modular system _(ingested 2026-04-28)_
+- [relational-transformer](pages/relational-transformer.md) — Cell-level zero-shot foundation model for relational data; Relational Attention; 93% supervised AUROC at 22M params _(ingested 2026-04-28)_
+- [relbench-v2](pages/relbench-v2.md) — RelBench expansion: 7→11 datasets, autocomplete tasks, TGB/ReDeLEx/4DBInfer integrations _(ingested 2026-04-28)_
+- [kumorfm-1](pages/kumorfm-1.md) — KumoRFM v1: first RFM; table-invariant encoder + RelGT + ICL module; PQL interface; explainability; 76.71 ICL / 81.14 fine-tuned AUROC on RelBench v1 _(ingested 2026-04-29)_
+- [kumorfm-2](pages/kumorfm-2.md) — KumoRFM-2: task-conditioned ICL + hierarchical 4-scale attention; first few-shot RFM to beat supervised SOTA on RelBench; scales to 500B+ rows _(ingested 2026-04-29)_
+- [attention-graphs-gt-interpretability](pages/attention-graphs-gt-interpretability.md) — Attention Graphs: aggregate attention across heads/layers to reveal GT information routing; DL models <4% structure recovery; same accuracy, divergent strategies _(ingested 2026-04-30)_
+
+### Entities
+- [relbench](pages/relbench.md) — Benchmark for Relational Deep Learning (v1: 7 datasets/30 tasks; v2: 11 datasets + autocomplete) _(ingested 2026-04-28)_
+- [tabular-learning](pages/tabular-learning.md) — Tabular learning: ICL/PFN paradigm; TabPFNv2/TabICL/CARTE comparison; GBDT vs. foundation models _(ingested 2026-04-29)_
+- [graph-neural-network](pages/graph-neural-network.md) — GNN: message-passing architecture family; GCN/GAT/GraphSAGE/GIN variants; WL expressiveness bound _(ingested 2026-04-29)_
+- [heterogeneous-graph-transformer](pages/heterogeneous-graph-transformer.md) — HGT: GT baseline for heterogeneous graphs; underperforms on RelBench _(ingested 2026-04-28)_
+
+### Concepts
+- [relational-deep-learning](pages/relational-deep-learning.md) — End-to-end learning from multi-table relational databases via graph representations _(ingested 2026-04-28)_
+- [training-table](pages/training-table.md) — (EntityID, seed\_time, label) task specification abstraction; prevents temporal leakage _(ingested 2026-04-29)_
+- [relational-entity-graph](pages/relational-entity-graph.md) — Heterogeneous temporal graph encoding of a relational database _(ingested 2026-04-28)_
+- [graph-transformer](pages/graph-transformer.md) — Transformer architecture for graph-structured data; row-level vs. cell-level tokenization tradeoff _(ingested 2026-04-28)_
+- [multi-element-tokenization](pages/multi-element-tokenization.md) — RelGT's 5-element node tokenization (features, type, hop, time, subgraph PE) _(ingested 2026-04-28)_
+- [subgraph-gnn-pe](pages/subgraph-gnn-pe.md) — Lightweight GNN PE with random resampled init; most critical RelGT component _(ingested 2026-04-28)_
+- [temporal-graph](pages/temporal-graph.md) — Time-ordered event-stream graph; unifies CTDG and DTDG paradigms _(ingested 2026-04-28)_
+- [relational-foundation-model](pages/relational-foundation-model.md) — Pretrained model generalizing across relational schemas/tasks; frontier of RDL _(ingested 2026-04-28)_
+- [relational-attention](pages/relational-attention.md) — RT's four-type attention (column/feature/neighbor/global) over cell tokens _(ingested 2026-04-28)_
+- [autocomplete-tasks](pages/autocomplete-tasks.md) — Predict missing attribute values in existing relational columns; new RelBench v2 task type _(ingested 2026-04-28)_
+- [positional-encoding](pages/positional-encoding.md) — PE/SE taxonomy (local/global/relative); RWSE vs LapPE tradeoffs; RDL adaptations _(ingested 2026-04-29)_
+
+### Analyses
+- [rfm-vs-llm](pages/rfm-vs-llm.md) — RFMs vs. LLMs: inputs/outputs, key differences, architectural split across RT/KumoRFM/Griffin _(query 2026-04-29)_
+- [rdl-software](pages/rdl-software.md) — Open-source RDL software: RelBench, TGM, PyTorch Frame, PyG, KumoRFM SDK _(query 2026-04-29)_
+- [rdl-bioinformatics](pages/rdl-bioinformatics.md) — RDL applied to bioinformatics/transcriptomics: relational schemas for scRNA-seq, spatial, perturbation, multi-omics, EHR _(query 2026-04-29)_
+- [rdl-explainability](pages/rdl-explainability.md) — Explainability in RDL: KumoRFM cohort analysis + cell-level saliency + LLM summaries; gaps in the literature _(query 2026-04-29)_
+- [rdl-reading-plan](pages/rdl-reading-plan.md) — Structured reading plan: critical path (4 papers) + architectures + foundation models + background _(query 2026-04-29)_
+- [reg-construction](pages/reg-construction.md) — How to build a Relational Entity Graph from a database; why it's temporal; the three hard properties _(query 2026-04-29)_
+- [rt-vs-relgt](pages/rt-vs-relgt.md) — RT vs. RelGT: cell-level/schema-agnostic/zero-shot vs. row-level/schema-specific/supervised _(query 2026-04-29)_
+- [rdl-motivation-applications](pages/rdl-motivation-applications.md) — Why RDL exists; task types and real-world domains from RelBench _(query 2026-04-29)_
+- [rdl-benchmark](pages/rdl-benchmark.md) — Scale of RDL datasets: RelBench v1/v2, TGB, Griffin pretraining, tabular baselines _(query 2026-04-29)_
+- [rdl-approaches](pages/rdl-approaches.md) — Main RDL approaches: HeteroGraphSAGE / RelGNN / RelGT / Griffin / RT and their tradeoffs _(query 2026-04-29)_

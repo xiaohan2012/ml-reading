@@ -1,0 +1,1373 @@
+
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2026_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+% \usepackage{xcolor}         % colors
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{subcaption}
+
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{xspace}
+\newcommand{\mr}[2]{\multirow{#1}{*}{#2}}
+\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+
+
+\usepackage{siunitx}  % For number formatting
+
+% Define colors for the heatmap
+\definecolor{lightred}{RGB}{255,204,203}
+\definecolor{mediumred}{RGB}{255,232,232}
+\definecolor{lightblue}{RGB}{230,245,250}
+\definecolor{mediumblue}{RGB}{212,241,249}
+
+\newcommand{\matthias}[1]{\textcolor{blue}{\textbf{Matthias:}{ #1}}}
+\newcommand{\vijay}[1]{\textcolor{purple}{\textbf{Vijay:}{ #1}}}
+\newcommand{\jure}[1]{\textcolor{purple}{\textbf{Jure}{ #1}}}
+\newcommand{\charilaos}[1]{{\color{orange} Charilaos: #1}}
+\newcommand{\RelGT}{\textsc{RelGT}\xspace}
+
+\title{Relational Graph Transformer}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+% \author{Antiquus S.~Hippocampus, Natalia Cerebro \& Amelie P. Amygdale \thanks{ Use footnote for providing further information
+% about author (webpage, alternative address)---\emph{not} for acknowledging
+% funding agencies.  Funding acknowledgements go at the end of the paper.} \\
+% Department of Computer Science\\
+% Cranberry-Lemon University\\
+% Pittsburgh, PA 15213, USA \\
+% \texttt{\{hippo,brain,jen\}@cs.cranberry-lemon.edu} \\
+% \And
+% Ji Q. Ren \& Yevgeny LeNet \\
+% Department of Computational Neuroscience \\
+% University of the Witwatersrand \\
+% Joburg, South Africa \\
+% \texttt{\{robot,net\}@wits.ac.za} \\
+% \AND
+% Coauthor \\
+% Affiliation \\
+% Address \\
+% \texttt{email}
+% }
+
+\author{
+	Vijay Prakash Dwivedi$^{1}$ \hspace{5pt}
+	Sri Jaladi$^{1}$ \hspace{5pt}
+	Yangyi Shen$^{1}$ \hspace{5pt}
+    Federico López$^{2}$
+	\\
+	\textbf{
+		Charilaos I. Kanatsoulis$^{1}$ \hspace{5pt}
+        Rishi Puri$^{3}$ \hspace{5pt}
+		Matthias Fey$^{2}$ \hspace{5pt}
+		Jure Leskovec$^{1,2}$%~\thanks{Corresponding author.}~$^1$		 
+	} 
+	\\
+	\hspace{2pt}$^1$Stanford University, ~~~ $^{2}$Kumo.AI, ~~~ $^{3}$NVIDIA  \\
+	\hspace{2pt}\texttt{\{vdwivedi,jure\}@cs.stanford.edu}
+}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+Relational Deep Learning (RDL) is a promising approach for building state-of-the-art predictive models on multi-table relational data by representing it as a heterogeneous temporal graph. However, commonly used Graph Neural Network models suffer from fundamental limitations in capturing complex structural patterns and long-range dependencies that are inherent in relational data. While Graph Transformers have emerged as powerful alternatives to GNNs on general graphs, applying them to relational entity graphs presents unique challenges: (i) Traditional positional encodings fail to generalize to massive, heterogeneous graphs; (ii) existing architectures cannot model the temporal dynamics and schema constraints of relational data; (iii) existing tokenization schemes lose critical structural information. 
+Here we introduce the Relational Graph Transformer (\RelGT), the first graph transformer architecture designed specifically for relational tables. \RelGT employs a novel multi-element tokenization strategy that decomposes each node into five components (features, type, hop distance, time, and local structure), enabling efficient encoding of heterogeneity, temporality, and topology without expensive precomputation. Our architecture combines local attention over sampled subgraphs with global attention to learnable centroids, incorporating both local and database-wide representations. Across 21 tasks from the RelBench benchmark, \RelGT consistently matches or outperforms GNN baselines by up to 18\%, establishing Graph Transformers as a powerful architecture for Relational Deep Learning\footnote{\url{https://github.com/snap-stanford/relgt}}.
+\end{abstract}
+
+
+\section{Introduction}
+\label{sec:intro}
+Real-world enterprise data, such as financial transactions, supply chain data, e-commerce records, product catalogs, customer interactions, and electronic health records, are predominantly stored in relational databases \citep{codd1970relational}. 
+These databases typically consist of multiple tables, each dedicated to different entity types, interconnected through primary-foreign key links. This abstraction underpins large quantities of complex, dynamically updated data that scale with business volume, storing potentially immense, unexploited knowledge \citep{fey2023relational}. 
+However, extracting predictive patterns from such data has traditionally depended on manual feature engineering within complex machine learning pipelines, requiring the transformation of multi-table records into flat feature vectors suitable for models like deep neural networks and decision trees~\citep{chen2016xgboost}.
+
+\textbf{Relational Deep Learning.} To enable end-to-end deep learning, relational databases can be represented as relational entity graphs \citep{fey2023relational}, where nodes correspond to entities and edges capture primary-foreign key relationships. This graph-based representation allows 
+Graph Neural Networks (GNNs) 
+% GNNs 
+to learn abstract features directly from the underlying data structure, effectively modeling complex dependencies for various downstream prediction tasks. With this setup, which is termed as Relational Deep Learning (RDL), GNNs reduce or eliminate the need for manual feature engineering and often lead to better performance \citep{robinson2025relbench}, at a fraction of the traditional model development cost.
+
+\textbf{Existing gaps.} Despite their effectiveness, standard message-passing GNN architectures \citep{gilmer2017neural, kipf2016semi, hamilton2017inductive, velickovic2017graph} have notable limitations, such as insufficient structural expressiveness \citep{xu2018powerful, morris2019weisfeiler, loukas2019graph} and restricted long-range modeling capabilities \citep{alon2020bottleneck}. 
+For example, consider an e-commerce database with three tables: \textit{customers}, \textit{transactions}, and \textit{products}, which can be represented as a relational entity graph as in Figure \ref{fig:overview}. 
+In a standard GNN, \textit{transactions} are always two hops away from each other, connected only through shared customers. This creates an information bottleneck: \textit{transaction}-to-\textit{transaction} patterns require multiple layers of message passing, while \textit{product} relationships remain entirely indirect in shallow networks. Furthermore, \textit{products} would never directly interact in a two-layer GNN \citep{robinson2025relbench}, as their messages must pass through both a transaction and a customer, highlighting the inherent structural constraints of GNN architectures that restrict capturing long-range dependencies.
+
+Graph Transformers (GTs) have emerged as more expressive models for graph learning, utilizing self-attention in the full graph to increase the range of information flow and additionally, incorporating positional and structural encodings (PEs/SEs) to better capture graph topology \citep{dwivedi2021generalization, ying2021transformers, rampavsek2022recipe}. 
+These advances have produced strong results across domains \citep{muller2023attending}, including foundation models for molecular graphs \citep{sypetkowski2024scalability}. However, many GT designs are limited to non-temporal, homogeneous, and small-scale graphs, assumptions that do not hold for relational entity graphs (REGs) \citep{fey2023relational}, which are typically (i) heterogeneous, with different tables representing distinct node types; (ii) temporal, with entities often associated with timestamps and requiring careful handling to prevent data leakage; (iii) large-scale, containing millions or more records across multiple interconnected tables. In particular, existing PEs often require precomputation, depend on graph size, and typically do not scale well to large, heterogeneous, or dynamic graphs \citep{canturk2023graph, kanatsoulis2025learning}. For instance, node2vec \citep{grover2016node2vec}, while more efficient than Laplacian or random walk PEs, can become prohibitively expensive and impractical to compute on massive graphs \citep{postuavaru2020instantembedding}.
+These limitations, along with the inability to capture the multi-dimensional complexity of relational structures, render current GTs
+% architectures 
+inadequate for relational databases.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/model.pdf}
+    \caption{Overview of the \RelGT architecture. First, the input relational entity graph (REG) is converted into tokens where each training seed node (such as the \textit{customer} node in this example) gets a fixed number of neighboring nodes, which are encoded with a multi-element tokenization strategy. These tokens are then passed through a Transformer network that builds both local and global representations, which are then fed to downstream prediction layers. 
+    }
+    \vspace{-7pt}
+    \label{fig:overview}
+    \vspace{-4pt}
+\end{figure}
+
+
+\textbf{Present work.} We introduce the \textbf{Relational Graph Transformer (\RelGT)}, the first Graph Transformer specifically designed for relational entity graphs. \RelGT addresses key gaps in existing methods by enabling effective graph representation learning within the RDL framework. It is a unified model that explicitly captures the temporality, heterogeneity, and structural complexity inherent to relational graphs. We summarize the architecture as follows (Figure \ref{fig:overview}):
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Tokenization:} We develop a multi-element tokenization scheme that converts each node into structurally enriched tokens. By sampling fixed-size subgraphs as local context windows and encoding each node's features, type, hop distance, time, and local structure, \RelGT captures fine-grained graph properties without expensive precomputation at the subgraph or graph level.
+    \item \textbf{Attention:} We develop a transformer network that combines local and global representations, adapting existing GT architectures \citep{rampavsek2022recipe}. The model extracts features from the local tokens while simultaneously attending to learnable global tokens that act as soft centroids, effectively balancing fine-grained structural modeling with database-wide patterns.
+    % \citep{kong2023goat}. 
+    \item \textbf{Validation:} We showcase \RelGT's effectiveness through a comprehensive evaluation on 21 tasks from RelBench \citep{robinson2025relbench}. \RelGT consistently outperforms GNN baselines, with gains of up to 18\%, establishing transformers as a powerful architecture for relational deep learning. Compared to HGT, 
+    % \citep{hu2020heterogeneous}, 
+    a strong GT baseline for heterogeneous graphs, \RelGT achieves better results without added computational cost, even when HGT uses Laplacian eigenvectors for PE.
+\end{itemize}
+
+
+
+
+\section{Background}
+
+\subsection{Relational Deep Learning}
+\label{sec:background-rdl}
+% Relational Deep Learning (RDL) is an end-to-end representation learning framework that converts relational databases into graph structures, enabling neural networks to be applied directly and eliminating the need for manual feature extraction in multi-table data pipelines \citep{fey2023relational}.
+Relational Deep Learning is an end-to-end learning framework that converts relational databases into graph structures, enabling direct use of GNNs for representation learning \citep{fey2023relational}.
+
+
+\textbf{Definitions.} Formally, we can define a \textbf{relational database} as the tuple $(T, R)$ comprising a collection of tables $T = \{T_1, \ldots, T_n\}$ connected through inter-table relationships $R \subseteq T \times T$. A link $(T_{\text{fkey}}, T_{\text{pkey}}) \in R$ denotes a foreign key in one table referencing a primary key in another. Each table contains entities (rows) $\{v_1, \ldots, v_{n_T}\}$, with each entity typically consisting of: (1) a unique identifier (primary key), (2) references to other entities (foreign keys), (3) entity-specific attributes, and (4) timestamp information indicating when the entity was created or modified.
+The structure of relational databases inherently forms a graph representation, called as \textbf{relational entity graphs} (REGs). 
+An REG is formally defined as a heterogeneous temporal graph $G = (V, E, \phi, \psi, \tau)$, where nodes $V$ represent entities from the database tables, edges $E$ represent primary-foreign key relationships, $\phi$ maps nodes to their respective types based on source tables, $\psi$ assigns relation types to edges, and $\tau$ captures the temporal dimension through timestamps \citep{fey2023relational}.
+
+\textbf{Challenges.} Relational entity graphs exhibit three distinctive properties that set them apart from conventional graph data. First, their structure is fundamentally schema-defined, with topology shaped by primary-foreign keys 
+% relationships
+rather than arbitrary connections, creating specific patterns of information flow that require specialized modeling approaches. Second, they incorporate temporal dynamics, as relational databases track events and interactions over time, necessitating techniques like time-aware neighbor sampling to prevent future information from leaking into past predictions. Third, they display multi-type heterogeneity, as different tables correspond to different entity types with diverse attribute schemas and data modalities, presenting challenges in creating unified representations that effectively integrate information across diverse node and edge types \citep{schlichtkrull2018modeling, wang2019heterogeneous}. These characteristics create both challenges and opportunities for GNN architectures, requiring models that can simultaneously address temporal evolution, heterogeneous information, and schema-constrained structures while processing potentially massive multi-table datasets.
+
+\subsection{RDL Methods}
+The baseline GNN approach introduced by \citep{robinson2025relbench} for RDL uses a heterogeneous GraphSAGE \citep{hamilton2017inductive} model with temporal-aware neighbor sampling, which demonstrates significant improvements compared to traditional tabular methods like LightGBM \citep{ke2017lightgbm} across most of the tasks in the RelBench benchmark. This baseline architecture leverages PyTorch Frame's multi-modal feature encoders \citep{hu2024pytorch} to transform diverse entity attributes into initial feature embeddings that serve as input to the GNN. %message-passing layers of the GNN.
+Several specialized architectures have been developed to address specific challenges in relational entity graphs. RelGNN \citep{chen2025relgnn} introduces composite message-passing with atomic routes to facilitate direct information exchange between neighbors of bridge and hub nodes, commonly found in relational structures. 
+Similarly, ContextGNN \citep{yuan2024contextgnn} employs a hybrid approach, combining pair-wise and two-tower representations, specifically optimized for recommendation tasks in RelBench. 
+
+Beyond pure GNN approaches, retrieval-augmented generation techniques \citep{wydmuch2024tackling} and hybrid tabular-GNN methods \citep{lachiover} have also demonstrated comparable or 
+% slightly 
+superior performance to the standard GNN baseline, while showing the use of LLMs \citep{grattafiori2024llama} and inference speedups, respectively. 
+These approaches confirm the effectiveness of graph, tabular, and LLM-based methods for downstream predictions in RDL. However, these methods typically optimize specific aspects of the problem, failing to incorporate broader advances from GTs in general. % graph learning.
+
+
+\subsection{Graph Transformers}
+Graph Transformers extend the self-attention mechanism from sequence modeling \citep{vaswani2017attention} to graph-structured data, offering powerful alternatives to traditional GNNs
+% such as Graph Attention Networks \citep{velickovic2017graph} and Graph Transformers 
+\citep{dwivedi2021generalization}. These models typically restrict attention to local neighborhoods, functioning as message-passing networks with attention-based aggregation \citep{joshi2020transformers, bronstein2021geometric}, while positional encodings are developed based on Laplacian eigenvectors \citep{dwivedi2020benchmarking}. Subsequent Graph Transformers incorporate global attention mechanisms, allowing all nodes to attend to one another \citep{ying2021transformers, mialon2021graphit, kreuzer2021rethinking}. This moves beyond the local neighborhood limitations of standard GNNs \citep{alon2020bottleneck}, albeit at the cost of significantly increased computational complexity.
+
+Modern GT architectures have improved the aforementioned early works by creating effective structural encodings and ensuring scalability to medium and large-scale graphs. For structural expressiveness of the node tokens, several positional and structural encoding methods have been developed \citep{dwivedi2022graph, canturk2023graph, limsign, huangstability, kanatsoulis2025learning} to inject the input graph topology. For scalability, various strategies have emerged including hierarchical clustering that coarsens graphs \citep{zhang2022hierarchical, zhu2023hierarchical}, sparse attention mechanisms that reduce computational cost \citep{rampavsek2022recipe, shirzad2023exphormer}, and neighborhood sampling techniques for processing massive graphs \citep{zhao2021gophormer, chen2022nagphormer, dwivedi2023graph}. Models like GraphGPS \citep{rampavsek2022recipe} combine these advances through hybrid local-global designs that maintain Transformers' global context advantages while ensuring practical efficiency when scaling to medium and large graph datasets. 
+However, these approaches exhibit several key limitations: they are largely confined to static graphs, and lack mechanisms to handle multiple node and edge types. While specialized Transformers for heterogeneous graphs exist \citep{hu2020heterogeneous, mao2023hinormer, zhu2023hierarchical, zhai2024actions}, integrating them, alongside other aforementioned methods, into the RDL pipeline remains challenging. This is primarily because adapting PEs
+% positional encodings 
+under precomputation constraints is difficult, compounded by the complexity of modeling large-scale, temporal, and heterogeneous relational entity graphs (REGs).
+
+
+
+\subsection{Addressing Challenges}
+While heterogeneous graph transformers \citep{hu2020heterogeneous} and temporal graph methods exist, no prior GT architecture effectively handles relational entity graphs where heterogeneity, temporality, and rich entity attributes co-occur within schema-defined database structures. Heterogeneous Temporal Graph Transformers like HTGformer \citep{wang2025htgformer} process heterogeneity and temporality through separate, iterative modules without graph positional encodings, a component now considered essential in modern GTs \citep{rampavsek2022recipe, muller2023attending}, and do not address the multimodal attributes or schema constraints inherent to relational databases \citep{hu2024pytorch}. Existing subgraph-based GTs \citep{zhao2021gophormer, chen2022nagphormer} focus on scalability for homogeneous graphs without mechanisms for heterogeneity or temporal dynamics.
+
+We address these limitations by recognizing that relational entity graphs require a rethinking on how their multimodal attributes and comprehensive graph structure are jointly processed. We systematically decompose the information coming from the REGs into specialized components that can be independently learned and composed, as we describe in detail in Section \ref{sec:method-relgt}. This principled design enables GTs to handle the unique combination of heterogeneity, temporality, and schema-defined structures in relational databases without expensive global precomputation.
+
+
+
+\section{\RelGT: Relational Graph Transformer}
+\label{sec:method-relgt}
+
+\subsection{Tokenization}
+\label{sec:method-tokenization}
+
+% \subsubsection{Existing Works} 
+Traditional Transformers in NLP represent text through tokens with two primary elements: (i) \textbf{token identifiers} (or features) that denotes the token from a vocabulary set and (ii) \textbf{positional encodings} that represent sequential structure \citep{vaswani2017attention}. For example, a token can correspond to a word and its positional encoding can correspond to its order in the input sentence. Similarly, Graph Transformers \textit{generally} adapt this two-element representation to graphs, where nodes are tokens with features, and graph positional encodings provide structural information. 
+% \citep{dwivedi2021generalization, kim2022pure, rampavsek2022recipe}. 
+Although this two-element approach works well for homogeneous static graphs, it becomes computationally inefficient when trying to encode multiple aspects of graph structural information for REGs. 
+
+In particular, capturing heterogeneity, temporality, and schema-defined structure (as defined in Section \ref{sec:background-rdl}) through a single positional encoding scheme would either require complex, multi-stage encoding or result in significant information loss about the rich relational context. 
+For instance, if we were to extend existing PEs for REGs, several practical challenges emerge: (i) standard Laplacian or random walk-based PEs would need significant modification to differentiate between multiple node types (\textit{e.g.}, customers vs. products vs. transactions), (ii) these encodings lack mechanisms to incorporate temporal dynamics critical for time-sensitive predictions (\textit{e.g.}, capturing that a user's recent purchases are more relevant than older ones), and (iii) the scale of relational databases makes global PE computation in REGs prohibitively expensive. With millions of records across tables, precomputation would only be feasible on small subgraphs, resulting in incomplete structural context.
+
+
+\subsubsection{Proposed Approach}
+\RelGT overcomes these limitations through a multi-element token representation approach, without any computational overhead concerning the dependency on the number of nodes in the input REG. Rather than trying to compress all structural information into a single positional encoding, we decompose the token representation into distinct elements that explicitly model different aspects of relational data. This decoupled
+design allows each component to capture a specific characteristic of REGs: node features represent entity attributes, node types encode table-based heterogeneity, hop distance preserves relative distances among nodes in a local context, time encodings capture temporal dynamics, and GNN-based positional encodings preserve local graph structure. 
+
+
+\textbf{Sampling and token elements.} The tokenization process in \RelGT converts a REG $G = (V, E, \phi, \psi, \tau)$ into sets of tokens suitable for processing by the Transformer network.
+Specifically, as shown in Fig \ref{fig:tokenization}, for each training seed node $v_i \in V$, we first sample a fixed set of $K$ neighboring nodes $v_j$ from within 2 hops of the local neighborhood using temporal-aware sampling\footnote{When fewer than $K$ neighbors are available within 2 hops, we use randomly selected nodes as fallback tokens to maintain the fixed size $K$, ensuring consistent computational complexity regardless of local structure.}, ensuring that only nodes with timestamps $\tau(v_j) \leq \tau(v_i)$ are included to prevent temporal leakage. Each token in this set is represented by a \textbf{5-tuple}: $(x_{v_j}, \phi(v_j), p(v_i, v_j), \tau(v_j) - \tau(v_i), \text{GNN-PE}_{v_j})$, where, (i) node feature ($x_{v_j}$) denotes the raw features derived from entity attributes in the database, (ii) node type ($\phi(v_j)$) is a categorical identifier corresponding to the entity's originating table, (iii) relative hop distance ($p(v_i, v_j)$) captures the structural distance between the seed node $v_i$ and the neighbor node $v_j$, (iv) relative time ($\tau(v_j) - \tau(v_i)$) represents the temporal difference between the neighbor and seed node, and (v) finally, subgraph based PE ($\text{GNN-PE}_{v_j}$) provides a graph PE for each node within the sampled subgraph, generated by applying a lightweight GNN to the subgraph's adjacency 
+matrix 
+with random node feature initialization \citep{sato2021random, kanatsoulis2025learning}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/tokenization.pdf}
+    \caption{The tokenization procedure. A temporal-aware subgraph sampling step extracts a fixed set of local tokens for each training seed node, denoted by the node in black. Each token incorporates its respective graph structure information, which are element-wise transformed to a common embedding space and combined to form the effective token representation to be fed to the Transformer network.}
+    \label{fig:tokenization}
+    \vspace{-10pt}
+\end{figure}
+
+\textbf{Encoders.} Each element in the 5-tuple is processed by a specialized encoder before being combined into the final token representation, as illustrated in Figure \ref{fig:tokenization}.
+
+\textit{1. \textbf{Node Feature Encoder.}} The node features $x_{v_j}$, representing the columnar attributes of the node $v_j$ in REG (which corresponds to a table row in a database), are encoded into a $d$-dimensional embedding.
+Each modality, such as numerical, categorical, multi-categorical, text, and image data, is encoded separately using modality-specific encoders following \citep{hu2024pytorch}, and the resulting representations are then aggregated into a unified $d$-dimensional embedding.
+\begin{equation}
+  h_{\text{feat}}(v_j) = \text{MultiModalEncoder}(x_{v_j}) \in \mathbb{R}^d \label{eq:feat_enc_sep}
+\end{equation}
+where $\text{MultiModalEncoder}(\cdot)$ is unified feature encoder adapted from \citep{hu2024pytorch}.
+
+\textit{2. \textbf{Node Type Encoder.}}
+The node type encoding steps converts each table-specific entity type $\phi(v_j)$ to a $d$-dimensional representation, incorporating the heterogeneous information from the input data.
+\begin{equation}
+  h_{\text{type}}(v_j) = W_{\text{type}} \cdot \text{onehot}(\phi(v_j)) \in \mathbb{R}^d \label{eq:type_enc_sep}
+\end{equation}
+where $\phi(v_j)$ is the node type of $v_j$, $W_{\text{type}} \in \mathbb{R}^{d \times |T|}$ is the learnable weight matrix, $|T|$ is the number of node types, and $\text{onehot}(\cdot)$ is the one-hot encoding function.
+
+\textit{3. \textbf{Hop Encoder.}}
+The relative hop distance $p(v_i, v_j)$, that captures the structural proximity between the seed node $v_i$ and a neighbor node $v_j$, is encoded into a $d$-dimensional embedding as:
+\begin{equation}
+  h_{\text{hop}}(v_i, v_j) = W_{\text{hop}} \cdot \text{onehot}(p(v_i, v_j)) \in \mathbb{R}^d \label{eq:hop_enc_sep}
+\end{equation}
+with $p(v_i, v_j)$ being the relative hop distance between seed node $v_i$ and neighbor node $v_j$, and $W_{\text{hop}} \in \mathbb{R}^{d \times h_{\text{max}}}$ the learnable matrix mapping hop distances (up to $h_{\text{max}}$).
+
+\textit{4. \textbf{Time Encoder.}}
+The time encoder linearly transforms the time difference $\tau(v_j) - \tau(v_i)$ between a neighbor node $v_j$ and the seed node $v_i$:
+\begin{equation}
+  h_{\text{time}}(v_i, v_j) = W_{\text{time}} \cdot (\tau(v_j) - \tau(v_i)) \in \mathbb{R}^d \label{eq:time_enc_sep}
+\end{equation}
+where $\tau(v_j) - \tau(v_i)$ is the relative time difference, and $W_{\text{time}} \in \mathbb{R}^{d \times 1}$ are learnable parameters.
+
+\textit{5. \textbf{Subgraph PE Encoder.}}
+Finally, for capturing local graph structure that can otherwise not be represented by other token elements, we apply a light-weight GNN to the subgraph. This GNN encoder effectively preserves important structural relationships, such as complex cycles and quasi-cliques between entities \citep{kanatsoulis2024counting}, as well as parent-child relationships (e.g., a \textit{product} node within the 
+local 
+subgraph corresponding to specific \textit{transactions}), and can be written as:
+\begin{equation}
+  h_{\text{pe}}(v_j) = \text{GNN}(A_{\text{local}}, Z_{\text{random}})_j \in \mathbb{R}^d \label{eq:pe_enc_sep}
+\end{equation}
+where $\text{GNN}(\cdot, \cdot)_j$ is a light-weight GNN applied to the local subgraph yielding the encoding for node $v_j$, $A_{\text{local}} \in \mathbb{R}^{K \times K}$ is the adjacency matrix of the sampled subgraph of $K$ nodes, and $Z_{\text{random}} \in \mathbb{R}^{K \times d_{\text{init}}}$ are randomly initialized node features for the GNN (with $d_{\text{init}}$ as the initial feature dimension). 
+
+One key advantage of using random node features in this GNN encoder is that it breaks structural symmetries between the subgraph topology and node attributes, thereby increasing the expressiveness of GNN layers \citep{sato2021random}. However, a fixed random initialization would destroy permutation equivariance, a critical property for generalization. To address this,
+% challenge, 
+we resample $Z_{\text{random}}$ independently at every training step. This `stochastic initialization' approach can be viewed as a relaxed version of the learnable PE method described in \cite{kanatsoulis2025learning}, thus approximately preserving permutation equivariance while retaining the expressivity gains afforded by the randomization.
+
+
+
+At last, the effective token representation is formed by combining all encoded elements:
+\begin{equation}
+    {h}_{\text{token}}(v_j) = O \cdot \left[{h}_{\text{feat}}(v_j) \, || \, {h}_{\text{type}}(v_j) \, || \, {h}_{\text{hop}}(v_i, v_j) \, || \, {h}_{\text{time}}(v_i, v_j) \, || \, {h}_{\text{pe}}(v_j)\right]
+\end{equation}
+where $||$ denotes the concatenation of the individual encoder outputs, and $O \in \mathbb{R}^{5d \times d}$ is a learnable matrix to mix the embeddings.
+This multi-element approach provides a comprehensive token representation that explicitly captures node features, type information, structural position, temporal dynamics, and local topology without requiring expensive computation on the graph structure.
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.85\linewidth]{figures/transformer-network.pdf}
+    \caption{The Transformer network which processes the input tokens by first building local representations using the local tokens, then incorporating global context by attending to centroids that are dynamically updated during training. The final node representations combine both local structural details and global database context, enabling effective prediction across downstream tasks.
+    }
+    \label{fig:transformer-network}
+\end{figure}
+
+\subsection{Transformer Network}
+\label{sec:method-transformer}
+The Transformer network in \RelGT, shown in Fig. \ref{fig:transformer-network}, processes the tokenized relational entity graph using a combination of local and global attention mechanisms, following the successful designs 
+% components 
+used in modern GTs \citep{rampavsek2022recipe, wu2023sgformer, kong2023goat, dwivedi2023graph}. 
+
+\textbf{Local module.} The local attention mechanism allows each seed node to attend to its $K$ local tokens selected during tokenization, capturing the fine-grained relationships defined by the database schema. This 
+mechanism 
+is different from a GNN used in RDL \citep{robinson2025relbench} in two key aspects: self-attention is used as the message-passing scheme and the attention is all-pair, \textit{i.e.}, all nodes in the local \textit{K} set attend to each other. This is implemented using an \textit{L} layer Transformer 
+% network
+\citep{vaswani2017attention} and provides a broader structural coverage compared to a baseline GNN \citep{robinson2025relbench}. A practical application of this improvement can be seen in the e-commerce example introduced in Sec. \ref{sec:intro}, where the proposed full-attention mechanism can directly connect seemingly unrelated products by identifying relationships through shared transactions or customer behaviors. This capability enables the model to capture subtle associations, such as customers frequently purchasing unexpected combinations of items.
+The local node representation $h_{\text{local}}(v_i)$ is obtained as:
+\begin{equation}
+    h_{\text{local}}(v_i) = \text{Pool}( \text{FFN}(\text{Attention}(v_i, \{v_j\}_{j=1}^{K}))_L )
+\end{equation}
+where, $L$ denotes the layers, FFN and Attention are standard components in a Transformer \citep{vaswani2017attention}, and Pool denotes the aggregation of $\{v_j\}_{j=1}^{K}$ and $v_i$ using a learnable linear combination.
+
+\textbf{Global module.} The global attention mechanism enables each seed node to attend to a set of $B$ global tokens representing centroids of all nodes in the graph, conceptually and is adapted from prior works \citep{kong2023goat, dwivedi2023graph}. These centroids are updated during training using an Exponential Moving Average (EMA) K-Means algorithm applied to seed node features in each mini-batch, providing a broader contextual view beyond the local neighborhood. 
+The global representation is formulated as:
+\begin{equation}
+    h_{\text{global}}(v_i) = \text{Attention}(v_i, \{c_b\}_{b=1}^{B})
+\end{equation}
+The final output representation of each node $v_i$ is obtained by combining local and global embeddings:
+\begin{equation}
+    h_{\text{output}}(v_i) = \text{FFN} ([h_{\text{local}}(v_i) \, || \, h_{\text{global}}(v_i)])
+\end{equation}
+with FFN being a feed forward network.
+The components of the Transformer in all stages follow standard instantiations with normalization and residual connections. 
+
+
+
+For downstream prediction, the combined representation of the seed node is passed through a task-specific prediction head. The model is trained end-to-end using suitable task specific loss functions. By leveraging multi-element token representations within a hybrid local-global Transformer architecture, \RelGT effectively addresses the challenges of heterogeneity, temporal dynamics, and schema-defined structures inherent in relational entity graphs. 
+
+\section{Experiments}
+\label{sec:experiments}
+
+\RelGT is evaluated on the recently introduced RDL Benchmark
+% Relational Deep Learning Benchmark 
+(RelBench) \citep{robinson2025relbench}. RelBench consists of 7 datasets from diverse relational database domains, including e-commerce, clinical records, social networks, and sports, among others. These datasets are curated from their respective source domains and consist a wide range of sizes, from 1.3K to 5.4M records in the training set for the prediction tasks, with a total of 47M training records. 
+For each dataset, multiple predictive tasks are defined, such as predicting a user's engagement with an advertisement within the next four days or determining whether a clinical trial will achieve its primary outcome within the next year. In total, RelBench has 30 tasks across the 7 datasets, covering entity classification, entity regression, and recommendation.
+For our evaluation, we focus on 21 tasks on entity classification and regression
+\footnote{We exclude recommendation tasks in this work since they involve specific considerations, such as identifying target nodes \citep{you2021identity} or using pair-wise learning architectures \citep{yuan2024contextgnn}. Details in Sec. \ref{sec:appendix-relbench}}.
+
+\subsection{Setup and Baselines}
+\label{sec:experiments-setup}
+We implement \RelGT within the RDL pipeline \citep{robinson2025relbench} by replacing the original GNN component, while preserving the learning mechanisms, database loaders, and task evaluators.
+The model has between 10-20M parameters, and we use a learning rate of $1e-4$. For tasks with fewer than 1M training nodes, we tune the number of layers $L \in {1, 4, 8}$ and use dropout rates of ${0.3, 0.4, 0.5}$. For tasks with more than 1M training nodes, we fix the number of layers to $L = 4$ due to compute budgets. 
+For the sampling during the token preparation stage, we use $K = 300$ local neighbors and set $B = 4096$ as the number of tokens for global centroids. For smaller datasets (under one million training nodes), we use a batch size of 256 to ensure sufficient training steps. For larger datasets, we use a batch size of 1024.
+We do not perform exhaustive hyperparameter tuning; rather, our goal is to showcase the benefits of using \RelGT in place of GNNs within the RDL framework. As shown in our ablation of the multi-element tokenization and global module in \RelGT (Tab. ~\ref{tab:ablation-summary-encoders}), and context size (Fig. \ref{fig:plots-hgt-runtime-and-k}), careful tuning may further improve performance across different tasks.
+
+In addition to the HeteroGNN baseline used in RDL, we report results for two variants of the Heterogeneous Graph Transformer (HGT) \citep{hu2020heterogeneous} to highlight the advantages of \RelGT over existing GT models. Notably, many GTs, such as GraphGPS \citep{rampavsek2022recipe}, are not directly applicable to heterogeneous graphs. Therefore, we adopt HGT and an enhanced version, HGT+PE, which incorporates Laplacian PE. These positional encodings are computed on the sampled subgraphs rather than the entire graph. Additional 
+% implementation 
+details are included in Appendix \ref{sec:hgt-baseline}.
+
+
+
+
+
+\subsection{Results and Discussion}
+\label{sec:experiments-discussion}
+
+
+
+\begin{table}
+\centering
+\caption{Test set results on the entity regression and classification tasks in RelBench. Best values are in \textbf{bold}. RDL: HeteroGNN baseline \citep{robinson2025relbench}, HGT: Heterogeneous GT \citep{hu2020heterogeneous}, PE: Laplacian PE. Relative gains are expressed as percentage improvement over RDL baseline. }
+\vspace{-3pt}
+\begin{subtable}{.49\textwidth}
+    \centering
+    \caption{MAE for entity regression. Lower is better}
+\label{tab:main-results-regression}
+\vspace{10pt}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccccc}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \makecell{\textbf{RDL}} & \makecell{\textbf{HGT}} & \makecell{\textbf{HGT}\\\textbf{+PE}} & \makecell{\textbf{RelGT}\\ \textbf{(ours)}} & \makecell{\textbf{\% Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{1}{*}{\texttt{rel-f1}} 
+ & \multirow{1}{*}{\texttt{driver-position}} & 4.022 & 4.2263 & 4.3921 & \textbf{3.9170} & \cellcolor{lightblue}2.61 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-avito}}
+ & \multirow{1}{*}{\texttt{ad-ctr}} & 0.041 & 0.0462 & 0.0483 & \textbf{0.0345} & \cellcolor{mediumblue}15.85 \\
+
+
+\midrule
+\multirow{1}{*}{\texttt{rel-event}}
+ & \multirow{1}{*}{\texttt{user-attendance}} & 0.258 & 0.2635 & 0.2611 & \textbf{0.2502} & \cellcolor{lightblue}2.79 \\
+
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}}
+ & \multirow{1}{*}{\texttt{study-adverse}} & 44.473 & 45.1692 & \textbf{42.6484} & 43.9923 & \cellcolor{lightblue}1.08 \\
+ & \multirow{1}{*}{\texttt{site-success}} & 0.400 & 0.4428 & 0.4396 & \textbf{0.3263} & \cellcolor{mediumblue}18.43 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-amazon}}
+ & \multirow{1}{*}{\texttt{user-ltv}} & 14.313 & 15.4120 & 15.8643 & \textbf{14.2665} & \cellcolor{lightblue}0.32 \\
+ & \multirow{1}{*}{\texttt{item-ltv}} & 50.053 & 55.8683 & 55.8493 & \textbf{48.9222} & \cellcolor{lightblue}2.26 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-stack}}
+ & \multirow{1}{*}{\texttt{post-votes}} & \textbf{0.065} & 0.0679 & 0.0680 & \textbf{0.0654} & \cellcolor{mediumred}-0.62 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-hm}}
+ & \multirow{1}{*}{\texttt{item-sales}} & 0.056 & 0.0641 & 0.0639 & \textbf{0.0536} & \cellcolor{mediumblue}4.29 \\
+
+\bottomrule
+\end{tabular}
+}
+\end{subtable}%
+\hfill  
+\begin{subtable}{.49\textwidth}
+    \centering
+    \caption{AUC for entity classification. Higher is better.}
+\label{tab:main-results-classification}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccccc}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \makecell{\textbf{RDL}} & \makecell{\textbf{HGT}} & \makecell{\textbf{HGT}\\\textbf{+PE}} & \makecell{\textbf{RelGT}\\ \textbf{(ours)}} & \makecell{\textbf{\% Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{2}{*}{\texttt{rel-f1}} 
+ & \multirow{1}{*}{\texttt{driver-dnf}} & 0.7262 & 0.7077 & 0.7117  & \textbf{0.7587} & \cellcolor{lightblue}4.48 \\
+ & \multirow{1}{*}{\texttt{driver-top3}} & 0.7554 & 0.7075 & 0.7627 & \textbf{0.8352} & \cellcolor{mediumblue}10.56 \\
+ 
+\midrule
+
+\multirow{2}{*}{\texttt{rel-avito}}
+ & \multirow{1}{*}{\texttt{user-clicks}} & 0.6590 & 0.6376 & 0.6457 & \textbf{0.6830} & \cellcolor{lightblue}3.64 \\
+ & \multirow{1}{*}{\texttt{user-visits}} & 0.6620 & 0.6432 & 0.6495 & \textbf{0.6678} & \cellcolor{lightblue}0.88 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-event}}
+ & \multirow{1}{*}{\texttt{user-repeat}} & \textbf{0.7689} & 0.6496 & 0.6536 & 0.7609 & \cellcolor{mediumred}-1.04 \\
+ & \multirow{1}{*}{\texttt{user-ignore}} & 0.8162 & \textbf{0.8247} & 0.8161 & 0.8157 & \cellcolor{mediumred}-0.06 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-trial}}
+ & \multirow{1}{*}{\texttt{study-outcome}} & 0.6860 & 0.5837  & 0.5921 & \textbf{0.6861} & \cellcolor{lightblue}0.01 \\
+
+ \midrule
+\multirow{2}{*}{\texttt{rel-amazon}}
+ & \multirow{1}{*}{\texttt{user-churn}} & \textbf{0.7042} & 0.6643 & 0.6619 & 0.7039 & \cellcolor{mediumred}-0.04 \\
+ & \multirow{1}{*}{\texttt{item-churn}} & \textbf{0.8281} & 0.7797 & 0.7803 & 0.8255 & \cellcolor{mediumred}-0.31\\
+
+ \midrule
+\multirow{2}{*}{\texttt{rel-stack}}
+ & \multirow{1}{*}{\texttt{user-engagement}}  & 0.9021 & 0.8847  & 0.8817 & \textbf{0.9053} & \cellcolor{lightblue}0.35 \\
+ & \multirow{1}{*}{\texttt{user-badge}} & \textbf{0.8986} & 0.8608 & 0.8566 & 0.8632 & \cellcolor{mediumred}-3.94 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-hm}}
+ & \multirow{1}{*}{\texttt{user-churn}} & \textbf{0.6988} & 0.6695 & 0.6569 & 0.6927 &  \cellcolor{mediumred}-0.87 \\
+
+\bottomrule
+\end{tabular}
+}
+\end{subtable}
+\vspace{-10pt}
+\label{tab:main-results}
+\end{table}
+
+
+
+
+
+\textbf{\RelGT improves over GNN in RDL.} 
+% Table \ref{tab:main-results-classification} and \ref{tab:main-results-regression}
+The experimental results in Tables \ref{tab:main-results-regression} and \ref{tab:main-results-classification} demonstrate that \RelGT consistently matches or outperforms the standard GNN baseline used in RDL \citep{robinson2025relbench} across multiple datasets and tasks. Using a ±1\% threshold to assess comparable performance, \RelGT shows: (i) clear improvements (more than a 1\% relative gain) on 10 tasks, (ii) comparable results (within ±1\%) on 9 tasks, and (iii) competitive but lower performance (more than a 1\% relative loss) on 2 tasks. We observe the largest improvements in \texttt{rel-trial} \texttt{site-success} (18.43\%), \texttt{rel-avito} \texttt{ad-ctr} (15.85\%), and \texttt{rel-f1} \texttt{driver-top3} (10.56\%), while on \texttt{rel-stack} \texttt{user-badge}, \RelGT performs below the RDL baseline by a margin of -3.94\%. For all other tasks, \RelGT consistently improves or matches the performance of the baseline GNN. We attribute the overall performance improvement to two key factors: (i) the broader structural coverage enabled by \RelGT's attention mechanisms as described in Section \ref{sec:method-transformer}, and (ii) the fine-grained encodings employed in our tokenization scheme, which are further studied as follows and presented in Table \ref{tab:ablation-summary-encoders}.
+
+\textbf{Subgraph GNN PE is critical in \RelGT.} In Table \ref{tab:ablation-summary-encoders}, we highlight the importance of several components in \RelGT by conducting ablation studies. We remove one component at a time while preserving all others, and report the relative performance drop compared to the full \RelGT model. Our results show that removing the subgraph GNN (PE), which encodes local subgraph structure (Section \ref{sec:method-tokenization}), %and are initialized with random node features \citep{sato2021random, kanatsoulis2025learning}, 
+leads to consistent performance degradation across all tasks. This component proves critical for disambiguating parent-child relationships when full-attention is applied, thanks to the random node features initialization \citep{sato2021random, kanatsoulis2025learning}. 
+For instance, without the GNN (PE), \textit{products} belonging to specific \textit{transactions} (Figure \ref{fig:overview}) cannot be effectively captured, even when other encodings remain.
+
+
+\textbf{Global module can bring gains depending on the task.} 
+% Table \ref{tab:ablation-global-module}
+In the same Table \ref{tab:ablation-summary-encoders}, our results of removing the global attention to the learnable centroids (Section \ref{sec:method-transformer}) reveal task-dependent patterns that align with the findings reported in \citep{kong2023goat, dwivedi2023graph}. For some tasks, such as \texttt{rel-trial} \texttt{site-success}, removing the attention to the centroids tokens leads to a substantial performance drop (-19.08\%), indicating that the global database-wide context provides crucial information beyond the local neighborhood. However, for certain tasks such as \texttt{rel-avito} \texttt{user-clicks}, removing the global module actually improves performance (7.79\% relative gain), suggesting that for some prediction targets, local information is sufficient, and the global context might introduce noise. These mixed results highlight the complementary nature of local and global information in relational graphs, with the latter being optional depending on the task. % at hand.
+
+
+\textbf{Ablation of other encodings.} The remaining ablations in Table \ref{tab:ablation-summary-encoders} reveal mixed results across different components. While removing explicit fine-grained encodings (node type, hop distance, and relative time) degrades performance on some tasks, it improves performance on others. For tasks with specific temporal dependencies (detailed in Sec. \ref{sec:appendix-relbench}), our current 
+temporal 
+encodings may inadvertently introduce noise. Similarly, for node type and hop distance encodings, their information might already be partially captured by other model components. Despite these variations, the full \RelGT model still shows consistently superior results when averaged across all tasks. However, our findings suggest that \RelGT's scores could be further enhanced by careful tuning of these encoding components based on their task-specific importance. 
+In particular, additional gains can be achieved by incorporating more effective temporal encodings 
+% methods
+\citep{clauset2012persistence, huang2024utg, jiang2023exploring}.
+
+
+\begin{table}[t]
+\centering
+\caption{Relative drop (\%) in performance in \RelGT after removing a model component. Negative scores suggest the component is critical in \RelGT, and vice-versa. Full results in Table \ref{tab:ablation-full-encoders}.}
+\label{tab:ablation-summary-encoders}
+\scalebox{0.8}{
+\begin{tabular}{l
+l
+>{\columncolor{white}}S[table-format=-2.2]
+>{\columncolor{white}}S[table-format=-2.2]
+>{\columncolor{white}}S[table-format=-2.2]
+>{\columncolor{white}}S[table-format=-2.2]
+>{\columncolor{white}}S[table-format=-2.2]}
+\toprule
+\textbf{Dataset} & \textbf{Task} & {\makecell{\textbf{No Global}\\\textbf{Module}}} & {\makecell{\textbf{No GNN}\\ \textbf{PE}}} & {\makecell{\textbf{No Node}\\ \textbf{Type}}} & {\makecell{\textbf{No Hop} \\ \textbf{Distance}}} & {\makecell{\textbf{No Relative}\\ \textbf{Time}}} \\
+
+\midrule
+\texttt{rel-avito} & \texttt{ad-ctr} & 
+\cellcolor{lightred}-6.00 & 
+\cellcolor{mediumred}-1.14 & 
+\cellcolor{lightred}-7.14 & 
+\cellcolor{mediumred}-3.43 & 
+\cellcolor{lightred}-9.14 \\
+
+\texttt{rel-avito} & \texttt{user-clicks} & 
+\cellcolor{mediumblue}7.85 & 
+\cellcolor{lightred}-15.15 & 
+\cellcolor{lightblue}5.01 & 
+\cellcolor{lightblue}5.77 & 
+\cellcolor{mediumblue}8.37 \\
+
+\texttt{rel-avito} & \texttt{user-visits} & 
+\cellcolor{white}-0.35 & 
+\cellcolor{mediumred}-2.38 & 
+\cellcolor{white}-0.11 & 
+\cellcolor{white}0.39 & 
+\cellcolor{white}-0.75 \\
+
+\texttt{rel-event} & \texttt{user-ignore} & 
+\cellcolor{mediumred}-1.30 & 
+\cellcolor{white}0.12 & 
+\cellcolor{white}-0.11 & 
+\cellcolor{white}0.66 & 
+\cellcolor{white}-0.09 \\
+
+\texttt{rel-trial} & \texttt{study-outcome} & 
+\cellcolor{mediumred}-2.14 & 
+\cellcolor{mediumred}-1.72 & 
+\cellcolor{lightblue}3.74 & 
+\cellcolor{white}-0.43 & 
+\cellcolor{lightblue}2.48 \\
+
+\texttt{rel-trial} & \texttt{site-success} & 
+\cellcolor{lightred}-19.01 & 
+\cellcolor{lightred}-9.17 & 
+\cellcolor{mediumred}-2.88 & 
+\cellcolor{lightred}-21.49 & 
+\cellcolor{white}-0.71 \\
+
+\texttt{rel-amazon} & \texttt{user-churn} & 
+\cellcolor{white}-0.64 & 
+\cellcolor{white}-0.78 & 
+\cellcolor{white}0.16 & 
+\cellcolor{white}0.06 & 
+\cellcolor{mediumred}-2.20 \\
+
+\texttt{rel-hm} & \texttt{item-sales} & 
+\cellcolor{lightred}-9.33 & 
+\cellcolor{lightred}-17.35 & 
+\cellcolor{lightred}-12.69 & 
+\cellcolor{white}0.93 & 
+\cellcolor{lightred}-77.24 \\
+\midrule
+& \textbf{Average} & 
+\cellcolor{mediumred}-3.87 & 
+\cellcolor{lightred}-5.95 & 
+\cellcolor{mediumred}-1.75 & 
+\cellcolor{mediumred}-2.19 & 
+\cellcolor{lightred}-9.91 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+
+
+
+\begin{figure}[t]
+\vspace{-8pt}
+    \centering
+    \begin{subfigure}[b]{0.46\linewidth}
+     % \vspace{4cm}
+        \centering
+        \includegraphics[width=\linewidth]{figures/hgt_vs_hgtpe_comparison_main_paper.pdf}
+        \label{fig:runtime-hgt}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.46\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/k-plot-1.pdf}
+        \label{fig:k-ablation}
+    \end{subfigure}
+    \vspace{-15pt}
+    \caption{\textbf{\textit{Left:}} Epoch runtime comparison of HGT \citep{hu2020heterogeneous} and HGT+PE, with Laplacian PE (see Figure \ref{fig:runtime-hgt} for all tasks). The red portion shows the additional time consumed by the precomputation of Laplacian PE against the base HGT time (blue). \textbf{\textit{Right:}} Ablation for different $K$ values as the local context size in \textsc{RelGT}. Results using $K = 300$ serve as the baseline (100\% performance), with $K = 100$ and $K = 500$ runs measured as \% of performance relative to $K=300$.}
+    \label{fig:plots-hgt-runtime-and-k}
+\end{figure}
+
+
+
+
+
+\textbf{HGT, a GT baseline, underperforms with significant 
+% computational 
+overhead.} As shown in Tables \ref{tab:main-results-regression} and \ref{tab:main-results-classification}, HGT \citep{hu2020heterogeneous} underperforms compared to the HeteroGNN baseline of RDL \citep{robinson2025relbench} across most tasks, with only two exceptions: \texttt{rel-trial} \texttt{study-adverse} and \texttt{rel-event} \texttt{user-ignore}. Notably, the integration of Laplacian PEs in HGT improves performance in 8 (of 21) tasks. Moreover, as illustrated in Figure~\ref{fig:plots-hgt-runtime-and-k}, the computational overhead required for precomputing the Laplacian PEs substantially increases per-epoch runtime across various tasks. 
+These empirical findings clearly reveal the difficulties of directly applying existing GT architectures to relational entity graphs, emphasizing the importance and need for our contributions with \RelGT.
+
+
+\textbf{Local context size \textit{K}.} In our main \RelGT experiments, we set the local context size at $300$ nodes (Section~\ref{sec:method-tokenization}), however, we study its variability in Figure~\ref{fig:plots-hgt-runtime-and-k} for context sizes $K \in \{100,300,500\}$. Although $K=300$ generally produces the best results, optimal values vary across specific tasks. For instance, \texttt{rel-avito} \texttt{ad-ctr} benefits from a larger context size, whereas \texttt{rel-trial} \texttt{study-outcome} achieves better performance with a smaller context window. These findings suggest that \RelGT's performance could be further enhanced by task-specific tuning of the context size, allowing for better model expressivity based on the structural characteristics of each dataset.
+
+\section{Conclusion}
+In this work, we introduce the first Graph Transformer designed specifically for relational entity graphs: the Relational Graph Transformer. It addresses key challenges faced by existing models, such as incorporating heterogeneity, temporality, and comprehensive structural modeling within a unified GT framework. \RelGT represents nodes as multi-element tokens enriched with fine-grained graph context and combines local attention over sampled subgraph tokens with global attention to learnable centroids, enabling effective representation learning on relational data. Experiments on the RelBench benchmark show that \RelGT consistently outperforms GNN and GT baselines across multiple tasks. Moreover, our analysis highlights the critical role of subgraph-based positional encodings as a lightweight and effective alternative to traditional graph positional encodings. This work establishes \RelGT as a powerful architecture for relational deep learning and opens new avenues for advancing and scaling such architectures toward foundation models tailored for relational data.
+
+
+\subsubsection*{Acknowledgments}
+We thank Eric Chen, Shenyang Huang and Fang Wu for their helpful feedbacks and members of the Stanford SNAP group for their suggestions during the project.
+We also gratefully acknowledge the support of NSF under Nos. OAC-1835598 (CINES), CCF-1918940 (Expeditions), DMS-2327709 (IHBEM), IIS-2403318 (III); Stanford Data Applications Initiative, Wu Tsai Neurosciences Institute, Stanford Institute for Human-Centered AI, Chan Zuckerberg Initiative, Amazon, Genentech, Hitachi, and SAP. The content is solely the responsibility of the authors and does not necessarily represent the official views of the funding entities.
+
+
+
+\bibliography{neurips_2025}
+\bibliographystyle{iclr2026_conference}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\appendix
+
+\section{Appendix}
+% Technical appendices with additional results, figures, graphs and proofs may be submitted with the paper submission before the full submission deadline (see above), or as a separate PDF in the ZIP file below before the supplementary material deadline. There is no page limit for the technical appendices.
+
+
+\subsection{Benchmark Details}
+\label{sec:appendix-relbench}
+
+
+\begin{table}[t]
+  \centering
+  \caption{{Dataset and task statistics from RelBench used for our evaluation.}  }
+  \label{tab:relbench-stats}
+  \setlength{\tabcolsep}{8pt}
+  \tiny
+  \begin{tabular}{lllrrrrr}
+    \toprule
+      \mr{2}{\textbf{Dataset}} & \mr{2}{\textbf{Task}} & \mr{2}{\textbf{Task type}} & \mc{3}{c}{\textbf{\#Rows of training table}} & \#Unique & \%train/test  \\
+      & & & Train & Validation & Test & Entities & Entity Overlap   \\
+    \midrule
+      \mr{6}{\texttt{rel-amazon}}
+      & \texttt{user-churn} & classification & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0  \\
+      & \texttt{item-churn} & classification & 2,559,264 & 177,689 & 166,842 & 416,352 & 93.1   \\
+      & \texttt{user-ltv} & regression  & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0  \\
+      & \texttt{item-ltv} & regression   & 2,707,679 & 166,978 & 178,334 & 427,537 & 93.5 \\
+    \midrule
+    \mr{4}{\texttt{rel-avito}}
+    & \texttt{user-clicks} & classification & 59,454 & 21,183 & 47,996 & 66,449 & 45.3 \\
+    & \texttt{user-visits} & classification & 86,619 & 29,979 & 36,129 & 63,405 & 64.6 \\
+    & \texttt{ad-ctr} & regression & 5,100 & 1,766 & 1,816 & 4,997 & 59.8 \\
+    \midrule
+    \mr{3}{\texttt{rel-event}}
+    & \texttt{user-repeat} & classification & 3,842 & 268 & 246 &1,514 & 11.5\\
+    & \texttt{user-ignore} & classification & 19,239 & 4,185 & 4,010 &9,799 & 21.1\\
+    & \texttt{user-attendance} & regression & 19,261 & 2,014 & 2,006 &9,694 & 14.6\\
+    \midrule
+    \mr{3}{\texttt{rel-f1}}
+      & \texttt{driver-dnf} & classification & 11,411 & 566 & 702 & 821 & 50.0  \\
+      & \texttt{driver-top3} & classification  & 1,353 & 588 & 726 & 134 & 50.0  \\
+      & \texttt{driver-position} & regression & 7,453 & 499 & 760 & 826 & 44.6  \\
+    \midrule
+    \mr{3}{\texttt{rel-hm}}
+      & \texttt{user-churn} & classification  & 3,871,410 & 76,556 & 74,575 & 1,002,984 & 89.7  \\
+      & \texttt{item-sales} & regression & 5,488,184 & 105,542 & 105,542 & 105,542 & 100.0  \\
+    \midrule
+    \mr{5}{\texttt{rel-stack}}
+      & \texttt{user-engagement} & classification & 1,360,850 & 85,838 & 88,137 & 88,137 & 97.4  \\
+      & \texttt{user-badge} & classification  & 3,386,276 & 247,398 & 255,360 & 255,360 & 96.9  \\
+      & \texttt{post-votes} & regression  & 2,453,921 & 156,216 & 160,903 & 160,903 & 97.1  \\
+    \midrule
+    \mr{5}{\texttt{rel-trial}}
+      & \texttt{study-outcome} & classification  & 11,994 & 960 & 825 & 13,779 & 0.0  \\
+      & \texttt{study-adverse} & regression  & 43,335 & 3,596 & 3,098 & 50,029 & 0.0  \\
+      & \texttt{site-success} & regression  & 151,407 & 19,740 & 22,617 & 129,542 & 42.0  \\
+   \bottomrule
+  \end{tabular}
+\end{table}
+
+
+
+
+In this section, we include the details on the datasets and the tasks in RelBench \citep{robinson2025relbench} which we use for our evaluation. RelBench consists of 7 datasets from diverse relational database domains, including e-commerce, clinical records, social networks, and sports, among others. These datasets are curated from their respective source domains and consist a wide range of sizes, from 1.3K to 5.4M records in the training set for the prediction tasks, with a total of 47M training records. 
+For each dataset, multiple predictive tasks are defined, such as predicting a user's engagement with an advertisement within the next four days or determining whether a clinical trial will achieve its primary outcome within the next year. In total, RelBench has 30 tasks across the 7 datasets, covering entity classification, entity regression, and recommendation.
+For our evaluation, we focus on 21 tasks on entity classification and regression as \RelGT primarily serves as a node representation learning model in RDL. We exclude recommendation tasks in this work since they involve specific considerations, such as identifying target nodes \citep{you2021identity} or using pair-wise learning architectures \citep{yuan2024contextgnn} and using \RelGT trivially in RDL is sub-optimal. We detail the dataset and task statistics in Table \ref{tab:relbench-stats}. 
+
+\subsubsection{Datasets}
+
+
+\paragraph{\texttt{rel-amazon}.} The Amazon E-commerce dataset consists of product details, user information, and review interactions from Amazon's platform, including metadata like pricing and categories, along with review ratings and content.
+
+\paragraph{\texttt{rel-avito}.} Avito's marketplace dataset contains search queries, advertisement characteristics, and contextual information from this major online trading platform that facilitates transactions across various categories including real estate and vehicles.
+
+\paragraph{\texttt{rel-event}.} The Event Recommendation dataset from Hangtime mobile app tracks users' social planning, capturing interactions, event details, demographic data, and social connections to reveal how relationships impact user behavior.
+
+\paragraph{\texttt{rel-f1}.} The F1 dataset provides comprehensive Formula 1 racing information since 1950, documenting drivers, constructors, manufacturers, and circuits with detailed records of race results, standings, and specific data on various racing sessions and pit stops.
+
+\paragraph{\texttt{rel-hm}.} H\&M's dataset contains customer-product interactions from their e-commerce platform, featuring customer demographics, product descriptions, and purchase histories.
+
+\paragraph{\texttt{rel-stack}.} The Stack Exchange dataset documents activity from this network of Q\&A websites, including user biographies, posts, comments, edits, votes, and question relationships where users earn reputation through contributions.
+
+\paragraph{\texttt{rel-trial}.} The clinical trial dataset from the AACT initiative has study protocols and outcomes, containing trial designs, participant information, intervention details, and results metrics, serving as a key resource for medical research.
+
+\subsubsection{Tasks}
+
+The following entity classification and regression tasks are defined in RelBench for the above datasets.
+
+\begin{enumerate}
+\item \textbf{\texttt{rel-amazon}}
+  \begin{enumerate}
+    \item \texttt{\texttt{user-churn}}: Predict whether a user will discontinue reviewing products within the next three months.
+    \item \texttt{\texttt{item-churn}}: Predict if a product will have no reviews in the next three months.
+    \item \texttt{\texttt{user-ltv}}: Estimate the total monetary value of merchandise in dolloar that a user will purchase and review within the next three months.
+    \item \texttt{\texttt{item-ltv}}: Estimate the total monetary value of purchases and reviews a product will receive during the next three months.
+  \end{enumerate}
+
+\item \textbf{\texttt{rel-avito}}
+  \begin{enumerate}
+    \item \texttt{\texttt{user-visits}}: Predict if a user will engage with several (advertisements) ads within the upcoming four days.
+    \item \texttt{\texttt{user-clicks}}: Predict whether a user will interact with multiple ads through clicking within the upcoming four days.
+    \item \texttt{\texttt{ad-ctr}}: Estimate the interaction probability for an ad, assuming it receives an interaction within four days.
+  \end{enumerate}
+
+\item \textbf{\texttt{rel-event}}
+  \begin{enumerate}
+    \item \texttt{\texttt{user-attendance}}: Estimate the number of of events a user will confirm attendance to (RSVP yes or maybe) within the upcoming seven days.
+    \item \texttt{\texttt{user-repeat}}: Predict whether a user will join an event (RSVP yes or maybe) within the upcoming seven days, provided they attended in an event during the previous fourteen days.
+    \item \texttt{\texttt{user-ignore}}: Predict whether a user will disregard or ignore more than two events invitations within the upcoming seven days.
+  \end{enumerate}
+
+\item \textbf{\texttt{rel-f1}}
+  \begin{enumerate}
+    \item \texttt{\texttt{driver-dnf}}: Predict if a driver will not finish a race within the upcoming month.
+    \item \texttt{\texttt{driver-top3}}: Determine if a driver will achieve a top-three qualifying position in a race within the upcoming month.
+    \item \texttt{\texttt{driver-position}}: Estimate a driver's average finishing placement across all races in the upcoming two months.
+  \end{enumerate}
+
+\item \textbf{\texttt{rel-hm}}
+  \begin{enumerate}
+    \item \texttt{\texttt{user-churn}}: Predict whether a customer will not perform any transactions in the upcoming week.
+    \item \texttt{\texttt{item-sales}}: Estimate total revenue generated by a product in the upcoming week.
+  \end{enumerate}
+
+\item \textbf{\texttt{rel-stack}}
+  \begin{enumerate}
+    \item \texttt{\texttt{user-engagement}}: Predict whether a user will contribute through voting, posting, or commenting within the upcoming three months.
+    \item \texttt{\texttt{user-badge}}: Predict whether a user will secure a new badge within the upcoming three months.
+    \item \texttt{\texttt{post-votes}}: Estimate the number of votes a user's post will accumulate over the upcoming three months.
+  \end{enumerate}
+
+\item \textbf{\texttt{rel-trial}}
+  \begin{enumerate}
+    \item \texttt{\texttt{study-outcome}}: Predict whether a clinical trial will achieve its principal outcome within the upcoming year.
+    \item \texttt{\texttt{study-adverse}}: Estimate the number of patients who will experience significant adverse effects or mortality in a clinical trial over the upcoming year.
+    \item \texttt{\texttt{site-success}}: Estimate the success rate of a clinical trial site in the upcoming year.
+  \end{enumerate}
+\end{enumerate}
+
+
+
+\subsection{Node initialization for Subgraph GNN PE in \RelGT}
+As described in Section \ref{sec:method-tokenization}, we employ a lightweight GNN PE to capture local graph structures that cannot be represented by other elements of the token, particularly the parent-child relationships among nodes in the local subgraph. 
+The GNN is implemented as:
+\begin{equation}
+  h_{\text{pe}}(v_j) = \text{GNN}(A_{\text{local}}, Z_{\text{random}})_j \in \mathbb{R}^d \label{eq:pe_enc_sep_app}
+\end{equation}
+where $\text{GNN}(\cdot, \cdot)_j$ is a lightweight GNN applied to the local subgraph, yielding the encoding for node $v_j$. Here, $A_{\text{local}} \in \mathbb{R}^{K \times K}$ represents the adjacency matrix of the sampled subgraph containing $K$ nodes, and $Z_{\text{random}} \in \mathbb{R}^{K \times d_{\text{init}}}$ denotes randomly initialized node features for the GNN (with $d_{\text{init}}$ as the initial feature dimension). In \RelGT, we set $d_{\text{init}}=1$.
+
+The randomly initialized node features ($Z_{\text{random}}$) provide enhanced properties as discussed in Section \ref{sec:method-tokenization}. We investigate the alternative approach of using Laplacian PE ($Z_{\text{LapPE}}$) computed over the subgraph instead of random initialization and report these results in Table \ref{tab:ablation-relgt-gnnpe}. For these results, we utilized a positional encoding dimension size of $4$. Our findings indicate that $Z_{\text{LapPE}}$ consistently underperforms compared to $Z_{\text{random}}$, while also introducing additional computational overhead ranging from 1.02$\times$ to 3.38$\times$ across the 8 selected tasks in our study. This shows the challenges of using existing PEs such as Laplacian PE in relational entity graphs and signify the use of GNN PE as part of \RelGT's tokenization strategy.
+
+
+\begin{table}[t]
+\centering
+\small
+\caption{Study of node initialization in Subgraph GNN PE. Relative drop is expressed as percentage drop of using $Z_{\text{LapPE}}$ vs. $Z_{\text{random}}$ and runtime ratio compares the time for $Z_{\text{LapPE}}$ vs. $Z_{\text{random}}$. }
+\label{tab:ablation-relgt-gnnpe}
+\scalebox{0.8}{
+\begin{tabular}{llccccccc}
+\toprule
+\multicolumn{3}{c}{} & \multicolumn{2}{c}{\textbf{Performance}} & \multicolumn{1}{c}{} & \multicolumn{2}{c}{\textbf{Epoch time (m)}} & \multicolumn{1}{c}{}\\
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{MAE $\downarrow$} & 
+\makecell{\textbf{$Z_{\text{random}}$}} & 
+\makecell{\textbf{$Z_{\text{LapPE}}$}} & 
+\makecell{\textbf{\% Rel}\\ \textbf{Drop}} &
+\makecell{\textbf{$Z_{\text{random}}$}} & 
+\makecell{\textbf{$Z_{\text{LapPE}}$}} & 
+\makecell{\textbf{Runtime}\\ \textbf{Ratio}}
+\\
+\midrule
+
+
+\multirow{2}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{ad-ctr}} & Test & \textbf{0.035} & 0.0369 & \cellcolor{lightred}-5.43 & 0.76 & 2.57 & 3.38 \\ & & Val & 0.0314 & 0.0314 &  &  &  &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{site-success}} & Test & \textbf{0.326} & 0.3452 & \cellcolor{lightred}-5.89 & 32.88 & 36.09 & 1.1 \\ & & Val & 0.359 & 0.3683 &  &  &  &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-hm}} & \multirow{2}{*}{\texttt{item-sales}} & Test & \textbf{0.0536} & 0.0573 & \cellcolor{lightred}-6.9 & 49.26 & 53.8 & 1.09 \\ & & Val & 0.0627 & 0.0667 &  &  &  &  \\
+
+
+\bottomrule
+\toprule
+
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{AUC $\uparrow$} & 
+\makecell{\textbf{$Z_{\text{random}}$}} & 
+\makecell{\textbf{$Z_{\text{LapPE}}$}} & 
+\makecell{\textbf{\% Rel}\\ \textbf{Drop}} &
+\makecell{\textbf{$Z_{\text{random}}$}} & 
+\makecell{\textbf{$Z_{\text{LapPE}}$}} & 
+\makecell{\textbf{Runtime}\\ \textbf{Ratio}}
+\\
+\midrule
+
+\multirow{4}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{user-clicks}} & Test & \textbf{0.607} & 0.583 & \cellcolor{mediumred}-3.95 & 6.42 & 7.43 & 1.16 \\ & & Val & 0.656 & 0.6564 &  &  &  &  \\ & \multirow{2}{*}{\texttt{user-visits}} & Test & \textbf{0.664} & 0.6626 & \cellcolor{mediumred}-0.21 & 9.26 & 10.50 & 1.13 \\ & & Val & 0.699 & 0.7002 &  &  &  &  \\
+
+
+\midrule
+\multirow{2}{*}{\texttt{rel-event}} & \multirow{2}{*}{\texttt{user-ignore}} & Test & \textbf{0.8} & 0.7988 & \cellcolor{mediumred}-0.15 & 1.85 & 2.77 & 1.5 \\ & & Val & 0.881 & 0.8916 &  &  &  &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{study-outcome}} & Test & \textbf{0.674} & 0.6532 & \cellcolor{mediumred}-3.09 & 1.41 & 1.52 & 1.08 \\ & & Val & 0.689 & 0.6719 &  &  &  &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-amazon}} & \multirow{2}{*}{\texttt{user-churn}} & Test & 0.7039 & \textbf{0.7044} & \cellcolor{lightblue}0.07 & 168.00 & 170.55 & 1.02 \\ & & Val & 0.7036 & 0.7036 &  &  &  &  \\
+
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\subsection{Learnable Spatio-Temporal PE}
+In this section, we explore a learnable spatio-temporal positional encoding (PE) for \RelGT. Instead of using the relative time encoder (Eqn. \ref{eq:time_enc_sep}), we use the `relative time' term to initialize nodes in the Subgraph GNN PE, where relative time $\tau(v_j) - \tau(v_i)$ denotes the temporal difference between neighbor node $v_j$ and seed node $v_i$. This approach repurposes the Subgraph GNN PE as a learnable spatio-temporal PE, which is defined as:
+\begin{equation}
+  h_{\text{stpe}}(v_j) = \text{GNN}(A_{\text{local}}, Z_{\text{relative\_time}})_j \in \mathbb{R}^d \label{eq:spatio_temporal_pe_enc_sep}
+\end{equation}
+where $z_{j, \text{relative\_time}} = \tau(v_j) - \tau(v_i)$. The token representation, then, becomes:
+\begin{equation}
+    {h}_{\text{token}}(v_j) = O \cdot \left[{h}_{\text{feat}}(v_j) \, || \, {h}_{\text{type}}(v_j) \, || \, {h}_{\text{hop}}(v_i, v_j) \, || \,  {h}_{\text{stpe}}(v_j)\right]
+    \label{eq:spatio_temporal_pe_token_combine}
+\end{equation}
+where $||$ denotes the concatenation of the individual encoder outputs, and $O \in \mathbb{R}^{4d \times d}$ is a learnable matrix to mix the embeddings.
+
+Table \ref{tab:spatio-temporal-pe} presents our evaluation results over three regression and five classification tasks in RelBench. Across all tasks, replacing the original temporal encoder and subgraph GNN PE encoder with the Spatio-Temporal PE leads to a consistent performance decline in \RelGT.
+
+
+\begin{table}[!t]
+\centering
+\small
+\caption{Performance comparison of \RelGT (Full) with the Spatio-Temporal PE (Eqns. \ref{eq:spatio_temporal_pe_enc_sep} - \ref{eq:spatio_temporal_pe_token_combine}). Negative scores suggest performance drop with the spatio-temporal PE in \RelGT.
+}
+\label{tab:spatio-temporal-pe}
+\scalebox{0.8}{
+\begin{tabular}{llcc|cc}
+\toprule
+\textbf{Dataset} & 
+\textbf{Task} & 
+\textbf{MAE $\downarrow$} & 
+\makecell{\textbf{RelGT}\\ \textbf{(Full)}} & \makecell{\textbf{RelGT}\\\textbf{(Spatio-Temporal PE)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Diff}} \\
+\midrule
+
+\multirow{2}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{ad-ctr}} & Test & \textbf{0.0345} & 0.0355 & \cellcolor{mediumred}-2.90 \\ & & Val & 0.0314 & 0.0315 &   \\
+
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{site-success}} & Test & \textbf{0.3262} & 0.3554 & \cellcolor{lightred}-8.95 \\ & & Val & 0.3593 & 0.3883  &    \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-hm}} & \multirow{2}{*}{\texttt{item-sales}} & Test & \textbf{0.0536} & 0.0630 & \cellcolor{lightred}-17.54 \\ & & Val & 0.0627 & 0.0718\\
+
+\bottomrule
+\toprule
+\textbf{Dataset} & 
+\textbf{Task } & 
+\textbf{AUC $\uparrow$} & 
+\makecell{\textbf{RelGT}\\ \textbf{(Full)}} & \makecell{\textbf{RelGT}\\\textbf{(Spatio-Temporal PE)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Diff}} \\
+
+\midrule
+
+\multirow{4}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{user-clicks}} & Test & \textbf{0.6830} & 0.6465 & \cellcolor{lightred}-5.34 \\ & & Val & 0.6649 & 0.6519   \\ & \multirow{2}{*}{\texttt{user-visits}} & Test & \textbf{0.6678} & 0.6641 & \cellcolor{mediumred}-0.55 \\ & & Val & 0.7024 & 0.7017 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-event}} & \multirow{2}{*}{\texttt{user-ignore}} & Test & \textbf{0.8157} & \textbf{0.8152} & \cellcolor{mediumred}-0.06 \\ & & Val & 0.8868 & 0.8870 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{study-outcome}} & Test & \textbf{0.6861} & 0.6537 & \cellcolor{mediumred}-4.72 \\ & & Val & 0.6678 &  0.6757 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-amazon}} & \multirow{2}{*}{\texttt{user-churn}} & Test & \textbf{0.7039} &  0.7036 & \cellcolor{mediumred}-0.04 \\ & & Val & 0.7036 &  0.7037 \\
+
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+
+
+\begin{table}[!t]
+    \centering
+    \caption{\RelGT results on entity classification tasks in RelBench compared with Griffin \citep{wang2025griffin}. AUC is the performance metric. Higher is better.}
+\label{tab:comparison-griffin}
+\scalebox{0.8}{
+\begin{tabular}{llccc}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \makecell{\textbf{Griffin}} & \makecell{\textbf{RelGT}\\ \textbf{(ours)}} & \makecell{\textbf{\% Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{2}{*}{\texttt{rel-f1}} 
+ & \multirow{1}{*}{\texttt{driver-dnf}} &   0.745 & \textbf{0.7587} & \cellcolor{lightblue}1.84 \\
+ & \multirow{1}{*}{\texttt{driver-top3}} & 0.825 & \textbf{0.8352} & \cellcolor{lightblue}1.24 \\
+ 
+\midrule
+
+\multirow{2}{*}{\texttt{rel-avito}}
+ & \multirow{1}{*}{\texttt{user-clicks}} & 0.630  & \textbf{0.6830} & \cellcolor{mediumblue}8.41 \\
+ & \multirow{1}{*}{\texttt{user-visits}} &  0.650 & \textbf{0.6678} & \cellcolor{lightblue}2.74 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-trial}}
+ & \multirow{1}{*}{\texttt{study-outcome}} &  \textbf{0.689} & 0.6861 & \cellcolor{mediumred}-0.42 \\
+
+ \midrule
+\multirow{2}{*}{\texttt{rel-amazon}}
+ & \multirow{1}{*}{\texttt{user-churn}}  & 0.700 & \textbf{0.7039} & \cellcolor{lightblue}0.56 \\
+ & \multirow{1}{*}{\texttt{item-churn}} & 0.811 & \textbf{0.8255} & \cellcolor{lightblue}1.79\\
+
+ \midrule
+\multirow{2}{*}{\texttt{rel-stack}}
+ & \multirow{1}{*}{\texttt{user-engagement}}  & 0.898 & \textbf{0.9053} & \cellcolor{lightblue}0.81 \\
+ & \multirow{1}{*}{\texttt{user-badge}} &   \textbf{0.870} & 0.8632 & \cellcolor{mediumred}-0.78 \\
+
+\midrule
+\multirow{1}{*}{\texttt{rel-hm}}
+ & \multirow{1}{*}{\texttt{user-churn}}  &  0.683 & \textbf{0.6927} &  \cellcolor{lightblue}1.42 \\
+
+\bottomrule
+\end{tabular}
+\vspace{-10pt}}
+\end{table}
+
+
+
+\subsection{Comparison with Griffin}
+In this section, we compare \RelGT with Griffin \citep{wang2025griffin}, which is a GNN based relational foundation model that integrates unified feature encoders, cross-attention and hierarchical message passing to process relational entity graphs from diverse domains. We report the results in Table \ref{tab:comparison-griffin} for 10 entity classification tasks in RelBench, where Griffin is finetuned on each task following the same procedure used to train \RelGT. RelGT outperforms Griffin on 8 out of 10 tasks with relative gains of up to 8.41\%, demonstrating the advantages of a Graph Transformer backbone for processing relational entity graphs.
+
+
+
+
+
+
+\subsection{HGT Baseline}
+\label{sec:hgt-baseline}
+
+In the main experiments (Section~\ref{sec:experiments}), we use the Heterogeneous Graph Transformer (HGT)~\citep{hu2020heterogeneous} as a graph transformer (GT) baseline, and report results for two variants to demonstrate the advantages of \RelGT over existing GT models. Specifically, we consider the standard HGT model and an enhanced version, HGT+PE, which incorporates Laplacian positional encodings (LapPE). These positional encodings are computed on sampled subgraphs rather than the full graph.
+
+For implementation, we use the \texttt{HGTConv} layer from PyTorch Geometric~\citep{fey2019fast} and integrate it into the RDL pipeline~\citep{robinson2025relbench} by replacing the default GNN module. Both variants use 4 attention heads and 2 layers, similar to the configuration of the GNN module in RDL, with residual connections and layer normalization applied between layers. 
+For the HGT+PE variant, we use LapPE of dimension 4 for all tasks, except for \texttt{rel-amazon} \texttt{item-ltv} and \texttt{rel-hm} \texttt{item-sales}, where we use dimension 2. Notably, because the relational entity graphs are heterogeneous, the Laplacian positional encodings is computed multiple times for each node type, unlike the original homogeneous setting for which LapPE was designed~\citep{dwivedi2020benchmarking}.
+
+In addition to the main results in Table~\ref{tab:main-results}, we report per-epoch runtimes in Figure~\ref{fig:runtime-hgt} and Table~\ref{tab:runtime-hgt}. We observe a significant computational overhead from precomputing Laplacian positional encodings, with slowdowns ranging from 1.8× to 8.62×, highlighting the challenge of directly applying existing graph PE techniques \textit{as is} to relational entity graphs, and signifying the contributions of \RelGT.
+
+
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/hgt_vs_hgtpe_comparison_full.pdf}
+    \caption{Runtime Comparison of HGT and HGT+PE baseline. Adding the Laplacian Positional Encoding increases computational overhead, with penalties on average training time per epoch.
+    The overhead for PE reaches up to 761\% relative to the training time of HGT on the same dataset.
+    }
+    \label{fig:runtime-hgt}
+\end{figure}
+
+\begin{table}[!t]
+\centering
+\caption{Relative performance drop (\%) when position encoding (PE) is removed from HGT+PE models and average training time per epoch of HGT and HGT+PE. Negative scores suggest the PE is critical, and vice-versa. HGT+PE consistently requires more training time per epoch compared to HGT without PE across all datasets.}
+\scalebox{0.76}{
+\begin{tabular}{ll>{\columncolor{white}}S[table-format=-2.2]cc}
+\toprule
+\textbf{Dataset} & \textbf{Task} & {\makecell{\textbf{No PE}}} & \textbf{HGT(s)} & \textbf{HGT+PE(s)} \\
+\midrule
+% Regression tasks (from Table 1) - Lower is better
+\texttt{rel-f1} & \texttt{driver-position} & \cellcolor{lightblue}1.79 & 1.47 & 4.56 \\
+\texttt{rel-avito} & \texttt{ad-ctr} & \cellcolor{lightblue}10.73 & 1.63 & 4.00 \\
+\texttt{rel-event} & \texttt{user-attendance} & \cellcolor{lightred}-2.85 & 4.36 & 37.57 \\
+\texttt{rel-trial} & \texttt{study-adverse} & \cellcolor{lightred}-2.03 & 9.72 & 15.02 \\
+\texttt{rel-trial} & \texttt{site-success} & \cellcolor{lightblue}1.29 & 45.73 & 63.41 \\
+\texttt{rel-amazon} & \texttt{user-ltv} & \cellcolor{lightblue}3.45 & 73.59 & 106.21 \\
+\texttt{rel-amazon} & \texttt{item-ltv} & \cellcolor{white}-0.93 & 73.68 & 110.33 \\
+\texttt{rel-stack} & \texttt{post-votes} & \cellcolor{white}0.15 & 191.23 & 528.25 \\
+\texttt{rel-hm} & \texttt{item-sales} & \cellcolor{lightred}-2.18 & 94.66 & 135.05 \\
+% Classification tasks (from Table 2) - Higher is better
+\texttt{rel-f1} & \texttt{driver-dnf} & \cellcolor{white}0.46 & 2.54 & 6.84 \\
+\texttt{rel-f1} & \texttt{driver-top3} & \cellcolor{lightred}-23.39 & 0.38 & 1.38 \\
+\texttt{rel-avito} & \texttt{user-clicks} & \cellcolor{lightblue}3.08 & 11.09 & 24.66 \\
+\texttt{rel-avito} & \texttt{user-visits} & \cellcolor{lightred}-1.24 & 17.16 & 40.07 \\
+\texttt{rel-event} & \texttt{user-repeat} & \cellcolor{lightblue}1.93 & 1.35 & 5.16 \\
+\texttt{rel-event} & \texttt{user-ignore} & \cellcolor{lightblue}2.29 & 4.49 & 651.10 \\
+\texttt{rel-trial} & \texttt{study-outcome} & \cellcolor{white}-0.21 & 4.09 & 4.83 \\
+\texttt{rel-amazon} & \texttt{user-churn} & \cellcolor{white}0.29 & 78.56 & 115.53 \\
+\texttt{rel-amazon} & \texttt{item-churn} & \cellcolor{white}-0.20 & 75.51 & 152.06 \\
+\texttt{rel-stack} & \texttt{user-engagement} & \cellcolor{white}0.52 & 175.16 & 356.07 \\
+\texttt{rel-stack} & \texttt{user-badge} & \cellcolor{lightblue}1.57 & 153.68 & 212.21 \\
+\texttt{rel-hm} & \texttt{user-churn} & \cellcolor{lightblue}4.34 & 77.73 & 127.04 \\
+\midrule
+& \textbf{Average} & \cellcolor{white}-0.05 & 52.28 & 128.64\\
+\bottomrule
+\end{tabular}
+}
+\label{tab:runtime-hgt}
+\end{table}
+
+
+
+
+
+
+\subsection{Detailed Results}
+In Table \ref{tab:small-data-hyperparameters}, we report the full results of different configurations we tuned for \RelGT, particularly on the smaller datasets with lesser than a million training nodes. Table \ref{tab:ablation-full-encoders} provides the full scores for the \RelGT component study in Table \ref{tab:ablation-summary-encoders}, while Table \ref{tab:ablation-neighbors-k} provides the supporting results for Figure \ref{fig:plots-hgt-runtime-and-k}. Finally, we provide the elaborated version of the Tables \ref{tab:main-results-regression} and \ref{tab:main-results-classification} in Tables \ref{tab:main-results-regression-full} and \ref{tab:main-results-classification-full}, respectively.
+
+
+\subsection{Computational Complexity and Resource Information.}
+\label{sec:resource}
+\RelGT has $O(K^2 \cdot d)$ complexity for local attention and $O(K \cdot B \cdot d)$ for global attention per node, where $K$ is local context size, $B$ is number of global centroids, and $d$ is hidden dimension. We implement \RelGT using PyTorch framework \citep{paszke2019pytorch}, PyTorch Geometric framework \citep{fey2019fast} and adapt the codebase of relational deep learning \citep{robinson2025relbench} \url{https://github.com/snap-stanford/relbench}. All our experiments are conducted on an NVIDIA A100 GPU server with 8 GPU nodes.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{\RelGT results using $L \in {1,4,8}$ and dropout $\in {0.3,0.4,0.5}$ for the smaller datasets with less than a million training nodes.}
+\label{tab:small-data-hyperparameters}
+\scalebox{0.7}{
+\begin{tabular}{llccccccccccc}
+\toprule
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{MAE $\downarrow$} & 
+\makecell{\textbf{L1}\\ \textbf{0.3}} & 
+\makecell{\textbf{L1}\\ \textbf{0.4}} & 
+\makecell{\textbf{L1}\\ \textbf{0.5}} & 
+\makecell{\textbf{L4}\\ \textbf{0.3}} & 
+\makecell{\textbf{L4}\\ \textbf{0.4}} & 
+\makecell{\textbf{L4}\\ \textbf{0.5}} & 
+\makecell{\textbf{L8}\\ \textbf{0.3}} & 
+\makecell{\textbf{L8}\\ \textbf{0.4}} & 
+\makecell{\textbf{L8}\\ \textbf{0.5}}  
+\\
+\midrule
+
+
+ \multirow{2}{*}{\texttt{rel-f1}} & \multirow{2}{*}{\texttt{driver-position} (7k)} & Test & 4.942 & 5.6431 & \textbf{3.917} & 4.6316 & 4.0851 & 4.0042 & 5.5273 & 5.5569 & 4.6085 \\ & & Val & 3.1897 & 3.1817 & 3.3257 & 3.1046 & 3.3352 & 3.1276 & 3.1589 & 3.2907 & 3.1843 \\
+ 
+
+\midrule
+\multirow{2}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{ad-ctr} (5k)} & Test & 0.0358 & 0.0352 & \textbf{0.0345} & 0.035 & 0.0366 & 0.038 & 0.0354 & 0.0358 & 0.0356 \\ & & Val & 0.0322 & 0.0313 & 0.0314 & 0.0314 & 0.0322 & 0.0335 & 0.0317 & 0.0322 & 0.0324 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-event}} & \multirow{2}{*}{\texttt{user-attendance} (19k)} & Test & 0.2635 & 0.2595 & 0.2635 & \textbf{0.2502} & 0.2543 & 0.2584 & 0.2635 & 0.2637 & 0.2635 \\ & & Val & 0.2618 & 0.2558 & 0.2618 & 0.2548 & 0.2534 & 0.253 & 0.2618 & 0.2599 & 0.2618 \\
+
+\midrule
+\multirow{4}{*}{\texttt{rel-trial}} 
+ & \multirow{2}{*}{\texttt{study-adverse} (43k)} & Test & 44.8553 & 44.2260 & 44.848 & 44.8893 & 44.4310 & \textbf{43.9923} & 44.2245 & 44.5878 & 44.5013 \\
+ & & Val & 46.3538 & 46.3193 & 46.2056 & 46.1031 & 45.9498 & 46.2148 & 46.1804 & 46.1381 & 46.4332 \\
+ & \multirow{2}{*}{\texttt{site-success} (151k)} & Test & 0.3490 & 0.3652 & 0.3830 & 0.4019 & 0.386 & \textbf{0.3262} & 0.3783 & 0.3431 & 0.3644 \\
+ & & Val & 0.3493 & 0.3455 & 0.3550 & 0.3771 & 0.392 & 0.3593 & 0.3848 & 0.3643 & 0.3669 \\
+
+
+\bottomrule
+\toprule
+
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{AUC $\uparrow$} & 
+\makecell{\textbf{L1}\\ \textbf{0.3}} & 
+\makecell{\textbf{L1}\\ \textbf{0.4}} & 
+\makecell{\textbf{L1}\\ \textbf{0.5}} & 
+\makecell{\textbf{L4}\\ \textbf{0.3}} & 
+\makecell{\textbf{L4}\\ \textbf{0.4}} & 
+\makecell{\textbf{L4}\\ \textbf{0.5}} & 
+\makecell{\textbf{L8}\\ \textbf{0.3}} & 
+\makecell{\textbf{L8}\\ \textbf{0.4}} & 
+\makecell{\textbf{L8}\\ \textbf{0.5}} 
+\\
+\midrule
+
+\multirow{4}{*}{\texttt{rel-f1}} & \multirow{2}{*}{\texttt{driver-dnf} (11k)} & Test & 0.7434 & 0.7587 & 0.7521 & \textbf{0.7587} & 0.745 & 0.6957 & 0.7349 & 0.7393 & 0.741 \\ & & Val & 0.6877 & 0.6761 & 0.6896 & 0.6804 & 0.6762 & 0.6768 & 0.6702 & 0.6803 & 0.6865 \\ & \multirow{2}{*}{\texttt{driver-top3} (1k)} & Test & 0.7845 & 0.8203 & 0.8 & 0.8171 & 0.8157 & \textbf{0.8352} & 0.7871 & 0.8217 & 0.8222 \\ & & Val & 0.7775 & 0.783 & 0.7764 & 0.7841 & 0.79 & 0.7958 & 0.7893 & 0.7847 & 0.7829 \\
+
+\midrule
+\multirow{4}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{user-clicks} (59k)} & Test & 0.6524 & 0.6233 & 0.6212 & 0.6067 & 0.5893 & 0.596 & 0.6245 & \textbf{0.683} & 0.6507 \\ & & Val & 0.6649 & 0.6616 & 0.6501 & 0.6564 & 0.6608 & 0.6579 & 0.6587 & 0.6649 & 0.6648 \\ & \multirow{2}{*}{\texttt{user-visits} (86k)} & Test & 0.6627 & 0.6663 & 0.665 & 0.6615 & 0.6584 & 0.6642 & 0.6647 & \textbf{0.6678} & 0.664 \\ & & Val & 0.7005 & 0.6993 & 0.7001 & 0.6954 & 0.6958 & 0.699 & 0.6995 & 0.7024 & 0.7011 \\
+
+\midrule
+\multirow{4}{*}{\texttt{rel-event}} & \multirow{2}{*}{\texttt{user-repeat} (3k)} & Test & 0.6981 & 0.7403 & 0.7452 & 0.7563 & 0.7236 & 0.7432 & \textbf{0.7609} & 0.7316 & 0.7418 \\ & & Val & 0.7172 & 0.7386 & 0.7319 & 0.7245 & 0.7207 & 0.736 & 0.7285 & 0.7209 & 0.7064 \\ & \multirow{2}{*}{\texttt{user-ignore} (19k)} & Test & 0.8006 & 0.802 & 0.7986 & 0.799 & 0.787 & 0.8002 & 0.7956 & 0.8076 & \textbf{0.8157} \\ & & Val & 0.8739 & 0.8721 & 0.8729 & 0.878 & 0.8731 & 0.881 & 0.8757 & 0.8801 & 0.8868 \\
+
+ \midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{study-outcome} (11k)} & Test & 0.6808 & 0.6753 & 0.6837 & 0.6488 & 0.6818 & 0.6744 & \textbf{0.6861} & 0.6562 & 0.6649 \\ & & Val & 0.6815 & 0.6792 & 0.6751 & 0.6737 & 0.676 & 0.689 & 0.6678 & 0.6746 & 0.6768 \\
+
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Relative drop (\%) in performance in \RelGT after removing a model component. Negative scores suggest the component is critical in \RelGT, and vice-versa.
+}
+\label{tab:ablation-full-encoders}
+\scalebox{0.6}{
+\begin{tabular}{llcc|cc|cc|cc|cc|cc}
+\toprule
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{MAE $\downarrow$} & 
+\makecell{\textbf{RelGT}\\ \textbf{(Full)}} & \makecell{\textbf{RelGT}\\\textbf{(No Global)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No GNN)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No Type)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No Hop)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No Time)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} \\
+\midrule
+
+\multirow{2}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{ad-ctr}} & Test & \textbf{0.0350} & 0.0371 & -6.0 & 0.0354 & -1.14 & 0.0375 & -7.14 & 0.0362 & -3.43 & 0.0382 & -9.14 \\ & & Val & 0.0314 & 0.0323 &  & 0.0315 &  & 0.0328 &  & 0.0322 &  & 0.0337 &  \\
+
+
+\midrule
+\multirow{2}{*}{rel-trial} & \multirow{2}{*}{site-success} & Test & \textbf{0.3262} & 0.3882 & -19.01 & 0.3561 & -9.17 & 0.3356 & -2.88 & 0.3963 & -21.49 & 0.3285 & -0.71 \\ & & Val & 0.3593 & 0.3342 &  & 0.3637 &  & 0.3655 &  & 0.3614 &  & 0.3615 &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-hm}} & \multirow{2}{*}{\texttt{item-sales}} & Test & 0.0536 & 0.0586 & -9.33 & 0.0629 & -17.35 & 0.0604 & -12.69 & \textbf{0.0531} & 0.93 & 0.095 & -77.24 \\ & & Val & 0.0627 & 0.0676 &  & 0.073 &  & 0.0696 &  & 0.0623 &  & 0.1025 &  \\
+
+\bottomrule
+\toprule
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{AUC $\uparrow$} & 
+\makecell{\textbf{RelGT}\\ \textbf{(Full)}} & \makecell{\textbf{RelGT}\\\textbf{(No Global)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No GNN)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No Type)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No Hop)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} &
+\makecell{\textbf{RelGT}\\\textbf{(No Time)}} & 
+\makecell{\textbf{\% Rel.}\\\textbf{Drop}} \\
+
+\midrule
+
+\multirow{4}{*}{rel-avito} & \multirow{2}{*}{user-clicks} & Test & 0.6067 & 0.6543 & 7.85 & 0.5148 & -15.15 & 0.6371 & 5.01 & 0.6417 & 5.77 & \textbf{0.6575} & 8.37 \\ & & Val & 0.6564 & 0.6496 &  & 0.6551 &  & 0.6559 &  & 0.6482 &  & 0.6579 &  \\ & \multirow{2}{*}{user-visits} & Test & 0.6642 & 0.6619 & -0.35 & 0.6484 & -2.38 & 0.6635 & -0.11 & \textbf{0.6668} & 0.39 & 0.6592 & -0.75 \\ & & Val & 0.699 & 0.6892 &  & 0.6879 &  & 0.6991 &  & 0.7016 &  & 0.7005 &  \\
+
+\midrule
+\multirow{2}{*}{rel-event} & \multirow{2}{*}{user-ignore} & Test & 0.8002 & 0.7898 & -1.3 & 0.8012 & 0.12 & 0.7993 & -0.11 & \textbf{0.8055} & 0.66 & 0.7995 & -0.09 \\ & & Val & 0.881 & 0.8575 &  & 0.8637 &  & 0.8873 &  & 0.8852 &  & 0.8789 &  \\
+
+\midrule
+\multirow{2}{*}{rel-trial} & \multirow{2}{*}{study-outcome} & Test & 0.6744 & 0.66 & -2.14 & 0.6628 & -1.72 & \textbf{0.6996} & 3.74 & 0.6715 & -0.43 & 0.6911 & 2.48 \\ & & Val & 0.689 & 0.664 &  & 0.6775 &  & 0.6728 &  & 0.6705 &  & 0.6578 &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-amazon}} & \multirow{2}{*}{\texttt{user-churn}} & Test & 0.7039 & 0.6994 & -0.64 & 0.6984 & -0.78 & \textbf{0.705} & 0.16 & 0.7043 & 0.06 & 0.6884 & -2.2 \\ & & Val & 0.7036 & 0.6994 &  & 0.6994 &  & 0.7042 &  & 0.704 &  & 0.6882 &  \\
+
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Ablation of context size $K$ in \RelGT.}
+\label{tab:ablation-neighbors-k}
+\scalebox{0.76}{
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{MAE $\downarrow$} & 
+\makecell{\textbf{\RelGT}\\ \textbf{K=100}} & 
+\makecell{\textbf{\RelGT}\\ \textbf{K=300}} & 
+\makecell{\textbf{\RelGT}\\ \textbf{K=500}} 
+\\
+\midrule
+
+
+ \multirow{2}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{ad-ctr}} & Test & 0.0375 & 0.0374 & \textbf{0.0351} \\ & & Val & 0.0329 & 0.0319 & 0.031 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{site-success}} & Test & 0.3739 & \textbf{0.3674} & 0.3842 \\ & & Val & 0.3708 & 0.372 & 0.376 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-hm}} & \multirow{2}{*}{\texttt{item-sales}} & Test & 0.055 & 0.0532 & \textbf{0.052} \\ & & Val & 0.0643 & 0.0619 & 0.061 \\
+
+
+\bottomrule
+\toprule
+
+\textbf{Dataset} & 
+\textbf{Task (\# train)} & 
+\textbf{AUC $\uparrow$} & 
+\makecell{\textbf{RelGT}\\ \textbf{K=100}} & 
+\makecell{\textbf{RelGT}\\ \textbf{K=300}} & 
+\makecell{\textbf{RelGT}\\ \textbf{K=500}} 
+\\
+\midrule
+
+\multirow{4}{*}{\texttt{rel-avito}} & \multirow{2}{*}{\texttt{user-clicks}} & Test & \textbf{0.6628} & 0.6491 & 0.6334 \\ & & Val & 0.6437 & 0.6622 & 0.6632 \\ & \multirow{2}{*}{\texttt{user-visits}} & Test & \textbf{0.6664} & 0.6653 & 0.6627 \\ & & Val & 0.7013 & 0.701 & 0.7005 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-event}} & \multirow{2}{*}{\texttt{user-ignore}} & Test & 0.7674 & \textbf{0.8105} & 0.8068 \\ & & Val & 0.8682 & 0.8853 & 0.8843 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}} & \multirow{2}{*}{\texttt{study-outcome}} & Test & \textbf{0.7078} & 0.6526 & 0.666 \\ & & Val & 0.6575 & 0.663 & 0.6877 \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-amazon}} & \multirow{2}{*}{\texttt{user-churn}} & Test & 0.7038 & \textbf{0.7054} & 0.7043 \\ & & Val & 0.7033 & 0.7044 & 0.7042 \\
+
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+
+
+
+
+\begin{table}
+\centering
+\small
+\caption{Results on the entity regression tasks in RelBench. Lower is better. Best values are in \textbf{bold}. Relative gains are expressed as percentage improvement over RDL baseline. }
+\label{tab:main-results-regression-full}
+\scalebox{0.75}{
+\begin{tabular}{llcccc|cc}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \textbf{MAE $\downarrow$} & \makecell{\textbf{RDL}\\\textbf{Baseline}} & \makecell{\textbf{HGT}} & \makecell{\textbf{HGT}\\\textbf{+PE}} & \makecell{\textbf{RelGT}\\ \textbf{(ours)}} & \makecell{\textbf{\% Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{2}{*}{\texttt{rel-f1}} 
+ & \multirow{2}{*}{\texttt{driver-position}} & Test & 4.022$\pm$0.119 & 4.2263$\pm$0.0580 & 4.3921$\pm$0.1382 & \textbf{3.9170}$\pm$0.3448 & \cellcolor{lightblue}2.61 \\
+ & & Val & 3.193$\pm$0.024 & 3.1543$\pm$0.1455 & 3.1116$\pm$0.1120 & 3.3257$\pm$0.5618 & \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-avito}}
+ & \multirow{2}{*}{\texttt{ad-ctr}} & Test & 0.041$\pm$0.001 & 0.0462$\pm$0.0021 & 0.0483$\pm$0.0027 & \textbf{0.0345}$\pm$0.0009 & \cellcolor{mediumblue}15.85 \\
+ & & Val & 0.037$\pm$0.000 & 0.0433$\pm$0.0019 & 0.0444$\pm$0.0024 & 0.0314$\pm$0.0010 & \\
+
+
+\midrule
+\multirow{2}{*}{\texttt{rel-event}}
+ & \multirow{2}{*}{\texttt{user-attendance}} & Test & 0.258$\pm$0.006 & 0.2635$\pm$0.0000 & 0.2611$\pm$0.0043 & \textbf{0.2502}$\pm$0.0033 & \cellcolor{lightblue}2.79 \\
+ & & Val & 0.255$\pm$0.007 & 0.2616$\pm$0.0001 & 0.2603$\pm$0.0020 & 0.2548$\pm$0.0018 & \\
+
+
+\midrule
+\multirow{4}{*}{\texttt{rel-trial}}
+ & \multirow{2}{*}{\texttt{study-adverse}} & Test & 44.473$\pm$0.209 & 45.1692$\pm$2.6927 & \textbf{42.6484}$\pm$0.2785 & 43.9923$\pm$0.5928 & \cellcolor{lightblue}1.08 \\
+ & & Val & 46.290$\pm$0.304 & 47.3913$\pm$1.7936 & 45.7910$\pm$0.0051 & 46.2148$\pm$0.7210 & \\
+ & \multirow{2}{*}{\texttt{site-success}} & Test & 0.400$\pm$0.020 & 0.4428$\pm$0.0047 & 0.4396$\pm$0.0083 & \textbf{0.3263}$\pm$0.0306 & \cellcolor{mediumblue}18.43 \\
+ & & Val & 0.401$\pm$0.009 & 0.4275$\pm$0.0062 & 0.4292$\pm$0.0069 & 0.3593$\pm$0.0372 &  \\
+
+\midrule
+\multirow{4}{*}{\texttt{rel-amazon}}
+ & \multirow{2}{*}{\texttt{user-ltv}} & Test & 14.313$\pm$0.013 & 15.4120$\pm$0.0447 & 15.8643$\pm$0.0924 & \textbf{14.2665}$\pm$0.0154 & \cellcolor{lightblue}0.32 \\
+ & & Val & 12.132$\pm$0.007 & 13.2295$\pm$0.1402 & 13.4886$\pm$0.0713 & 12.1151$\pm$0.0218 & \\
+ & \multirow{2}{*}{\texttt{item-ltv}} & Test & 50.053$\pm$0.163 & 55.8683$\pm$0.6003 & 55.8493$\pm$0.3226 & \textbf{48.9222}$\pm$0.7006 & \cellcolor{lightblue}2.26 \\
+ & & Val & 45.140$\pm$0.068 & 51.0303$\pm$0.2230 & 50.6522$\pm$0.6141 & 43.8161$\pm$0.0548 &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-stack}}
+ & \multirow{2}{*}{\texttt{post-votes}} & Test & \textbf{0.065}$\pm$0.000 & 0.0679$\pm$0.0000 & 0.0680$\pm$0.0000 & \textbf{0.0654}$\pm$0.0002 & \cellcolor{mediumred}-0.62 \\
+ & & Val & 0.059$\pm$0.000 & 0.0615$\pm$0.0000 & 0.0617$\pm$0.0000 & 0.0592$\pm$0.0002 & \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-hm}}
+ & \multirow{2}{*}{\texttt{item-sales}} & Test & 0.056$\pm$0.000 & 0.0641$\pm$0.0012 & 0.0639$\pm$0.0003 & \textbf{0.0536}$\pm$0.0006 & \cellcolor{mediumblue}4.29 \\
+ & & Val & 0.065$\pm$0.000 & 0.0739$\pm$0.0008 & 0.0739$\pm$0.0010 & 0.0627$\pm$0.0008 & \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Results on the entity classification tasks in RelBench. Higher is better. Best values are in \textbf{bold}. Relative gains are expressed as percentage improvement over RDL baseline. 
+}
+\label{tab:main-results-classification-full}
+\scalebox{0.75}{
+\begin{tabular}{llcccc|cc}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \textbf{AUC $\uparrow$} & \makecell{\textbf{RDL}\\\textbf{Baseline}} & \makecell{\textbf{HGT}} & \makecell{\textbf{HGT}\\\textbf{+PE}} & \makecell{\textbf{RelGT}\\ \textbf{(ours)}} & \makecell{\textbf{\% Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{4}{*}{\texttt{rel-f1}} 
+ & \multirow{2}{*}{\texttt{driver-dnf}} & Test & 0.7262$\pm$0.0027 & 0.7077$\pm$0.0153 & 0.7117$\pm$0.0084  & \textbf{0.7587}$\pm$0.0413 & \cellcolor{lightblue}4.48 \\
+ & & Val & 0.7136$\pm$0.0154 & 0.7765$\pm$0.0066 & 0.7340$\pm$0.0018 & 0.6804$\pm$0.0420 &  \\
+ & \multirow{2}{*}{\texttt{driver-top3}} & Test & 0.7554$\pm$0.0063 & 0.7075$\pm$0.1156 & 0.7627$\pm$0.1390 & \textbf{0.8352}$\pm$0.0342 & \cellcolor{mediumblue}10.56 \\
+ & & Val & 0.7764$\pm$0.0316 & 0.6457$\pm$0.0147 & 0.6486$\pm$0.0287 & 0.7958$\pm$0.0513 & \\
+ 
+\midrule
+
+\multirow{4}{*}{\texttt{rel-avito}}
+ & \multirow{2}{*}{\texttt{user-clicks}} & Test & 0.6590$\pm$0.0195 & 0.6376$\pm$0.0298 & 0.6457$\pm$0.0099 & \textbf{0.6830}$\pm$0.0602 & \cellcolor{lightblue}3.64 \\
+ & & Val & 0.6473$\pm$0.0032 & 0.5999$\pm$0.0022 & 0.5886$\pm$0.0231 &  0.6649$\pm$0.0610 &  \\
+ & \multirow{2}{*}{\texttt{user-visits}} & Test & 0.6620$\pm$0.0010 & 0.6432$\pm$0.0002 & 0.6495$\pm$0.0022 & \textbf{0.6678}$\pm$0.0015 & \cellcolor{lightblue}0.88 \\
+ & & Val & 0.6965$\pm$0.0004 & 0.6652$\pm$0.0040 & 0.6649$\pm$0.0060 & 0.7024$\pm$0.0009 & \\
+
+\midrule
+\multirow{4}{*}{\texttt{rel-event}}
+ & \multirow{2}{*}{\texttt{user-repeat}} & Test & \textbf{0.7689}$\pm$0.0159 & 0.6496$\pm$0.0220 & 0.6536$\pm$0.0137 & 0.7609$\pm$0.0219 & \cellcolor{mediumred}-1.04 \\
+ & & Val & 0.7125$\pm$0.0253 & 0.6082$\pm$0.0148 & 0.6148$\pm$0.0172 & 0.7285$\pm$0.0108 &  \\
+ & \multirow{2}{*}{\texttt{user-ignore}} & Test & 0.8162$\pm$0.0111 & \textbf{0.8247}$\pm$0.0096 & 0.8161$\pm$0.0001 & 0.8157$\pm$0.0040 & \cellcolor{mediumred}-0.06 \\
+ & & Val & 0.9170$\pm$0.0033 & 0.8997$\pm$0.0114 & 0.8940$\pm$0.0000 & 0.8868$\pm$0.0032 &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-trial}}
+ & \multirow{2}{*}{\texttt{study-outcome}} & Test & 0.6860$\pm$0.0101 & 0.5837$\pm$0.0141  & 0.5921$\pm$0.0303 & \textbf{0.6861}$\pm$0.0040 & \cellcolor{lightblue}0.01 \\
+ & & Val & 0.6818$\pm$0.0049 & 0.6037$\pm$0.0040 & 0.6025$\pm$0.0071 & 0.6678$\pm$0.0038 &  \\
+
+ \midrule
+\multirow{4}{*}{\texttt{rel-amazon}}
+ & \multirow{2}{*}{\texttt{user-churn}} & Test & \textbf{0.7042}$\pm$0.0005 & 0.6643$\pm$0.0041 & 0.6619$\pm$0.0042 & 0.7039$\pm$0.0008 & \cellcolor{mediumred}-0.04 \\
+ & & Val & 0.7045$\pm$0.0006 & 0.6680$\pm$0.0029 & 0.6652$\pm$0.0030 & 0.7036$\pm$0.0008 &  \\
+ & \multirow{2}{*}{\texttt{item-churn}} & Test & \textbf{0.8281}$\pm$0.0003 & 0.7797$\pm$0.0039 & 0.7803$\pm$0.0053 & 0.8255$\pm$0.0006 & \cellcolor{mediumred}-0.31\\
+ & & Val & 0.8239$\pm$0.0002 & 0.7816$\pm$0.0031 & 0.7803$\pm$0.0030 & 0.8220$\pm$0.0010 &  \\
+
+ \midrule
+\multirow{4}{*}{\texttt{rel-stack}}
+ & \multirow{2}{*}{\texttt{user-engagement}} & Test & 0.9021$\pm$0.0007 & 0.8847$\pm$0.0044  & 0.8817$\pm$0.0046 & \textbf{0.9053}$\pm$0.0005 & \cellcolor{lightblue}0.35 \\
+ & & Val & 0.9059$\pm$0.0009 & 0.8863$\pm$0.0039 & 0.8811$\pm$0.0034 & 0.9033$\pm$0.0013 &  \\
+ & \multirow{2}{*}{\texttt{user-badge}} & Test & \textbf{0.8986}$\pm$0.0008 & 0.8608$\pm$0.0044 & 0.8566$\pm$0.0068 & 0.8632$\pm$0.0018 & \cellcolor{mediumred}-3.94 \\
+ & & Val & 0.8886$\pm$0.0008 & 0.8732$\pm$0.0025 & 0.8710$\pm$0.0016 & 0.8741$\pm$0.0050 &  \\
+
+\midrule
+\multirow{2}{*}{\texttt{rel-hm}}
+ & \multirow{2}{*}{\texttt{user-churn}} & Test & \textbf{0.6988}$\pm$0.0021 & 0.6695$\pm$0.0067 & 0.6569$\pm$0.0109 & 0.6927$\pm$0.0019 &  \cellcolor{mediumred}-0.87\\
+ & & Val & 0.7042$\pm$0.0009 & 0.6727$\pm$0.0062 & 0.6605$\pm$0.0103 & 0.6988$\pm$0.0034 &  \\
+
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+% \newpage
+% \include{checklist}
+
+\end{document}

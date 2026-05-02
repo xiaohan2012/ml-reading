@@ -1,0 +1,111 @@
+\documentclass[tikz,border=1pt]{standalone}
+\usetikzlibrary{calc,decorations.pathmorphing,patterns,positioning,shapes,shadings}
+
+\usepackage{bm}
+\usepackage{amsmath}
+
+\definecolor{purple}{RGB}{147,7,204}
+\definecolor{green}{RGB}{5,100,18}
+\definecolor{blue}{RGB}{10,153,201}
+\definecolor{red}{RGB}{213,42,45}
+\definecolor{orange}{RGB}{254,128,41}
+\definecolor{gray}{RGB}{239,240,241}
+
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main}
+
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+
+\begin{document}
+\begin{tikzpicture}
+
+\def\boxwidth{15pt}
+\def\boxheight{15pt}
+
+\tikzset{line/.style={draw,semithick}}
+\tikzset{arrow/.style={line,->,>=stealth}}
+\tikzset{textnode/.style={inner sep=0pt}}
+\tikzset{node/.style={circle,inner sep=0pt,minimum width=15pt}}
+\tikzset{box/.style={line,inner sep=0pt,minimum width=\boxwidth,minimum height=\boxheight}}
+\tikzset{snake/.style={arrow,very thick,decorate,decoration={snake,amplitude=1,segment length=6,post length=5}}}
+\tikzset{gradient/.style={shading=axis,shading angle=-45}}
+\tikzset{legend/.style={node,rectangle,minimum width=8pt,minimum height=8pt,rounded corners=2pt,draw=none}}
+
+\tikzset{orangenode/.style={line,node,gradient,left color=orange!80!white,right color=orange!85!white}}
+\tikzset{bluenode/.style={line,node,gradient,left color=blue!80!white,right color=blue!85!white}}
+\tikzset{greennode/.style={line,node,gradient,left color=green!60!white,right color=green!65!white}}
+
+
+
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] at (4.5,1.25) {};
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] (l1-orange) at (4.5,0) {};
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] at (4.5,-1.25) {};
+\node[greennode] (l1-v1) at (4.5,1.25) {\small$v_{11}$};
+\node[bluenode] (l1-v2) at (4.5,0) {\small$v_1$};
+\node[orangenode] (l1-v3) at (4.5,-1.25) {\small$v_7$};
+
+\path[arrow] (l1-v1) to (l1-v2);
+\path[arrow] (l1-v2) to (l1-v3);
+
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] at (7,1.25) {};
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] (l1-orange) at (7,0) {};
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] at (7,-1.25) {};
+\node[greennode] (l2-v1) at (7,1.25) {\small$v_{11}$};
+\node[bluenode] (l2-v2) at (7.3,0) {\small$v_1$};
+\node[bluenode] (l2-v3) at (6.7,0) {\small$v_3$};
+\node[orangenode] (l2-v4) at (7.3,-1.25) {\small$v_{7}$};
+\node[orangenode] (l2-v5) at (6.7,-1.25) {\small$v_{8}$};
+
+\path[arrow] (l2-v1) to (l2-v2);
+\path[arrow] (l2-v1) to (l2-v3);
+\path[arrow] (l2-v2) to (l2-v4);
+\path[arrow] (l2-v3) to (l2-v5);
+
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] at (9.5,1.25) {};
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] (l1-orange) at (9.5,0) {};
+\node[node,rectangle,fill=white!85!black,minimum height=18pt,minimum width=1.9cm,rounded corners=9pt] at (9.5,-1.25) {};
+\node[greennode] (l3-v1) at (9.5,1.25) {\small$v_{11}$};
+\node[bluenode] (l3-v2) at (8.875,0) {\small$v_1$};
+\node[bluenode] (l3-v3) at (9.5,0) {\small$v_3$};
+\node[bluenode] (l3-v4) at (10.125,0) {\small$v_5$};
+\node[orangenode] (l3-v5) at (8.875,-1.25) {\small$v_{7}$};
+\node[orangenode] (l3-v6) at (9.5,-1.25) {\small$v_{8}$};
+\node[orangenode] (l3-v7) at (10.125,-1.25) {\small$v_{9}$};
+
+\path[arrow] (l3-v1) to (l3-v2);
+\path[arrow] (l3-v1) to (l3-v3);
+\path[arrow] (l3-v1) to (l3-v4);
+\path[arrow] (l3-v2) to (l3-v5);
+\path[arrow] (l3-v3) to (l3-v6);
+\path[arrow] (l3-v4) to (l3-v7);
+
+\node[textnode] at (4.5,1.75) {$t=1$};
+
+\node[textnode] at (7,1.75) {$t=3$};
+
+\node[textnode] at (9.5,1.75) {$t=5$};
+\begin{pgfonlayer}{bg}
+
+\node (ex1) at (8.25,0)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.22]{figs/tikz/transaction.png}};
+
+\node (ex1) at (8.25,-1.25)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.2]{figs/tikz/product.png}};
+
+\node (ex1) at (8.25,1.25)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.2]{figs/tikz/customer.png}};
+
+\node (ex1) at (5.75,0)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.22]{figs/tikz/transaction.png}};
+
+\node (ex1) at (5.75,-1.25)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.2]{figs/tikz/product.png}};
+
+\node (ex1) at (5.75,1.25)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.2]{figs/tikz/customer.png}};
+
+\end{pgfonlayer}
+
+\end{tikzpicture}
+\end{document}

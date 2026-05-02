@@ -1,0 +1,39 @@
+\newcommand{\lastidx}{n+1}
+\newcommand{\evalidx}{n+1}
+\newcommand{\dataset}{\mathbf{D}}
+\newcommand{\setofpairs}[2]{\{(x_1^{#1}, y_1^{#1}),\dots,(x_{#2}^{#1}, y_{#2}^{#1})\}}
+\newcommand{\seq}[1]{$\setofpairs{#1}{\lastidx{}}$}
+\begin{tikzpicture}[remember picture,
+  inner/.style={circle,draw=blue!50,fill=blue!20,thick,inner sep=3pt},
+  scale=0.6, every node/.style={transform shape},
+]
+\tikzstyle{bigbox} = [thick, fill=white, rounded corners, rectangle,draw=black!30]
+\tikzstyle{sample} = [thick, minimum size=0.6cm, rounded corners,rectangle, fill=Salmon!10,draw=black!30]
+\tikzstyle{loss} = [thick, minimum size=0.6cm, rounded corners,rectangle, fill=PineGreen!10,draw=black!30]
+\tikzstyle{pfmbox} = [thick,minimum size=0.6cm, rounded corners,rectangle, fill=MidnightBlue!10,draw=black!30]
+\tikzstyle{box} = [thick, minimum size=0.6cm, rounded corners,rectangle,fill=MidnightBlue!5,draw=black!60]
+
+\node[] (desc_offline) {Done once, offline};
+\node [below=1em of desc_offline, align=center, box] (sample_datasets) {Sample synthetic datasets $D_i$ \\ from prior: $D_i \sim p(\dataset{})$};
+\node [below=of sample_datasets, align=center, box] (train) {Train TabPFN $q_\theta$ on synthetic \\ datasets $\{D_1,\dots,D_n\}$};
+\draw [-{Triangle[length=3mm, width=2mm]}] (sample_datasets) -- (train);
+
+\node[right=2em of train] (bottom_of_line) {};
+\node [] (top_of_line) at (bottom_of_line|-desc_offline) {};
+\draw [dashed] (bottom_of_line)++(0,-.5em) to (top_of_line)++(0,0em);
+
+
+\node[right=3em of bottom_of_line, anchor=west, align=center, box] (predict) {Obtain $q_\theta(y_{test}|x_{test},D_{real})$\\with a single forward pass};
+\node[] (desc_online) at (desc_offline-|predict) {Done per real-world dataset, online};
+\draw [-{Triangle[length=3mm, width=2mm]}] (train) -- (predict);
+\node[anchor=center, align=center, box] (evalinput) at (sample_datasets-|predict) {Real-world training dataset $D_{real}$\\and test point $x_{test}$};
+\draw [-{Triangle[length=3mm, width=2mm]}] (evalinput) -- (predict);
+
+
+%\node[pfmbox,align=center] (pfm) at (l|-evaldata) {$q_{\theta^*}(y_{\evalidx{}}^{}|x^{}_{\evalidx{}}, \setofpairs{}{n})$ \\ $\approx$ \\ $p(y_{\evalidx{}}^{}|x^{}_{\evalidx{}}, \setofpairs{}{n})$};
+
+%\draw [-{Triangle[length=3mm, width=2mm]}] (evaldata) -- (pfm);
+%\draw [-{Triangle[length=3mm, width=2mm]}] (l) -- (pfm) node[midway,right] {$\theta^*$};
+
+
+\end{tikzpicture}

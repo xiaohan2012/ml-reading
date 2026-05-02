@@ -1,0 +1,241 @@
+% This file was created with tikzplotlib v0.9.12.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.194607843137255,0.453431372549019,0.632843137254902}
+\definecolor{color1}{rgb}{0.881862745098039,0.505392156862745,0.173039215686275}
+
+\begin{axis}[
+height=5cm,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.03,0.97)},
+  anchor=north west,
+  draw=white!80!black
+},
+minor xtick={},
+minor ytick={},
+tick align=outside,
+tick pos=left,
+width=5cm,
+x grid style={white!69.0196078431373!black},
+xmin=-0.5, xmax=2.5,
+xtick style={color=black},
+xtick={0,1,2},
+xticklabels={L-GBM,MLP,TabPFN},
+y grid style={white!69.0196078431373!black},
+ylabel={ROC AUC},
+xlabel={Method},
+ymin=0.820631257415432, ymax=0.880344032994095,
+ytick style={color=black},
+ytick={0.82,0.83,0.84,0.85,0.86,0.87,0.88,0.89}
+]
+\path [draw=white!24.7058823529412!black, fill=color0, line width=1.5pt]
+(axis cs:-0.396,0.839283206834253)
+--(axis cs:-0.004,0.839283206834253)
+--(axis cs:-0.004,0.845459069299713)
+--(axis cs:-0.396,0.845459069299713)
+--(axis cs:-0.396,0.839283206834253)
+--cycle;
+\path [draw=white!24.7058823529412!black, fill=color1, line width=1.5pt]
+(axis cs:0.004,0.827779879893938)
+--(axis cs:0.396,0.827779879893938)
+--(axis cs:0.396,0.829535075307709)
+--(axis cs:0.004,0.829535075307709)
+--(axis cs:0.004,0.827779879893938)
+--cycle;
+\path [draw=white!24.7058823529412!black, fill=color0, line width=1.5pt]
+(axis cs:0.604,0.846067932833289)
+--(axis cs:0.996,0.846067932833289)
+--(axis cs:0.996,0.854047678610379)
+--(axis cs:0.604,0.854047678610379)
+--(axis cs:0.604,0.846067932833289)
+--cycle;
+\path [draw=white!24.7058823529412!black, fill=color1, line width=1.5pt]
+(axis cs:1.004,0.847822966830471)
+--(axis cs:1.396,0.847822966830471)
+--(axis cs:1.396,0.855228245839174)
+--(axis cs:1.004,0.855228245839174)
+--(axis cs:1.004,0.847822966830471)
+--cycle;
+\path [draw=white!24.7058823529412!black, fill=color0, line width=1.5pt]
+(axis cs:1.604,0.865144415653096)
+--(axis cs:1.996,0.865144415653096)
+--(axis cs:1.996,0.871109246693655)
+--(axis cs:1.604,0.871109246693655)
+--(axis cs:1.604,0.865144415653096)
+--cycle;
+\path [draw=white!24.7058823529412!black, fill=color1, line width=1.5pt]
+(axis cs:2.004,0.861240150457158)
+--(axis cs:2.396,0.861240150457158)
+--(axis cs:2.396,0.867869814802835)
+--(axis cs:2.004,0.867869814802835)
+--(axis cs:2.004,0.861240150457158)
+--cycle;
+\draw[draw=white!24.7058823529412!black,fill=color0,line width=0.75pt] (axis cs:0,0) rectangle (axis cs:0,0);
+\addlegendimage{ybar,ybar legend,draw=white!24.7058823529412!black,fill=color0,line width=0.75pt}
+\addlegendentry{False}
+
+\draw[draw=white!24.7058823529412!black,fill=color1,line width=0.75pt] (axis cs:0,0) rectangle (axis cs:0,0);
+\addlegendimage{ybar,ybar legend,draw=white!24.7058823529412!black,fill=color1,line width=0.75pt}
+\addlegendentry{True}
+
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+-0.2 0.839283206834253
+-0.2 0.836526243835299
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+-0.2 0.845459069299713
+-0.2 0.846313241132851
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+-0.298 0.836526243835299
+-0.102 0.836526243835299
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+-0.298 0.846313241132851
+-0.102 0.846313241132851
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.2 0.827779879893938
+0.2 0.827779879893938
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.2 0.829535075307709
+0.2 0.830423097443697
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.102 0.827779879893938
+0.298 0.827779879893938
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.102 0.830423097443697
+0.298 0.830423097443697
+};
+\addplot [line width=1pt, black, mark=diamond*, mark size=2.5, mark options={solid,fill=white!24.7058823529412!black}, only marks, forget plot]
+table {%
+0.2 0.823345474487189
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.8 0.846067932833289
+0.8 0.845016687254403
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.8 0.854047678610379
+0.8 0.854244748486864
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.702 0.845016687254403
+0.898 0.845016687254403
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.702 0.854244748486864
+0.898 0.854244748486864
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.2 0.847822966830471
+1.2 0.846719189439211
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.2 0.855228245839174
+1.2 0.855467189325167
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.102 0.846719189439211
+1.298 0.846719189439211
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.102 0.855467189325167
+1.298 0.855467189325167
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.8 0.865144415653096
+1.8 0.86284723505677
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.8 0.871109246693655
+1.8 0.877629815922338
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.702 0.86284723505677
+1.898 0.86284723505677
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.702 0.877629815922338
+1.898 0.877629815922338
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+2.2 0.861240150457158
+2.2 0.860362845071157
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+2.2 0.867869814802835
+2.2 0.872200071925264
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+2.102 0.860362845071157
+2.298 0.860362845071157
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+2.102 0.872200071925264
+2.298 0.872200071925264
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+-0.396 0.844532517954297
+-0.004 0.844532517954297
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.004 0.828256451440518
+0.396 0.828256451440518
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+0.604 0.850425642353404
+0.996 0.850425642353404
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.004 0.851128656163645
+1.396 0.851128656163645
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+1.604 0.868623148741197
+1.996 0.868623148741197
+};
+\addplot [line width=1.5pt, white!24.7058823529412!black, forget plot]
+table {%
+2.004 0.864306233963193
+2.396 0.864306233963193
+};
+\end{axis}
+
+\end{tikzpicture}

@@ -1,0 +1,67 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some comments might need to address later:
+
+% \jian{my general comment: you mention `conceptually and technically simple' many times, be prepared to get questions like why existing works are not `conceptually' or `technically' simple, how you define `conceptually simple' and `technically simple' etc.}
+
+% \jian{check whether these papers have ablation study, no need to mention anything here, just to be prepared if some reviewer raises questions about their ablation study}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% \weilin{Temporal graph learning is important problem}
+In recent years, temporal graph learning has been recognized as an important machine learning problem and has become the cornerstone behind a wealth of high-impact applications~\cite{yu2018spatio,bui2021spatial,kazemi2020representation,zhou2020graph,Cong2021DyFormerAS}.
+Temporal link prediction is one of the classic downstream tasks % its most important learning tasks
+which focuses on predicting the future interactions among nodes.
+For example, in an ads ranking system, the user-ad clicks can be modeled as a temporal bipartite graph whose nodes represent users and ads, and links are associated with timestamps indicating when users click ads. Link prediction between them can be used to predict whether a user will click an ad. % in the user-ad recommender system, the relationship between users and ads could be modeled by a temporal graph, where users and ads are nodes, and edges are created when a user clicks an ad. 
+Designing graph learning models that can capture node evolutionary patterns and accurately predict future links is a crucial direction for many real-world recommender systems.
+
+
+% \weilin{Existing methods are relying on RNN and SAM}
+
+In temporal graph learning, recurrent neural network (RNN) and self-attention mechanism (SAM) have become the de facto standard for temporal graph learning~\cite{kumar2019predicting,sankar2020dysat,xu2020inductive,tgn_icml_grl2020,wang2020inductive}, and the majority of the existing works focus on designing neural architectures with one of them and additional components to learn representations from raw data.
+Although powerful, these methods are conceptually
+% \si{what do you mean by `conceptually' and why are they conceptually complicated?} 
+and technically complicated with advanced model architectures. It is non-trivial to understand which parts of the model design truly contribute to its success, and whether these components are indispensable.
+Thus, in this paper, we aim at answering the following two questions:
+
+% \weilin{We propose ... briefly introduce our method + results}
+
+\underline{{Q1: Are RNN and SAM always indispensable for temporal graph learning?}}
+To answer this question, we propose \oure, a simple architecture based entirely on the multi-layer perceptrons (MLPs) and neighbor mean-pooling, which does not utilize any RNN or SAM in its model architecture (Section~\ref{section:method}).
+% The useful information is extracted via data pre-processing and fed into \our for temporal graph link prediction. 
+Despite its simplicity, \our could obtain outstanding results when comparing it against baselines that are equipped with the RNNs and SAM.
+In practice, it achieves state-of-the-art performance in terms of different evaluation metrics (e.g., average precision, AUC, Recall@K, and MRR) on real-world temporal graph datasets, with the even smaller number of model parameters and hyper-parameters, and a conceptually simpler input structure and model architecture 
+% \si{again, do we have any illustration to support that ours is conceptually simpler in terms of model arch?} 
+(Section~\ref{section:experiments}).
+
+% \weilin{Brief explain why model success? Need to briefly summarize our observation here ...} 
+
+\underline{{Q2: What are the key factors that lead to the success of \oure?}}
+% To achieve better understanding, we study the performance of \our in Section~\ref{section:success}. 
+We identify three key factors that contribute to the success of \oure:
+\circled{1} \emph{The simplicity of \oure's input data and neural architecture.}
+% \si{the point of simplicity of neural architecture is already covered in the last sentence (i.e., \circled{2})}.}
+Different from most deep learning methods that focus on designing conceptually complicated data preparation techniques and technically complicated neural architectures, we choose to simplifying the neural architecture and utilize a conceptually simpler data as input. Both of which could lead to a better model performance and better generalization (Section~\ref{section:data_alignment}).
+\circled{2} \emph{A time-encoding function that encodes any timestamp as an easily distinguishable input vector for \oure}. Different from most of the existing methods that propose to learn the time-encoding function from the raw input data, our time-encoding function utilizes conceptually simple features and is fixed during training. Interestingly, we show that our fixed time-encoding function is more preferred than the trainable version (used by most previous studies), and could lead to a smoother optimization landscape, a faster convergence speed, and a  better generalization (Section~\ref{section:time_encoder});
+\circled{3} \emph{A link-encoder that could better distinguish temporal sequences.}
+Different from most existing methods that summarize sequences using SAM, our encoder module is entirely based on MLPs.
+Interestingly, our encoder can distinguish temporal sequences that cannot be distinguished by SAM, 
+% \si{double check if we can distinguish these sequences},
+and it could generalize better due to its simpler neural architecture and lower model complexity (Section~\ref{section:expressive_power}).
+
+% we choose to take more seriously on designing simpler neural architecture \weilin{with ... data}.
+% The selection of good input data/features provides a better alignment between the input features and their labels. 
+% As a result, a simple neural network model is enough to capture the underlying mapping between the inputs to their labels (Section~\ref{section:data_alignment}). 
+% \weilin{existing work has complicated input data structure, we also propose to simplify the input data, which also leads to a better performance.}
+
+To this end, we summarize our contributions as follows: 
+\circled{1} We propose a conceptually and technically simple architecture \oure;
+\circled{2} Even without RNN and SAM, \our not only outperforms all baselines but also enjoys a faster convergence and better generalization ability;
+\circled{3} Extensive study identifies three  factors that contribute to the success of \oure. 
+\circled{4} Our results could motivate future research to rethink the importance of the conceptually and technically simpler method.
+
+

@@ -1,0 +1,36 @@
+\begin{tabular}{lllrrrr}
+\toprule
+Dataset & Task & Split & Random & Majority & LightGBM & GNN \\
+\midrule
+\multirow[c]{17}{*}{\texttt{rel-salt}} & \multirow[c]{2}{*}{\texttt{item-incoterms}} & Val & $34.49$ & $66.46$ & $66.43$ & $\bm{80.23}$ \\
+ &  & Test & $30.33$ & $58.05$ & $58.05$ & $\bm{69.36}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{item-plant}} & Val & $33.19$ & $60.95$ & $60.97$ & $\bm{99.70}$ \\
+ &  & Test & $32.38$ & $59.69$ & $59.69$ & $\bm{99.46}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{item-shippoint}} & Val & $8.20$ & $2.34$ & $4.72$ & $\bm{98.54}$ \\
+ &  & Test & $6.53$ & $1.99$ & $5.67$ & $\bm{98.39}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-group}} & Val & $0.90$ & $0.86$ & $0.70$ & $\bm{18.43}$ \\
+ &  & Test & $0.85$ & $0.75$ & $0.94$ & $\bm{15.76}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-incoterms}} & Val & $31.83$ & $61.00$ & $60.53$ & $\bm{69.07}$ \\
+ &  & Test & $29.39$ & $56.63$ & $56.63$ & $\bm{62.23}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-office}} & Val & $50.01$ & $\bm{99.91}$ & $99.90$ & $99.91$ \\
+ &  & Test & $49.71$ & $\bm{99.88}$ & $59.93$ & $99.88$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-payterms}} & Val & $0.32$ & $0.65$ & $1.85$ & $\bm{39.88}$ \\
+ &  & Test & $0.24$ & $0.47$ & $5.64$ & $\bm{37.47}$ \\
+\cmidrule{2-7}
+ & \multirow[c]{2}{*}{\texttt{sales-shipcond}} & Val & $16.49$ & $27.61$ & $31.92$ & $\bm{59.21}$ \\
+ &  & Test & $15.64$ & $26.30$ & $4.91$ & $\bm{56.85}$ \\
+\cmidrule{1-7} \cmidrule{2-7}
+\multirow[c]{2}{*}{\texttt{rel-stack}} & \multirow[c]{2}{*}{\texttt{badges-class}} & Val & $11.59$ & $20.68$ & $1.93$ & $\bm{79.97}$ \\
+ &  & Test & $10.49$ & $18.34$ & $2.51$ & $\bm{82.83}$ \\
+\cmidrule{1-7} \cmidrule{2-7}
+\multicolumn{2}{c}{\multirow{2}{*}{Average}} & Val & $20.78$ & $37.83$ & $36.55$ & $\bm{71.66}$ \\
+ &  & Test & $19.51$ & $35.79$ & $28.22$ & $\bm{69.14}$ \\
+% \cmidrule{1-7} \cmidrule{2-7}
+\bottomrule
+\end{tabular}

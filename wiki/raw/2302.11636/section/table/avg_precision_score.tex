@@ -1,0 +1,64 @@
+% \begin{table}[t]
+% \caption{Comparison on the average precision score for link prediction. } % and  Hits$@$K 
+% \label{table:average_precision}
+% \vspace{-3mm}
+% \centering
+% \scalebox{9}{
+% \begin{tabular}{ l r  c c  c  c| c c }
+% \hline\hline
+%       & & Reddit & Wiki & MOOC & LastFM & GDELT (-) & GDELT (+)\\ \hline\hline
+% JODIE & (RNN) & $9930$ & $9881$ & $9916$ & $6751$ & $9713$ & $9696$ \\ 
+% DySAT &(SAM) & $9852$ & $9671$ & $9882$ & $7640$ & $8247$ & $9725$ \\ 
+% TGAT  &(SAM) & $9966$ & $9775$ & $9843$ & $5477$ & $8430$ & $9696$ \\ 
+% TGN   & (RNN+SAM) & $9980$ & $9955$ & $9962$ & $8223$ & $9713$ & $9604$ \\ \hline
+% \our & (Time only) & $9984$ & $9970$ & $9981$ & $9374$ & $9614$ & $9614$ \\ 
+% \our & (Structure only) & $9924$ & $9033$ & $9735$ & $6380$ & $9600$ & $9600$\\ 
+% \our & (Time + Structure) & $\textcolor{red}{9993}$ & $\textcolor{red}{9985}$ & $\textcolor{red}{9991}$ &  $\textcolor{red}{9631}$ & $\textcolor{red}{9839}$ & \textcolor{red}{9822}\\ \hline
+% JODIE & (Fixed time-encoder)     & 9976 & 9900 & 9917 & 7989 & & 9696    \\ 
+% TGAT & (Fixed time-encoder)     & 9948 & 9855 & 9933 & 7626 & & 9628    \\
+% TGN & (Fixed time-encoder)     & 9983 & 9954 & 9962 & 8758 & & 9734    \\ 
+% \hline\hline
+% \end{tabular}}
+% \end{table}
+
+
+
+\begin{table}[t]
+\caption{Comparison on the average precision score for link prediction. \our uses one-hot node encoding for datasets without node features (marked by $\natural$). For each dataset, we indicate whether we have the corresponding feature (``L'' link features, ``N'' node features, and ``T'' link timestamps). 
+\textcolor{red}{Red} is the best score, \textcolor{blue}{Blue} is the best score excluding \our and its variants.
+% and the average number of temporal links per node in the dataset.
+}  % and  Hits$@$K , baselines either uses link features and time features (marked by $$) or uses random features  (marked by $$) as node features  
+\label{table:average_precision}
+\vspace{-3mm}
+\centering\setlength{\tabcolsep}{1.7mm}
+\centering
+\scalebox{0.75}{
+\begin{tabular}{ l cccc ccc}
+\hline\hline
+       & Reddit & Wiki & MOOC & LastFM & GDELT & GDELT-ne & GDELT-e \\
+       & L, T & L, T & T & T & L, N, T & T & N, T \\
+    %   & Node / links & 11K/7M & 9K/6M & 7K/4M & 2K/1.3M & 9K/2M & 9K/2M & 9K/2M \\
+    %   & Links per node & 61.2 & 17.1 & 57.6 & 653.1 & 216.6 & 216.6 & 216.6 \\ 
+      \hline\hline
+JODIE & $99.30 \pm 0.01$ & $98.81 \pm 0.01$ & $99.16 \pm 0.01$ & $67.51 \pm 0.87$ & $98.27 \pm 0.02$ & $97.13 \pm 0.02$ & $96.96 \pm 0.02$ \\ 
+DySAT & $98.52 \pm 0.01$ & $96.71 \pm 0.02$ & $98.82 \pm 0.02$ & $76.40 \pm 0.77$ & $\textcolor{blue}{98.52} \pm 0.02$ & $82.47 \pm 0.13$ & $\textcolor{blue}{97.25} \pm 0.02$\\ 
+TGAT  &  $99.66 \pm 0.01$ & $97.75 \pm 0.02$ & $98.43 \pm 0.01$ & $54.77 \pm 1.01$ & $98.25 \pm 0.02$ & $84.30 \pm 0.10$ & $96.96 \pm 0.02$ \\ 
+TGN   &  $\textcolor{blue}{99.80} \pm 0.01$ & $\textcolor{blue}{99.55} \pm 0.01$ & $\textcolor{blue}{99.62} \pm 0.01$ & $\textcolor{blue}{82.23} \pm 0.50$ & $98.15 \pm 0.02$ & $97.13 \pm 0.02$ & $96.04 \pm 0.02$ \\ \hline
+CAWs-mean& $98.43 \pm 0.02$ & $97.72 \pm0.03$ & $62.99\pm0.87$ & $76.35\pm 0.08$ & $95.11 \pm 0.12$ & $69.20 \pm 0.10$ & $91.72 \pm 0.19$\\
+CAWs-attn& $98.51 \pm 0.02$ & $97.95 \pm0.03$ & $63.07\pm0.82$ & $76.31 \pm 0.10$ & $95.06 \pm 0.11 $ & $69.54 \pm 0.19$ & $91.54 \pm 0.22$ \\
+% TGN-MeTA & $99.08 \pm 0.1$ & $99.08 \pm 0.1$ & $92.03 \pm 0.3$ & & & \\
+% DyRep-MeTA & $98.62 \pm 0.1$ & $95.63 \pm 0.2$ & $84.18 \pm 0.3$ & & & \\
+TGSRec & $95.21 \pm 0.08$ & $91.64 \pm 0.12$ & $83.62 \pm 0.34$ & $76.91 \pm 0.87$ & $97.03 \pm 0.61$ & $97.03 \pm 0.61$ & $97.03 \pm 0.61$ \\
+APAN & $99.24 \pm 0.02$ & $98.14 \pm 0.01$ & $98.70 \pm 0.98$ & $69.39 \pm 0.81$ & $95.96 \pm 0.10$ & $\textcolor{blue}{97.38} \pm0.23$ & $96.77 \pm 0.18$\\ \hline 
+\oure-L &  $99.84 \pm 0.01$ & $99.70 \pm 0.01$ & $99.81 \pm 0.01$ & $95.50 \pm 0.03$ & $\textcolor{red}{98.99} \pm 0.02$ & $96.14 \pm 0.02$ & $\textcolor{red}{98.99} \pm 0.02$ \\ 
+\oure-N &  $99.24 \pm 0.01^\natural$ & $90.33 \pm 0.01^\natural$ & $97.35 \pm 0.02^\natural$ & $63.80 \pm 0.03^\natural$ & $94.44 \pm 0.02$ & $96.00 \pm 0.02^\natural$ & $98.81 \pm 0.02^\natural$ \\ 
+\our &  $\textcolor{red}{99.93} \pm 0.01^\natural$ & $\textcolor{red}{99.85} \pm 0.01^\natural$ & $\textcolor{red}{99.91} \pm 0.01^\natural$ &  $\textcolor{red}{96.31} \pm 0.02^\natural$ & $98.89 \pm 0.02$ & $\textcolor{red}{98.39} \pm 0.02^\natural$ & $98.22 \pm 0.02^\natural$ \\ 
+% JODIE & (Fixed time-encoder)     & 9976 & 9900 & 9917 & 7989 & & 9696    \\ 
+% TGAT & (Fixed time-encoder)     & 9948 & 9855 & 9933 & 7626 & & 9628    \\
+% TGN & (Fixed time-encoder)     & 9983 & 9954 & 9962 & 8758 & & 9734    \\ 
+\hline\hline
+\end{tabular}}
+\vspace{-4mm}
+\end{table}
+
+

@@ -1,0 +1,1270 @@
+\pdfoutput=1
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+\PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2022
+
+
+% ready for submission
+\usepackage[final]{neurips_2022}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2022}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2022}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2022}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[backref=page]{hyperref}
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+% Our packages
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multirow} % For hyperparameter table
+\usepackage{tikz}
+\usepackage{pgfplots}
+\DeclareUnicodeCharacter{2212}{−}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{backgrounds,fit}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows}
+
+\usepackage{enumitem}
+
+\pgfplotsset{
+    compat=1.15,
+    mystylepalette/.style={
+        mystyle/.style={mark=*, mark size=2, mark options={solid, draw=white, line width=.5pt}, forget plot},
+    label style={font=\footnotesize}, tick label style={font=\footnotesize},
+    %y label style={at={(axis.north west)},anchor=south},
+    },
+}
+
+\usepackage{hyperref}
+\usepackage{verbatim}
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{amsmath,amssymb}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\usepackage[ruled,vlined]{algorithm2e}
+
+
+\usepackage{todonotes}
+\newcommand{\frank}[1]{\todo[inline,color=yellow]{Frank: #1}}
+\newcommand{\sam}[1]{\todo[inline,color=green]{Sam: #1}}
+\newcommand{\noah}[1]{\todo[inline,color=orange]{Noah: #1}}
+\newcommand{\katha}[1]{\todo[inline,color=white]{Katha: #1}}
+
+
+\title{TabPFN: A Transformer That Solves Small\\Tabular Classification Problems in a Second}
+
+\makeatletter
+\newcommand{\printfnsymbol}[1]{%
+  \textsuperscript{\@fnsymbol{#1}}%
+}
+\makeatother
+
+\author{
+  Noah Hollmann \thanks{Equal contribution.} \\
+  University of Freiburg \&\\
+  Berlin Institute of Health \\
+  Charit\'e University Medicine Berlin \\
+  \texttt{noah.hollmann@charite.de} \\
+  \And
+  Samuel M\"uller \printfnsymbol{1} \\
+  University of Freiburg \\
+  \texttt{muellesa@cs.uni-freiburg.de} \\
+  \And
+  Katharina Eggensperger \\
+  University of Freiburg \\
+  \texttt{eggenspk@cs.uni-freiburg.de} \\
+  \And
+  Frank Hutter \\
+  University of Freiburg \&\\
+  Bosch Center for Artificial Intelligence \\
+  \texttt{fh@cs.uni-freiburg.de} \\
+}
+
+\begin{document}
+%\nolinenumbers
+\maketitle
+
+
+
+\newcommand{\methodname}[0]{TabPFN}
+\newcommand{\priortuning}[0]{differentiable hyperparameter tuning}
+\newcommand{\openmlcc}[0]{OpenML-CC18}
+\newcommand{\openmlautoml}[0]{OpenML-AutoML}
+\begin{abstract}
+We present \methodname{}, a trained Transformer model that can do tabular supervised classification for small datasets in \textit{less than a second}, needs no hyperparameter tuning and is competitive with state-of-the-art classification methods.
+%We present \methodname{}, a classification method that is competitive with the state of the art on small tabular datasets while being over 1\,000$\times$ faster and using only one set of hyperparameters for all datasets.
+\methodname{} is entailed in the weights of our network, which accepts training and test samples as a set-valued input and yields predictions for the entire test set in a single forward pass.
+\methodname{} is a Prior-Data Fitted Network (PFN) and is trained offline once, to approximate Bayesian inference on synthetic datasets drawn from our prior.
+Our prior incorporates ideas from causal learning: It entails a large space of structural causal models with a preference for simple structures.
+Afterwards, the trained \methodname{} approximates Bayesian prediction on any unseen tabular dataset, without any hyperparameter tuning or gradient-based learning. %This yields a prediction based on the entire space of causal structures in the prior and their respective predictions weighted by their simplicity and likelihood given the data.
+% Furthermore, we extend the PFN approach to differentiably calibrate the prior's hyperparameters on real data.
+% By doing so, we separate our abstract prior assumptions from their heuristic calibration on real data.
+% Afterwards, the calibrated hyperparameters are fixed and \methodname{} can be applied to any new tabular dataset at the push of a button.
+On $30$ datasets from the \openmlcc{} suite, we show that our method outperforms boosted trees and performs on par with complex state-of-the-art AutoML systems with a $70\times$ speedup. %predictions produced in less than a second.
+This increases to a $3\,200\times$ speedup when a GPU is available.
+We provide all our code and the trained \methodname{} at \url{https://anonymous.4open.science/r/TabPFN-2AEE}. We also provide an online demo at \url{https://huggingface.co/spaces/TabPFN/TabPFNPrediction}.
+\end{abstract}
+
+% -------------------------------------
+\section{Introduction}
+\label{sec:introduction}
+% -------------------------------------
+%New Intro
+%0. Tabular data is important and coming up everywhere in the real-world, especially very fast systems can enable new workflows, NNs so far are not so good on them
+%1. AutoML systems (and gradient boosted trees) get more complicated over time, are very slow, don't give balanced predictions / not probabilistically founded
+%2. Can we learn the behavior of a full AutoML pipeline with a single model that runs fast on GPU?
+%this is how
+%a. a probabilistic model with good prior: causal, occams razor
+%b. novel search over the prior hyperparameters 
+%c. large scale training (Transformers)
+% -------------------------------------
+
+
+
+
+
+
+
+
+
+%\input{old_intro.tex}
+
+% Despite being the most common data type in real-world AI (as it is comprised of any categorical and numerical features), (Chui et al. 2018), deep learning for tabular data remains under-explored, with variants of ensemble decision trees (DTs) still dominating most applications (Kaggle 2019a).
+
+Many real-world applications in medicine, finance, research, predictive maintenance or sensor data modelling rely on strong Machine Learning (ML) algorithms for tabular data. 
+%
+While neural networks excel on many ML tasks, Gradient-Boosted Decision Trees (GBDT;~\citealp{friedman-as01a}) still dominate the landscape of supervised ML for tabular data~\citep{nnsfortabular2}, largely due to their short training time and robustness.
+
+However, given that tree-based models are not differentiable, they cannot easily be composed and jointly trained with other blocks based on Deep Learning (DL). % also discuss that gbdt approaches are limited in extendability and tree prior might hit some hard boundaries? It's maybe a complex discussion if we can't find a good reference paper
+While many recent works try to address this problem with a native DL approach for tabular classification~\citep{arik2021tabnet, somepalli2021saint,regcocktail,kossen2021self}, we go one step further and simply apply a transformer \citep{vaswani-neurips17a} that itself learned to do classification, completely bypassing the question of how to train a DL model on a tabular dataset and the issues that arise from it, such as large computational cost and mitigating overfitting on small datasets \citep{regcocktail}.
+
+We propose a radical change to how tabular classification is usually done. We do \emph{not} fit a new model from scratch to the training portion of a new dataset.
+Instead, we replace this step by performing a single forward pass on a large transformer that has been pre-trained to solve probabilistic classification tasks which are generated from a prior tabular dataset prior, integrating principles of simplicity and causal reasoning.
+Our approach reduces the time to solve a tabular classification task to less than a second and simplifies the application to a neural network (NN) forward-pass, a stable, differentiable and highly portable standard procedure.
+
+%We propose a radical change, not only to tabular classifiers but the entire AutoML pipeline, that slashes the required time for training and hyperparameter tuning to \textit{a single second} and simplifies the application to a neural network (NN) forward-pass, a stable, differentiable and highly portable standard procedure. % that could even be run on handheld devices.
+%that is highly portable and can be easily parallelized on compute architectures like GPUs.
+%We do this by meta-learning a NN to become an AutoML system, which unlike previous work is probabilistically founded.
+
+Our method builds on Prior-Data Fitted Networks (PFNs; \citealp{muller-iclr22a}; see Section~\ref{sec:prior_fitted_intro}), which learn the training and prediction algorithm itself.
+PFNs approximate Bayesian inference given any prior one can sample from and yield the posterior predictive distribution (PPD) directly. 
+% The PPD is a prediction distribution for unknown labels in our case, based on Bayesian reasoning.
+Thus, PFNs approximate the probability distributions of classification labels by implicitly weighting all explanations for the data that are entailed in the prior.
+%PFNs work for any prior that we are able to sample data from.
+% By defining a Bayesian prior, the models inductive biases can be set explicitly.
+While inductive biases in NNs and GBDTs depend on them being efficient to implement (e.g. through $L_2$ regularization, dropout \citep{srivastava-jmlr14a} or limited tree-depth), in PFNs, one can simply design a dataset-generating algorithm that encodes the desired prior. This fundamentally changes the way we can design learning algorithms.
+
+\cite{muller-iclr22a} demonstrated PPD approximation with PFNs, amongst other experiments, on binary classification for very small, balanced tabular datasets with only up to $30$ training examples and very few features.
+We build on this work to create a state-of-the-art model for tabular multi-class classification tasks that we evaluate on real-world datasets with up to $1\,000$ training samples, $100$ features and $10$ classes, comprising mixed feature types, missing data and unbalanced targets.
+We focus on small datasets because (1) small datasets are often encountered in real-world applications, (2) existing DL methods are most limited in this domain and (3) \methodname{} is significantly more expensive to evaluate for large datasets, detailed in Appendix \ref{sec:limitations}.
+
+We design a prior (see Section~\ref{sec:tabprior}) based on Bayesian Neural Networks (BNNs; ~\citealt{neal-bayes96a,gal-phdthesis16a}) and Structural Causal Models (SCMs;~\citealt{pearl_2009,causalinferencelearningbook}) to model complex feature dependencies and potential causal mechanisms underlying tabular data.
+Our prior also takes ideas from Occam\textquotesingle{s} razor: explanations based on simpler SCMs and BNNs have a higher likelihood.
+In our prior, we define the hyperparameters describing our prior\textquotesingle{s} hypotheses via probability distributions, e.g., a log-scaled Uniform distribution for the average number of nodes in data-generating SCMs.
+% We define our priors via probability distributions, e.g. a Normal distribution for the number of SCM nodes or a multinomial distribution for activation functions. To generate datasets for prior-fitting, we then sample from these distributions to obtain instantiations of concrete SCMs or BNNs (hypotheses) which we can use to generate data (see \ref{sec:prior_fitted_intro}).
+% The resulting PPD implicitly models uncertainty over these hyperparameters, weighting them by their likelihood given the data and their prior probability.
+The resulting PPD implicitly models uncertainty over these hyperparameters, weighting hyperparameters in explanations of the data by their likelihood given the data and their prior probability.
+Thus, obtaining the PPD corresponds to an infinitely large ensemble of hyperparameters, i.e., instantiations of SCMs and BNNs, in a single forward-pass, and requires no cross-validation or model selection.
+
+Finally, in Section~\ref{sec:experiments}, we analyze the performance and behavior of \methodname{} on different tasks and compare it to previous approaches for tabular classification on small datasets. 
+Quantitatively, they yield much better performance than any individual ``base-level'' classification algorithm, such as gradient-boosting via XGBoost~\citep{chen-kdd16a}, LightGBM~\citep{ke-neurips17a} and CatBoost~\citep{prokhorenkova-neurips18a}, and in a single second yield performance competitive to what the best available AutoML frameworks~\citep{erickson-arxiv20a,feurer-arxiv20a} achieves in 5--30 minutes.
+% By assuming a causal structure and a notion of simplicity in our prior, the PFN performs Bayesian inference over a space of hypotheses that is modelled through a structural causal framework and weighted by simplicity.
+
+% Common regularization techniques to mitigate overfitting include data augmentation [1, 2], dropout [3, 4, 5], adversarial training [6], label smoothing [7], and layer-wise strategies [8, 9, 10] to name a few. However, these methods are agnostic of the causal relationships between variables limiting their potential to identify optimal predictors based on graphical topology, such as the causal parents of the target variable.
+
+% Finally, since there are many decisions to be made when building a prior like this, we broadly hyperparameterize our prior, learn a single NN to support this broad prior and accept hyperparameters of the prior during inference time. We introduce a gradient-based methodology to tune these hyperparameters post hoc on real (meta-validation) datasets. 
+% in a fully trained neural network.
+%and even allow gradient-based methods to tune these hyperparameters. 
+% This simplifies the development of PFN priors and reduces the number of models to be trained to one.
+\iffalse
+In this paper, we make the following contributions:
+\begin{itemize}
+    \item We present a state-of-the-art AutoML method for small, tabular datasets that yields more than $1000\times$ speedup over previous methods.
+    \item We demonstrate the applicability of PFNs to real-world tasks. The PFN approach makes designing learning algorithms with explicit inductive biases possible by defining a prior sampling scheme.
+    \item We introduce a prior over a large family of Structural Causal Models.
+    \item We show that combining distinct priors is viable for PFNs and improves real-world performance.
+    \item We show that the novelty and inductive biases of our approach lead to distinct predictions compared to baseline approaches, making it an ideal candidate for ensembling.
+    \item We analyze the performance and behavior of the \methodname{} on different tasks and compare it to previous approaches for tabular classification.
+\end{itemize}
+\fi
+
+% 30s per small dataset is usual in SOTA, we do 0.5s
+% half a minute to half a second 
+
+
+
+
+
+
+
+
+\iffalse
+Many real-world applications in medicine, finance, research, predictive maintenance or sensor data modelling rely on strong Machine Learning (ML) algorithms for tabular data. 
+%
+While neural networks excel on many ML tasks, Gradient-Boosted Decision Trees (GBDT) still dominate the landscape of supervised ML for tabular data~\citep{GBDT,nnsfortabular2}, largely due to their short training time and robustness.
+
+However, given that tree-based models are not differentiable, they cannot easily be composed and jointly trained with other blocks based on Deep Learning (DL).
+% Furthermore, DL algorithms have been highly optimized to use efficient parallel computation devices such as GPUs and TPUs, potentially leading to large speedups over GBDT methods.
+%While many DL-based works claim superior performance for small and medium-sized datasets ($\approx$10\,000 samples), GBDT methods still outperform deep learning based approaches while also running significantly faster \citep{grinsztajn2022why}.
+%
+While many recent works try to fix this problem with a native DL approach for tabular classification~\citep{add_lots_of_citations}, we go one step further and simply apply a pre-trained DL model.
+
+
+%This is mainly due to competitive performance, short training times and robustness, however, the user is still left with many design decisions.
+
+% TODO somewhere in intro: How did we evaluate, Say that we did analysis on our method, include references to the corresponding sections.
+
+\todo{I would move this paragraph later; essentially, the real comparison is between TabPFN and a normal classification approach (which is then improved/combined in AutoML).}
+%In practical applications, h
+Automated Machine Learning (AutoML) systems for tabular data have improved on GBDT approaches even 
+%by yielding predictions at the push of a button
+further~\citep{thornton-kdd13a,hutter-book19a,erickson-arxiv20a}. %  trading off human time with compute time in a specified time budget.% by automatically taking into account past performance on similar datasets, and by constructing ensembles from the models evaluated during the optimization.
+% To achieve this, AutoML systems automatically evaluate and combine a large set of different ML algorithms, thus requiring substantial resources and becoming increasingly complex. % and take a long time to yield results.
+State-of-the-art AutoML tools combine several classifiers (such as GBDTs and NNs), various preprocessing tools, advanced hyperparameter optimization methods~\citep{falkner-icml18a}, meta-learning~\citep{feurer-aaai15a,yang-kdd19a} and ensembling~\citep{escalante-jmlr09a,feurer-nips15a,olson-gecco16a,feurer-arxiv20v2,erickson-arxiv20a}. This, however, requires substantial resources, is not differentiable and becomes increasingly complex.
+% These stacked complexities can lead to system failures on the user side~\citep{erickson-arxiv20a} that can be hard to understand.
+%Thus, newer systems add even more complexity to catch these failures~\citep{feurer-arxiv20v2}.
+%This complicated setup is run on the machine of the user.
+AutoML systems are usually evaluated for several hours~\citep{gijsbers-automl2019,amlb}, and in our experiments, an AutoML training on a small dataset took at least a full minute, which makes real-time applications such as instant classification in a spreadsheet infeasible.
+
+We propose a radical change to how tabular classification is usually done (namely fitting a new model from scratch to the training portion of a new dataset). We replace this step by performing a single forward pass on a large model that has been pre-trained to solve probabilistic classification tasks which are generated from a prior over what tabular datasets typically look like, integrating principles of simplicity and causal reasoning.
+Next to slashing the time to solve tabular classification tasks to less than a second, this 
+
+but the entire AutoML pipeline, that slashes the required time for training and hyperparameter tuning to \textit{a single second} and simplifies the application to a neural network (NN) forward-pass, a stable, differentiable and highly portable standard procedure.
+
+%We propose a radical change, not only to tabular classifiers but the entire AutoML pipeline, that slashes the required time for training and hyperparameter tuning to \textit{a single second} and simplifies the application to a neural network (NN) forward-pass, a stable, differentiable and highly portable standard procedure. % that could even be run on handheld devices.
+%that is highly portable and can be easily parallelized on compute architectures like GPUs.
+%We do this by meta-learning a NN to become an AutoML system, which unlike previous work is probabilistically founded.
+
+Our method builds on Prior-Data Fitted Networks (PFNs)~\citep{muller-iclr22a}, which learn the training and prediction algorithm itself.
+PFNs approximate Bayesian inference given any prior one can sample from and yield the posterior predictive distribution (PPD) directly. 
+% The PPD is a prediction distribution for unknown labels in our case, based on Bayesian reasoning.
+Thus, PFNs approximate the probability distributions of classification labels by implicitly weighting all explanations for the data that are entailed in the prior.
+%PFNs work for any prior that we are able to sample data from.
+% By defining a Bayesian prior, the models inductive biases can be set explicitly.
+While inductive biases in NNs and GBDTs depend on them being efficient to implement (e.g. through $L_2$ regularization, dropout \citep{srivastava-jmlr14a} or limited tree-depth), in PFNs, one simply has to design a dataset generating algorithm encoding the desired prior. This fundamentally changes the way we can design learning algorithms.
+
+In the original PFN paper~\citep{muller-iclr22a}, PPD approximation with PFNs was, amongst other experiments, demonstrated on binary classification for very small, balanced tabular datasets with only up to $30$ training examples and very few features.
+We build on this work to create a state-of-the-art model for tabular multi-class classification tasks that we evaluate on real-world datasets with of up to $1\,000$ training samples, $100$ features and $10$ classes, comprising mixed feature types, missing data and unbalanced targets.
+
+We use a prior based on Bayesian Neural Networks (BNNs; ~\citealt{neal-bayes96a,gal-phdthesis16a}) and Structural Causal Models (SCMs;~\citealt{pearl_2009,causalinferencelearningbook}) to model complex feature dependencies and potential causal mechanisms underlying tabular data.
+Our prior also takes ideas from Occam\textquotesingle{s} razor: explanations based on simpler SCMs and BNNs have a higher likelihood in our prior.
+In our prior, we define the hyperparameters describing our priors hypotheses via probability distributions, e.g. a Normal distribution for the average number of nodes in data-generating SCMs.
+% We define our priors via probability distributions, e.g. a Normal distribution for the number of SCM nodes or a multinomial distribution for activation functions. To generate datasets for prior-fitting, we then sample from these distributions to obtain instantiations of concrete SCMs or BNNs (hypotheses) which we can use to generate data (see \ref{sec:prior_fitted_intro}).
+% The resulting PPD implicitly models uncertainty over these hyperparameters, weighting them by their likelihood given the data and their prior probability.
+The resulting PPD implicitly models uncertainty over these hyperparameters, weighting them by their likelihood given the data and their prior probability.
+By obtaining the PPD, \methodname{} approximates an infinitely large ensemble of hyperparameters in a single forward-pass and requires no cross-validation.
+
+Finally, we analyze the performance and behavior of the \methodname{} on different tasks and compare it to previous approaches for tabular classification on small datasets. We find that our method yields distinctly different predictions compared to existing approaches, likely due to the novelty and inductive biases introduced.
+% By assuming a causal structure and a notion of simplicity in our prior, the PFN performs Bayesian inference over a space of hypotheses that is modelled through a structural causal framework and weighted by simplicity.
+
+% Common regularization techniques to mitigate overfitting include data augmentation [1, 2], dropout [3, 4, 5], adversarial training [6], label smoothing [7], and layer-wise strategies [8, 9, 10] to name a few. However, these methods are agnostic of the causal relationships between variables limiting their potential to identify optimal predictors based on graphical topology, such as the causal parents of the target variable.
+
+% Finally, since there are many decisions to be made when building a prior like this, we broadly hyperparameterize our prior, learn a single NN to support this broad prior and accept hyperparameters of the prior during inference time. We introduce a gradient-based methodology to tune these hyperparameters post hoc on real (meta-validation) datasets. 
+% in a fully trained neural network.
+%and even allow gradient-based methods to tune these hyperparameters. 
+% This simplifies the development of PFN priors and reduces the number of models to be trained to one.
+
+In this paper, we make the following contributions:
+\begin{itemize}
+    \item We present a state-of-the-art AutoML method for small, tabular datasets that yields more than $1000\times$ speedup over previous methods.
+    \item We demonstrate the applicability of PFNs to real-world tasks. The PFN approach makes designing learning algorithms with explicit inductive biases possible by defining a prior sampling scheme.
+    \item We introduce a prior over a large family of Structural Causal Models.
+    \item We show that combining distinct priors is viable for PFNs and improves real-world performance.
+    \item We show that the novelty and inductive biases of our approach lead to distinct predictions compared to baseline approaches, making it an ideal candidate for ensembling.
+    \item We analyze the performance and behavior of the \methodname{} on different tasks and compare it to previous approaches for tabular classification.
+\end{itemize}
+\fi
+
+% 30s per small dataset is usual in SOTA, we do 0.5s
+% half a minute to half a second 
+
+\section{Background on Prior-Data Fitted Networks}
+\label{sec:prior_fitted_intro}
+
+We first provide a brief recap on how PFNs work and refer to~\cite{muller-iclr22a} for more details.
+%
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[t]{.49\textwidth}
+         \centering
+         \input{figures/overview_figures/transformer_visualization}
+         \caption{Architecture and attention mechanism}
+         \label{fig:transformer_visualization}
+     \end{subfigure}
+     \begin{subfigure}[t]{.49\textwidth}
+         \centering
+         \input{figures/overview_figures/pfn_usage}
+         \caption{Prior-fitting and inference}
+         \label{fig:pfn_usage}
+     \end{subfigure}
+     \caption{Left (a): Training samples $\{(x_1,y_1), \dots, (x_3,y_3)\}$ are transformed to $3$ tokens, which attend to each other; test samples $x_4$ and $x_5$ attend only to the training samples. Right (b): The PFN learns to approximate the PPD of a given prior in the offline stage to yield predictions on a new dataset in a single forward pass in the online stage. Plots based on \cite{muller-iclr22a}.}
+     \label{fig:pfn_overview}
+\end{figure}
+%
+%PFNs leverage large-scale ML techniques to enable fast approximation of the Posterior Predictive Distribution (PPD) given any prior that can be sampled from ~\citep{muller-iclr22a}. Given a sufficiently powerful model PFN approximations are provably error-free.
+%
+\paragraph{The Posterior Predictive Distribution for Supervised Learning} 
+
+In the Bayesian framework for supervised learning, the prior defines a space of hypotheses $\Phi$ on the relationship of a set of inputs $x$ to the output labels $y$.
+Each hypothesis $\phi$ can be seen as a mechanism generating a data distribution from which we can draw samples forming a dataset. For example, given a prior based on Structural Causal Models, $\Phi$ is the space of Structural Causal Models, a hypothesis $\phi$ one specific SCM and a dataset comprises samples generated through the SCM. In practice, a dataset comprises training data with labels observed and test data where labels are missing or held out to assess predictive performance.
+The PPD for a test sample $x_{test}$ is conditioned on the set of training samples $D_{train} := \{(x_1,y_1), \dots, (x_n,y_n)\}$ and specifies the distribution of its label $p(\cdot|x_{test},D_{train})$.
+It is obtained by integration over the space of hypotheses $\Phi$, where the weight of a hypothesis is determined by its prior probability and the likelihood of the observations given this hypothesis:
+\begin{equation}
+    p(y|x,D) \propto \int_{\Phi} p(y|x,D,\phi) p(D|\phi) p(\phi) d\phi.
+    \label{eq:ppd}
+\end{equation}
+While obtaining the PPD is generally intractable, PFNs approximate the PPD, given any prior one can sample from.
+A PFN that minimizes its training objective to the global minimum, provably approximates exactly the PPD, as shown in \cite{muller-iclr22a}.
+
+\paragraph{Architecture} 
+PFNs rely on a Transformer \citep{vaswani-neurips17a} that encodes each feature vector and label as a token, allowing token representations to attend to each other, as depicted in Figure \ref{fig:transformer_visualization}.
+They accept a variable length training set $D_{train}$ of feature and label vectors as well as a variable length query set of feature vectors $x_{test} = \{x_{({test},1)}, \dots, x_{({test},m)}\}$ and return estimates of the PPD for each query.
+% PFNs are once trained offline in the \textit{synthetic prior-fitting} phase and are then applied to arbitrary many real-world datasets in the online \textit{real-world inference} phase.
+%During meta-training, the PFN, is trained on a ref the objective of PPD approximation as a supervised classification problem:
+%A PFN is meta-trained by repeatedly drawing artificial datasets from a prior $p(D) \sim p(\theta)$
+
+\paragraph{Synthetic Prior-fitting} 
+During prior-fitting, the PFN is trained to approximate Bayesian inference given a prior which is specified by a prior sampling scheme $p(D)=\E_{\phi \sim p(\phi)}[p(D|\phi)]$, which first samples hypotheses (generating mechanisms) with $\phi \sim p(\phi)$ and then synthetic datasets with $D \sim p(D|\phi)$.
+%, with weights $\theta$,
+We repeatedly sample such synthetic datasets $D:={(x_i, y_i)}_{i \in \{0,\dots,n\}}$ and optimize the PFN\textquotesingle{}s parameters $\theta$ to make predictions for $D_{test} \subset D$ with held-out labels $y_{test}$ and conditioned on the rest of the dataset $D_{train} = D \setminus D_{test}$.
+This minimizes the cross entropy loss over sampled datasets w.r.t to the approximated PPD $q_{\theta}$:
+\begin{equation}
+    \mathcal{L}_{\textit{PFN}} = - \E_{\{D_{test} \cup D_{train}\} \sim p(D)} [q_{\theta}(y_{test}|x_{test},D_{train})]
+    \label{eq:lpfn}
+\end{equation}
+As demonstrated in \cite{muller-iclr22a}, minimizing this loss approximates exact Bayesian posterior prediction. We visualize this in Figure~\ref{fig:pfn_usage} and detail the full training setup in Algorithm \ref{alg:prior-fitting} in the appendix.
+Crucially, this \textit{synthetic prior-fitting} phase is performed only once for a given prior $p(D)$, learning to do \textit{real-world inference} on any new dataset.
+
+\paragraph{Real-World Inference} During inference, the trained model is applied to arbitrary real-world datasets. For a novel dataset with training samples $D_{train}$ and test features $x_{test}$, feeding it as an input to the model trained above yields the PPD %is generated by calculating
+$q_{\theta}(y|x_{test},D_{train})$ in a single forward-pass. The PPD class probabilities are then used as predictions for our real-world task. Thus, PFNs perform training and prediction in one step (similar to prediction with Gaussian Processes) and do not use gradient-based learning for predicting novel datasets.
+%for a real-world dataset $D$
+%using the $\theta$ resulting from \textit{synthetic prior-fitting}.
+
+\iffalse
+\paragraph{Relation to Prior Works}
+Vs Pretraining, Vs Meta-Learning, vs Non parametric transformers
+
+"meta-learning" from the Introduction. Especially para 2-3. Not sure about works around zero-shot meta learning in small tabular datasets but would have liked to see the connection out there with some links. The paper appears well rounded in motivating each design choice or contrasting with what is out there. Zero/One-shot meta learning maybe was something that felt missing as a mention.
+Also related to this: Pg 1, Para 3 could do with some references as mentioned above 
+%$q_{\theta}(y|x,D_{train})$ directly yields the PPD, performing training and prediction in one single forward pass (similar to prediction with Gaussian Processes).
+\fi
+
+
+%------------------------------------------------
+\section{A Prior for Tabular Data}\label{sec:tabprior}
+%------------------------------------------------
+% To be able to scale to 20$\times$ larger tabular datasets we design a prior to overcome a range of things traditionally problematic for deep neural networks: The correlation among features is unstructured, as opposed to the clear spatial or semantic relationship in images or language data; feature types can be numerical, ordinal, and categorical; Feature values can be missing leading to sparse features.
+
+The performance of our method crucially depends on the specification of a suitable prior, as the PFN approximates the PPD for this prior.
+%The prior describes the hypothesis we have about the structure of the input data and their relationship to the output labels. %Alternatively we can think of the data generating processes behind real world tabular data and a priors\textquotesingle{} plausibility in light of these processes.
+%In this work, we consider a hypothesis space over Structural Causal Models (SCMs) and Bayesian Neural Networks (BNNs), described in Sections \ref{sec:causal prior} and \ref{sec:bnn prior}, with a bias towards simplicity, see Section \ref{sec:modelling simplicity assumptions}.
+%Training a PFN only requires to specify a prior sampling scheme $p(D)=\E_{\phi \sim p(\phi)}[p(D|\phi)]$ and generate samples with $\phi \sim p(\phi)$ and then $D \sim p(D|\phi)$. 
+Section \ref{sec:probabilistic prior} outlines a fundamental technique for our prior: we use distributions instead of point-estimates for almost all hyperparameters of our prior. Section \ref{sec:modelling simplicity assumptions} motivates simplicity in our prior, while Sections \ref{sec:causal prior} and \ref{sec:bnn prior} describe, how we use Structural Causal Models (SCMs) and Bayesian Neural Networks (BNNs) as fundamental mechanisms generating diverse data in our prior. Since our SCM and BNN priors only yield regression tasks, we show how to convert them to classification tasks in Section \ref{sec:multi-class prediction}. We describe additional refinements to our prior to reflect tabular data better in Appendix \ref{sec:tabular data refinement}.
+%
+%\subsection{Simplicity and Causal Mechanisms}
+%\label{sec:simplicity and causal mechanisms}
+
+\subsection{Fundamentally Probabilistic Models}
+\label{sec:probabilistic prior}
+Fitting a model typically requires finding suitable hyperparameters, e.g. the embedding size, number of layers and activation function for NNs. Commonly, resource-intensive searches need to be employed to find suitable hyperparameters \citep{liu-eccv18a,zoph-iclr17a,feurer-automlbook19a}.
+The result of these searches, though, is only a point estimate of the hyperparameter choice.
+Ensembling over multiple architectures and hyperparameter settings can yield a rough approximation to a distribution over these hyperparameters and has been shown to improve performance \citep{zaidi-neurips21a,hyperensemble}.
+This, however, scales linearly in cost with the number of choices considered.
+
+PFNs allow us to be fully Bayesian about the hyperparameters of our models in a single forward pass. By defining a probability over the space of hyperparameters in the prior, such as BNN architectures, the PPD approximated by \methodname{} jointly integrates over this space of hyperparameters and respective model weights.
+%Here, our prior hypotheses $\phi$ can be sampled as $p(\phi) = \E_{a \sim p(a)}[p(\phi|a)]$, with $a$, for example, a random variable defining the architecture of a BNN (as done by~\citet{muller-iclr22a}). This yields a distribution over architectures in the approximated PPD.
+%Our model supports the integration of similar ideas cheaply, since
+%by mixing different priors we obtain a posterior that is the ensemble of the posteriors for each prior:
+%\begin{align}
+%&\E_{\psi}[p(\theta|D,\psi)] = \sum_{\psi} p(\psi) p(\theta|D,\psi)  &&\\
+%    &= \sum_{\psi} p(\psi) \frac{p(D|\theta,\psi)p(\theta|\psi)}{p(D|\psi)} && \\
+    %not ready, got stuck
+%\end{align}
+%\frank{Is this actually true? Due to the likelihood being different for each prior you'd at least have a data-likelihood weighted mix of posteriors, no?}
+%\sam{@frank: A mix of priors is equivalent to a mix of posteriors, do you mean that?
+%Frank: but with non-uniform weights, right?}
+%\sam{I thought so, too, but just yesterday calculated it (not super sure about the correctness), but I think not. I think it is with uniform weights, or in general the weights chosen in the mix of priors.}
+%\sam{I will write down the derivation in a very short form, ok? (this will take some time) we can move it to the appendix later.}
+%This simple setup enables ensembling different kinds of priors
+%(i.e.\ modelling assumptions)
+%and hyperparameters: all we need to do is to define our prior over the hypotheses $\Phi$ as $p(\phi) = \E_{a \sim p(a)}[p(\phi|a)]$.
+% The probability of each prior $p(a)$ is a hyperparameter in general.
+We extend this approach to a mixture not only over hyperparameters but distinct priors: we mix a BNN and a SCM prior,
+%(Section \ref{sec:causal prior}) and a BNN prior (Section \ref{sec:bnn prior}), 
+each of which again entails a mixture of architectures and hyperparameters.
+%
+%Additionally, we train on mixtures of the hyperparameters for each prior.
+%After training we use \priortuning{} (Section \ref{sec:differentiable hyperparameter tuning}) to tune the probabilities of all hyperparameters and prior models.
+
+% Defining the prior sampling scheme laid out in the previous sections, a mix of regression priors (Section \ref{sec:simplicity and causal mechanisms}) combined with a way to create classification dataset samples from them (Section \ref{sec:multi-class prediction}), is all that is needed to train a PFN to perform Bayesian predictions on tabular data, i.e. make predictions for held-out examples of unseen tabular datasets.
+%We layed out how to define a sampling scheme that samples parameters such as the DAG of an SCM as well as weights and class distributions to define a meta-train dataset.
+% Next we sample training data points (X, y) and testing data points ($\hat{X}$, $\hat{y}$) from this meta-dataset and finally fit the PFN over millions of meta-train datasets to reduce the losses on ($\hat{X}$, $\hat{y}$) given (X, y).
+
+
+\subsection{Simplicity}
+\label{sec:modelling simplicity assumptions}
+We base our priors on a notion of simplicity, such as stated by Occam's Razor or the Speed Prior \citep{speedprior}.
+When considering competing hypotheses, the simpler one, e.g. the one requiring fewer parameters, is to be preferred.
+%Work in cognitive science has also uncovered this preference for simple explanations in human thinking~\citep{explanatoryvalues}.
+Any notion of simplicity, however, depends on choosing a particular criterion that defines simplicity.
+In the following, we introduce priors based on SCMs and BNNs where we , in which simplicity materializes as graphs with few nodes and parameters. %, as well as, small parameter values.
+% Thus, our model prefers hypotheses based on simple SCMs or BNNs during inference capturing the notion of simple explanations.
+% We interpret simplicity in a Bayesian framework, sampling models with a lower number of parameters more frequently than models with a higher number of parameters.
+%In the context of structural causal models and BNNs this is done by sampling the number of layers and hidden weights from a log normal distribution, which is inherently skewed towards zero. Additionally in our SCMs we choose the probability of dropping connections to follow a beta distribution which gives a tendency towards sparse graphs.
+
+\subsection{Structural Causal Prior}
+
+\label{sec:causal prior}
+%
+%
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \input{figures/prior_graphs/bayesgraph}
+         \caption{A BNN}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \input{figures/prior_graphs/causalgraph}
+         \caption{An SCM}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \input{figures/prior_graphs/meta_causalgraph}
+         \caption{Sample SCMs from the prior}
+     \end{subfigure}
+        \caption{Visualization of graphs generating data in our prior. The inputs $x$ (grey) are mapped to the output $y$ (grey) with unobserved nodes $z$ (white). Independent noise variables $\epsilon$ (not visualized) are added to all nodes.}
+        \label{fig:structural_graphs}
+\end{figure}
+%
+It has been demonstrated that causal knowledge can facilitate various ML tasks, including semi-supervised learning, transfer learning and out-of-distribution generalization \citep{scholkopf2012causal, NEURIPS2019_2172fde4, rotenh2018}.
+Tabular data often exhibits causal relationships between columns, and causal mechanisms have been shown to be a strong prior in human reasoning \citep{waldmann2013causal, explanatoryvalues}.
+Thus, we base our \methodname{} prior on SCMs that model causal relationships~\citep{pearl_2009, causalinferencelearningbook}.
+An SCM %$\mathcal{G} := (Z, \epsilon{})$
+consists of a collection $Z := (\{z_1, \dots, z_k\})$ of structural assignments (called mechanisms)
+\begin{align}
+    z_i = f_i(z_{\text{PA}_{\mathcal{G}}(i)}, \epsilon_i),
+\end{align}
+where $\text{PA}_{\mathcal{G}}(i)$ is the set of parents of $z_i$ (its direct causes) in an underlying DAG $\mathcal{G}$ (the causal graph), $f_i$ is a (potentially non-linear) deterministic function and $\epsilon_i$ a noise variable.
+%We make the common assumption that $\mathcal{G}$ does not contain cycles.
+Causal relationships in $\mathcal{G}$ are represented by directed edges pointing from causes to effects and each mechanism $z_i$ is assigned to a node in $\mathcal{G}$, as visualized in Figure \ref{fig:structural_graphs}.
+
+\paragraph{Relation to Prior Work}
+%
+%Although causality has been a topic of research for decades, only recently has cause and effect relationships been incorporated into machine learning methodologies and research. 
+There are two major ways of incorporating causal reasoning into predictions, causal inference and causal discovery.
+Here, we outline both and explain how our approach differs.
+Causal inference seeks to identify causal relations between the components of a system by the use of interventions and observational data \citep{pearl2010causal}.
+Causal discovery seeks to reveal causal information by analyzing purely observational data \citep{zhang2018learning}.
+These causal representations are then used to make predictions on novel samples or to provide explainability.
+Most existing work focuses on determining a single causal graph to use for downstream prediction.
+This can be problematic since most kinds of SCMs are non-identifiable without interventional data, and the number of compatible DAGs explodes due to the combinatorial nature of the space of DAGs.
+While \cite{annadani2021variational} extend this representation to the space of discrete DAGs, this work is limited to a few subfamilies of SCMs while the computational complexity is high.
+Our \methodname{} effectively reasons over the full space of hypotheses in our prior, i.e.\ a broad family of SCMs, and their respective weights in a single forward pass.
+We achieve this by skipping any explicit graph representation in our inference step and approximate the PPD directly.
+Thus, we do not perform causal inference or discovery but solve the downstream prediction task directly.
+The use of this implicit assumption of causality can be explained by Pearl\textquotesingle{}s "ladder of causation", an abstraction of inference categories, where each higher rung represents a more involved notion of inference \citep{PearlMackenzie18}. At the lowest rung lies association, which includes most of ML. At the second rung, we find predicting the effect of interventions, i.e. what happens when we influence features directly. %lastly, counterfactual inference aims to predict what would have happened if things were different, after the fact.
+Our work can be considered as "rung 1.5", similar to \cite{NEURIPS2020_1068bceb, SchaarMiracleCDL}: we do not seek to predict the effect of interventions, but make more informed predictions on observational data using the assumption that causal mechanisms generate the data.
+% Similarly, recent work by \cite{NEURIPS2020_1068bceb} uses pointwise DAG representations as a regularizer of NN training, forcing predictions to be regularized by causal structures but not making actual predictions of causal structures during inference. 
+
+\paragraph{Method}
+To create a PFN prior based on SCMs, we have to define a sampling procedure of supervised learning tasks (i.e.\ datasets).
+Here, each dataset is based on one randomly sampled SCM (inducing DAG structure, activation functions, and a deterministic functions $f_i$).
+Given an SCM, we sample a set $z_X$ of nodes in $\mathcal{G}$, one for each feature in our synthetic dataset, and a node $z_y$ from the causal graph $\mathcal{G}$.
+These nodes are observed nodes: values of $z_X$ will be included in the set of features, while values from $z_y$ will act as targets.
+For each such SCM and list of nodes $z_X$ and $z_y$, $n$ samples are generated by sampling all noise variables in the SCM $n$ times, propagating these through the graph and retrieving the values $z_X$ and $z_y$ for all $n$ instances.
+Figure~\ref{fig:structural_graphs} depicts an SCM with observed feature- and target-nodes in grey.
+In Figure~\ref{fig:samples example} we showcase scatter plots of samples generated by two distinct SCMs. 
+The resulting features and targets are correlated through the generating DAG structure.
+This leads to features conditionally dependent through forward and backward causation, i.e.\ targets might be a cause or an effect of features.
+%Making predictions on a dataset generated in this way entails inferring potential graph structures generating the training samples and making predictions based on these graphs.
+%The Bayesian PPD approximated by \methodname{} entails all SCM
+
+In this work, we instantiate a subfamily of DAGs and deterministic functions $f_i$ that can be efficiently sampled from, as described in Appendix \ref{sec:details_scm_prior}.
+And since efficiently sampling SCMs is the only requirement we have, the instantiated subfamily is very general, including multiple activation functions and potentially non-Gaussian noise.
+
+When we go back to Equation \ref{eq:ppd}, which describes the PPD, we can understand it in the context of the SCM prior as follows:
+The PPD integrates predictions over the space of SCM graph hypotheses, where the weight of each hypothesis is determined by the likelihood of observing data given this hypothesis and the likelihood of this hypothesis in our prior.
+
+%  These causal relationships are commonly modelled through SCMs that can be used to make predictions on new observations \citep{pearl_2009}. A Directed Acyclic Graph (DAG) is used to describe relationships between the observed variables included within an SCM (could explain more about other parts?). 
+%The majority of existing work in causal inference and discovery focuses on determining a single directed acyclic graph (DAG). Due to the non-identifiability of the causal models without interventional data \citep{eberhardt2007interventions}, causal inference demands reasoning about its uncertainty when given finite observational data.
+% Thus we propose a prior over a distribution of hyperparameters, entailing the space model architectures, i.e. graph connectivity, embedding size, noise strength, model noise and activation functions.
+% that is we pick nodes from the SCM and sample their values given normally i.i.d. causes $C$.
+%For the evaluation on tabular datasets, we present very general priors over causal and neural networks.
+%Knowledge of the structural and causal dependencies that underlie the generation of data is an intuitive way of specifying prior knowledge. Those structural dependencies can be described by probabilistic graphical models (PGM), which express the conditional dependendence of random variables. However, inferring those models is computationally very challenging due to the combinatorially large number of candidate graphs and often only possible with some uncertainty.
+%\subsection{Bag of Hyperparameters and Prior Models}
+%\frank{At the point of my pass, this seems already integrated. I have not thought about whether it might be helpful to have it separate as here; it would also work well together with the part on differentiable hyperparameter tuning, since the natural question is how you would optimize the ensemble.}
+%Ensemble learning, where we take the average over multiple model outputs, is a well-known method for improving performance and a rough posterior approximation commonly used for Bayesian Neural Networks.
+%For ensembles of neural networks it was recently shown that ensembles over different architectures and setups are outperforming classical ensembles over different initializations of one architecture \citep{nes,hyperensemble}. 
+%For traditional ensembles, expensive methods have been created to find a good set of ensemble members for a particular dataset \citep{nes}.
+%We can integrate similar ideas into our model easily by mixing different priors, which yields a posterior that is the ensemble of the posteriors for each prior.
+%To ensemble priors all we do is define our prior as $p(\theta) = \E_{a \sim p(a)}[p(\theta|a)]$.
+%Here, $a$ could for example be a random variable defining the architecture of a Bayesian Neural Network as done in \cite{muller-iclr22a} for example. The probability of each prior $p(a)$ is a hyperparameter in general.
+%We extend the approach from \cite{muller-iclr22a} to a mixture of a causal prior (Section \ref{sec:causal prior}) and a BNN prior (Section \ref{sec:bnn prior}), each of which entails a mixture of architectures in turn again.
+%Additionally, we train on mixtures of the hyperparameters for each prior.
+%After training we use \priortuning{} (Section \ref{sec:differentiable hyperparameter tuning}) to tune the probabilities of all hyperparameters and prior models.
+
+% TODO: Previous sentence too comlicated. %The subfamily of SCMs considered is only limited by our sampling algorithm, which includes a range of activation functions, noise variables and DAG architectures.
+
+%Our work, while working on distributions of SCMs and a more general SCM subfamily, makes use of the same assumption: using an assumption of causality during inference can improve prediction even when underlying causal structures are not recovered
+
+%While Bayesian causal inference allows to do so, the posterior over DAGs becomes intractable even for a small number of variables.
+%This is not easy to do with traditional Bayesian methods, i.e.\ Variational Inference and Markov Chain Monte Carlo, as the hypothesis space is a distribution over many graphs. Thus, a representation of an infinitely large space of hypotheses and their uncertainty would need to be modelled by these methods. 
+%For these methods, one would have to instantiate the graphs themselves at inference time, which is an exponentially growing space in the number of nodes under mild assumptions \cite{annadani2021variational}.
+%\frank{What precisely is hard to do with VI and MCMC? Why does it require instantiating graphs at inference time? Why do we have to instantiate all the graphs?}
+%\sam{The hypothesis/latent for these SCMs and also for distributions over architectures contain many different architectures. If one wants to instantiate this space, one has to sample from a very large space. Not very sure if that means many samples are needed though, I will make it a little less aggressive.}
+
+%In this work, we seek to approximate the PPD directly given a prior over the space of SCMs and therefore we remove the need for finding explicit causal representations for performing predictions.
+% Candidate for shortening
+%(see Figure \ref{fig:structural_graphs}).
+%PFNs provably approximate Bayesian inference, effectively reasoning over the full space of hypotheses, i.e.\ graphs of SCMs, and their respective weights in a single forward pass. This yields a distribution over graphs of SCMs in the posterior. The weight of each SCM graph hypothesis is determined by the likelihood of observing data given this hypothesis and the likelihood of this hypothesis in our prior.
+% This claim is very specific to the comparison to models that instantiate the posterior, but we don't talk about these methods at all. Would need some intro to them to leave it here, I think.
+%They propose a variational family for causal structures on which approximate Bayesian inference can be performed. However the considered particular space of SCMs is limited in order to find a tractable variational family using the ELBO. Furthermore the number of nodes considered in the prior is limited by an exponentially growing runtime.
+%The approach also seeks to build a causal representation explicitly that could be used for downstream tasks such as prediction but does not deal with approximating the Posterior Predictive distribution.
+%Thus our method leverages a prior over causal structures, to enhance predictive reasoning. However we do not perform interventions or seek to answer interventional queries.
+
+%While previous work has been done on considering a space of SCMs, those are restricted by using additive functions in their modelling \citep{lorch2021dibs,annadani2021variationalcausal}.
+
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \hspace*{-0.8cm}
+         %\def\svgwidth{0.7\columnwidth}
+            \includegraphics[width=0.5\columnwidth]{figures/prior_samples/prior_samples_1.pdf}
+%         \caption{}
+         \centering
+         \hspace*{-0.2cm}
+         %\def\svgwidth{0.7\columnwidth}
+            \includegraphics[width=0.5\columnwidth]{figures/prior_samples/prior_samples_2.pdf}
+         \caption{Synthetic datasets}
+         \label{fig:samples example}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \hspace*{-0.8cm}
+         %\def\svgwidth{0.7\columnwidth}
+            \includegraphics[width=0.5\columnwidth]{figures/prior_samples/parkinsons.pdf}
+%         \caption{}
+         \centering
+         \hspace*{-0.2cm}
+         %\def\svgwidth{0.7\columnwidth}
+            \includegraphics[width=0.5\columnwidth]{figures/prior_samples/wine.pdf}
+         \caption{Actual datasets}
+         \label{fig:samples example}
+     \end{subfigure}
+     \vspace*{-0.2cm}
+     \caption{Each plot shows two features, where each point represents a sample with colors indicating the class label. %The diagonal shows histograms of each feature, given a class. 
+     (a) Two synthetic datasets generated by our causal tabular prior. Numeric SCM outputs are mapped to classes as described in Section \ref{sec:multi-class prediction}. (b) Two datasets from our validation datasets: Parkinsons (Left) and Wine (Right).
+     }
+     \label{fig:samples_and_correlation}
+\end{figure}
+
+\subsection{BNN Prior}
+\label{sec:bnn prior}
+
+We also consider a BNN prior as introduced by \citet{muller-iclr22a} and mix it with the SCM prior described above by randomly sampling datasets during PFN training from either one or the other prior (weighted by hyperparameter \textit{Sample SCM vs BNN}, see Appendix \ref{app:prior_hparams}).
+%We begin by introducing a prior based on Bayesian Neural Networks (BNNs) from \citep{muller-iclr22a}.
+To sample a dataset from the BNN prior, we first sample a 
+%(noisy) 
+NN architecture and its weights.
+Then, for each data point in the to-be-generated dataset, we sample an input, $x$ % \sim \mathcal{N}(\mathbf{0},\mathbf{I})$,
+%a standard normal, 
+feed it through the BNN with sampled noise variables and use the output $y$ as a target (see Figure~\ref{fig:structural_graphs}).%\footnote{We note that, while tabular data is not always normalized, we apply z-normalization to the columns.}.
+This is a more general setup than in standard BNNs, as the posterior also considers a distribution over architectures, not only the standard distribution over a fixed architecture's weights.
+The details of this approach can be found in prior work by \citet{muller-iclr22a}.
+
+\subsection{Multi-class Prediction}
+\label{sec:multi-class prediction}
+So far, the described priors return scalar labels. In order to generate synthetic classification labels, we need to transform our scalar labels $\hat{y}$ to discrete class labels $y$. We do so by simply splitting the values of $\hat{y}$ into intervals that map to class labels:
+\vspace{-4mm}\\
+\begin{enumerate}[itemsep=-0.1em]
+    \item We sample the number of classes $N_c \sim p(N_c)$, where $p(N_c)$ is a distribution over integers.
+    \item  We sample $N_c-1$ bounds $B_c \sim p(B_c|N_c,\hat{y})$, where $p(B_c|N_c,\hat{y})$ samples a random value from $\hat{y}$. % for half of the datasets and from a standard normal distribution for the other half.
+    \item We map each scalar label $\hat{y}_i$ to the index of the unqiue interval that contains it:
+    $y_i \gets \sum_{j} [B_j < \hat{y}_i]$, where $[\cdot]$ is the indicator function.
+\end{enumerate}
+%\hphantom{~~~~}(1) We sample the number of classes $N_c \sim p(N_c)$, where $p(N_c)$ is a distribution over integers.
+
+%\hphantom{~~~~}(2) We sample $N_c-1$ quantile bounds $B_c \sim p(B_c|N_c)$, uniformly between [0, 1].\\
+%\hphantom{~~~~}(2) We sample $N_c-1$ bounds $B_c \sim p(B_c|N_c,\hat{y})$. $p(B_c|N_c,\hat{y})$ samples bounds uniformly from $\hat{y}$ for half of the datasets and from a standard normal distribution for the other half.
+
+%\hphantom{~~~~}(3) We map each scalar label $\hat{y}_i$ to the unique range that contains it:\vspace{2mm}\\
+%\hphantom{~~~~~~~~~~}$y_i \gets \sum_{j} B_j < \textit{rank}(\hat{y}_i)/n$, where \textit{rank} maps $\bar{y}_i$ to its rank in $\bar{y}$.\vspace{2mm}\\
+%\hphantom{~~~~~~~~~~}$y_i \gets \sum_{j} [B_j < \hat{y}_i]$, where $[\cdot]$ is the indicator function.\vspace{2mm}\\
+%For example for $N_c = 2$ the quantile bound $B_c = \{0.5\}$ would define two quantile ranges $\{[0.0, 0.5], [0.5, 1.0]\}$. This would map the lower quantile of values in $\hat{y}$ to 0 and the upper half to 1, yielding balanced binary classification. Finally, we shuffle the labelling of classes, i.e. we remove the ordering of class labels w.r.t.\ the quantile range.
+%\vspace{-4mm}
+For example, with $N_c = 3$ classes the bounds $B_c = \{-0.1, 0.5\}$ would define three intervals $\{(-\infty, -0.1], (-0.1, 0.5], (0.5, \infty)\}$. Any $\hat{y}_i$ would be mapped to the label $0$ if it is smaller than $-0.1$, to $1$ if lies in $(-0.1, 0.5]$ and to $2$ otherwise.
+Finally, we shuffle the labels of classes, i.e. we remove the ordering of class labels w.r.t.\ the ranges.
+% \hphantom{~~~~}(4) With probability $p_s$, a hyperparameter, we shuffle the labelling of classes, that is, we remove the ordering of class labels wrt.\ the quantile range.
+% For the distribution of the number of classes, $P(N_c)$ is a uniform with an extra $50\%$ probability for the binary case (followed by renormalization). $P(B_c)$ controls the class distribution and is chosen to sample bounds uniformly in the range $[0, 1]$, and $p_s$ is a hyperparameter.
+
+%------------------------------------------------------
+\section{Experiments}\label{sec:experiments}
+%------------------------------------------------------
+%------------------------------------------------------
+
+\subsection{Evaluation on Toy Problems}\label{ssec:toyresults}
+%------------
+
+\begin{figure}[h]
+     \centering
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+         %\def\svgwidth{1.1\columnwidth}
+            \includegraphics[width=1.0\columnwidth]{figures/tabular_results/toy_predictions_updated.pdf}
+     \end{subfigure}
+     \caption{Decision boundaries on toy datasets generated with \emph{scikit-learn}~\citep{scikit-learn}.}
+     \label{fig:toy_samples}
+\end{figure}
+
+We qualitatively compare standard classifiers without hyperparameter tuning to our \methodname{} in Figure \ref{fig:toy_samples}.
+The top row shows the \emph{moons} dataset with noise. The \methodname{} accurately models the decision boundary between samples; also, similar to Gaussian processes, its uncertainties are large for points far from observed samples.
+The second row shows the \emph{circles} dataset with noise: \methodname{} accurately models the circle\textquotesingle{}s shape with high confidence anywhere outside the region where samples are mixed.
+The third row shows two classes and features from the iris dataset, while the third rows shows two classes and features from the wine dataset (both included in \emph{scikit-learn}).
+\subsection{Evaluation on Tabular AutoML Tasks}\label{ssec:tabresults}
+%------------------------------------------------------
+Now, we turn to an empirical analysis of our method for real-world classification tasks.
+We compare our method against state-of-the-art ML and AutoML methods for tabular classification.
+%. For this we use on the \openmlcc{}~\citep{bischl-neuripsdbt21a}, a curated open-source list of medium-sized classification datasets 
+% We briefly describe our experimental setup before we turn to discussing the results and provide further details in Appendix~\ref{app:expdetails}.
+% I just moved this
+
+
+\paragraph{Datasets} As test datasets, we used all datasets from the curated open-source \openmlcc{} benchmark suite~\citep{bischl-neuripsdbt21a} that contain less than $2\,000$ samples, $100$ features and $10$ classes. The resulting set comprises $30$ datasets.
+Additionally, we considered a disjoint set of $150$ validation datasets from \url{OpenML.org}~\citep{vanschoren-sigkdd14a,feurer-jmlr21a}. 
+We used the validation datasets to guide the development of our method and the choice of hyperparameter distributions. We did so by qualitatively comparing the data genereated by our prior to real data (See Figure \ref{fig:samples example}) and by quantitatively comparing feature correlations, feature variance and class distributions.
+%We ensured that none of the validation datasets were contained in the test datasets.
+We give a full description of all datasets and how we collected them in Appendix~\ref{app:ssec:datasets}.
+% As work by \cite{nnsfortabular2} indicates, prior methods have been implicitly overfit on test datasets as algorithms were run multiple times during development.
+%We seek to minimize these effects by running our models on an additional benchmark, the \openmlautoml{} benchmark suite~\citep{amlb}. We select all 6 datasets that fit the limitations of our pretrained model in terms of number of samples, features and classes and are not a part of our validation and test sets.
+% Katha: The following is mostly in the appendix. I dropped it to save space
+%Since we focus on learning from few examples, we limited the \openmlcc{} to $30$ datasets with at most $2\,000$ samples, $30$ features and $10$ classes (see Appendix~\ref{app:ssec:datasets}). For each dataset, we used half of the samples for training and the other half as the unseen test set for evaluation.% and repeated this procedure 5 times.
+%filtering out datasets with more than 2,000 samples, 100 features or 10 classes. Of the 72 datasets included in the OpenML CC-18 Benchmark, 30 datasets remain that we use for benchmarking. The list of datasets used can be found in Appendix \ref{}. For each dataset we generate 5 splits of which we use 50\% as training data and 50\% for testing.
+%
+%To conduct meta-learning and tune the prior hyperparameters, we collected a disjoint set of datasets from the OpenML platform (see Appendix~\ref{app:sec:metadata})
+%
+
+
+\definecolor{color0}{HTML}{0173b2}
+\definecolor{color1}{HTML}{de8f05}
+\definecolor{color2}{HTML}{029e73}
+\definecolor{color3}{HTML}{d55e00}
+\definecolor{color4}{HTML}{cc78bc}
+\definecolor{color5}{HTML}{ca9161}
+\definecolor{color6}{HTML}{fbafe4}
+\definecolor{color7}{HTML}{56b4e9} % the only color that is not original palette
+\definecolor{color8}{HTML}{ece133}
+\pgfdeclareplotmark{mystar}{
+    \node[star,star point ratio=2.25,minimum size=10pt,
+          inner sep=0pt,draw=none,solid, fill=color3] {};
+}
+\pgfplotsset{
+    mystylepalette3/.style={
+        height=6cm,
+        width=\textwidth,
+    },
+}
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[t]{0.32\textwidth}
+         \centering
+         %\hspace*{-1.9cm}
+         \input{figures/tabular_results/roc_over_time}
+         %\label{fig:aucovertime}
+     \end{subfigure}
+     \begin{subfigure}[t]{0.32\textwidth}
+         \centering
+         %\hspace*{-0.2cm}
+         \input{figures/tabular_results/roc_wins_tabular}
+         %\label{fig:winsovertime}
+     \end{subfigure}
+     \begin{subfigure}[t]{0.32\textwidth}
+         \centering
+         %\hspace*{1.1cm}
+         \input{figures/tabular_results/roc_raks_tabular}
+         %\label{fig:ranksovertime}
+     \end{subfigure}
+     \vspace{-.6cm}
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+         \input{figures/tabular_results/legend_tabular}
+         %\label{fig:legendovertime}
+     \end{subfigure}
+     \vspace{.3cm}
+     \caption{ROC AUC performance over time. We report mean ROC, mean wins and rank along with the 95\% confidence interval across $5$ repetitions for different time budgets (Unlabelled ticks: 1min, 15min). %The blue star indicates performance of the \methodname{}.
+     %The 95\% confidence intervals over splits are shaded. Our method finishes after 1.0 seconds and does not use any further time budget; KNN and Logistic Regression finish without the full time budget as well, dashed lines indicate no further training. 
+     %The taken for \methodname{} is on GPU.
+     }
+     \label{fig:perfovertime}
+\end{figure}
+
+\paragraph{Baselines} We compare against five standard ML methods and three state-of-the-art AutoML systems for tabular data.
+As ML models we considered two simple and fast baselines, \textit{K-nearest-neighbors (KNNs)} and \textit{Logistic Regression (LogReg)}. Additionally, we considered \textit{Gaussian Processes (GPs)}~\citep{rasmussen-book06a} and three popular tree-based boosting methods, \textit{XGBoost}~\citep{chen-arxiv20a}, \textit{LightGBM}~\citep{NIPS2017_6449f44a} and \textit{CatBoost}~\citep{prokhorenkova-neurips18a}.
+For each ML model, we used $5$-fold cross-validation to evaluate randomly drawn configurations until a given budget was exhausted or $1\,000$ configurations were evaluated (for the search spaces, see Appendix~\ref{app:ssec:spaces}).
+We then refit the configuration with the lowest ROC AUC OVO error on the whole training set. Where necessary, we imputed missing values with the mean, one-hot encoded categorical inputs and normalized features.
+%chose the best performing hyperparameters using random search. We minimize XX using -fold crossvalidation for the given budget and then refit on the whole training set afterwards. 
+As more complex but also potentially powerful baselines, we chose three AutoML systems: \textit{AutoGluon}~\citep{erickson-arxiv20a}, which combines ML models including neural networks and tree-based models into a stacked ensemble, \textit{Auto-sklearn 2.0}~\citep{feurer-nips15a,feurer-arxiv20v2} which uses Bayesian Optimization and combines the evaluated models into a weighted ensemble. %and \textit{LightAutoML}~\citep{DBLP:journals/corr/abs-2109-01528}, which we optimize for fast training by restricting models to \textit{LightGBM}~\citep{ke-neurips17a} and linear models.
+\footnote{Auto-sklearn 2.0 optimizes ROC AUC for binary classification and cross-entropy for multi-class classification (as multi-class ROC AUC is not implemented).
+%otherwise, AutoGluon failed to completely fit on $N$ splits, diminishing its performance across the entire Benchmark (Results of that run can be found in Appendix \ref{app:addresults}).
+}
+We note that previous works have found that DL baselines do not outperform or match the performance of GBDT or AutoML methods for small to medium sized tabular data \citep{nnsfortabular,grinsztajn2022why,nnsfortabular2}. Furthermore, DL methods such as TabNet, SAINT, Regularization Cocktails, Non-parametric transformers \citep{arik2021tabnet, somepalli2021saint, regcocktail, kossen2021self} are evaluated on much larger datasets, require considerably longer training times and often use custom parameter tuning and preprocessing. We still evaluate two prominent DL methods: \textit{Regularization Cocktails} and \textit{SAINT} \citep{somepalli2021saint, regcocktail}.
+% TODO: We set both AutoML systems to optimize for ROC AUC.
+%  neural networks, LightGBM boosted trees (Keet al., 2017), CatBoost boosted trees (Dorogush et al., 2018), Random Forests, Extremely Randomized Trees, and k-Nearest Neighbors.
+% of $[30, 60, 300, 900, 3600]$ seconds
+%
+\paragraph{\methodname{}} We follow the original PFN architecture~\citep{muller-iclr22a} which uses a Transformer encoder~\citep{vaswani-neurips17a} with a specific attention mask and without positional encodings. We make slight modifications to these attention masks, yielding faster inference at equal performance.
+Additionally, we allow our model to work with datasets that have different numbers of features by zero-padding and scaling the features linearly.
+See Appendix \ref{app:pfn architecture change} for more information.
+
+In the prior-fitting phase, we train \methodname{} once on the prior described in Section~\ref{sec:tabprior} for 20 hours on 8 GPUs, yielding a single network that is used for all our evaluations.
+While this step is expensive, it is done offline, in advance and only once for the \methodname{}, as part of the algorithm development.
+During inference, we apply z-normalization and ensemble predictions, with randomly rotated feature dimensions and permuted labels.
+Further details and the used hyperparameters can be found in Appendix \ref{sec:our_setup}.
+
+\paragraph{Evaluation Protocol} For each dataset and method, we evaluated $5$ repetitions, each with a different random seed and a different train- and test split (all methods used the same split given a seed). To aggregate results across datasets, we report the ROC AUC (one-vs-one (OVO) for multi-class classification) average, ranks and wins including the $95\%$ confidence interval and compare to the performance of the baselines with a budget of $[30, 60, 300, 900, 3600]$ seconds\footnote{When comparing methods to each other for a given time budget in Figure \ref{fig:perfovertime}, we drop methods that take more than 200\% of the requested time budget; some methods also do not use their full budget.}. Our \methodname{} is run using $32$ data permutations for ensembling as described above; we also evaluate \methodname{} without permutations, which we label as \methodname{} n.e. in Table \ref{table:tabular_results_table}.% and all permutations.
+
+%------------------------------------------------------
+\paragraph{Results}
+%\label{ssec:expresults}
+%------------------------------------------------------
+%
+
+We present the achieved AUC ROC as a function of budget in Figure~\ref{fig:perfovertime},
+% and the final performance wrt.\ different metrics in Table~\ref{tab:tabular_results_table_small}. 
+%
+%Considering performance-over-time (Figure~\ref{fig:perfovertime}), we
+demonstrating that \methodname{} is dramatically faster than all the other methods: it makes predictions within a single second on one GPU that tie with the performance of the best competitors (the AutoML systems) after training one hour, and that dominate the performance achieved by competitors in 5 minutes.
+Unsurprisingly, the simple baselines (\textit{LogReg}, \textit{KNN}) already yield results with a small budget but perform worst overall for larger budgets.
+%(see average rank). 
+Boosted trees (\textit{XGBoost}, \textit{CatBoost}) perform better but are clearly outperformed by the state-of-the-art AutoML systems, Auto-sklearn 2.0 and Autogluon. The AutoML systems are the best-performing baselines at higher budgets.
+
+The \methodname{} without ensembling requires 0.0187s on a GPU or 0.87s on a CPU to predict one dataset.
+It performs comparable to the strongest baselines at one minute, yielding a $70\times$ speedup on CPU and a $3\,200\times$ speedup using a GPU.
+Given more budget ($\ge 5$ minutes), the strongest baseline achieves competitive performance with the original \methodname{} (including ensembling), which uses a time budget of 0.42 seconds on a GPU or 16.5s on a CPU.
+If we compare \methodname{} against the $5$ minutes required for the baseline,
+it yields an $18\times$ speedup on a CPU and a $710\times$ speedup using a GPU.
+
+These times assume that our trained model is in memory (and possibly moved to the GPU) already, which otherwise required 0.2s for us.
+We report averaged results in Table~\ref{table:tabular_results_table} and provide further detailed results, including results per dataset in Appendix~\ref{app:sec:detailed_results}.
+
+\iffalse
+\paragraph{Results on AutoML OpenML Benchmark} Also, we evaluate \methodname{} on the disjoint set of small datasets in \openmlautoml{} benchmark after having released pr-trained models. We also achieve top performance in terms of mean ROC AUC, cross-entropy and accuracy. [TODO: @Katha]
+% We also report performance on all datasets of the \openmlautoml{} Benchmark that were not contained in either the \openmlcc{} Benchmark or our validation datasets. We add this benchmark posthoc to circumvent overfitting to our meta-test set. Detailed results for this can be found in Table \ref{app:table:tabular_results_table_small_automl}.
+\fi
+%Our method strong on ROC, CE is better on Autogluon (true ensemble of different methods), Our method better than all non-ensembling methods.
+%Drop because I can't find results on single datasets
+%We also find that one some datasets we are much worse, when prior cannot be applied. tic-tac-toe (rank 2), dresses-sales, cylinder-bands
+
+
+
+% Resources given: 6GB Memory, 1 CPU on Bosch Cluster - We could still update this to 4 CPUs? Is one realistic?
+
+% \subsubsection{Tree-based Learning (Plagiarized)} DTs are commonly-used for tabular
+% data learning. Their prominent strength is efficient picking
+% of global features with the most statistical information gain
+% (Grabczewski and Jankowski 2005). To improve the performance of standard DTs, one common approach is ensembling
+% to reduce variance. Among ensembling methods, random
+% forests (Ho 1998) use random subsets of data with randomly
+% selected features to grow many trees. XGBoost (Chen and
+% Guestrin 2016) and LightGBM (Ke et al. 2017) are the two
+% recent ensemble DT approaches that dominate most of the
+% recent data science competitions.
+% Calibration:
+% Using a holdout set we can do post-hoc calibration. Here we work without a holdout set and without post-hoc methods. We could show results after post-hoc.
+
+% \subsubsection{Setup of \methodname{}}
+% Resources given: 6GB Memory, 1 CPU on Bosch Cluster and GPU (RTX ??)
+
+
+%\paragraph{Tuning the Hyperparameters of the Tabular Prior}
+%Figure~\ref{fig:diffable_train_valid} shows the optimization curves during differentiable hyperparameter tuning.
+%When we compare model results before and after differentiable hyperparameter tuning, we can see clear improvements in cross-entropy. 
+
+\section{Conclusions \& Future Work}
+%Categorical features
+%Mixture of more models
+%Plausible causal structures
+%Spped allows for new applications, here we show aleatoric, but also interpretability etc.
+%Sequence length, but goes hand in hand with strong priors
+%Custom applications on top of causal prior
+%Diffable allows to encode more real world knowledge
+We have shown how a single Transformer, the \methodname{}, can be trained to do the work of a full AutoML framework for tabular data and can yield predictions in 0.4 seconds that are competitive with the performance that the best available AutoML frameworks achieve even after one hour.
+This result could disrupt the field of data science since it allows for real-time predictions. It also slashes the computational expense of AutoML, allowing for affordable, green, AutoML.
+
+\methodname{} still has important limitations: the underlying transformer architecture only scales to small datasets; our evaluations were done on classification datasets with under 1000 training samples, 100 features and 10 classes only, detailed in Appendix \ref{sec:limitations}, which motivates work on (1)~scaling up to large datasets. Also, our work motivates a multitude of exciting follow-ups regarding the (2)~integration of \methodname{} into existing AutoML frameworks; (3)~ensembling to continue making improvements given more time; (4)~studies of out-of-distribution robustness; (5)~dataset-dependent choices of the prior; (6)~generalizations to non-tabular data and (7)~regression tasks. The almost instant state-of-the-art predictions of \methodname{} are also likely to give rise to (8)~novel exploratory data analysis methods, (9)~novel feature engineering methods and (10)~novel active learning methods. Our advances in causal reasoning warrant follow-ups on (11)~approximating the effects of interventions and counterfactuals considering a distribution of SCMs.
+
+\iffalse
+\section{Ethics Statement}
+
+Authors are encouraged to include a paragraph of Ethics Statement (at the end of the main text before references) to address potential concerns where appropriate, topics include, but are not limited to, studies that involve human subjects, practices to data set releases, potentially harmful insights, methodologies and applications, pontential conflicts of interest and sponsorship, discrimination/bias/fairness concerns, privacy and security issues, legal compliance, and research integrity issues (e.g., IRB, documentation, research ethics). The optional ethic statement will not count toward the page limit, but should not be more than 1 page. 
+
+
+\section{Reproducbility}
+
+Reproducibility
+It is important that the work published in ICLR is reproducible. Authors are strongly encouraged to include a paragraph-long Reproducibility Statement at the end of the main text (before references) to discuss the efforts that have been made to ensure reproducibility. This paragraph should not itself describe details needed for reproducing the results, but rather reference the parts of the main paper, appendix, and supplemental materials that will help with reproducibility. For example, for novel models or algorithms, a link to a anonymous downloadable source code can be submitted as supplementary materials; for theoretical results, clear explanations of any assumptions and a complete proof of the claims can be included in the appendix; for any datasets used in the experiments, a complete description of the data processing steps can be provided in the supplementary materials. Each of the above are examples of things that can be referenced in the reproducibility statement. This optional reproducibility statement will not count toward the page limit, but should not be more than 1 page.
+
+In an effort to ensure reproducibility, we release code, including simple notebooks, for all experiment sections, which can be found alongside this submission.
+
+\textbf{Details of training procedures for PFN and baselines} Details shared in the training procedure of all our transformer models can be found in Appendix \ref{sec:general_training_details}. Details for each experiment and subexperiment can be found in Appendices \ref{sec:posteriorapproximationstudies_detail}, \ref{sec:detail_tabular} and \ref{sec:section7details}. 
+An overview of the hyperparameters used for running our baselines can be found in Table \ref{table:hyperparameters_tabular_baselines}.
+
+\textbf{Complete proof of theoretical results} A detailed proof of Corollary \ref{corollary:klrelation} and Theorem \ref{theorem:distribution_approximation} can be found in appendices \ref{sec:proof_klrelation} and \ref{sec:proof_distribution_approximation}.
+
+\textbf{Availability of datasets} All datasets used in our experiments are either generated by procedures included in our code submission or freely available with downloading procedures included in the submission as well. Further detail on the datasets used can be found in Tables \ref{collection_of_datasets_tabular} and \ref{collection_of_datasets_tabular_valid}.
+\fi
+
+\newpage
+
+\begin{ack}
+Robert Bosch GmbH is acknowledged for financial support.
+We acknowledge funding by European Research Council (ERC) Consolidator Grant ``Deep Learning 2.0'' (grant no.\ 101045765). Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the ERC. Neither the European Union nor the ERC can be held responsible for them.
+\begin{center}\includegraphics[width=0.3\textwidth]{figures/ERC_grant.jpg}\end{center}
+This research was funded by the Deutsche Forschungsgemeinschaft (DFG,
+German Research Foundation) under grant number 417962828.
+\end{ack}
+
+
+%with competitive performance in a fraction of time. 
+%Our model, \methodname{}, is likely to enable new applications of AutoML on small tabular datasets, as it yields a $1000\times$ speedup over other comparably performing AutoML methods.
+%We have shown how crucial the right choice of prior is to build such a powerful method based on PFNs.
+%Future work can of course entail increasing the viable dataset size even further.
+%There are multiple viable directions for future work. i) One can try to improve performance with other priors based on the SCMs or e.g.\ based on decision trees. ii) Also, scaling this method up even further, to even larger tables can be an interesting challenge to consider. iii) Lastly, work on regression for tabular data is a viable path for future work.
+
+\bibliographystyle{plainnat}
+\bibliography{strings,lib,main,proc}
+
+\newpage
+\appendix
+
+\section{Limitations}
+\label{sec:limitations}
+The runtime and memory usage of the Transformer-based PFN architecture used in this work scales quadratically with the number of inputs, i.e. training samples passed. Thus, inference on larger sequences (> $100\,000$) is hard on current consumer GPUs. A growing number of methods seek to tackle this issue and report similar performances while scaling linearly with the number of inputs \citep{zaheer2020big, beltagy2020longformer}. These methods can be integrated in the PFN architecture and thus into \methodname{}.
+Furthermore, in our experiments we limit the number of features to 100 and the number of classes to 10 as described in Section \ref{sec:experiments}. While this choice is flexible, our fitted \methodname{} can not work with datasets that go beyond these limits.
+% The fitting + predicitng step is fast but when we need to make lots of inference we fit each time
+
+\section{Societal Implications}
+\label{sec:impacts}
+In terms of broader societal impact of this work, we do not see any foreseeable strongly negative impacts.
+However, this paper could positively impact the carbon footprint and accessibility of learning algorithms. The computations required for machine learning research have been doubling every few months, resulting in a large carbon footprint \citep{schwartz2020green}. Moreover, the financial cost of the computations can make it difficult for academics, students, and researchers to apply these methods.
+The decreased computational time shown by \methodname{} translates to gains in CO2 emissions and cost, making it available to an audience that does not have access to larger scale computing. 
+% ---------------------------------------------
+\section{Additional Results}\label{app:ssec:addresults} % TODO: After revision move this to the front
+% ---------------------------------------------
+\subsection{Detailed Tabular Results}
+\label{app:sec:detailed_results}
+\begin{figure}[h]
+ \centering
+ \hspace*{-0.9cm}
+ \input{figures/tabular_results/dataset_characteristics}
+      \caption{Normalized ROC AUC performance on datasets from the \openmlcc{} Benchmark, divided by dataset characteristics. For each plot, we split the datasets into two groups. Left: Blue bars indicate the performance on datasets, that have categorical features. Middle: Blue bars indicate more than 20 features, while others have less. Right: Blue bars indicate multiclass datasets, while others are binary.}
+ \label{fig:results_dataset_characteristics}
+\end{figure}
+     
+%In addition to the results in the main paper in Section~\ref{ssec:tabresults}, we report a wide range of performance values in Table \ref{app:table:tabular_results_table}. We show quantitative results for comparing all methods when given up to $60min$ time. We see that our model is competitive with strong AutoML baselines while requiring a fraction of that time. %Furthermore, we report ROC AUC performance over time, similarly to Figure~\ref{fig:perfovertime}, except that AutoGluon optimizes for ROC AUC. While the mean rank and number of wins remains similar, the average AUC ROC performance decreases in our experiments, due to failure to train Catboost models on $2$ datasets (MiceProtein, mfeat-zernike).
+In Figure \ref{fig:results_dataset_characteristics}, we explore how the kind of dataset evaluated affects the performance of \methodname{}, compared to our baselines. We find, that \methodname{} performs much better, when no categorical features are present. This warrants the extension of our prior, to make it more customized towards categorical data. We also find, that \methodname{} performs better in a multiclass setting and when a relatively large number of features is provided.
+
+In addition to the results in the main paper in Section~\ref{ssec:tabresults}, we report a wide range of performance values and per dataset results in Table \ref{table:tabular_results_table}.
+
+% \begin{table}[h]
+%     \caption{Average performance on the test-datasets for $15$ minutes ($900$ s) requested time. We report overall \textit{Wins}, \textit{Wins/Ties/Losses (W/T/L)} against \methodname{}, \textit{mean performance (Mean)} and \textit{mean rank (Mean rank)} wrt. ROC AUC, crossentropy loss (CE), and accuracy (Acc). Additionally, we also report the mean time used to fit a single model and obtain predictions.
+%     %If available, all Baselines are given ROC AUC optimization as an objective, others optimize CE. Overall each method got a time budget of 37.5 hours, that \methodname{}, KNN, GP and LogReg did not use fully.
+%     }
+%     \label{tab:tabular_results_table_small}
+%     \centering
+%     \tiny
+%     \input{figures/tabular_results/tabular_results_table_small}
+% \end{table}
+
+\begin{table}[t]
+    \caption{ROC AUC OVO results on the small \openmlcc{} for 60 minutes requested time per dataset and per split. If available, all baselines are given ROC AUC optimization as an objective, others optimize CE. Overall each method got a time budget of 150 hours, but not all methods used the full budget.}
+    \centering
+    \tiny
+    \input{figures/tabular_results/tabular_results_table}
+    \label{table:tabular_results_table}
+\end{table}
+
+\iffalse
+\begin{table}[h]
+    \caption{ROC AUC OVO results on the 6 small datasets (less than 2000 examples, 100 features and 10 classes) of \openmlautoml{}, that are not contained in $V_1$, $V_2$ or the \openmlcc{} benchmark. All methods were given a budget of 15 minutes per dataset and per split. If possible, all baselines are optimized for ROC AUC, otherwise we optimize CE. Evaluation on this benchmark was performed with previously released pretrained models in order to mitigate test-set overfitting.}
+    \label{app:table:tabular_results_table_small_automl}
+    \centering
+    \tiny
+    \input{figures/tabular_results/tabular_results_table_automl}
+\end{table}
+\fi
+
+\section{Details of the \methodname{} Prior}
+\label{app:a prior for tabular data}
+
+%In this section, we describe additional methods included in our prior. %First, we describe mixing in Gaussian Process (GP) priors as another way to diversify the hypotheses approximated by \methodname{}. Next, we describe refinements to our prior for the usage on tabular data.
+
+\subsection{SCM Prior}
+\label{sec:details_scm_prior}
+\paragraph{The Sampling Algorithm}
+We instantiate a subfamily of DAGs that can be efficiently sampled from by starting with a MLP architecture and dropping weights from it.
+That is, to sample a dataset with $k$ features and $n$ samples from our prior we perform the following steps for each dataset: \\
+\hphantom{~~~~}(1) We sample the number of MLP layers $l \sim p(l)$ and nodes $h \sim p(h)$ and sample a graph $\mathcal{G}$($Z$, $E$) structured like an $l$-layered MLP with hidden size $h$.\\%, $p(l)$ and $p(h)$ are hyperparameters.\\
+\hphantom{~~~~}(2) We sample weights for each Edge $E_{ij}$% between $i$ and $j$
+as $W_{i,j} \sim p_w(\cdot)$.\\
+\hphantom{~~~~}(3) We drop a random set of edges $e \in E$ to yield a random DAG.\\
+\hphantom{~~~~}(4) We sample a set of $k$ feature nodes $N_x$  and a label node $N_y$ from the nodes $Z$.\\
+\hphantom{~~~~}(5) We sample the noise distributions $p(\epsilon) \sim p(p(\epsilon))$ from a meta-distribution.%, $p(p(\epsilon))$ is a hyperparameter.
+This yields an SCM, with all $f_i$'s instantiated as random affine mappings followed by an activation. Each $z_i$ corresponds to a sparsely connected neuron in the MLP.
+
+With the above parameters fixed, we perform the following steps for each member of the dataset:\\
+\hphantom{~~~~}(1) We sample noise variables $\epsilon_i$ from their specific distributions.\\
+\hphantom{~~~~}(2) We compute the value of all $z \in Z$ with $z_i = a((\sum_{j \in \text{PA}_{\mathcal{G}(i)}} E_{ij} z_j) + \epsilon_i)$.\\
+\hphantom{~~~~}(3) We retrieve the values at the feature nodes $N_x$ and the output node $N_y$ and return them.
+
+We sample one activation function $a$ per dataset from $\{ReLU, Tanh, Identity\}$ \citep{nair2010rectified}. The sampling scheme for the number of layers $p(l)$ and nodes $p(h)$ is designed to follow a log-normal distributions, the dropout rate follows a beta distribution and $p(p(\epsilon))$ samples normal distributions with normally distributed mean and standard deviation.
+
+\iffalse
+\subsection{GP Prior} % TODO: Move this past the Tabular Data Refinement
+\label{sec:pg prior}
+
+Tabular datasets are heterogenous in the kind of data described, i.e.\ the hypotheses space induced by BNN and SCM priors might not be appropriate for all datasets. As described in Section \ref{sec:tabprior}, the Bayesian formulation our \methodname{} also allows for mixing different kinds of priors, generated by a distinct model. In addition to mixing BNN and SCM priors we also mix in a prior based on Gaussian Processes (GPs). As described in the work of \citet{muller-iclr22a} we approximate an RBF Kernel with varying hyperparameters (outputscale, lengthscale and noise) and apply the multiclass labelling described in Section \ref{sec:multi-class prediction}. Our experiments showed no significant improvement with adding a GP prior to the mixture of BNN and SCM priors. However, this approach points out an area of future work in which distinct kinds of prior models such as CNNs could be added to the mix of priors.
+\fi
+
+\subsection{Tabular Data Refinements}
+\label{sec:tabular data refinement}
+% How do these priors relate to BIC or other criteria that trade off size and quality?Where is this used later on? I can't find the simplicity in the prior.Why does this not cite a single paper about dataset generation? There is plenty of work on learning datasets distributions and sampling from them and that should be recognized. I'd be surprised if no one has yet done sampling from priors as you do, so this should be discussed.
+
+Tabular datasets comprise a range of peculiarities, e.g.\ feature types can be numerical, ordinal, or
+categorical and feature values can be missing leading to sparse features. We seek to reflect these peculiarities in the design of our prior as described in the following sections. 
+
+\subsubsection{Preprocessing} \label{app:preprocessing} During meta-training, input data is normalized to zero mean and variance and we apply the same step when evaluating on real data. Since tabular data frequently contains exponentially scaled data, which is not might not be present during meta-training, we apply power scaling during inference \citep{yeo2000new}. Thus, during inference on real tabular datasets the features more closely match those seen during meta-training. We use only training samples for calculating z-statistics, power transforms and all other preprocessing. We take this preprocessing time is into account when reporting the inference time of our method.
+
+\subsubsection{Correlated Features}
+\begin{figure}[t]
+     \centering
+         \centering
+         %\def\svgwidth{0.7\columnwidth}
+            \includegraphics[width=0.4\columnwidth]{figures/prior_samples/pc4_correlation_matrix.pdf}
+%         \caption{}
+         \centering
+         %\def\svgwidth{0.7\columnwidth}
+            \includegraphics[width=0.4\columnwidth]{figures/prior_samples/prior_samples_correlation_matrix2.pdf}
+     \vspace*{-0.2cm}
+     \caption{Feature correlation matrices for a real-world (``PC4 Software defect prediction'', left) and a synthetic (right) dataset, where brighter colors indicate higher correlation. 
+     %The real-world data comes from the ``PC4 Software defect prediction'' dataset, while the synthetic data is generated by our causal prior, detailed information on feature ordering in Appendix \ref{sec:tabular data refinement}. 
+     %Both seem to have similarly structured correlations.
+     }
+     \label{fig:feature correlation example}
+\end{figure}
+
+Feature correlation in tabular data varies between datasets and ranges from independent to highly correlated. This poses problems to classical deep learning methods \citep{nnsfortabular}.
+% In a structural causal model, nodes can be connected to a similar set of input nodes and their values will thus be a linear combination of these features before the application of noise and an activation function.
+When considering a large space of SCMs correlated features of varying degrees naturally arise in our priors.
+Furthermore, in real-world tabular data the ordering of features is often unstructured, however adjacent features are often more highly correlated than others. We use "Blockwise feature sampling" to reflect the correlation structure between ordered features. Our generation method of SCMs naturally provides a way to do this. The first step in generating our SCMs is generating a unidirectional layered network structure in which nodes in one layer can only receive inputs from the preceding layer. Thus, features in one layer tend to be higher correlated. We use this by sampling adjacent nodes in the layered network structure in blocks and using these ordered blocks in our set of features. In Figure~\ref{fig:feature correlation example}, we visualize the correlations of such a generated dataset (right) and compare them to a real-world dataset (left), demonstrating that our prior yields correlation structures similar to those of real datasets.
+% Also inspired by \citep{simon1991architecture} we drop out connectivity in blocks, .. maybe in appendix but this is a detail I believe
+
+\subsubsection{Generating irregular functions} \label{app:irregular_funcs}
+
+In real-world data, some features are consistently more important than others. While a random network weight initialization leads to slightly different feature importances, the average effect of input features regresses to the mean when the hidden dimensionality increases. We amplify differences by sampling a weight parameter for each input feature and multiplying all outgoing weights by this factor.
+In the prior, we randomly sparsify connections of the graph. Thus hidden variables and the output node are influenced by fewer parameters per step, yielding more irregular patterns, as a larger number of parameters once again regresses to the mean. Here, we extend sparsification to blocks of variables, leading to some groups of variables interacting more strongly.
+We also extend the way noise variables are sampled. Instead of sampling Gaussian noise at each node from the same distribution, we first sample noise means and standard deviations for each node and then sample from this distribution.
+Also, we generate input data x, which is distributed non-uniformly, as observed in real-world data. We sample the input variables x, that are propagated through our network, from a mix of distributions such as the Gaussian, Zipfian and Multivariate Distribution.
+
+\subsubsection{Nan Handling}
+To model missing values in our prior, we introduce missing values probabilistically during prior training. For each dataset, we sample a binary decision variable $M$, indicating whether it will contain missing features and next sample a fraction $f_m$ of missing values. If $M$ is positive, we drop out a fraction $f_m$ of feature values uniformly at random.
+We introduce a binary missing value mask, indicating the positions of missing values, and pass it to our model alongside the feature embedding. We append this mask during meta-training on synthetic data and inference on actual datasets.
+
+\subsubsection{Categorical Features}
+Tabular data often includes not only numeric features but also discrete categorical ones. A categorical feature can be ordered, i.e. the categories represent binned degrees of some underlying variable, or shuffled. We introduce categorical features by picking a random fraction $p_{cat}$ (a hyperparameter) of categorical features per dataset. Analogous to transforming numeric class labels to discrete multiclass labels, we convert dense features to discrete ones. Also analogous to multiclass labels, we pick a shuffling fraction of categorical features $p_{scat}$ where we reshuffle categories. For details see \ref{sec:multi-class prediction}. Our experiments regarding categorical features, however, showed no significant improvement. Finding more appropriate ways of handling categorical features could be a line of future research.
+% \subsubsection{Fixing prior bias}
+% Furthermore the current technical implementation of our sampling setup leads to detrimental biases in the expected class distribution and significance of features based on their position. Biases over the class distribution can be attributed to sampling lower class labels more often than high class labels (e.g. classes one and two will be present in all datasets). Even when a class with a low class label is never observed, observing a higher class value means that this lower class label will be present in the test set due to our algorithm.
+% We seek to alleviate these biases by performing class and feature shifts during inference, i.e. we randomly rotate the label and feature ordering. When the same data is predicted across all class and feature rotations these biases even out. This however is costly and so we randomly sample shifts balancing accuracy and speed - the losses in speed and accuracy introduced by this are affecting our results. Fixes to this are possible and will push performance even further.
+\section{Details of Prior-Data Fitted Network Algorithm} % TODO: Show how distributions etc can be defined in code
+\label{app:pfn}
+Algorithm \ref{alg:prior-fitting} describes the training method proposed by \citet{muller-iclr22a} for PFNs.
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\Input{A prior distribution over datasets $p(D)$, from which samples can be drawn and the number of samples $K$ to draw}
+\Output{A model $q_\theta$ that will approximate the PPD}
+ Initialize the neural network $q_\theta$\;
+ % $p(x_1,\dots,x_{n+m},y_1,\dots,y_{n+m})$\;
+ \For{$j\gets1$ \KwTo $K$}{
+  Sample $D \cup \{(x_i,y_i)\}_{i=1}^m\sim p(D)$\; %$x_1,\dots,x_{n+m},y_1,\dots,y_{n+m} \sim p(\dataset{})$\;
+  Compute stochastic loss approximation $\bar{\ell}_\theta$ = $\sum_{i=1}^{m}(-\log %q_\theta(y_{n+i}|x_{n+i},x_1,\dots,x_{n},y_1,\dots,y_{n}))$\;
+  q_\theta(y_i|x_i, D))$\;
+  Update parameters $\theta$ with stochastic gradient descent on $\nabla_\theta \bar{\ell}_\theta$\;
+ }
+ \caption{Meta-Training of a PFN \citep{muller-iclr22a}}
+ \label{alg:prior-fitting}
+\end{algorithm}
+\section{Setup of our method}
+\label{sec:our_setup}
+
+\subsection{Transformer Hyperparameters}
+We considered only PFN Transformers with $12$ layers, embeddings size $512$, hidden size $1024$ in feed-forward layers, and $4$-head attention. For each training we tested a set of 3 learning rates, $\{.001,.0003,.0001\}$, and used the one with the lowest final training loss. The resulting model contains  25.82 M parameters.
+
+\subsection{PFN Architecture Adaptations}
+\label{app:pfn architecture change}
+\textbf{Attention Adaption}
+The original PFN architecture \citep{muller-iclr22a} uses a single multi-head self-attention module \citep{vaswani-neurips17a} to compute the attention between all the training examples, as well as, the attention from validation examples to training examples.
+We replaced this, with two modules that share weights, one which computes self-attention among the training examples and the other that only compute cross-attention from validation examples to training examples.
+Conceptually, that is equivalent to using a slightly different self-attention mask than the original architecture, which allowed everything to attend to itself (the diagonal is 1), like in this example
+\begin{align}
+%M_{3,2} =
+\begin{bmatrix}
+1& 1& 1& 0& 0\\
+1& 1& 1& 0& 0\\
+1& 1& 1& 0& 0\\
+1& 1& 1& 1& 0\\
+1& 1& 1& 0& 1\\
+\end{bmatrix}.
+\end{align}
+We remove the attention to themselves for validation examples. In terms of the example above:
+\begin{align}
+%M_{3,2} =
+\begin{bmatrix}
+1& 1& 1& 0& 0\\
+1& 1& 1& 0& 0\\
+1& 1& 1& 0& 0\\
+1& 1& 1& \textcolor{red}{0}& 0\\
+1& 1& 1& 0& \textcolor{red}{0}\\
+\end{bmatrix}.
+\end{align}
+Information about the state of the current position, does still flow through the residual branch, though.
+
+\textbf{Flexible Encoder}
+Datasets have unequal numbers of input dimensions (features), while PFNs use an encoder layer that accepts fixed dimensional inputs. Here we explain how datasets with different numbers of dimensions can be modelled with a single PFN:
+We draw the number of dimensions of a dataset during training uniformly at random up to $100$.
+Our encoder changes to accomodate this training and inference with different numbers of features by zero-padding datasets where
+the number of features $k$ is smaller than the maximum number of features $K$ and scaling these features by $\frac{K}{k}$, s.t.\ the magnitude stays the same.
+
+\subsection{\methodname{} Training}
+We trained our final model for $18\,000$ steps with a batch size of $512$ datasets. That is our \methodname{} is trained on $9\,216\,000$ synthetically generated datasets. This training takes 20 hours on 8 GPUs (Nvidia RTX 2080 Ti). Each dataset had a fixed size of $1024$ and we split it into training and validation uniformly at random. We generally saw that learning curves tended to flatten after around $10$ million datasets and where generally very noisy. Likely, this is because our prior generates a wide variety of different datasets.
+
+\subsection{Prior Hyperparameters}
+\label{app:prior_hparams}
+%The hyperparameters of our prior were tuned using \priortuning{}. For the distributions of the hyperparameters tuned with \priortuning{} see Table \ref{tab:diffable_hps}. Hyperparameters that specify sampling distributions other than uniform are made up of one or more underlying uniform distributions. Choice HPs are made up of one hyperparameter per choice, except for the first choice. Beta distributions are made up of two parameters $\alpha$ and $\beta$. Truncated Normals are made up of a mean and a standard deviation. The $Min$ value is added to the HP to give a lower bound. If Rounding is enabled, Hps will be rounded to the next value after sampling. The model receives the values of each underlying parameter making up these distributions during \priortuning{}.
+\begin{table}[htbp]
+\small
+    \centering
+    \caption{Overview of our prior hyperparameter distribution.}
+    \begin{tabular}{llllll}
+    \toprule
+    {} & Sampling & Minimum & Maximum & & \\
+    {} & distribution $p(\psi)$ &  &  & & \\
+    % \midrule
+    % GP sampling likelihood &                         Uniform &     0.5 &     8.0 & & \\
+    %\toprule
+    %{} &  & Min $\alpha$ and $\beta$ & Max $\alpha$ and $\beta$ & %Scale HP & \\
+    \midrule
+    MLP weight dropout &                       Beta &                    0.1 &                    5.0 &            0.9 & \\
+    \toprule
+    {} &  & Choices &  &  &  \\
+    \midrule
+    Sample SCM vs BNN &                     Choice &                                      [True, False] & & & \\
+    Share Noise mean for nodes &                     Choice &                                      [True, False] & & & \\
+    Input feature scaling enabled &                     Choice &                                      [True, False] & & & \\
+    Sample y from last MLP layer         &                     Choice &                                      [True, False] & & &  \\
+    MLP Activation Functions                   &                     Choice &  \tiny [Tanh, ReLU, ELU]& & &  \\
+    MLP Activation Functions                   &                     Choice &  \tiny , Identity, Threshold] & & &  \\
+    Blockwise Dropout                       &                     Choice &                                      [True, False] & & &  \\
+    Keep SCM feature order                  &                     Choice &                                      [True, False] & & &  \\
+    Sample feature nodes blockwise          &                     Choice &                                      [True, False] & & &  \\
+    GP noise                                &                     Choice &                              \tiny  [1e-05, 0.0001, 0.01] & & & \\
+    \toprule
+    {} &  & Max Mean & Min Mean & Round HP & Min \\
+    \midrule
+    MLP \#layers                 &      Trunc. Normal &        6 &        1 &        True &           2 \\
+    MLP \#hidden nodes per layer &      Trunc. Normal &      130 &        5 &        True &           4 \\
+    Gaussian Noise Std.          &      Trunc. Normal &      0.3 &   0.0001 &       False &         0.0 \\
+    MLP Weights Std.             &      Trunc. Normal &     10.0 &     0.01 &       False &         0.0 \\
+    SCM \#nodes at layer 1        &      Trunc. Normal &       12 &        1 &        True &           1 \\
+    GP outputscale               &      Trunc. Normal &     10.0 &  0.00001 &       False &           0 \\
+    GP lengthscale               &      Trunc. Normal &     10.0 &  0.00001 &       False &           0 \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:diffable_hps}
+\end{table}
+
+
+%\section{Reproducibility}
+%Code, ..
+% ---------------------------------------------
+\section{Details for Tabular Experiments}\label{app:expdetails}
+% ---------------------------------------------
+
+Here we provide additional details for the experiments conducted in Section~\ref{sec:experiments} in the main paper. 
+
+% ---------------------------------------------
+\subsection{Hardware Setup} \label{app:ssec:hardware}
+% ---------------------------------------------
+All evaluations, including the baselines, ran on a compute cluster equipped with Intel(R) Xeon(R) Gold 6242 CPU @ 2.80GHz using $1$ CPU with up to $6$GB RAM. For evaluation using our \methodname{}, we additionally use a RTX 2080 Ti.
+
+% ---------------------------------------------
+\subsection{Baselines}\label{app:ssec:spaces}
+% ---------------------------------------------
+We provide the search space used to tune our baselines in Table~\ref{app:tab:spaces}. For \textit{CatBoost} and \textit{XGBBoost}, we used the same ranges as~\citet{nnsfortabular2} with the following exceptions: For \textit{CatBoost} we removed the hyperparameter max\_depth since it is not in documentation, for \textit{CatBoost} and \textit{XGBBoost}, we set the range for n\_estimators to be in $[100, 4000]$. The search spaces for the KNN, GP and Logistic Regression baselines were designed from scratch and we used the respective implementation from \textit{scikit-learn}~\citep{scikit-learn}. For \textit{CatBoost} and \textit{AutoSklearn} we pass the position of categorical features to the classifier (\textit{AutoGluon} automatically detects categorical feature columns). We normalize inputs for Logistic Regression, GP and KNN to the range [0, 1] using MinMax Scaling.
+% Hyperparameters taken from https://arxiv.org/pdf/2106.03253.pdf. Catboost max_depth couldn't be found.
+
+\begin{table}[htbp]
+\caption{Hyperparameter spaces for baselines. All, except LightGBM, adapted from~\citet{nnsfortabular2}.}
+\label{app:tab:spaces}
+\centering
+\begin{tabular}{lllll}
+\toprule
+baseline &  name & type & log & range \\
+\midrule
+\multirow{3}{*}{LogReg} & penalty & cat & (l1, l2, none) & - \\
+    & max\_iter & int & [50, 500] & - \\
+    & fit\_intercept & cat & (True, False) & - \\
+    & C & float & [$e^{-5}$, 5] & - \\
+\midrule
+\multirow{1}{*}{KNN} & n\_neighbors & int & [1, 16] & - \\
+\midrule
+\multirow{2}{*}{GP} & params\_y\_scale & float & [0.05, 5.0] & yes \\
+    & params\_length\_scale & float & [0.1, 1.0] & yes \\
+\midrule
+\multirow{6}{*}{CatBoost} & learning\_rate & float & [$e^{-5}$, 1] & yes \\
+    & random\_strength & int & [1, 20] & - \\
+    & l2\_leaf\_reg & float & [1, 10] & yes \\
+    & bagging\_temperature & float & [0, 1.0] & yes \\
+    & leaf\_estimation\_iterations & int & [1, 20] & - \\
+    & iterations & int & [100, 4000] & - \\
+\midrule
+\multirow{10}{*}{XGBoost} & learning\_rate & float & [$e^{-7}$, 1] & yes \\
+    & max\_depth & int & [1, 10] & - \\
+    & subsample & float & [0.2, 1] & - \\
+    & colsample\_bytree & float & [0.2, 1] & - \\
+    & colsample\_bylevel & float & [0.2, 1] & - \\
+    & min\_child\_weight & float & [$e^{-16}$, $e^5$] & yes \\
+    & alpha & float & [$e^{-16}$, $e^2$] & yes \\
+    & lambda & float & [$e^{-16}$, $e^2$] & yes \\
+    & gamma & float & [$e^{-16}$, $e^2$] & yes \\
+    & n\_estimators & int & [100, 4000] & - \\
+\midrule
+\multirow{10}{*}{LightGBM} & num\_leaves & int & [5, 50] & yes \\
+    & max\_depth & int & [3, 20] & yes \\
+    & learning\_rate & float & [$e^{-3}$, 1] & - \\
+    & n\_estimators & int & 50, 2000 & - \\
+    & min\_child\_weight & float & [$e^{-5}$, $e^4$] & yes \\
+    & reg\_alpha & float & [0, 1e-1, 1, 2, 5, 7, 10, 50, 100] & yes \\
+    & reg\_lambda & float & [0, 1e-1, 1, 5, 10, 20, 50, 100] & yes \\
+    & subsample & float & [0.2, 0.8] & - \\
+\bottomrule
+\end{tabular}
+\end{table}
+\iffalse
+\pgfplotsset{
+    mystylepalette3/.style={
+        height=6cm,
+        width=\textwidth,
+    },
+}
+\begin{figure}[h]
+     \centering
+     \begin{subfigure}[t]{0.32\textwidth}
+         \centering
+         %\hspace*{-1.9cm}
+         \input{figures/tabular_results/roc_over_time_autogluon_roc}
+         \label{fig:aucovertime_autogluon}
+     \end{subfigure}
+     \begin{subfigure}[t]{0.32\textwidth}
+         \centering
+         %\hspace*{-0.2cm}
+         \input{figures/tabular_results/roc_wins_tabular_autogluon_roc}
+         \label{fig:winsovertime_autogluon}
+     \end{subfigure}
+     \begin{subfigure}[t]{0.32\textwidth}
+         \centering
+         %\hspace*{1.1cm}
+         \input{figures/tabular_results/roc_raks_tabular_autogluon_roc}
+         \label{fig:ranksovertime_autogluon}
+     \end{subfigure}
+     \vspace{-.6cm}
+     \begin{subfigure}[b]{1.0\textwidth}
+         \centering
+         \input{figures/tabular_results/legend_tabular}
+         \label{fig:legendovertime_autogluon}
+     \end{subfigure}
+     \vspace{.3cm}
+     \caption{ROC AUC performance over time, as reported in Figure \ref{fig:perfovertime}. But with Autogluon fails.
+     }
+     \label{fig:perfovertime_autogluon}
+\end{figure}
+\fi
+% ---------------------------------------------
+\subsection{Used Datasets}\label{app:ssec:datasets}
+% ---------------------------------------------
+
+To construct and evaluate our method, we use three disjoint sets of datasets. Our test-set (see Table~\ref{table:test_datasets_table}), a subset of the \openmlcc{} benchmark suite~\citep{bischl-neuripsdbt21a} and a meta-set (see Table~\ref{table:reference_datasets_table} and~\ref{table:reference_datasets_table_2}), which we collected from \url{OpenML.org}~\citep{vanschoren-sigkdd14a}. These are licensed under the BSD 3-Clause license.
+
+For the test-set, we considered all datasets in the \openmlcc{} benchmark suite with less than $2\,000$ samples, $100$ features or $10$ classes, which leaves us with $30$ datasets that represent small, tabular datasets.
+%
+For the meta-set, we considered all datasets on \url{OpenML.org} and applied the following filtering procedure: We dropped all datasets that are in the test-set and all datasets with more than $1\,000$ samples, $100$ features or $10$ classes. We also manually checked for overlaps and removed datasets where the number of features, classes and samples was identical to a dataset in the test-set. Furthermore, we manually dropped FOREX (since it is a time series dataset) and artificially created datasets, such as Univ and Friedman datasets. The remaining meta-set then contains of $150$ datasets.
+
+%filtering out datasets with more than 2,000 samples, 100 features or 10 classes. Of the 72 datasets included in the OpenML CC-18 Benchmark, 30 datasets remain that we use for benchmarking. The list of datasets used can be found in Appendix \ref{}. For each dataset we generate 5 splits of which we use 50\% as training data and 50\% for testing.
+\section{Code}\label{app:code}
+
+Our code alongside notebooks to reproduce our experiments and pretrained models are available at \url{https://anonymous.4open.science/r/TabPFN-2AEE}.
+
+We also created two demos. One to experiment with the TabPFNs predictions (\url{https://huggingface.co/spaces/TabPFN/TabPFNPrediction}) and one to check cross-validation ROC AUC scores on new datasets (\url{https://huggingface.co/spaces/TabPFN/TabPFNEvaluation}) both of them run on a weak CPU, thus it can require a little bit of time. Both demos are based on a scikit-learn interface that makes using the TabPFN as easy as an scikit-learn SVM.
+\begin{table}[bt]
+    \caption{Datasets used for the evaluation.}
+    \label{table:test_datasets_table}
+    \centering
+    \tiny
+    \input{figures/benchmark_details/test_datasets_table}
+\end{table}
+\begin{table}[bt]
+    \centering
+    \caption{Meta-Datasets used for tuning the prior.}
+    \tiny
+    \input{figures/benchmark_details/reference_datasets_table}
+    \label{table:reference_datasets_table}
+\end{table}
+\begin{table}[bt]
+    \centering
+    \caption{Meta-Datasets used for tuning the prior (continued).}
+    \tiny
+    \input{figures/benchmark_details/reference_datasets_table_2}
+    \label{table:reference_datasets_table_2}
+\end{table}
+\begin{table}[bt]
+    \centering
+    \caption{Evaluation datasets for model generalization experiments.}
+    \tiny
+    \input{figures/benchmark_details/generalization_open_ml_datasets_table}
+    \label{table:openml_datasets_table}
+\end{table}
+
+
+\end{document}

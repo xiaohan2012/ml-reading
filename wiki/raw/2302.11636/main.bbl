@@ -1,0 +1,231 @@
+\begin{thebibliography}{32}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alon \& Yahav(2020)Alon and Yahav]{alon2020bottleneck}
+Uri Alon and Eran Yahav.
+\newblock On the bottleneck of graph neural networks and its practical
+  implications.
+\newblock \emph{arXiv preprint arXiv:2006.05205}, 2020.
+
+\bibitem[Bui et~al.(2021)Bui, Cho, and Yi]{bui2021spatial}
+Khac-Hoai~Nam Bui, Jiho Cho, and Hongsuk Yi.
+\newblock Spatial-temporal graph neural network for traffic forecasting: An
+  overview and open research issues.
+\newblock \emph{Applied Intelligence}, pp.\  1--12, 2021.
+
+\bibitem[Chi et~al.(2022)Chi, Xu, Fu, Liu, Zhang, Yang, Hao, and
+  Wu]{chi2022long}
+Huixuan Chi, Hao Xu, Hao Fu, Mengya Liu, Mengdi Zhang, Yuji Yang, Qinfen Hao,
+  and Wei Wu.
+\newblock Long short-term preference modeling for continuous-time sequential
+  recommendation.
+\newblock \emph{arXiv preprint arXiv:2208.00593}, 2022.
+
+\bibitem[Cong et~al.(2021{\natexlab{a}})Cong, Ramezani, and
+  Mahdavi]{cong2021provable}
+Weilin Cong, Morteza Ramezani, and Mehrdad Mahdavi.
+\newblock On provable benefits of depth in training graph convolutional
+  networks.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  34:\penalty0 9936--9949, 2021{\natexlab{a}}.
+
+\bibitem[Cong et~al.(2021{\natexlab{b}})Cong, Wu, Tian, Gu, Xia, cheng
+  Jason~Chen, and Mahdavi]{Cong2021DyFormerAS}
+Weilin Cong, Yanhong Wu, Yuandong Tian, Mengting Gu, Yinglong Xia, Chun cheng
+  Jason~Chen, and Mehrdad Mahdavi.
+\newblock Dyformer: A scalable dynamic graph transformer with provable benefits
+  on generalization ability.
+\newblock 2021{\natexlab{b}}.
+
+\bibitem[Fan et~al.(2021)Fan, Liu, Zhang, Xiong, Zheng, and
+  Yu]{fan2021continuous}
+Ziwei Fan, Zhiwei Liu, Jiawei Zhang, Yun Xiong, Lei Zheng, and Philip~S Yu.
+\newblock Continuous-time sequential recommendation with temporal graph
+  collaborative transformer.
+\newblock In \emph{Proceedings of the 30th ACM International Conference on
+  Information \& Knowledge Management}, pp.\  433--442, 2021.
+
+\bibitem[Goyal et~al.(2018)Goyal, Chhetri, and Canedo]{goyal2018dyngraph2vec}
+Palash Goyal, Sujit~Rokka Chhetri, and Arquimedes Canedo.
+\newblock dyngraph2vec: Capturing network dynamics using dynamic graph
+  representation learning.
+\newblock \emph{arXiv preprint arXiv:1809.02657}, 2018.
+
+\bibitem[Hajiramezanali et~al.(2019)Hajiramezanali, Hasanzadeh, Narayanan,
+  Duffield, Zhou, and Qian]{hajiramezanali2019variational}
+Ehsan Hajiramezanali, Arman Hasanzadeh, Krishna Narayanan, Nick Duffield,
+  Mingyuan Zhou, and Xiaoning Qian.
+\newblock Variational graph recurrent neural networks.
+\newblock \emph{Advances in neural information processing systems}, 32, 2019.
+
+\bibitem[Kazemi et~al.(2020)Kazemi, Goel, Jain, Kobyzev, Sethi, Forsyth, and
+  Poupart]{kazemi2020representation}
+Seyed~Mehran Kazemi, Rishab Goel, Kshitij Jain, Ivan Kobyzev, Akshay Sethi,
+  Peter Forsyth, and Pascal Poupart.
+\newblock Representation learning for dynamic graphs: A survey.
+\newblock \emph{J. Mach. Learn. Res.}, 21\penalty0 (70):\penalty0 1--73, 2020.
+
+\bibitem[Kipf \& Welling(2016)Kipf and Welling]{kipf2016variational}
+Thomas~N Kipf and Max Welling.
+\newblock Variational graph auto-encoders.
+\newblock \emph{arXiv preprint arXiv:1611.07308}, 2016.
+
+\bibitem[Kumar et~al.(2019)Kumar, Zhang, and Leskovec]{kumar2019predicting}
+Srijan Kumar, Xikun Zhang, and Jure Leskovec.
+\newblock Predicting dynamic embedding trajectory in temporal interaction
+  networks.
+\newblock In \emph{Proceedings of the 25th ACM SIGKDD international conference
+  on Knowledge discovery and data mining}. ACM, 2019.
+
+\bibitem[Li et~al.(2018{\natexlab{a}})Li, Xu, Taylor, Studer, and
+  Goldstein]{visualloss}
+Hao Li, Zheng Xu, Gavin Taylor, Christoph Studer, and Tom Goldstein.
+\newblock Visualizing the loss landscape of neural nets.
+\newblock In \emph{Neural Information Processing Systems}, 2018{\natexlab{a}}.
+
+\bibitem[Li et~al.(2018{\natexlab{b}})Li, Han, and Wu]{li2018deeper}
+Qimai Li, Zhichao Han, and Xiao-Ming Wu.
+\newblock Deeper insights into graph convolutional networks for semi-supervised
+  learning.
+\newblock In \emph{Thirty-Second AAAI conference on artificial intelligence},
+  2018{\natexlab{b}}.
+
+\bibitem[Luo \& Li(2022)Luo and Li]{luo2022neighborhood}
+Yuhong Luo and Pan Li.
+\newblock Neighborhood-aware scalable temporal network representation learning.
+\newblock \emph{arXiv preprint arXiv:2209.01084}, 2022.
+
+\bibitem[Pareja et~al.(2020)Pareja, Domeniconi, Chen, Ma, Suzumura, Kanezashi,
+  Kaler, Schardl, and Leiserson]{pareja2020evolvegcn}
+Aldo Pareja, Giacomo Domeniconi, Jie Chen, Tengfei Ma, Toyotaro Suzumura,
+  Hiroki Kanezashi, Tim Kaler, Tao Schardl, and Charles Leiserson.
+\newblock Evolvegcn: Evolving graph convolutional networks for dynamic graphs.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~34, pp.\  5363--5370, 2020.
+
+\bibitem[Rossi et~al.(2020)Rossi, Chamberlain, Frasca, Eynard, Monti, and
+  Bronstein]{tgn_icml_grl2020}
+Emanuele Rossi, Ben Chamberlain, Fabrizio Frasca, Davide Eynard, Federico
+  Monti, and Michael Bronstein.
+\newblock Temporal graph networks for deep learning on dynamic graphs.
+\newblock In \emph{ICML 2020 Workshop on Graph Representation Learning}, 2020.
+
+\bibitem[Sankar et~al.(2020)Sankar, Wu, Gou, Zhang, and Yang]{sankar2020dysat}
+Aravind Sankar, Yanhong Wu, Liang Gou, Wei Zhang, and Hao Yang.
+\newblock Dysat: Deep neural representation learning on dynamic graphs via
+  self-attention networks.
+\newblock In \emph{Proceedings of the 13th International Conference on Web
+  Search and Data Mining}, pp.\  519--527, 2020.
+
+\bibitem[Souza et~al.(2022)Souza, Mesquita, Kaski, and Garg]{souza2022provably}
+Amauri~H Souza, Diego Mesquita, Samuel Kaski, and Vikas Garg.
+\newblock Provably expressive temporal graph networks.
+\newblock \emph{arXiv preprint arXiv:2209.15059}, 2022.
+
+\bibitem[Tian et~al.(2021)Tian, Wu, Shi, Zhu, and Xiong]{DDGCL}
+Sheng Tian, Ruofan Wu, Leilei Shi, Liang Zhu, and Tao Xiong.
+\newblock Self-supervised representation learning on dynamic graphs.
+\newblock CIKM '21, 2021.
+\newblock \doi{10.1145/3459637.3482389}.
+
+\bibitem[Tolstikhin et~al.(2021)Tolstikhin, Houlsby, Kolesnikov, Beyer, Zhai,
+  Unterthiner, Yung, Steiner, Keysers, Uszkoreit, et~al.]{tolstikhin2021mlp}
+Ilya~O Tolstikhin, Neil Houlsby, Alexander Kolesnikov, Lucas Beyer, Xiaohua
+  Zhai, Thomas Unterthiner, Jessica Yung, Andreas Steiner, Daniel Keysers,
+  Jakob Uszkoreit, et~al.
+\newblock Mlp-mixer: An all-mlp architecture for vision.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  34:\penalty0 24261--24272, 2021.
+
+\bibitem[Trivedi et~al.(2019)Trivedi, Farajtabar, Biswal, and
+  Zha]{trivedi2019dyrep}
+Rakshit Trivedi, Mehrdad Farajtabar, Prasenjeet Biswal, and Hongyuan Zha.
+\newblock Dyrep: Learning representations over dynamic graphs.
+\newblock In \emph{International conference on learning representations}, 2019.
+
+\bibitem[Veli{\v{c}}kovi{\'c} et~al.(2018)Veli{\v{c}}kovi{\'c}, Cucurull,
+  Casanova, Romero, Li{\`o}, and Bengio]{velivckovic2018graph}
+Petar Veli{\v{c}}kovi{\'c}, Guillem Cucurull, Arantxa Casanova, Adriana Romero,
+  Pietro Li{\`o}, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock In \emph{International Conference on Learning Representations}, 2018.
+
+\bibitem[Wang et~al.(2021{\natexlab{a}})Wang, Chang, Li, Chu, Li, Zhang, He,
+  Song, Zhou, and Yang]{wang2021tcl}
+Lu~Wang, Xiaofu Chang, Shuang Li, Yunfei Chu, Hui Li, Wei Zhang, Xiaofeng He,
+  Le~Song, Jingren Zhou, and Hongxia Yang.
+\newblock Tcl: Transformer-based dynamic graph modelling via contrastive
+  learning.
+\newblock \emph{arXiv preprint arXiv:2105.07944}, 2021{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2019)Wang, Zheng, Ye, Gan, Li, Song, Zhou, Ma, Yu, Gai,
+  Xiao, He, Karypis, Li, and Zhang]{wang2019dgl}
+Minjie Wang, Da~Zheng, Zihao Ye, Quan Gan, Mufei Li, Xiang Song, Jinjing Zhou,
+  Chao Ma, Lingfan Yu, Yu~Gai, Tianjun Xiao, Tong He, George Karypis, Jinyang
+  Li, and Zheng Zhang.
+\newblock Deep graph library: A graph-centric, highly-performant package for
+  graph neural networks.
+\newblock \emph{arXiv preprint arXiv:1909.01315}, 2019.
+
+\bibitem[Wang et~al.(2021{\natexlab{b}})Wang, Lyu, Li, Xia, Yang, Wang, Wang,
+  Cui, Yang, Sun, et~al.]{wang2021apan}
+Xuhong Wang, Ding Lyu, Mengjian Li, Yang Xia, Qi~Yang, Xinwen Wang, Xinguang
+  Wang, Ping Cui, Yupu Yang, Bowen Sun, et~al.
+\newblock Apan: Asynchronous propagation attention network for real-time
+  temporal graph embedding.
+\newblock In \emph{Proceedings of the 2021 International Conference on
+  Management of Data}, pp.\  2628--2638, 2021{\natexlab{b}}.
+
+\bibitem[Wang et~al.(2020)Wang, Chang, Liu, Leskovec, and
+  Li]{wang2020inductive}
+Yanbang Wang, Yen-Yu Chang, Yunyu Liu, Jure Leskovec, and Pan Li.
+\newblock Inductive representation learning in temporal networks via causal
+  anonymous walks.
+\newblock In \emph{International Conference on Learning Representations}, 2020.
+
+\bibitem[Wang et~al.(2021{\natexlab{c}})Wang, Cai, Liang, Ding, Wang, Bhatia,
+  and Hooi]{wang2021adaptive}
+Yiwei Wang, Yujun Cai, Yuxuan Liang, Henghui Ding, Changhu Wang, Siddharth
+  Bhatia, and Bryan Hooi.
+\newblock Adaptive data augmentation on temporal graphs.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  34:\penalty0 1440--1452, 2021{\natexlab{c}}.
+
+\bibitem[Wang et~al.(2021{\natexlab{d}})Wang, Cai, Liang, Ding, Wang, and
+  Hooi]{wang2021time}
+Yiwei Wang, Yujun Cai, Yuxuan Liang, Henghui Ding, Changhu Wang, and Bryan
+  Hooi.
+\newblock Time-aware neighbor sampling for temporal graph networks.
+\newblock \emph{arXiv preprint arXiv:2112.09845}, 2021{\natexlab{d}}.
+
+\bibitem[Xu et~al.(2020)Xu, Ruan, Korpeoglu, Kumar, and Achan]{xu2020inductive}
+Da~Xu, Chuanwei Ruan, Evren Korpeoglu, Sushant Kumar, and Kannan Achan.
+\newblock Inductive representation learning on temporal graphs.
+\newblock \emph{arXiv preprint arXiv:2002.07962}, 2020.
+
+\bibitem[Yu et~al.(2018)Yu, Yin, and Zhu]{yu2018spatio}
+Bing Yu, Haoteng Yin, and Zhanxing Zhu.
+\newblock Spatio-temporal graph convolutional networks: A deep learning
+  framework for traffic forecasting.
+\newblock In \emph{IJCAI}, 2018.
+
+\bibitem[Zhou et~al.(2022)Zhou, Zheng, Nisa, Ioannidis, Song, and
+  Karypis]{zhou2022tgl}
+Hongkuan Zhou, Da~Zheng, Israt Nisa, Vasileios Ioannidis, Xiang Song, and
+  George Karypis.
+\newblock Tgl: A general framework for temporal gnn training on billion-scale
+  graphs.
+\newblock \emph{arXiv preprint arXiv:2203.14883}, 2022.
+
+\bibitem[Zhou et~al.(2020)Zhou, Cui, Hu, Zhang, Yang, Liu, Wang, Li, and
+  Sun]{zhou2020graph}
+Jie Zhou, Ganqu Cui, Shengding Hu, Zhengyan Zhang, Cheng Yang, Zhiyuan Liu,
+  Lifeng Wang, Changcheng Li, and Maosong Sun.
+\newblock Graph neural networks: A review of methods and applications.
+\newblock \emph{AI Open}, 1:\penalty0 57--81, 2020.
+
+\end{thebibliography}

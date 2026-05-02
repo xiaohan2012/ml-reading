@@ -1,0 +1,104 @@
+\section{Background: Predictive Tasks on Relational Data}
+\label{sec:background}
+
+\subsection{Relational Databases}
+A \textit{relational database (RDB)} is a collection of \textit{tables} linked through inter-table relationships. Each table is composed of \textit{rows}, where every row is a set of \textit{cells}, one for each \textit{column} in the table.
+We define \textit{feature columns} as the columns that contain numeric, text, and datetime information, and ID columns then define how rows are uniquely identified and connected across tables.
+Every table has a \textit{primary key (P--key)}, and some include \textit{foreign keys (F--keys)} referencing primary keys in other tables.
+This induces a graph structure, where connections from foreign keys to primary keys are denoted as
+\textit{F$\to$P links}, and the reverse incoming connections as \textit{P$\to$F links} (Fig.~\ref{fig:intro1}).
+
+% For example, consider an e-commerce database with Users, Items, and Transactions tables (cf. Figure \ref{fig:intro1}(a). The Transactions table records purchases and contains foreign keys to both the Users and Items tables. Each transaction row therefore connects a user to an item, and the relational structure makes it possible to query all items purchased by a user or all users who have purchased a given item. 
+
+Many RDBs are \textit{temporal}, with timestamp columns that record when rows are created. Temporal information is crucial: if we want to predict whether a user will buy an item at time $t$, the model must only use information available before 
+$t$, otherwise it risks temporal leakage. To prevent temporal leakage, modeling is conditioned only on rows that were created prior to the target row. Finally, the \textit{schema} of an RDB (Fig.~\ref{fig:intro1}) specifies the tables with their columns and datatypes along with the relational structure. Because schemas vary widely, pretraining requires schema-agnostic architectures that directly incorporate multi-table structure through attention masks.
+
+% Many RDBs are also \textit{temporal}, meaning that tables may include a \textit{timestamp column} recording when a row was created (e.g., purchase time in the Transactions table). Temporal information is crucial for predictive modeling: if we want to predict whether a user will buy an item at time $t$, the model must only use information available before 
+% $t$, otherwise it risks temporal leakage. To avoid this,
+% we assume \textit{immutability},
+% i.e., rows are never modified after creation.
+% Leading benchmarks for RDBs, such as RelBench~\citep{relbench},
+% satisfy this assumption.
+
+% The \textit{schema} of an RDB (cf. Figure \ref{fig:intro1}. Since relational databases admit diverse schemas, it is critical for pretraining methods to adopt schema-agnostic architectures, which directly incorporate multi-table structure through attention masks and provide an end-to-end modeling solution.
+
+% \jure{overall comment is that I enourage you to be a bit more ocnversational in your writing. Don't be so terse. Give an example, say the same thing again in different words. Don't only define something, explain what it means, why is it important, why do we care.}
+
+\subsection{Predictive Tasks}
+
+% \jure{same here --- be less terse, expand this into separate subsections, give examples of both types of tasks and clearly explain the difference. Autocomplete is about data that is already in the DB, while forecasting is more about something that hasn't yet happend or is some condition/aggregation over the future. So as such that data is not part of the database but it needs to be constructed from the raw data (from the future) in the database.} \jure{And then you can also naturally introduce the notion of the task table (which holds the forecasting labels).}
+
+\paragraph{Masked token prediction (MTP).} We focus on \textit{masked token prediction}, where the goal is to predict the value of a masked cell in the database, conditioned on the rest of the observed database.
+A broad class of important predictive tasks on RDBs
+can be framed as MTP, including (1) \textit{autocomplete tasks} and (2) \textit{forecasting tasks}.
+% (1) \textit{autocomplete tasks},
+% where the masked cell belongs to a feature column
+% in the original database,
+% (2) \textit{forecasting tasks},
+% where forecasted values are attached
+% as a separate table to the original database
+% along with F--key columns linking to the forecasted entities,
+% and datetime columns specifying the forecasting time period.
+% See \citet{rdl} for details on this construction.
+
+\paragraph{Autocomplete tasks.} Here the missing or masked value belongs to a feature column that already exists in the database.
+% \rr{self todo: autocomplete tasks are also temporal so these examples are misleading} 
+Consider the e-commerce schema with Users, Items, and Transactions tables. An autocomplete task might involve predicting a user’s age in the Users table if the entry is missing, or inferring the category of an item in the Items table from its textual description and price. In both cases, the label comes from an existing feature column.
+
+\paragraph{Forecasting tasks.} Here, the goal is to predict something that has not yet happened. For example, in the e-commerce setting, we want to forecast whether a given user will churn in the next month, or predict the total revenue of a product in the upcoming quarter. Unlike autocomplete, the target values for forecasting do not exist in the original database and must be constructed from future rows.
+
+\paragraph{Task tables.} To formalize forecasting tasks, we introduce a new task table. This table stores the forecasting labels, together with foreign keys linking to the relevant entities (e.g., user IDs or item IDs) and a timestamp specifying the prediction horizon. For instance, a task table for churn prediction might contain one row per user, indicating whether the user made a purchase within the next 30 days, with a timestamp showing the cutoff date. 
+
+% \textbf{Downstream tasks as MCP.}
+% Many important downstream tasks can be cast as MCP. Classification and regression correspond to masking a feature column and predicting its value, while recommendation can be seen as MCP on an F--key column. We leave the systematic study of recommendation tasks under MCP to future work. In our experiments, we focus on classification and regression tasks from RelBench~\citep{relbench},
+% which are forecasting tasks.
+% However, the methods developed are more general and directly applicable to autocomplete tasks as well.
+
+
+
+\subsection{Zero-Shot Relational Learning}
+
+
+In domains like language, vision, robotics, biology, etc.,
+foundation models benefit from world knowledge memorized during pretraining,
+as tasks of interest often share the same underlying reality.
+In contrast,
+relational learning is most useful for
+application-specific predictions on proprietary data
+unlikely to appear in pretraining.
+Thus, we focus on \textit{zero-shot relational learning},
+defined as predicting new targets on a new RDB with a new schema,
+without weight updates.
+Information about the new RDB is available
+only at inference time,
+solely through the context window.
+This can include schema metadata,
+relevant rows from different tables,
+and their connectivity
+(\textit{e.g.,} Fig.~\ref{fig:intro1} (b),
+Fig.~\ref{fig:sampler-viz}),
+and need \textit{not} consist of explicit input--output pairs
+as required by most prior work~\citep{kumorfm, tabpfn, tabpfnv2, huang2023prodigy}.
+
+
+While predictive tasks on RDBs are ubiquitous,
+only a small fraction justify the cost of custom model development.
+Zero-shot relational learning fills this gap,
+making data-driven predictive modeling accessible
+to small businesses, schools, individual users, etc.,
+for example, to
+\textit{estimate future in-stock ingredients},
+\textit{flag students at risk of failing}, or
+\textit{provide autocomplete functionality in a database-backed web application}.
+Even at larger organizations,
+data scientists can quickly prototype task framing
+and modeling approaches such as feature selection,
+e.g., \textit{does removing location data hurt sales forecasting?}.
+Further, high-stakes predictions,
+e.g., \textit{loan defaults},
+can be prioritized for custom modeling
+by relegating less critical ones,
+e.g., \textit{targeted offers}
+to zero-shot relational learning.
+
+

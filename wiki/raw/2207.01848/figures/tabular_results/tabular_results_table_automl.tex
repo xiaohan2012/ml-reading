@@ -1,0 +1,27 @@
+\begin{tabular}{llllllll}
+\toprule
+{} &       AutoGluon &            ASKL &          ASKL2.0 & TunedRandomForest &           FLAML &            TPOT &                   TabPFN \\
+\midrule
+vehicle                          &         -0.3084 &         -0.3816 &          -0.3412 &           -0.4849 &         -0.4286 &         -0.3433 &         \textbf{-0.2955} \\
+eucalyptus                       &         -0.6905 &         -0.7255 &          -0.6967 &           -0.7209 &         -0.7433 &         -0.7123 &          \textbf{-0.665} \\
+blood-transfusion-service-center &          0.7532 &           0.749 &           0.7557 &            0.6879 &          0.7332 &          0.7359 &          \textbf{0.7593} \\
+Australian                       &           0.941 &          0.9315 &  \textbf{0.9411} &            0.9394 &          0.9356 &          0.9382 &                   0.9395 \\
+credit-g                         &          0.7977 &          0.7891 &           0.7984 &   \textbf{0.8017} &          0.7838 &          0.7821 &                   0.7989 \\
+\midrule
+Wins OpenML Metric
+                                                     &               0 &               0 &                0 &                 1 &               0 &               0 &               \textbf{3} \\
+Wins Acc.                        &               1 &               0 &                0 &                 1 &               0 &               1 &               \textbf{2} \\
+Wins CE                          &      \textbf{3} &               0 &                0 &                 0 &               0 &               0 &                        2 \\
+\midrule
+M. rank OpenML Metric
+                                                  &             2.4 &             5.4 &              2.6 &               4.8 &             6.2 &               5 &             \textbf{1.6} \\
+Mean rank Acc.                   &             2.4 &             5.7 &              4.7 &               4.4 &             5.7 &               3 &             \textbf{2.1} \\
+Mean rank CE                     &    \textbf{1.4} &             5.8 &              4.4 &               5.4 &             4.4 &             4.7 &                      1.9 \\
+\midrule
+Mean Acc.                        &  0.793$\pm$.031 &  0.763$\pm$.052 &   0.775$\pm$.052 &    0.763$\pm$.039 &  0.761$\pm$.035 &  0.784$\pm$.031 &  \textbf{0.794}$\pm$.033 \\
+Mean CE                          &  0.454$\pm$.039 &  0.537$\pm$.061 &   0.502$\pm$.056 &    0.545$\pm$.079 &  0.499$\pm$.048 &     0.73$\pm$.7 &   \textbf{0.449}$\pm$.05 \\
+\midrule
+Mean time (s) 
+                                                &            3182 &            3611 &             3609 &              2877 &            3600 &            3400 &           \textbf{4.374} (CPU) \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,21 @@
+\begin{tabular}{lllrrrrrrr}
+\toprule
+Dataset & Task & Split & Past Visit & Global Pop. & LightGBM & GNN (2) & GNN (4) & IDGNN (2) & IDGNN (4) \\
+\midrule
+\multirow[c]{2}{*}{\texttt{rel-arxiv}} & \multirow[c]{2}{*}{\texttt{paper-paper-cocitation}} & Val & $19.01$ & $1.25$ & $12.49_{\pm 0.60}$ & $12.19_{\pm 0.23}$ & $12.96_{\pm 00.33}$ & $25.22_{\pm 0.09}$ & $\bm{35.76}_{\pm 0.09}$ \\
+ &  & Test & $16.51$ & $1.13$ & $11.01_{\pm 0.43}$ & $8.83_{\pm 0.38}$ & $10.46_{\pm 0.56}$ & $22.95_{\pm 0.07}$ & $\bm{35.39}_{\pm 0.17}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{2}{*}{\texttt{rel-f1}} & \multirow[c]{2}{*}{\texttt{driver-circuit-compete}} & Val & $53.41$ & $55.19$ & $66.06_{\pm 2.68}$ & $3.60_{\pm 2.11}$ & $10.57_{\pm 8.35}$ & $70.70_{\pm 0.00}$ & $\bm{74.40}_{\pm 1.03}$ \\
+ &  & Test & $20.76$ & $50.12$ & $57.77_{\pm 2.95}$ & $9.67_{\pm 10.56}$ & $16.57_{\pm 11.17}$ & $62.32_{\pm 0.00}$ & $\bm{76.18}_{\pm 6.59}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{6}{*}{\texttt{rel-ratebeer}} & \multirow[c]{2}{*}{\texttt{user-beer-favorite}} & Val & $0.00$ & $2.33$ & $1.24_{\pm 0.15}$ & $2.09_{\pm 0.15}$ & $-$ & $3.09_{\pm 0.14}$ & $\bm{3.33}_{\pm 0.09}$ \\
+ &  & Test & $0.00$ & $1.10$ & $0.67_{\pm 0.13}$ & $0.56_{\pm 0.22}$ & $-$ & $1.21_{\pm 0.93}$ & $\bm{1.89}_{\pm 0.09}$ \\
+\cmidrule{2-10}
+ & \multirow[c]{2}{*}{\texttt{user-beer-liked}} & Val & $0.00$ & $0.77$ & $0.43_{\pm 0.02}$ & $0.77_{\pm 0.06}$ & $-$ & $0.21_{\pm 0.01}$ & $1.48_{\pm 0.06}$ \\
+ &  & Test & $0.00$ & $0.61$ & $0.29_{\pm 0.04}$ & $0.54_{\pm 0.22}$ & $-$ & $0.32_{\pm 0.03}$ & $1.46_{\pm 0.19}$ \\
+\cmidrule{2-10}
+ & \multirow[c]{2}{*}{\texttt{user-place-liked}} & Val & $0.00$ & $0.24$ & $0.24_{\pm 0.07}$ & $1.06_{\pm 0.17}$ & $-$ & $0.88_{\pm 0.09}$ & $2.20_{\pm 0.24}$ \\
+ &  & Test & $0.00$ & $0.11$ & $0.08_{\pm 0.03}$ & $1.15_{\pm 0.34}$ & $-$ & $0.60_{\pm 0.50}$ & $1.85_{\pm 0.30}$ \\
+% \cmidrule{1-10} \cmidrule{2-10}
+\bottomrule
+\end{tabular}

@@ -1,0 +1,184 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2023
+
+
+% ready for submission
+\usepackage[final]{neurips_2023}
+
+
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+%\usepackage{xcolor}         % colors
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xspace}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{tikz}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\usepackage[frozencache,cachedir=.]{minted}
+\usepackage{listings}
+\usepackage{xcolor}
+%\usepackage[table]{xcolor}
+\usepackage{bold-extra}
+
+\definecolor{darkblue}{rgb}{0.0,0.0,0.65}
+\definecolor{darkred}{rgb}{0.68,0.05,0.0}
+\definecolor{darkgreen}{rgb}{0.0,0.29,0.29}
+\definecolor{darkpurple}{rgb}{0.47,0.09,0.29}
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\cf}{\textit{cf.}}
+
+\newcommand*{\img}[1]{%
+    \raisebox{-.1\baselineskip}{%
+        \includegraphics[
+        height=\baselineskip,
+        width=\baselineskip,
+        keepaspectratio,
+        ]{#1}%
+    }%
+}
+%# Algorithm2e package
+\definecolor{keywordcolor}{RGB}{0,0,128}
+\definecolor{commentcolor}{RGB}{0,128,0}
+\definecolor{stringcolor}{RGB}{163,21,21}
+\usepackage{hyperref}
+\hypersetup{
+   colorlinks = true,
+   citecolor  = darkblue,
+   linkcolor  = darkred,
+   filecolor  = darkblue,
+   urlcolor   = darkblue,
+ }
+
+\title{Relational Deep Learning: Graph Representation Learning on Relational Databases}
+
+\iffalse
+Relational Deep Learning vs. Deep Relational Learning\\
+Relational Tabular Learning\\
+- \\
+Graph Representation Learning on Relational Databases\\
+Deep Relational Learning (see also Statistical Relational Learning)
+Relational AI\\
+Relational Learning
+\fi 
+
+\newcommand{\AreaName}{Relational Deep Learning\xspace}
+\newcommand{\BenchmarkName}{\textsc{RelBench}\xspace}
+
+\newcommand{\Amazon}{\texttt{rel-amazon}\xspace}
+\newcommand{\AmazonChurn}{\texttt{rel-amazon-churn}\xspace}
+\newcommand{\AmazonLTV}{\texttt{rel-amazon-ltv}\xspace}
+\newcommand{\StackEx}{\texttt{rel-stackex}\xspace}
+\newcommand{\StackExVotes}{\texttt{rel-stackex-votes}\xspace}
+\newcommand{\StackExEngage}{\texttt{rel-stackex-engage}\xspace}
+
+\newcommand{\name}{XXX\xspace}
+\newcommand{\tbl}[1]{\textsc{#1}\xspace} %relational table
+\newcommand{\clm}[1]{\textsc{#1}\xspace} %column in a relational table
+\newcommand{\xhdr}[1]{\paragraph{#1.}\xspace} %column in a relational table
+
+% for in-line commenting. Please add yourselves !!
+% feel free to also add comments using the overleaf functionality
+\newcommand{\josh}[1]{\textcolor{purple}{\textbf{JR:}{ #1}}}
+\newcommand{\jan}[1]{\textcolor{blue}{\textbf{JEL:}{ #1}}}
+\newcommand{\matthias}[1]{\textcolor{red}{\textbf{MF:}{ #1}}}
+\newcommand{\jure}[1]{\textcolor{red}{\textbf{JL:}{ #1}}}
+\newcommand{\kexin}[1]{\textcolor{red}{\textbf{KH:}{ #1}}}
+\newcommand{\wh}[1]{\textcolor{red}{\textbf{WH}{ #1}}}
+\newcommand{\jiaxuan}[1]{\textcolor{purple}{\textbf{Jiaxuan:}{ #1}}}
+\newcommand{\rex}[1]{\textcolor{purple}{\textbf{rex:}{ #1}}}
+\newcommand{\rishabh}[1]{\textcolor{orange}{\textbf{RR:}{ #1}}}
+
+
+\usepackage{authblk}
+
+% Redefine \Authand, \Authands, and \and to be empty
+\renewcommand\Authand{}
+\renewcommand\Authands{}
+\renewcommand\and{}
+
+\author[2,*]{\textbf{Matthias Fey}}
+\author[2,*]{\textbf{Weihua Hu}}
+\author[1,*]{\textbf{Kexin Huang}}
+\author[2,3,*]{\textbf{Jan Eric Lenssen}}
+\author[1,*]{\textbf{Rishabh Ranjan}}
+\author[1,*]{\\\textbf{Joshua Robinson}}
+\author[2,4]{\textbf{Rex Ying}}
+\author[2,5]{\textbf{Jiaxuan You}}
+\author[1,2]{, \textbf{Jure Leskovec}}
+
+\affil[*]{Equal contribution. Listed in alphabetical order. \vspace{1em}}
+
+\affil[1]{Stanford University} 
+
+\affil[2]{Kumo.AI}
+\affil[3]{Max Planck Institute for Informatics}
+\affil[4]{Yale University}
+\affil[5]{University of Illinois at Urbana-Champaign \vspace{1em}}
+
+\affil[ ]{\BenchmarkName: \href{https://relbench.stanford.edu/}{https://relbench.stanford.edu}}
+
+
+
+
+\begin{document}
+
+
+\maketitle
+
+
+\begin{abstract}
+Much of the world's most valued data is stored in relational databases and data warehouses, where the data is organized into many tables connected by primary-foreign key relations. 
+However, building machine learning models using this data is both challenging and time consuming. 
+The core problem is that no machine learning method is capable of learning on multiple tables interconnected by primary-foreign key relations.
+Current methods can only learn from a single table, so the data must first be manually joined and aggregated into a single training table, the process known as feature engineering. Feature engineering is slow, error prone and leads to suboptimal models.
+%
+Here we introduce an end-to-end deep representation learning approach to directly learn on data laid out across multiple tables. We name our approach {\em \AreaName (RDL)}.
+%
+The core idea is to view relational databases as a temporal, heterogeneous graph, with a node for each row in each table, and edges specified by primary-foreign key links. Message Passing Graph Neural Networks can then automatically learn across the graph to extract representations that leverage all input data, without any manual feature engineering. \AreaName leads to more accurate models that can be built much faster.
+%
+To facilitate research in this area, we develop {\em \BenchmarkName}, a set of benchmark datasets and an implementation of \AreaName. The data covers a wide spectrum, from discussions on Stack Exchange to book reviews on the Amazon Product Catalog.
+%
+Overall, we define a new research area that generalizes graph machine learning and broadens its applicability to a wide set of AI use cases.
+\end{abstract}
+
+\input{intro}
+
+
+\input{problem-formulation}
+\input{db-learning}
+\input{benchmark}
+\input{new-challenges}
+\input{related}
+
+
+\input{conclusion}
+
+\newpage
+
+\xhdr{Acknowledgments}  We thank Shirley Wu for useful discussions as we were selecting datasets to adopt. We gratefully acknowledge the support of DARPA under Nos. N660011924033 (MCS); NSF under Nos. OAC-1835598 (CINES), CCF-1918940 (Expeditions), Stanford Data Science Initiative, Wu Tsai Neurosciences Institute, Chan Zuckerberg Initiative, Amazon, Genentech, GSK, Hitachi, Juniper Networks, and KDDI.
+
+\bibliography{bib}
+\bibliographystyle{plainnat}
+
+
+\end{document}

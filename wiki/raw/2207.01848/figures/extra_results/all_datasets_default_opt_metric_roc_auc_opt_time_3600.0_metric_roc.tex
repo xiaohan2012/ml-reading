@@ -1,0 +1,1670 @@
+% This file was created with tikzplotlib v0.10.1.
+\begin{tikzpicture}
+
+\begin{groupplot}[group style={group size=2 by 4}]
+\nextgroupplot[
+tick pos=left,
+title={Numerical Validation Datasets (67)},
+xmin=0, xmax=1,
+y dir=reverse,
+ylabel={Fast Baselines},
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.393939393939394
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.303030303030303
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.75 0.348484848484849
+0.75 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.666666666666667 0.303030303030303
+0.666666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.583333333333333 0.348484848484849
+0.583333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.5 0.303030303030303
+0.5 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.416666666666667 0.348484848484849
+0.416666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.333333333333333 0.303030303030303
+0.333333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.25 0.348484848484849
+0.25 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.303030303030303
+0.166666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.411666666666667 0.393939393939394
+0.411666666666667 0.636363636363636
+0.155555555555556 0.636363636363636
+};
+\addplot [thick, black]
+table {%
+0.448333333333333 0.393939393939394
+0.448333333333333 0.781818181818182
+0.155555555555556 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.468333333333333 0.393939393939394
+0.468333333333333 0.927272727272727
+0.155555555555556 0.927272727272727
+};
+\addplot [thick, black]
+table {%
+0.526666666666667 0.393939393939394
+0.526666666666667 0.781818181818182
+0.844444444444444 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.646666666666667 0.393939393939394
+0.646666666666667 0.636363636363636
+0.844444444444444 0.636363636363636
+};
+\addplot [ultra thick, black]
+table {%
+0.413888888888889 0.515151515151515
+0.524444444444444 0.515151515151515
+};
+\draw (axis cs:0.833333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.666666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.5,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.333333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.166666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.2,0.590909090909091) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.53};
+\draw (axis cs:0.144444444444444,0.636363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default SVM};
+\draw (axis cs:0.2,0.736363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.31};
+\draw (axis cs:0.144444444444444,0.781818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default XGB};
+\draw (axis cs:0.2,0.881818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.19};
+\draw (axis cs:0.144444444444444,0.927272727272727) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default GP (RBF)};
+\draw (axis cs:0.8,0.736363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.84};
+\draw (axis cs:0.855555555555556,0.781818181818182) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{default LGBM};
+\draw (axis cs:0.8,0.590909090909091) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.12};
+\draw (axis cs:0.855555555555556,0.636363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+
+\nextgroupplot[
+tick pos=left,
+title={Numerical Test Datasets (20)},
+xmin=0, xmax=1,
+y dir=reverse,
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.393939393939394
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.303030303030303
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.75 0.348484848484849
+0.75 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.666666666666667 0.303030303030303
+0.666666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.583333333333333 0.348484848484849
+0.583333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.5 0.303030303030303
+0.5 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.416666666666667 0.348484848484849
+0.416666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.333333333333333 0.303030303030303
+0.333333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.25 0.348484848484849
+0.25 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.303030303030303
+0.166666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.375 0.393939393939394
+0.375 0.636363636363636
+0.155555555555556 0.636363636363636
+};
+\addplot [thick, black]
+table {%
+0.416666666666667 0.393939393939394
+0.416666666666667 0.781818181818182
+0.155555555555556 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.393939393939394
+0.433333333333333 0.927272727272727
+0.155555555555556 0.927272727272727
+};
+\addplot [thick, black]
+table {%
+0.503333333333333 0.393939393939394
+0.503333333333333 0.781818181818182
+0.844444444444444 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.77 0.393939393939394
+0.77 0.636363636363636
+0.844444444444444 0.636363636363636
+};
+\addplot [ultra thick, black]
+table {%
+0.377222222222222 0.515151515151515
+0.501111111111111 0.515151515151515
+};
+\draw (axis cs:0.833333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.666666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.5,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.333333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.166666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.2,0.590909090909091) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.75};
+\draw (axis cs:0.144444444444444,0.636363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default XGB};
+\draw (axis cs:0.2,0.736363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.50};
+\draw (axis cs:0.144444444444444,0.781818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default GP (RBF)};
+\draw (axis cs:0.2,0.881818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.40};
+\draw (axis cs:0.144444444444444,0.927272727272727) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default LGBM};
+\draw (axis cs:0.8,0.736363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.98};
+\draw (axis cs:0.855555555555556,0.781818181818182) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{default SVM};
+\draw (axis cs:0.8,0.590909090909091) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{1.38};
+\draw (axis cs:0.855555555555556,0.636363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+
+\nextgroupplot[
+tick pos=left,
+title={Numerical Validation Datasets (67)},
+xmin=0, xmax=1,
+y dir=reverse,
+ylabel={Tuned (1h) Baselines},
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.371428571428571
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.285714285714286
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.766666666666667 0.328571428571429
+0.766666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.7 0.285714285714286
+0.7 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.633333333333333 0.328571428571429
+0.633333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.566666666666667 0.285714285714286
+0.566666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.5 0.328571428571429
+0.5 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.285714285714286
+0.433333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.366666666666667 0.328571428571429
+0.366666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.3 0.285714285714286
+0.3 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.233333333333333 0.328571428571429
+0.233333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.285714285714286
+0.166666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.392 0.371428571428571
+0.392 0.6
+0.155555555555556 0.6
+};
+\addplot [thick, black]
+table {%
+0.42 0.371428571428571
+0.42 0.737142857142857
+0.155555555555556 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.444 0.371428571428571
+0.444 0.874285714285714
+0.155555555555556 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.506666666666667 0.371428571428571
+0.506666666666667 0.874285714285714
+0.844444444444444 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.617333333333333 0.371428571428571
+0.617333333333333 0.737142857142857
+0.844444444444444 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.62 0.371428571428571
+0.62 0.6
+0.844444444444444 0.6
+};
+\addplot [ultra thick, black]
+table {%
+0.394222222222222 0.485714285714286
+0.504444444444444 0.485714285714286
+};
+\addplot [ultra thick, black]
+table {%
+0.508888888888889 0.514285714285714
+0.617777777777778 0.514285714285714
+};
+\draw (axis cs:0.833333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.7,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.566666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.433333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.3,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.166666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{6};
+\draw (axis cs:0.2,0.557142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.31};
+\draw (axis cs:0.144444444444444,0.6) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned SVM};
+\draw (axis cs:0.2,0.694285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.10};
+\draw (axis cs:0.144444444444444,0.737142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned LGBM};
+\draw (axis cs:0.2,0.831428571428571) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.92};
+\draw (axis cs:0.144444444444444,0.874285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned GP (RBF)};
+\draw (axis cs:0.8,0.831428571428571) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{3.45};
+\draw (axis cs:0.855555555555556,0.874285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{tuned XGB};
+\draw (axis cs:0.8,0.694285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.62};
+\draw (axis cs:0.855555555555556,0.737142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{AutoSklearn2};
+\draw (axis cs:0.8,0.557142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.60};
+\draw (axis cs:0.855555555555556,0.6) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+
+\nextgroupplot[
+tick pos=left,
+title={Numerical Test Datasets (20)},
+xmin=0, xmax=1,
+y dir=reverse,
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.371428571428571
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.285714285714286
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.766666666666667 0.328571428571429
+0.766666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.7 0.285714285714286
+0.7 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.633333333333333 0.328571428571429
+0.633333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.566666666666667 0.285714285714286
+0.566666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.5 0.328571428571429
+0.5 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.285714285714286
+0.433333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.366666666666667 0.328571428571429
+0.366666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.3 0.285714285714286
+0.3 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.233333333333333 0.328571428571429
+0.233333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.285714285714286
+0.166666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.386666666666667 0.371428571428571
+0.386666666666667 0.6
+0.155555555555556 0.6
+};
+\addplot [thick, black]
+table {%
+0.42 0.371428571428571
+0.42 0.737142857142857
+0.155555555555556 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.436 0.371428571428571
+0.436 0.874285714285714
+0.155555555555556 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.469333333333333 0.371428571428571
+0.469333333333333 0.874285714285714
+0.844444444444444 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.602666666666667 0.371428571428571
+0.602666666666667 0.737142857142857
+0.844444444444444 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.684 0.371428571428571
+0.684 0.6
+0.844444444444444 0.6
+};
+\addplot [ultra thick, black]
+table {%
+0.388888888888889 0.485714285714286
+0.600444444444444 0.485714285714286
+};
+\addplot [ultra thick, black]
+table {%
+0.422222222222222 0.542857142857143
+0.681777777777778 0.542857142857143
+};
+\draw (axis cs:0.833333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.7,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.566666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.433333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.3,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.166666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{6};
+\draw (axis cs:0.2,0.557142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.35};
+\draw (axis cs:0.144444444444444,0.6) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned LGBM};
+\draw (axis cs:0.2,0.694285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.10};
+\draw (axis cs:0.144444444444444,0.737142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned XGB};
+\draw (axis cs:0.2,0.831428571428571) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.98};
+\draw (axis cs:0.144444444444444,0.874285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned GP (RBF)};
+\draw (axis cs:0.8,0.831428571428571) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{3.73};
+\draw (axis cs:0.855555555555556,0.874285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{tuned SVM};
+\draw (axis cs:0.8,0.694285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.73};
+\draw (axis cs:0.855555555555556,0.737142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{AutoSklearn2};
+\draw (axis cs:0.8,0.557142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.12};
+\draw (axis cs:0.855555555555556,0.6) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+
+\nextgroupplot[
+tick pos=left,
+title={Validation Datasets w/ Categorical Features (82)},
+xmin=0, xmax=1,
+y dir=reverse,
+ylabel={Fast Baselines},
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.393939393939394
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.303030303030303
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.75 0.348484848484849
+0.75 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.666666666666667 0.303030303030303
+0.666666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.583333333333333 0.348484848484849
+0.583333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.5 0.303030303030303
+0.5 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.416666666666667 0.348484848484849
+0.416666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.333333333333333 0.303030303030303
+0.333333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.25 0.348484848484849
+0.25 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.303030303030303
+0.166666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.408333333333333 0.393939393939394
+0.408333333333333 0.636363636363636
+0.155555555555556 0.636363636363636
+};
+\addplot [thick, black]
+table {%
+0.46 0.393939393939394
+0.46 0.781818181818182
+0.155555555555556 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.478333333333333 0.393939393939394
+0.478333333333333 0.927272727272727
+0.155555555555556 0.927272727272727
+};
+\addplot [thick, black]
+table {%
+0.545 0.393939393939394
+0.545 0.781818181818182
+0.844444444444444 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.608333333333333 0.393939393939394
+0.608333333333333 0.636363636363636
+0.844444444444444 0.636363636363636
+};
+\addplot [ultra thick, black]
+table {%
+0.410555555555556 0.515151515151515
+0.476111111111111 0.515151515151515
+};
+\addplot [ultra thick, black]
+table {%
+0.462222222222222 0.575757575757576
+0.542777777777778 0.575757575757576
+};
+\addplot [ultra thick, black]
+table {%
+0.547222222222222 0.545454545454546
+0.606111111111111 0.545454545454546
+};
+\draw (axis cs:0.833333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.666666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.5,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.333333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.166666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.2,0.590909090909091) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.55};
+\draw (axis cs:0.144444444444444,0.636363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default GP (RBF)};
+\draw (axis cs:0.2,0.736363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.24};
+\draw (axis cs:0.144444444444444,0.781818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default SVM};
+\draw (axis cs:0.2,0.881818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.13};
+\draw (axis cs:0.144444444444444,0.927272727272727) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default LGBM};
+\draw (axis cs:0.8,0.736363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.73};
+\draw (axis cs:0.855555555555556,0.781818181818182) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{default XGB};
+\draw (axis cs:0.8,0.590909090909091) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.35};
+\draw (axis cs:0.855555555555556,0.636363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+
+\nextgroupplot[
+tick pos=left,
+title={Test Datasets w/ Categorical Features (10)},
+xmin=0, xmax=1,
+y dir=reverse,
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.393939393939394
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.303030303030303
+0.833333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.75 0.348484848484849
+0.75 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.666666666666667 0.303030303030303
+0.666666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.583333333333333 0.348484848484849
+0.583333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.5 0.303030303030303
+0.5 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.416666666666667 0.348484848484849
+0.416666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.333333333333333 0.303030303030303
+0.333333333333333 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.25 0.348484848484849
+0.25 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.303030303030303
+0.166666666666667 0.393939393939394
+};
+\addplot [thick, black]
+table {%
+0.333333333333333 0.393939393939394
+0.333333333333333 0.636363636363636
+0.155555555555556 0.636363636363636
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.393939393939394
+0.433333333333333 0.781818181818182
+0.155555555555556 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.483333333333333 0.393939393939394
+0.483333333333333 0.927272727272727
+0.155555555555556 0.927272727272727
+};
+\addplot [thick, black]
+table {%
+0.566666666666667 0.393939393939394
+0.566666666666667 0.781818181818182
+0.844444444444444 0.781818181818182
+};
+\addplot [thick, black]
+table {%
+0.683333333333333 0.393939393939394
+0.683333333333333 0.636363636363636
+0.844444444444444 0.636363636363636
+};
+\addplot [ultra thick, black]
+table {%
+0.335555555555556 0.515151515151515
+0.681111111111111 0.515151515151515
+};
+\draw (axis cs:0.833333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.666666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.5,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.333333333333333,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.166666666666667,0.272727272727273) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.2,0.590909090909091) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.00};
+\draw (axis cs:0.144444444444444,0.636363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default GP (RBF)};
+\draw (axis cs:0.2,0.736363636363636) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.40};
+\draw (axis cs:0.144444444444444,0.781818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default SVM};
+\draw (axis cs:0.2,0.881818181818182) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.10};
+\draw (axis cs:0.144444444444444,0.927272727272727) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{default LGBM};
+\draw (axis cs:0.8,0.736363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.60};
+\draw (axis cs:0.855555555555556,0.781818181818182) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{default XGB};
+\draw (axis cs:0.8,0.590909090909091) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{1.90};
+\draw (axis cs:0.855555555555556,0.636363636363636) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+
+\nextgroupplot[
+tick pos=left,
+title={Validation Datasets w/ Categorical Features (82)},
+xmin=0, xmax=1,
+y dir=reverse,
+ylabel={Tuned (1h) Baselines},
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.371428571428571
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.285714285714286
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.766666666666667 0.328571428571429
+0.766666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.7 0.285714285714286
+0.7 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.633333333333333 0.328571428571429
+0.633333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.566666666666667 0.285714285714286
+0.566666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.5 0.328571428571429
+0.5 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.285714285714286
+0.433333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.366666666666667 0.328571428571429
+0.366666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.3 0.285714285714286
+0.3 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.233333333333333 0.328571428571429
+0.233333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.285714285714286
+0.166666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.393333333333333 0.371428571428571
+0.393333333333333 0.6
+0.155555555555556 0.6
+};
+\addplot [thick, black]
+table {%
+0.448 0.371428571428571
+0.448 0.737142857142857
+0.155555555555556 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.449333333333333 0.371428571428571
+0.449333333333333 0.874285714285714
+0.155555555555556 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.534666666666667 0.371428571428571
+0.534666666666667 0.874285714285714
+0.844444444444444 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.557333333333333 0.371428571428571
+0.557333333333333 0.737142857142857
+0.844444444444444 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.638666666666667 0.371428571428571
+0.638666666666667 0.6
+0.844444444444444 0.6
+};
+\addplot [ultra thick, black]
+table {%
+0.395555555555556 0.485714285714286
+0.636444444444444 0.485714285714286
+};
+\draw (axis cs:0.833333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.7,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.566666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.433333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.3,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.166666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{6};
+\draw (axis cs:0.2,0.557142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.30};
+\draw (axis cs:0.144444444444444,0.6) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned LGBM};
+\draw (axis cs:0.2,0.694285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.89};
+\draw (axis cs:0.144444444444444,0.737142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned SVM};
+\draw (axis cs:0.2,0.831428571428571) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.88};
+\draw (axis cs:0.144444444444444,0.874285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned GP (RBF)};
+\draw (axis cs:0.8,0.831428571428571) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{3.24};
+\draw (axis cs:0.855555555555556,0.874285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+\draw (axis cs:0.8,0.694285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{3.07};
+\draw (axis cs:0.855555555555556,0.737142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{tuned XGB};
+\draw (axis cs:0.8,0.557142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.46};
+\draw (axis cs:0.855555555555556,0.6) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{AutoSklearn2};
+
+\nextgroupplot[
+tick pos=left,
+title={Test Datasets w/ Categorical Features (10)},
+xmin=0, xmax=1,
+y dir=reverse,
+ymin=0, ymax=1
+]
+\addplot [semithick, white]
+table {%
+0 0
+1 1
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.371428571428571
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.833333333333333 0.285714285714286
+0.833333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.766666666666667 0.328571428571429
+0.766666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.7 0.285714285714286
+0.7 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.633333333333333 0.328571428571429
+0.633333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.566666666666667 0.285714285714286
+0.566666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.5 0.328571428571429
+0.5 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.285714285714286
+0.433333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.366666666666667 0.328571428571429
+0.366666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.3 0.285714285714286
+0.3 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.233333333333333 0.328571428571429
+0.233333333333333 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.166666666666667 0.285714285714286
+0.166666666666667 0.371428571428571
+};
+\addplot [thick, black]
+table {%
+0.406666666666667 0.371428571428571
+0.406666666666667 0.6
+0.155555555555556 0.6
+};
+\addplot [thick, black]
+table {%
+0.433333333333333 0.371428571428571
+0.433333333333333 0.737142857142857
+0.155555555555556 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.446666666666667 0.371428571428571
+0.446666666666667 0.874285714285714
+0.155555555555556 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.526666666666667 0.371428571428571
+0.526666666666667 0.874285714285714
+0.844444444444444 0.874285714285714
+};
+\addplot [thick, black]
+table {%
+0.526666666666667 0.371428571428571
+0.526666666666667 0.737142857142857
+0.844444444444444 0.737142857142857
+};
+\addplot [thick, black]
+table {%
+0.66 0.371428571428571
+0.66 0.6
+0.844444444444444 0.6
+};
+\addplot [ultra thick, black]
+table {%
+0.408888888888889 0.485714285714286
+0.657777777777778 0.485714285714286
+};
+\draw (axis cs:0.833333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{1};
+\draw (axis cs:0.7,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{2};
+\draw (axis cs:0.566666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{3};
+\draw (axis cs:0.433333333333333,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{4};
+\draw (axis cs:0.3,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{5};
+\draw (axis cs:0.166666666666667,0.257142857142857) node[
+  scale=0.8,
+  anchor=south,
+  text=black,
+  rotate=0.0
+]{6};
+\draw (axis cs:0.2,0.557142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.20};
+\draw (axis cs:0.144444444444444,0.6) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned GP (RBF)};
+\draw (axis cs:0.2,0.694285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{4.00};
+\draw (axis cs:0.144444444444444,0.737142857142857) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned SVM};
+\draw (axis cs:0.2,0.831428571428571) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{3.90};
+\draw (axis cs:0.144444444444444,0.874285714285714) node[
+  scale=0.5,
+  anchor=east,
+  text=black,
+  rotate=0.0
+]{tuned LGBM};
+\draw (axis cs:0.8,0.831428571428571) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{3.30};
+\draw (axis cs:0.855555555555556,0.874285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{TabPFN};
+\draw (axis cs:0.8,0.694285714285714) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{3.30};
+\draw (axis cs:0.855555555555556,0.737142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{tuned XGB};
+\draw (axis cs:0.8,0.557142857142857) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{2.30};
+\draw (axis cs:0.855555555555556,0.6) node[
+  scale=0.5,
+  anchor=west,
+  text=black,
+  rotate=0.0
+]{AutoSklearn2};
+\end{groupplot}
+
+\end{tikzpicture}

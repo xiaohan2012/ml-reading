@@ -1,0 +1,17 @@
+\begin{tikzpicture}[
+sample/.style={-stealth,decorate,decoration={snake}},
+input/.style={-stealth},
+]
+	\node[] (valset) {$\mathbb{V}_1$};
+	\node[] (data_sample) [right=of valset] {$D_{train} \cup \{x_{val},y_{val}\}$};
+	\node[] (pfn) [above right=of data_sample, xshift=-2cm, yshift=-1cm,rectangle,align=left] {$q_{\theta}(y_{val}|x_{val},D_{train},\textcolor{orange}{\psi})$};
+	\node[] (loss) [below=of pfn, yshift=.5cm] {CE$(\cdot,\cdot)$};
+	
+	\draw[sample] (valset.east) -- (data_sample.west) node[midway, below] {sample};
+	\draw[input] ([xshift=-1cm]data_sample.north) |- ([yshift=0cm]pfn.west);
+	\draw[input] ([xshift=.2cm]data_sample.north) |- ([yshift=-.1cm]pfn.west);
+	\draw[input] ([xshift=1cm]data_sample.south) |- ([yshift=0cm]loss.west);
+	\draw[input] (pfn.south) -- (loss.north);
+
+	
+\end{tikzpicture}

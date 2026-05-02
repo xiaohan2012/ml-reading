@@ -1,0 +1,64 @@
+\section{Related Work}\label{sec:rw}
+
+\textbf{CTDG Methods.}
+Continuous-time Dynamic Graph (CTDG) methods process temporal graphs as streams of timestamped edge events. TGAT~\citep{tgat} pioneered inductive representation learning on temporal graphs, and TGN~\citep{tgn} generalized this approach into a widely adopted framework, with TGAT as a special case. Both rely on temporal neighbor sampling for message passing. More recently, DyGLib~\citep{dygfomer} emerged as a popular library, introducing DyGFormer, one of the first transformer-based CTDG architectures inspired by their success in time series, NLP, and vision~\citep{vaswani2017attention,DBLP:conf/naacl/DevlinCLT19,DBLP:conf/iclr/DosovitskiyB0WZ21}. Despite these advances, \citet{edgebank} exposed flaws in prior evaluation and proposed EdgeBank, a strong heuristic baseline for link prediction. To address reproducibility, \citet{huang2023temporal} introduced the large-scale Temporal Graph Benchmark (TGB), which we adopt for evaluating \name. Recently, TPNet~\citep{tpnet} further advanced state-of-the-art link prediction by introducing temporal walk matrices with time decay, and is fully supported in \name.
+
+\textbf{DTDG Methods.}
+Discrete-time Dynamic Graph (DTDG) or snapshot-based methods represent temporal evolution as a sequence of static graph snapshots, adapting GNNs like GCN~\citep{gcn} to this setting. GCLSTM~\citep{gclstm} integrates GCNs with LSTMs~\citep{hochreiter1997long} to capture spatial and temporal dependencies, while PyG Temporal~\citep{DBLP:conf/cikm/RozemberczkiSHP21} provides a library of DTDG architectures for spatiotemporal graph learning. However, PyG Temporal lacks recent methods and standardized benchmarks like TGB. More recently, Unified Temporal Graph (UTG)~\citep{utg} demonstrated a proof-of-concept for comparing CTDG and DTDG approaches via graph discretization. While UTG offers useful insights, its implementation is slow, limited to a few datasets, and not designed for reuse. In contrast, \name supports fully vectorized graph discretization and time-iteration operations, unifying CTDG and DTDG within a single, robust framework and closing a long-standing gap in TGL.
+
+
+
+\textbf{TGL Libraries.}
+Several libraries support temporal graph learning including DyGLib~\citep{yu2023towards}, TGL~\citep{tgl_paper}, DistTGL~\citep{10.1145/3581784.3607056}, TGLite~\citep{10.1145/3620665.3640414}, and TSL~\citep{Cini_Torch_Spatiotemporal_2022}. DyGLib provides pipelines for continuous-time models but is limited by scalability, lack of modularity, and weak support for discrete-time methods~\citep{tgb2}. TGL and DistTGL offer large-scale sampling and multi-GPU execution but lack a researcher-friendly interface and have seen few recent updates. TGLite focuses on continuous-time message-flow models, while TSL addresses spatiotemporal modelling on static graphs. 
+
+\autoref{tab:features} summarizes key aspects of these libraries. \name stands out as the only library that supports both CTDG and DTDG methods, bridging continuous- and discrete-time research paradigms. Its efficient and modular design facilitates flexible experimentation, while support for time conversion and dynamic node events enables diverse temporal graph learning tasks. Additionally, comprehensive tests and system profiling ensure reproducibility and provide research-ready infrastructure.
+
+
+
+\begin{table}[t]
+\centering
+\renewcommand{\arraystretch}{1}
+\definecolor{rowcolor}{HTML}{DDEBF7}
+\caption{Comparison of TGL libraries. \name is the only library that meets all desirable criteria for TGL research while other libraries lack one or more criteria.}  %: CTDG and DTDG support to unify research paradigms; efficient and modular design; time conversion and dynamic node event support; and integrated unit tests and system profiling to ensure robust, research-ready infrastructure. 
+\label{tab:features}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l|cccc|cccc}
+\toprule
+ & \multicolumn{4}{c|}{\textbf{TGL Features}} & \multicolumn{4}{c}{\textbf{Software Infrastructure}}\\
+% Library & CTDG & DTDG & Efficient & Modular & Time Conversion & Node Events & Unit Tests & Profiling\\
+Library & CTDG & DTDG & Time Ops. & Node Events & Modular & Efficient & Unit Tests & Profiling\\
+\midrule
+\rowcolor{rowcolor} \name~(ours) & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark\\
+DyGLib & \checkmark & \texttimes & \texttimes & \texttimes  & \texttimes & \texttimes & \texttimes & \texttimes\\
+TGL & \checkmark & \texttimes & \texttimes & \texttimes & \texttimes & \checkmark & \texttimes & \checkmark\\
+TGLite & \checkmark & \texttimes & \texttimes & \texttimes & \checkmark & \checkmark & \checkmark & \checkmark\\
+PyG Temporal & \texttimes & \checkmark & \texttimes & \texttimes & \checkmark & \checkmark & \checkmark & \texttimes\\
+\bottomrule
+\end{tabular}
+}
+
+\end{table}
+
+% \begin{table}[t]
+% \centering
+% \renewcommand{\arraystretch}{1}
+
+% \definecolor{rowcolor}{HTML}{DDEBF7}
+% \caption{Comparison of TGL libraries. \name is the only library meeting all criteria for a TGL research platform: CTDG and DTDG support to unify research paradigms; efficient and modular design; time conversion and dynamic node event support; and integrated unit tests and system profiling to ensure robust, research-ready infrastructure. Other libraries lack one or more of these essential properties.} 
+% \label{tab:features}
+% {\fontsize{8.5}{9.5}\selectfont
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{p{1.7cm}|cccccccc}
+% \toprule
+% Library & CTDG & DTDG & Efficient & Modular & Time Conversion & Node Events & Unit Tests & Profiling\\
+% \midrule
+% \rowcolor{rowcolor} \name~(ours) & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark\\
+% DyGLib & \checkmark & \texttimes & \texttimes & \texttimes  & \texttimes & \texttimes & \texttimes & \texttimes\\
+% TGL & \checkmark & \texttimes & \checkmark & \texttimes & \texttimes & \texttimes & \texttimes & \checkmark\\
+% TGLite & \checkmark & \texttimes & \checkmark & \checkmark & \texttimes & \texttimes & \checkmark & \checkmark\\
+% PyG Temporal & \texttimes & \checkmark & \checkmark & \checkmark & \texttimes & \checkmark & \checkmark & \texttimes\\
+% \bottomrule
+% \end{tabular}
+% }
+% }
+% \end{table}

@@ -1,0 +1,375 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{29}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Chen, Ma, and Xiao}{Chen
+  et~al\mbox{.}}{2018a}]%
+        {fastgcn}
+\bibfield{author}{\bibinfo{person}{Jie Chen}, \bibinfo{person}{Tengfei Ma},
+  {and} \bibinfo{person}{Cao Xiao}.} \bibinfo{year}{2018}\natexlab{a}.
+\newblock \showarticletitle{FastGCN: Fast Learning with Graph Convolutional
+  Networks via Importance Sampling}. In \bibinfo{booktitle}{\emph{ICLR'18}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chen, Zhu, and Song}{Chen
+  et~al\mbox{.}}{2018b}]%
+        {DBLP:conf/icml/ChenZS18}
+\bibfield{author}{\bibinfo{person}{Jianfei Chen}, \bibinfo{person}{Jun Zhu},
+  {and} \bibinfo{person}{Le Song}.} \bibinfo{year}{2018}\natexlab{b}.
+\newblock \showarticletitle{Stochastic Training of Graph Convolutional Networks
+  with Variance Reduction}. In \bibinfo{booktitle}{\emph{ICML}}.
+  \bibinfo{pages}{941--949}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Dong, Chawla, and Swami}{Dong
+  et~al\mbox{.}}{2017a}]%
+        {dong2017metapath2vec}
+\bibfield{author}{\bibinfo{person}{Yuxiao Dong}, \bibinfo{person}{Nitesh~V
+  Chawla}, {and} \bibinfo{person}{Ananthram Swami}.}
+  \bibinfo{year}{2017}\natexlab{a}.
+\newblock \showarticletitle{metapath2vec: Scalable Representation Learning for
+  Heterogeneous Networks}. In \bibinfo{booktitle}{\emph{KDD '17}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Dong, Ma, Shen, and Wang}{Dong
+  et~al\mbox{.}}{2017b}]%
+        {dong2017century}
+\bibfield{author}{\bibinfo{person}{Yuxiao Dong}, \bibinfo{person}{Hao Ma},
+  \bibinfo{person}{Zhihong Shen}, {and} \bibinfo{person}{Kuansan Wang}.}
+  \bibinfo{year}{2017}\natexlab{b}.
+\newblock \showarticletitle{A Century of Science: Globalization of Scientific
+  Collaborations, Citations, and Innovations}. In \bibinfo{booktitle}{\emph{KDD
+  '17}}. ACM, \bibinfo{pages}{1437--1446}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Fey and Lenssen}{Fey and Lenssen}{2019}]%
+        {pyG}
+\bibfield{author}{\bibinfo{person}{Matthias Fey} {and}
+  \bibinfo{person}{Jan~Eric Lenssen}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Fast Graph Representation Learning with PyTorch
+  Geometric}.
+\newblock \bibinfo{journal}{\emph{ICLR 2019 Workshop: Representation Learning
+  on Graphs and Manifolds}} (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl}{Gilmer et~al\mbox{.}}{2017}]%
+        {DBLP:conf/icml/GilmerSRVD17}
+\bibfield{author}{\bibinfo{person}{Justin Gilmer}, \bibinfo{person}{Samuel~S.
+  Schoenholz}, \bibinfo{person}{Patrick~F. Riley}, \bibinfo{person}{Oriol
+  Vinyals}, {and} \bibinfo{person}{George~E. Dahl}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Neural Message Passing for Quantum Chemistry}. In
+  \bibinfo{booktitle}{\emph{ICML}}. \bibinfo{pages}{1263--1272}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Hamilton, Ying, and Leskovec}{Hamilton
+  et~al\mbox{.}}{2017}]%
+        {graphsage}
+\bibfield{author}{\bibinfo{person}{William~L. Hamilton},
+  \bibinfo{person}{Zhitao Ying}, {and} \bibinfo{person}{Jure Leskovec}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Inductive Representation Learning on Large Graphs}.
+  In \bibinfo{booktitle}{\emph{NeurIPS'17}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{He, Zhang, Ren, and Sun}{He
+  et~al\mbox{.}}{2016}]%
+        {DBLP:conf/cvpr/HeZRS16}
+\bibfield{author}{\bibinfo{person}{Kaiming He}, \bibinfo{person}{Xiangyu
+  Zhang}, \bibinfo{person}{Shaoqing Ren}, {and} \bibinfo{person}{Jian Sun}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Deep Residual Learning for Image Recognition}. In
+  \bibinfo{booktitle}{\emph{CVPR'16}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Kipf and Welling}{Kipf and Welling}{2017}]%
+        {gcn}
+\bibfield{author}{\bibinfo{person}{Thomas~N. Kipf} {and} \bibinfo{person}{Max
+  Welling}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Semi-Supervised Classification with Graph
+  Convolutional Networks}. In \bibinfo{booktitle}{\emph{ICLR'17}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Li}{Li}{2014}]%
+        {DBLP:series/synthesis/2014Li}
+\bibfield{author}{\bibinfo{person}{Hang Li}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Learning to Rank for Information Retrieval
+  and Natural Language Processing, Second Edition}}.
+\newblock \bibinfo{publisher}{Morgan {\&} Claypool Publishers}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.2200/S00607ED2V01Y201410HLT026}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Liu}{Liu}{2011}]%
+        {DBLP:books/daglib/0027504}
+\bibfield{author}{\bibinfo{person}{Tie{-}Yan Liu}.}
+  \bibinfo{year}{2011}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Learning to Rank for Information
+  Retrieval}}.
+\newblock \bibinfo{publisher}{Springer}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Loshchilov and Hutter}{Loshchilov and
+  Hutter}{2017}]%
+        {DBLP:conf/iclr/LoshchilovH17}
+\bibfield{author}{\bibinfo{person}{Ilya Loshchilov} {and}
+  \bibinfo{person}{Frank Hutter}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{{SGDR:} Stochastic Gradient Descent with Warm
+  Restarts}. In \bibinfo{booktitle}{\emph{ICLR'17}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Loshchilov and Hutter}{Loshchilov and
+  Hutter}{2019}]%
+        {DBLP:conf/iclr/LoshchilovH19}
+\bibfield{author}{\bibinfo{person}{Ilya Loshchilov} {and}
+  \bibinfo{person}{Frank Hutter}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Decoupled Weight Decay Regularization}. In
+  \bibinfo{booktitle}{\emph{ICLR'19}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Schlichtkrull, Kipf, Bloem, van~den Berg,
+  Titov, and Welling}{Schlichtkrull et~al\mbox{.}}{2018}]%
+        {DBLP:conf/esws/SchlichtkrullKB18}
+\bibfield{author}{\bibinfo{person}{Michael~Sejr Schlichtkrull},
+  \bibinfo{person}{Thomas~N. Kipf}, \bibinfo{person}{Peter Bloem},
+  \bibinfo{person}{Rianne van~den Berg}, \bibinfo{person}{Ivan Titov}, {and}
+  \bibinfo{person}{Max Welling}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Modeling Relational Data with Graph Convolutional
+  Networks}. In \bibinfo{booktitle}{\emph{ESWC'2018}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Shaw, Uszkoreit, and Vaswani}{Shaw
+  et~al\mbox{.}}{2018}]%
+        {DBLP:conf/naacl/ShawUV18}
+\bibfield{author}{\bibinfo{person}{Peter Shaw}, \bibinfo{person}{Jakob
+  Uszkoreit}, {and} \bibinfo{person}{Ashish Vaswani}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Self-Attention with Relative Position
+  Representations}. In \bibinfo{booktitle}{\emph{NAACL-HLT}}.
+  \bibinfo{pages}{464--468}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Sinha, Shen, Song, Ma, Eide, Hsu, and
+  Wang}{Sinha et~al\mbox{.}}{2015}]%
+        {DBLP:conf/www/SinhaSSMEHW15}
+\bibfield{author}{\bibinfo{person}{Arnab Sinha}, \bibinfo{person}{Zhihong
+  Shen}, \bibinfo{person}{Yang Song}, \bibinfo{person}{Hao Ma},
+  \bibinfo{person}{Darrin Eide}, \bibinfo{person}{Bo{-}June~Paul Hsu}, {and}
+  \bibinfo{person}{Kuansan Wang}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{An Overview of Microsoft Academic Service {(MAS)}
+  and Applications}. In \bibinfo{booktitle}{\emph{WWW Companion 2015}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Sun and Han}{Sun and Han}{2012}]%
+        {Sun:BOOK2012}
+\bibfield{author}{\bibinfo{person}{Yizhou Sun} {and} \bibinfo{person}{Jiawei
+  Han}.} \bibinfo{year}{2012}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Mining Heterogeneous Information Networks:
+  Principles and Methodologies}}.
+\newblock \bibinfo{publisher}{Morgan \& Claypool Publishers}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Sun, Han, Yan, Yu, and Wu}{Sun
+  et~al\mbox{.}}{2011}]%
+        {Sun:VLDB11}
+\bibfield{author}{\bibinfo{person}{Yizhou Sun}, \bibinfo{person}{Jiawei Han},
+  \bibinfo{person}{Xifeng Yan}, \bibinfo{person}{Philip~S. Yu}, {and}
+  \bibinfo{person}{Tianyi Wu}.} \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Pathsim: Meta path-based top-k similarity search in
+  heterogeneous information networks}. In \bibinfo{booktitle}{\emph{VLDB '11}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Sun, Norick, Han, Yan, Yu, and Yu}{Sun
+  et~al\mbox{.}}{2012}]%
+        {DBLP:conf/kdd/SunNHYYY12}
+\bibfield{author}{\bibinfo{person}{Yizhou Sun}, \bibinfo{person}{Brandon
+  Norick}, \bibinfo{person}{Jiawei Han}, \bibinfo{person}{Xifeng Yan},
+  \bibinfo{person}{Philip~S. Yu}, {and} \bibinfo{person}{Xiao Yu}.}
+  \bibinfo{year}{2012}\natexlab{}.
+\newblock \showarticletitle{Integrating meta-path selection with user-guided
+  object clustering in heterogeneous information networks}. In
+  \bibinfo{booktitle}{\emph{KDD'12}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Tang, Zhang, Yao, Li, Zhang, and Su}{Tang
+  et~al\mbox{.}}{2008}]%
+        {tang2008arnetminer}
+\bibfield{author}{\bibinfo{person}{Jie Tang}, \bibinfo{person}{Jing Zhang},
+  \bibinfo{person}{Limin Yao}, \bibinfo{person}{Juanzi Li}, \bibinfo{person}{Li
+  Zhang}, {and} \bibinfo{person}{Zhong Su}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Arnetminer: extraction and mining of academic
+  social networks}. In \bibinfo{booktitle}{\emph{KDD}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}{Vaswani et~al\mbox{.}}{2017}]%
+        {DBLP:conf/nips/VaswaniSPUJGKP17}
+\bibfield{author}{\bibinfo{person}{Ashish Vaswani}, \bibinfo{person}{Noam
+  Shazeer}, \bibinfo{person}{Niki Parmar}, \bibinfo{person}{Jakob Uszkoreit},
+  \bibinfo{person}{Llion Jones}, \bibinfo{person}{Aidan~N. Gomez},
+  \bibinfo{person}{Lukasz Kaiser}, {and} \bibinfo{person}{Illia Polosukhin}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Attention is All you Need}. In
+  \bibinfo{booktitle}{\emph{NeurIPS'17}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Velickovic, Cucurull, Casanova, Romero,
+  Li{\`{o}}, and Bengio}{Velickovic et~al\mbox{.}}{2018}]%
+        {gat}
+\bibfield{author}{\bibinfo{person}{Petar Velickovic}, \bibinfo{person}{Guillem
+  Cucurull}, \bibinfo{person}{Arantxa Casanova}, \bibinfo{person}{Adriana
+  Romero}, \bibinfo{person}{Pietro Li{\`{o}}}, {and} \bibinfo{person}{Yoshua
+  Bengio}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Graph Attention Networks}. In
+  \bibinfo{booktitle}{\emph{ICLR'18}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Wang, Ji, Shi, Wang, Ye, Cui, and Yu}{Wang
+  et~al\mbox{.}}{2019}]%
+        {DBLP:conf/www/WangJSWYCY19}
+\bibfield{author}{\bibinfo{person}{Xiao Wang}, \bibinfo{person}{Houye Ji},
+  \bibinfo{person}{Chuan Shi}, \bibinfo{person}{Bai Wang},
+  \bibinfo{person}{Yanfang Ye}, \bibinfo{person}{Peng Cui}, {and}
+  \bibinfo{person}{Philip~S. Yu}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Heterogeneous Graph Attention Network}. In
+  \bibinfo{booktitle}{\emph{KDD'19}}. \bibinfo{pages}{2022--2032}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Wolf, Debut, Sanh, Chaumond, Delangue, Moi,
+  Cistac, Rault, Louf, Funtowicz, and Brew}{Wolf et~al\mbox{.}}{2019}]%
+        {wolf2019transformers}
+\bibfield{author}{\bibinfo{person}{Thomas Wolf}, \bibinfo{person}{Lysandre
+  Debut}, \bibinfo{person}{Victor Sanh}, \bibinfo{person}{Julien Chaumond},
+  \bibinfo{person}{Clement Delangue}, \bibinfo{person}{Anthony Moi},
+  \bibinfo{person}{Pierric Cistac}, \bibinfo{person}{Tim Rault},
+  \bibinfo{person}{Rémi Louf}, \bibinfo{person}{Morgan Funtowicz}, {and}
+  \bibinfo{person}{Jamie Brew}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \bibinfo{title}{Transformers: State-of-the-art Natural Language
+  Processing}.
+\newblock
+\newblock
+\showeprint[arxiv]{cs.CL/1910.03771}
+
+
+\bibitem[\protect\citeauthoryear{Yang, Dai, Yang, Carbonell, Salakhutdinov, and
+  Le}{Yang et~al\mbox{.}}{2019}]%
+        {xlnet}
+\bibfield{author}{\bibinfo{person}{Zhilin Yang}, \bibinfo{person}{Zihang Dai},
+  \bibinfo{person}{Yiming Yang}, \bibinfo{person}{Jaime~G. Carbonell},
+  \bibinfo{person}{Ruslan Salakhutdinov}, {and} \bibinfo{person}{Quoc~V. Le}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{XLNet: Generalized Autoregressive Pretraining for
+  Language Understanding}. In \bibinfo{booktitle}{\emph{NeurIPS'19}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Yun, Jeong, Kim, Kang, and Kim}{Yun
+  et~al\mbox{.}}{2019}]%
+        {gt}
+\bibfield{author}{\bibinfo{person}{Seongjun Yun}, \bibinfo{person}{Minbyul
+  Jeong}, \bibinfo{person}{Raehyun Kim}, \bibinfo{person}{Jaewoo Kang}, {and}
+  \bibinfo{person}{Hyunwoo~J. Kim}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Graph Transformer Networks}. In
+  \bibinfo{booktitle}{\emph{NeurIPS'19}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Zhang, Song, Huang, Swami, and Chawla}{Zhang
+  et~al\mbox{.}}{2019b}]%
+        {DBLP:conf/kdd/ZhangSHSC19}
+\bibfield{author}{\bibinfo{person}{Chuxu Zhang}, \bibinfo{person}{Dongjin
+  Song}, \bibinfo{person}{Chao Huang}, \bibinfo{person}{Ananthram Swami}, {and}
+  \bibinfo{person}{Nitesh~V. Chawla}.} \bibinfo{year}{2019}\natexlab{b}.
+\newblock \showarticletitle{Heterogeneous Graph Neural Network}. In
+  \bibinfo{booktitle}{\emph{WWW'19}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Zhang, Liu, Tang, Dong, Yao, Zhang, Gu, Wang,
+  Shao, Li, and Wang}{Zhang et~al\mbox{.}}{2019a}]%
+        {DBLP:conf/kdd/ZhangLTDYZGWSLW19}
+\bibfield{author}{\bibinfo{person}{Fanjin Zhang}, \bibinfo{person}{Xiao Liu},
+  \bibinfo{person}{Jie Tang}, \bibinfo{person}{Yuxiao Dong},
+  \bibinfo{person}{Peiran Yao}, \bibinfo{person}{Jie Zhang},
+  \bibinfo{person}{Xiaotao Gu}, \bibinfo{person}{Yan Wang},
+  \bibinfo{person}{Bin Shao}, \bibinfo{person}{Rui Li}, {and}
+  \bibinfo{person}{Kuansan Wang}.} \bibinfo{year}{2019}\natexlab{a}.
+\newblock \showarticletitle{{OAG:} Toward Linking Large-scale Heterogeneous
+  Entity Graphs}. In \bibinfo{booktitle}{\emph{KDD'19}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Zou, Hu, Wang, Jiang, Sun, and Gu}{Zou
+  et~al\mbox{.}}{2019}]%
+        {ladies}
+\bibfield{author}{\bibinfo{person}{Difan Zou}, \bibinfo{person}{Ziniu Hu},
+  \bibinfo{person}{Yewen Wang}, \bibinfo{person}{Song Jiang},
+  \bibinfo{person}{Yizhou Sun}, {and} \bibinfo{person}{Quanquan Gu}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Layer-Dependent Importance Sampling for Training
+  Deep and Large Graph Convolutional Networks}. In
+  \bibinfo{booktitle}{\emph{NeurIPS'19}}.
+\newblock
+
+
+\end{thebibliography}

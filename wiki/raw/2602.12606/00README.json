@@ -1,0 +1,45 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "RelBench_favicon.png"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/arxiv_schema.png"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "iclr2026_conference.bib"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "iclr2026_conference.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/results/autocomplete_regression_main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/results/entity_regression_main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "tables/tasks_all.tex"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

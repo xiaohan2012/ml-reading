@@ -1,0 +1,249 @@
+\begin{thebibliography}{36}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bahdanau et~al.(2014)Bahdanau, Cho, and Bengio]{bahdanau2014neural}
+Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio.
+\newblock Neural machine translation by jointly learning to align and
+  translate.
+\newblock \emph{arXiv preprint arXiv:1409.0473}, 2014.
+
+\bibitem[Battaglia et~al.(2018)Battaglia, Hamrick, Bapst, Sanchez-Gonzalez,
+  Zambaldi, Malinowski, Tacchetti, Raposo, Santoro, Faulkner,
+  et~al.]{battaglia2018relational}
+Peter~W Battaglia, Jessica~B Hamrick, Victor Bapst, Alvaro Sanchez-Gonzalez,
+  Vinicius Zambaldi, Mateusz Malinowski, Andrea Tacchetti, David Raposo, Adam
+  Santoro, Ryan Faulkner, et~al.
+\newblock Relational inductive biases, deep learning, and graph networks.
+\newblock \emph{arXiv preprint arXiv:1806.01261}, 2018.
+
+\bibitem[Defferrard et~al.(2016)Defferrard, Bresson, and
+  Vandergheynst]{defferrard2016convolutional}
+Micha{\"e}l Defferrard, Xavier Bresson, and Pierre Vandergheynst.
+\newblock Convolutional neural networks on graphs with fast localized spectral
+  filtering.
+\newblock In \emph{Advances in neural information processing systems}, pp.\
+  3844--3852, 2016.
+
+\bibitem[Dinh et~al.(2016)Dinh, Sohl-Dickstein, and Bengio]{dinh2016density}
+Laurent Dinh, Jascha Sohl-Dickstein, and Samy Bengio.
+\newblock Density estimation using real nvp.
+\newblock \emph{arXiv preprint arXiv:1605.08803}, 2016.
+
+\bibitem[Fey \& Lenssen(2019)Fey and Lenssen]{Fey/Lenssen/2019}
+Matthias Fey and Jan~E. Lenssen.
+\newblock Fast graph representation learning with {PyTorch Geometric}.
+\newblock In \emph{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds}, 2019.
+
+\bibitem[Goyal et~al.(2018)Goyal, Kamra, He, and Liu]{goyal2018dyngem}
+Palash Goyal, Nitin Kamra, Xinran He, and Yan Liu.
+\newblock Dyngem: Deep embedding method for dynamic graphs.
+\newblock \emph{arXiv preprint arXiv:1805.11273}, 2018.
+
+\bibitem[Grover \& Leskovec(2016)Grover and Leskovec]{grover2016node2vec}
+Aditya Grover and Jure Leskovec.
+\newblock node2vec: Scalable feature learning for networks.
+\newblock In \emph{Proceedings of the 22nd ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pp.\  855--864. ACM, 2016.
+
+\bibitem[Hamilton et~al.(2017{\natexlab{a}})Hamilton, Ying, and
+  Leskovec]{hamilton2017inductive}
+Will Hamilton, Zhitao Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pp.\
+  1024--1034, 2017{\natexlab{a}}.
+
+\bibitem[Hamilton et~al.(2017{\natexlab{b}})Hamilton, Ying, and
+  Leskovec]{hamilton2017representation}
+William~L Hamilton, Rex Ying, and Jure Leskovec.
+\newblock Representation learning on graphs: Methods and applications.
+\newblock \emph{arXiv preprint arXiv:1709.05584}, 2017{\natexlab{b}}.
+
+\bibitem[Henaff et~al.(2015)Henaff, Bruna, and LeCun]{henaff2015deep}
+Mikael Henaff, Joan Bruna, and Yann LeCun.
+\newblock Deep convolutional networks on graph-structured data.
+\newblock \emph{arXiv preprint arXiv:1506.05163}, 2015.
+
+\bibitem[Kingma \& Welling(2013)Kingma and Welling]{kingma2013auto}
+Diederik~P Kingma and Max Welling.
+\newblock Auto-encoding variational bayes.
+\newblock \emph{arXiv preprint arXiv:1312.6114}, 2013.
+
+\bibitem[Kipf \& Welling(2016{\natexlab{a}})Kipf and Welling]{kipf2016semi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock \emph{arXiv preprint arXiv:1609.02907}, 2016{\natexlab{a}}.
+
+\bibitem[Kipf \& Welling(2016{\natexlab{b}})Kipf and
+  Welling]{kipf2016variational}
+Thomas~N Kipf and Max Welling.
+\newblock Variational graph auto-encoders.
+\newblock \emph{arXiv preprint arXiv:1611.07308}, 2016{\natexlab{b}}.
+
+\bibitem[Li et~al.(2018)Li, Zhang, Philip, Zhang, and Yan]{li2018deep}
+Taisong Li, Jiawei Zhang, S~Yu Philip, Yan Zhang, and Yonghong Yan.
+\newblock Deep dynamic network embedding for link prediction.
+\newblock \emph{IEEE Access}, 6:\penalty0 29219--29230, 2018.
+
+\bibitem[Loomis(2013)]{loomis2013introduction}
+Lynn~H Loomis.
+\newblock \emph{Introduction to abstract harmonic analysis}.
+\newblock Courier Corporation, 2013.
+
+\bibitem[Ma et~al.(2018)Ma, Guo, Zhaochun~Ren, and
+  Jiliang~Tang]{ma2019streaming}
+Yao Ma, Ziyi Guo, Eric~Zhao Zhaochun~Ren, and Dawei~Yin Jiliang~Tang.
+\newblock Streaming graph neural networks.
+\newblock \emph{arXiv preprint arXiv:1810.10627}, 2018.
+
+\bibitem[Monti et~al.(2017)Monti, Boscaini, Masci, Rodola, Svoboda, and
+  Bronstein]{monti2017geometric}
+Federico Monti, Davide Boscaini, Jonathan Masci, Emanuele Rodola, Jan Svoboda,
+  and Michael~M Bronstein.
+\newblock Geometric deep learning on graphs and manifolds using mixture model
+  cnns.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pp.\  5115--5124, 2017.
+
+\bibitem[Nguyen et~al.(2018)Nguyen, Lee, Rossi, Ahmed, Koh, and
+  Kim]{nguyen2018continuous}
+Giang~Hoang Nguyen, John~Boaz Lee, Ryan~A Rossi, Nesreen~K Ahmed, Eunyee Koh,
+  and Sungchul Kim.
+\newblock Continuous-time dynamic network embeddings.
+\newblock In \emph{Companion Proceedings of the The Web Conference 2018}, pp.\
+  969--976. International World Wide Web Conferences Steering Committee, 2018.
+
+\bibitem[Pennebaker et~al.(2001)Pennebaker, Francis, and
+  Booth]{pennebaker2001linguistic}
+James~W Pennebaker, Martha~E Francis, and Roger~J Booth.
+\newblock Linguistic inquiry and word count: Liwc 2001.
+\newblock \emph{Mahway: Lawrence Erlbaum Associates}, 71\penalty0
+  (2001):\penalty0 2001, 2001.
+
+\bibitem[Perozzi et~al.(2014)Perozzi, Al-Rfou, and Skiena]{perozzi2014deepwalk}
+Bryan Perozzi, Rami Al-Rfou, and Steven Skiena.
+\newblock Deepwalk: Online learning of social representations.
+\newblock In \emph{Proceedings of the 20th ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pp.\  701--710. ACM, 2014.
+
+\bibitem[Rahimi \& Recht(2008)Rahimi and Recht]{rahimi2008random}
+Ali Rahimi and Benjamin Recht.
+\newblock Random features for large-scale kernel machines.
+\newblock In \emph{Advances in neural information processing systems}, pp.\
+  1177--1184, 2008.
+
+\bibitem[Rahman et~al.(2018)Rahman, Saha, Hasan, Xu, and
+  Reddy]{rahman2018dylink2vec}
+Mahmudur Rahman, Tanay~Kumar Saha, Mohammad~Al Hasan, Kevin~S Xu, and Chandan~K
+  Reddy.
+\newblock Dylink2vec: Effective feature representation for link prediction in
+  dynamic networks.
+\newblock \emph{arXiv preprint arXiv:1804.05755}, 2018.
+
+\bibitem[Rezende \& Mohamed(2015)Rezende and Mohamed]{rezende2015variational}
+Danilo~Jimenez Rezende and Shakir Mohamed.
+\newblock Variational inference with normalizing flows.
+\newblock \emph{arXiv preprint arXiv:1505.05770}, 2015.
+
+\bibitem[Simonovsky \& Komodakis(2017)Simonovsky and
+  Komodakis]{simonovsky2017dynamic}
+Martin Simonovsky and Nikos Komodakis.
+\newblock Dynamic edge-conditioned filters in convolutional neural networks on
+  graphs.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pp.\  3693--3702, 2017.
+
+\bibitem[Sukhbaatar et~al.(2015)Sukhbaatar, Weston, Fergus,
+  et~al.]{sukhbaatar2015end}
+Sainbayar Sukhbaatar, Jason Weston, Rob Fergus, et~al.
+\newblock End-to-end memory networks.
+\newblock In \emph{Advances in neural information processing systems}, pp.\
+  2440--2448, 2015.
+
+\bibitem[Tang et~al.(2015)Tang, Qu, Wang, Zhang, Yan, and Mei]{tang2015line}
+Jian Tang, Meng Qu, Mingzhe Wang, Ming Zhang, Jun Yan, and Qiaozhu Mei.
+\newblock Line: Large-scale information network embedding.
+\newblock In \emph{Proceedings of the 24th international conference on world
+  wide web}, pp.\  1067--1077. International World Wide Web Conferences
+  Steering Committee, 2015.
+
+\bibitem[Trivedi et~al.(2018)Trivedi, Farajtabar, Biswal, and
+  Zha]{trivedi2018representation}
+Rakshit Trivedi, Mehrdad Farajtabar, Prasenjeet Biswal, and Hongyuan Zha.
+\newblock Representation learning over dynamic graphs.
+\newblock \emph{arXiv preprint arXiv:1803.04051}, 2018.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in neural information processing systems}, pp.\
+  5998--6008, 2017.
+
+\bibitem[Veli{\v{c}}kovi{\'c} et~al.(2017)Veli{\v{c}}kovi{\'c}, Cucurull,
+  Casanova, Romero, Lio, and Bengio]{velivckovic2017graph}
+Petar Veli{\v{c}}kovi{\'c}, Guillem Cucurull, Arantxa Casanova, Adriana Romero,
+  Pietro Lio, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock \emph{arXiv preprint arXiv:1710.10903}, 2017.
+
+\bibitem[Wang et~al.(2016)Wang, Cui, and Zhu]{wang2016structural}
+Daixin Wang, Peng Cui, and Wenwu Zhu.
+\newblock Structural deep network embedding.
+\newblock In \emph{Proceedings of the 22nd ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pp.\  1225--1234. ACM, 2016.
+
+\bibitem[Wang et~al.(2018{\natexlab{a}})Wang, Huang, Zhao, Zhang, Zhao, and
+  Lee]{wang2018billion}
+Jizhe Wang, Pipei Huang, Huan Zhao, Zhibo Zhang, Binqiang Zhao, and Dik~Lun
+  Lee.
+\newblock Billion-scale commodity embedding for e-commerce recommendation in
+  alibaba.
+\newblock In \emph{Proceedings of the 24th ACM SIGKDD International Conference
+  on Knowledge Discovery \& Data Mining}, pp.\  839--848. ACM,
+  2018{\natexlab{a}}.
+
+\bibitem[Wang et~al.(2018{\natexlab{b}})Wang, Sun, Liu, Sarma, Bronstein, and
+  Solomon]{wang2018dynamic}
+Yue Wang, Yongbin Sun, Ziwei Liu, Sanjay~E Sarma, Michael~M Bronstein, and
+  Justin~M Solomon.
+\newblock Dynamic graph cnn for learning on point clouds.
+\newblock \emph{arXiv preprint arXiv:1801.07829}, 2018{\natexlab{b}}.
+
+\bibitem[Xu et~al.(2019{\natexlab{a}})Xu, Ruan, Korpeoglu, Kumar, and
+  Achan]{xu2019self}
+Da~Xu, Chuanwei Ruan, Evren Korpeoglu, Sushant Kumar, and Kannan Achan.
+\newblock Self-attention with functional time representation learning.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pp.\
+  15889--15899, 2019{\natexlab{a}}.
+
+\bibitem[Xu et~al.(2019{\natexlab{b}})Xu, Ruan, Motwani, Korpeoglu, Kumar, and
+  Achan]{xu2019generative}
+Da~Xu, Chuanwei Ruan, Kamiya Motwani, Evren Korpeoglu, Sushant Kumar, and
+  Kannan Achan.
+\newblock Generative graph convolutional network for growing graphs.
+\newblock In \emph{ICASSP 2019-2019 IEEE International Conference on Acoustics,
+  Speech and Signal Processing (ICASSP)}, pp.\  3167--3171. IEEE,
+  2019{\natexlab{b}}.
+
+\bibitem[Xu et~al.(2020)Xu, Ruan, Korpeoglu, Kumar, and Achan]{xu2020product}
+Da~Xu, Chuanwei Ruan, Evren Korpeoglu, Sushant Kumar, and Kannan Achan.
+\newblock Product knowledge graph embedding for e-commerce.
+\newblock In \emph{Proceedings of the 13th International Conference on Web
+  Search and Data Mining}, pp.\  672--680, 2020.
+
+\bibitem[Ying et~al.(2018)Ying, He, Chen, Eksombatchai, Hamilton, and
+  Leskovec]{ying2018graph}
+Rex Ying, Ruining He, Kaifeng Chen, Pong Eksombatchai, William~L Hamilton, and
+  Jure Leskovec.
+\newblock Graph convolutional neural networks for web-scale recommender
+  systems.
+\newblock In \emph{Proceedings of the 24th ACM SIGKDD International Conference
+  on Knowledge Discovery \& Data Mining}, pp.\  974--983. ACM, 2018.
+
+\end{thebibliography}

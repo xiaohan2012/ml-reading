@@ -1,0 +1,30 @@
+
+
+
+\begin{table}[t]
+\caption{Model configuration for baseline implementation.}\label{table:model_configs}
+\vspace{-3mm}
+\scalebox{0.8}{
+\begin{tabular}{llccccc}
+\hline\hline
+      & Neighbor type         & Learning rate & Dropout & Attention dropout & Attention heads & Hidden dims \\ \hline
+Jodie & 1-hop, Recent neighbors      & 0.0001        & 0.1     & -                 & -               & 100              \\ 
+DySAT & 2-hop, Uniform sampling      & 0.0001        & 0.1     & 0.1               & 2               & 100              \\ 
+TGAT  & 2-hop, Uniform sampling      & 0.0001        & 0.1     & 0.1               & 2               & 100              \\ 
+TGN   & 1-hop, Recent neighbors      & 0.0001        & 0.2     & 0.2               & 2               & 100              \\ \hline\hline
+\end{tabular}
+}
+\end{table}
+
+
+\begin{table}[t]
+\centering
+\caption{}
+\scalebox{0.85}{
+\begin{tabular}{ l | c c c | c c c c}
+\hline\hline
+                     & \our & \oure-T & \oure-S & Jodie & DySAT & TGAT & TGN \\ \hline\hline
+\# Parameters ($\times 10^5$) &  2.25   &  1.42  &  2.07 & 1.21 & 9.38 & 3.80 & 3.54 \\ 
+FLOPs                &     &        &        &       &       &      &     \\ \hline\hline
+\end{tabular}}
+\end{table}

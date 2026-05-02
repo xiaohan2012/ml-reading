@@ -1,0 +1,40 @@
+\section*{Further experimental details on entity classification}
+\vspace{2em}
+
+For the entity classification benchmarks described in our paper, the evaluation process differs subtly between publications. To eliminate these differences, we repeated the baselines in a uniform manner, using the canonical test/train split from \cite{ristoski2016collection}. We performed hyperparameter optimization on only the training set, running a single evaluation on the test set after hyperparameters were chosen for each baseline. This explains why the numbers we report differ slightly from those in the original publications (where cross-validation accuracy was reported).
+
+For WL, we use the \textit{tree} variant of the Weisfeiler-Lehman subtree kernel from the Mustard library.\footnote{https://github.com/Data2Semantics/mustard}
+For RDF2Vec, we use an implementation provided by the authors of \cite{ristoski2016rdf2vec} which builds on Mustard. In both cases, we extract explicit feature vectors for the instance nodes, which are classified by a linear SVM.
+
+For the MUTAG task, our preprocessing differs from that used in \cite{de2015substructure,ristoski2016rdf2vec} where for a given target relation $(s, r, o)$ all triples connecting $s$ to $o$ are removed. Since $o$ is a boolean value in the MUTAG data, one can infer the label after processing from other boolean relations that are still present. This issue is now mentioned in the Mustard documentation. In our preprocessing, we remove only the specific triples encoding the target relation.
+
+Hyperparameters for baselines are chosen according to the best model performance in \cite{ristoski2016rdf2vec}, i.e.~WL: 2 (tree depth), 3 (number of iterations); RDF2Vec: 2 (WL tree depth), 4 (WL iterations), 500 (embedding size), 5 (window size), 10 (SkipGram iterations), 25 (number of negative samples). We optimize the SVM regularization constant $C\in\{0.001, 0.01, 0.1, 1, 10, 100, 1000\}$ based on performance on a 80/20 train/validation split (of the original training set).
+
+For R-GCN, we choose an $l2$ penalty on first layer weights $C_{l2}\in\{0, 5\cdot10^{-4}\}$ and the number of basis functions $B\in\{0, 10, 20, 30, 40\}$ based on validation set performance, where $B=0$ refers to using no basis function decomposition. Using the block decomposition did not improve results. Otherwise, hyperparameters are chosen as follows: $50$ (number of epochs), $16$ (number of hidden units), and $c_{i,r}=|\mathcal{N}^r_i|$ (normalization constant). We do not use dropout. For AM, we use a reduced number of $10$ hidden units for R-GCN to reduce the memory footprint.
+
+Results with standard error (omitted in main paper due to spatial constraints) are summarized in Table \ref{table:results}. All entity classification experiments were run on CPU nodes with 64GB of memory.
+
+\begin{table*}[htp!]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+R-GCN setting & AIFB & MUTAG & BGS & AM  \\ \midrule
+$l2$ penalty & $0$ & $5\cdot 10^{-4}$ & $5\cdot 10^{-4}$ & $5\cdot 10^{-4}$ \\
+\# basis functions & $0$ & $30$ & $40$ & $40$  \\
+\# hidden units & $16$ & $16$ & $16$ & $10$ \\ \bottomrule
+\end{tabular}
+\caption{Best hyperparameter choices based on validation set performance for 2-layer R-GCN model. \label{table:hyperparams}}
+\end{table*}
+
+\begin{table*}[htp!]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Model & AIFB & MUTAG & BGS & AM  \\ \midrule
+Feat & $55.55\pm0.00$ & $77.94 \pm 0.00$ & $72.41\pm0.00$ & $66.66 \pm 0.00$ \\
+WL		& $80.55\pm0.00$ & $\mathbf{80.88}\pm 0.00$ & $86.20\pm 0.00$ & $87.37 \pm 0.00$  \\
+RDF2Vec  & $88.88 \pm 0.00$ & $67.20 \pm 1.24$ & $\mathbf{87.24}  \pm 0.89$ & $88.33 \pm 0.61$ \\
+R-GCN (Ours)			& $\mathbf{95.83} \pm 0.62$ & $73.23 \pm 0.48$ & $83.10\pm 0.80$  & $\mathbf{89.29} \pm 0.35$ \\\bottomrule
+\end{tabular}
+\caption{Entity classification results in accuracy (average and standard error over 10 runs) for a feature-based baseline (see main text for details), WL \cite{shervashidze2011weisfeiler,de2015substructure}, RDF2Vec \cite{ristoski2016rdf2vec}, and R-GCN (this work). Test performance is reported on the train/test set splits provided by \cite{ristoski2016collection}. \label{table:results}}
+\end{table*}

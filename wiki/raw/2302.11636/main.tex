@@ -1,0 +1,200 @@
+
+\documentclass[table,xcdraw]{article} % For LaTeX2e
+\usepackage{iclr2023_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{microtype} 
+\usepackage{marvosym} 
+\usepackage[english]{babel}
+\usepackage{tcolorbox}
+\usepackage[toc,page,header]{appendix}
+\usepackage{minitoc}
+\usepackage[normalem]{ulem}
+\usepackage{multirow}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{soul}
+\usepackage{lipsum}
+\usepackage{graphicx}
+
+
+
+\definecolor{links}{HTML}{0078b0} 
+\definecolor{files}{HTML}{fc6160}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=files,
+    filecolor=files,      
+    urlcolor=links,
+    citecolor=links,
+}
+
+\newcommand\weilin[1]{\textcolor{blue}{Weilin: #1}}
+\newcommand\jian[1]{\textcolor{brown}{Jian: #1}}
+\newcommand\si[1]{\textcolor{red}{Si: #1}}
+
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=0.3pt] (char) {#1};}}
+            
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{assumption}{Assumption}
+
+\newcommand{\our}[0]{\text{GraphMixer}~}
+\newcommand*{\oure}{\text{GraphMixer}}
+
+
+
+            
+\title{
+% Rethinking Input Data Before Modeling: A Case Study in Temporal Graph Link Prediction 
+Do We Really Need Complicated Model Architectures For Temporal Networks?
+% Do we really need RNN or self-attention for temporal graph learning?
+}
+% Are we making much progress in temporal graph since MLP?
+% GraphMixer: An all Graph Convolution and MLP Architecture for Temporal Graph
+% Temporal Graph Link Prediction Requires Rethinking Input Data Before Modeling 
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{Weilin Cong\\
+Penn State \\
+\texttt{weilin@psu.edu} 
+\And
+Si Zhang\\
+Meta  \\
+\texttt{sizhang@meta.com} 
+\And
+Jian Kang\\
+University of Illinois at Urbana-Champaign\\
+\texttt{jiank2@illinois.edu} 
+\And
+Baichuan Yuan \& Hao Wu \& Xin Zhou\\
+Meta \\
+\texttt{\{bcyuan,haowu1,markzhou\}@meta.com} 
+\And
+Hanghang Tong\\
+University of Illinois at Urbana-Champaign \\
+\texttt{htong@illinois.edu} 
+\And 
+Mehrdad Mahdavi  \\
+Penn State \\
+\texttt{mzm616@psu.edu} 
+}
+
+% \author{\centerline{
+% Weilin Cong$^1$,
+% ~Si Zhang$^2$,
+% ~Jian Kang$^3$,
+% ~Baichuan Yuan$^2$,
+% ~Hao Wu$^2$,
+% ~Xin Zhou$^2$,
+% ~Hanghang Tong$^3$,
+% ~Mehrdad Mahdavi$^1$}\\
+% \centerline{Penn State$^1$, Meta AI$^2$, UIUC$^3$} \\
+% \centerline{\texttt{\{weilin, mzm616\}@psu.edu,~\{sizhang,bcyuan,haowu1,markzhou\}@fb.com,
+% \{jiank2,htong\}@illinois.edu}} 
+% }
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract} Recurrent neural network (RNN) and self-attention mechanism (SAM) are the de facto methods to extract spatial-temporal information for temporal graph learning. 
+Interestingly, we found that although both RNN and SAM could lead to a good performance, in practice neither of them is always necessary.
+In this paper, we propose \oure, a conceptually and technically simple architecture that consists of three components: \circled{1} a \emph{link-encoder} that is only based on multi-layer perceptrons (MLP) to summarize the information from temporal links, \circled{2} a \emph{node-encoder} that is only based on neighbor mean-pooling to summarize node information, and \circled{3} an MLP-based \emph{link classifier} that performs link prediction based on the outputs of the encoders.
+Despite its simplicity, \our attains an outstanding performance on temporal link prediction benchmarks with faster convergence and better generalization performance.
+These results motivate us to rethink the importance of simpler model architecture. [\href{https://github.com/CongWeilin/GraphMixer}{Code}].
+\end{abstract}
+
+
+\section{Introduction}
+\input{section/introduction}
+
+\section{Preliminary and existing works}\label{section:related_works}
+\input{section/background}
+
+\section{\oure: A conceptually and technically simple method }\label{section:method}
+\input{section/method}
+
+\section{Experiments} \label{section:experiments}
+\input{section/experiments}
+
+% \section{Towards deeper understanding on \our}
+% \label{section:success}
+\input{section/success_of_ours}
+
+\section{Conclusion}
+
+In this paper, we propose a conceptually and technically simple architecture \our for temporal link prediction.
+% \our is entirely based on the neighbor mean-pooling and MLPs, and it does not utilize any RNN and SAM in its model architecture. 
+\our not only outperforms all baselines but also enjoys a faster convergence speed and better generalization ability.
+An extensive study identifies three key factors that contribute to the success of \our and highlights the importance of simpler neural architecture and input data structure.
+% We hope these results could motivate further research to rethink the importance of input data before modeling. 
+An interesting future direction, not limited to temporal graph learning, is designing algorithms that could automatically select the best input data and data pre-processing strategies for different downstream tasks.
+
+% \clearpage
+
+\section*{Acknowledgements}
+This work was supported in part by NSF grant 2008398. Majority of this work was completed during Weilin Cong's internship at Meta AI under the mentorship of Si Zhang. We also extend our gratitude to Long Jin for his co-mentorship and for his contribution to the idea of using MLP-Mixer on graphs.
+
+\bibliography{iclr2023_conference}
+\bibliographystyle{iclr2023_conference}
+
+\appendix
+\clearpage
+
+% \tableofcontents
+
+\input{appendix/dataset_details}
+% \input{appendix/dynamic_of_link_prediction}
+% \input{appendix/uniform_approximation}
+% \input{appendix/data_alignment}
+\input{appendix/more_experiments}
+\input{appendix/loss_landscape}
+% \input{appendix/generalization}
+
+\end{document}

@@ -1,0 +1,320 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Bao \bgroup et al\mbox.\egroup
+  }{2014}]{bao2014knowledge}
+Bao, J.; Duan, N.; Zhou, M.; and Zhao, T.
+\newblock 2014.
+\newblock Knowledge-based question answering as machine translation.
+\newblock In {\em ACL}.
+
+\bibitem[\protect\citeauthoryear{Bordes \bgroup et al\mbox.\egroup
+  }{2013}]{bordes2013translating}
+Bordes, A.; Usunier, N.; Garcia-Duran, A.; Weston, J.; and Yakhnenko, O.
+\newblock 2013.
+\newblock Translating embeddings for modeling multi-relational data.
+\newblock In {\em NIPS}.
+
+\bibitem[\protect\citeauthoryear{Bordes \bgroup et al\mbox.\egroup
+  }{2015}]{bordes2015large}
+Bordes, A.; Usunier, N.; Chopra, S.; and Weston, J.
+\newblock 2015.
+\newblock Large-scale simple question answering with memory networks.
+\newblock {\em arXiv preprint arXiv:1506.02075}.
+
+\bibitem[\protect\citeauthoryear{Bruna \bgroup et al\mbox.\egroup
+  }{2014}]{bruna2014spectral}
+Bruna, J.; Zaremba, W.; Szlam, A.; and LeCun, Y.
+\newblock 2014.
+\newblock Spectral networks and locally connected networks on graphs.
+\newblock In {\em ICLR}.
+
+\bibitem[\protect\citeauthoryear{Chang \bgroup et al\mbox.\egroup
+  }{2014}]{KaiWei14}
+Chang, K.-W.; tau Yih, W.; Yang, B.; and Meek, C.
+\newblock 2014.
+\newblock {Typed Tensor Decomposition of Knowledge Bases for Relation
+  Extraction}.
+\newblock In {\em EMNLP}.
+
+\bibitem[\protect\citeauthoryear{Dalton, Dietz, and
+  Allan}{2014}]{dalton2014entity}
+Dalton, J.; Dietz, L.; and Allan, J.
+\newblock 2014.
+\newblock Entity query feature expansion using knowledge base links.
+\newblock In {\em Proceedings of the 37th international ACM SIGIR conference on
+  Research \& development in information retrieval},  365--374.
+
+\bibitem[\protect\citeauthoryear{de Vries and de
+  Rooij}{2015}]{de2015substructure}
+de~Vries, G. K.~D., and de~Rooij, S.
+\newblock 2015.
+\newblock Substructure counting graph kernels for machine learning from rdf
+  data.
+\newblock {\em Web Semantics: Science, Services and Agents on the World Wide
+  Web} 35:71--84.
+
+\bibitem[\protect\citeauthoryear{Defferrard, Bresson, and
+  Vandergheynst}{2016}]{defferrard2016convolutional}
+Defferrard, M.; Bresson, X.; and Vandergheynst, P.
+\newblock 2016.
+\newblock Convolutional neural networks on graphs with fast localized spectral
+  filtering.
+\newblock In {\em NIPS}.
+
+\bibitem[\protect\citeauthoryear{Dong \bgroup et al\mbox.\egroup
+  }{2015}]{dong2015question}
+Dong, L.; Wei, F.; Zhou, M.; and Xu, K.
+\newblock 2015.
+\newblock Question answering over freebase with multi-column convolutional
+  neural networks.
+\newblock In {\em ACL}.
+
+\bibitem[\protect\citeauthoryear{Duvenaud \bgroup et al\mbox.\egroup
+  }{2015}]{duvenaud2015convolutional}
+Duvenaud, D.~K.; Maclaurin, D.; Iparraguirre, J.; Bombarell, R.; Hirzel, T.;
+  Aspuru-Guzik, A.; and Adams, R.~P.
+\newblock 2015.
+\newblock Convolutional networks on graphs for learning molecular fingerprints.
+\newblock In {\em NIPS}.
+
+\bibitem[\protect\citeauthoryear{Garcia-Duran, Bordes, and
+  Usunier}{2015}]{garcia2015composing}
+Garcia-Duran, A.; Bordes, A.; and Usunier, N.
+\newblock 2015.
+\newblock Composing relationships with translations.
+\newblock Technical Report, CNRS, Heudiasyc.
+
+\bibitem[\protect\citeauthoryear{Gilmer \bgroup et al\mbox.\egroup
+  }{2017}]{gilmer2017neural}
+Gilmer, J.; Schoenholz, S.~S.; Riley, P.~F.; Vinyals, O.; and Dahl, G.~E.
+\newblock 2017.
+\newblock Neural message passing for quantum chemistry.
+\newblock {\em arXiv preprint arXiv:1704.01212}.
+
+\bibitem[\protect\citeauthoryear{Guu, Miller, and
+  Liang}{2015}]{guu2015traversing}
+Guu, K.; Miller, J.; and Liang, P.
+\newblock 2015.
+\newblock Traversing knowledge graphs in vector space.
+\newblock {\em arXiv preprint arXiv:1506.01094}.
+
+\bibitem[\protect\citeauthoryear{Hamilton, Ying, and
+  Leskovec}{2017}]{hamilton2017inductive}
+Hamilton, W.~L.; Ying, R.; and Leskovec, J.
+\newblock 2017.
+\newblock Inductive representation learning on large graphs.
+\newblock {\em arXiv preprint arXiv:1706.02216}.
+
+\bibitem[\protect\citeauthoryear{Hitchcock}{1927}]{hitchcock1927expression}
+Hitchcock, F.~L.
+\newblock 1927.
+\newblock The expression of a tensor or a polyadic as a sum of products.
+\newblock {\em Studies in Applied Mathematics} 6(1-4):164--189.
+
+\bibitem[\protect\citeauthoryear{Hixon, Clark, and
+  Hajishirzi}{2015}]{hixon2015learning}
+Hixon, B.; Clark, P.; and Hajishirzi, H.
+\newblock 2015.
+\newblock Learning knowledge graphs for question answering through
+  conversational dialog.
+\newblock In {\em Proceedings of NAACL HLT},  851--861.
+
+\bibitem[\protect\citeauthoryear{Kingma and Ba}{2014}]{kingma2014adam}
+Kingma, D., and Ba, J.
+\newblock 2014.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}.
+
+\bibitem[\protect\citeauthoryear{Kipf and Welling}{2016}]{kipf2016variational}
+Kipf, T.~N., and Welling, M.
+\newblock 2016.
+\newblock Variational graph auto-encoders.
+\newblock {\em arXiv preprint arXiv:1611.07308}.
+
+\bibitem[\protect\citeauthoryear{Kipf and Welling}{2017}]{kipf2016semi}
+Kipf, T.~N., and Welling, M.
+\newblock 2017.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In {\em ICLR}.
+
+\bibitem[\protect\citeauthoryear{Kolda and Bader}{2009}]{kolda2009tensor}
+Kolda, T.~G., and Bader, B.~W.
+\newblock 2009.
+\newblock Tensor decompositions and applications.
+\newblock {\em SIAM review} 51(3):455--500.
+
+\bibitem[\protect\citeauthoryear{Kotov and Zhai}{2012}]{kotov2012tapping}
+Kotov, A., and Zhai, C.
+\newblock 2012.
+\newblock Tapping into knowledge base for concept feedback: leveraging
+  conceptnet to improve search results for difficult queries.
+\newblock In {\em WSDM}.
+
+\bibitem[\protect\citeauthoryear{Li \bgroup et al\mbox.\egroup
+  }{2016}]{li2015gated}
+Li, Y.; Tarlow, D.; Brockschmidt, M.; and Zemel, R.
+\newblock 2016.
+\newblock Gated graph sequence neural networks.
+\newblock In {\em ICLR}.
+
+\bibitem[\protect\citeauthoryear{Lin \bgroup et al\mbox.\egroup
+  }{2015}]{lin2015modeling}
+Lin, Y.; Liu, Z.; Luan, H.; Sun, M.; Rao, S.; and Liu, S.
+\newblock 2015.
+\newblock Modeling relation paths for representation learning of knowledge
+  bases.
+\newblock {\em arXiv preprint arXiv:1506.00379}.
+
+\bibitem[\protect\citeauthoryear{Mikolov \bgroup et al\mbox.\egroup
+  }{2013}]{mikolov2013distributed}
+Mikolov, T.; Sutskever, I.; Chen, K.; Corrado, G.~S.; and Dean, J.
+\newblock 2013.
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In {\em NIPS}.
+
+\bibitem[\protect\citeauthoryear{Neelakantan, Roth, and
+  McCallum}{2015}]{neelakantan2015compositional}
+Neelakantan, A.; Roth, B.; and McCallum, A.
+\newblock 2015.
+\newblock Compositional vector space models for knowledge base completion.
+\newblock {\em arXiv preprint arXiv:1504.06662}.
+
+\bibitem[\protect\citeauthoryear{Nickel, Rosasco, and
+  Poggio}{2015}]{nickel2015holographic}
+Nickel, M.; Rosasco, L.; and Poggio, T.
+\newblock 2015.
+\newblock Holographic embeddings of knowledge graphs.
+\newblock {\em arXiv preprint arXiv:1510.04935}.
+
+\bibitem[\protect\citeauthoryear{Nickel, Tresp, and
+  Kriegel}{2011}]{nickel2011three}
+Nickel, M.; Tresp, V.; and Kriegel, H.-P.
+\newblock 2011.
+\newblock A three-way model for collective learning on multi-relational data.
+\newblock In {\em ICML}.
+
+\bibitem[\protect\citeauthoryear{Paulheim and
+  F{\"u}mkranz}{2012}]{paulheim2012unsupervised}
+Paulheim, H., and F{\"u}mkranz, J.
+\newblock 2012.
+\newblock Unsupervised generation of data mining features from linked open
+  data.
+\newblock In {\em Proceedings of the 2nd international conference on web
+  intelligence, mining and semantics}, ~31.
+
+\bibitem[\protect\citeauthoryear{Pham \bgroup et al\mbox.\egroup
+  }{2017}]{pham2016column}
+Pham, T.; Tran, T.; Phung, D.; and Venkatesh, S.
+\newblock 2017.
+\newblock Column networks for collective classification.
+\newblock In {\em AAAI}.
+
+\bibitem[\protect\citeauthoryear{Ristoski and
+  Paulheim}{2016}]{ristoski2016rdf2vec}
+Ristoski, P., and Paulheim, H.
+\newblock 2016.
+\newblock Rdf2vec: Rdf graph embeddings for data mining.
+\newblock In {\em International Semantic Web Conference},  498--514.
+\newblock Springer.
+
+\bibitem[\protect\citeauthoryear{Ristoski, de Vries, and
+  Paulheim}{2016}]{ristoski2016collection}
+Ristoski, P.; de~Vries, G. K.~D.; and Paulheim, H.
+\newblock 2016.
+\newblock A collection of benchmark datasets for systematic evaluations of
+  machine learning on the semantic web.
+\newblock In {\em International Semantic Web Conference},  186--194.
+\newblock Springer.
+
+\bibitem[\protect\citeauthoryear{Scarselli \bgroup et al\mbox.\egroup
+  }{2009}]{scarselli2009graph}
+Scarselli, F.; Gori, M.; Tsoi, A.~C.; Hagenbuchner, M.; and Monfardini, G.
+\newblock 2009.
+\newblock The graph neural network model.
+\newblock {\em IEEE Transactions on Neural Networks} 20(1):61--80.
+
+\bibitem[\protect\citeauthoryear{Seyler, Yahya, and
+  Berberich}{2015}]{seyler2015generating}
+Seyler, D.; Yahya, M.; and Berberich, K.
+\newblock 2015.
+\newblock Generating quiz questions from knowledge graphs.
+\newblock In {\em Proceedings of the 24th International Conference on World
+  Wide Web}.
+
+\bibitem[\protect\citeauthoryear{Shervashidze \bgroup et al\mbox.\egroup
+  }{2011}]{shervashidze2011weisfeiler}
+Shervashidze, N.; Schweitzer, P.; Leeuwen, E. J.~v.; Mehlhorn, K.; and
+  Borgwardt, K.~M.
+\newblock 2011.
+\newblock Weisfeiler-lehman graph kernels.
+\newblock {\em Journal of Machine Learning Research} 12(Sep):2539--2561.
+
+\bibitem[\protect\citeauthoryear{Socher \bgroup et al\mbox.\egroup
+  }{2013}]{socher2013reasoning}
+Socher, R.; Chen, D.; Manning, C.~D.; and Ng, A.
+\newblock 2013.
+\newblock Reasoning with neural tensor networks for knowledge base completion.
+\newblock In {\em NIPS}.
+
+\bibitem[\protect\citeauthoryear{Toutanova and
+  Chen}{2015}]{toutanova2015observed}
+Toutanova, K., and Chen, D.
+\newblock 2015.
+\newblock Observed versus latent features for knowledge base and text
+  inference.
+\newblock In {\em Proceedings of the 3rd Workshop on Continuous Vector Space
+  Models and their Compositionality},  57--66.
+
+\bibitem[\protect\citeauthoryear{Toutanova \bgroup et al\mbox.\egroup
+  }{2016}]{toutanova2016compositional}
+Toutanova, K.; Lin, V.; Yih, W.-t.; Poon, H.; and Quirk, C.
+\newblock 2016.
+\newblock Compositional learning of embeddings for relation paths in knowledge
+  base and text.
+\newblock In {\em ACL}.
+
+\bibitem[\protect\citeauthoryear{Trouillon \bgroup et al\mbox.\egroup
+  }{2016}]{complex-complex_embeddings_for_simple_link_prediction}
+Trouillon, T.; Welbl, J.; Riedel, S.; Gaussier, E.; and Bouchard, G.
+\newblock 2016.
+\newblock Complex embeddings for simple link prediction.
+\newblock In {\em ICML}.
+
+\bibitem[\protect\citeauthoryear{Vincent \bgroup et al\mbox.\egroup
+  }{2008}]{vincent2008}
+Vincent, P.; Larochelle, H.; Bengio, Y.; and Manzagol, P.-A.
+\newblock 2008.
+\newblock Extracting and composing robust features with denoising autoencoders.
+\newblock In {\em ICML}.
+
+\bibitem[\protect\citeauthoryear{Xiong and Callan}{2015a}]{xiong2015esdrank}
+Xiong, C., and Callan, J.
+\newblock 2015a.
+\newblock Esdrank: Connecting query and documents through external
+  semi-structured data.
+\newblock In {\em CIKM}.
+
+\bibitem[\protect\citeauthoryear{Xiong and Callan}{2015b}]{xiong2015query}
+Xiong, C., and Callan, J.
+\newblock 2015b.
+\newblock Query expansion with freebase.
+\newblock In {\em Proceedings of the 2015 International Conference on The
+  Theory of Information Retrieval},  111--120.
+
+\bibitem[\protect\citeauthoryear{Yang \bgroup et al\mbox.\egroup
+  }{2014}]{distmult-embedding_entities_and_relations}
+Yang, B.; Yih, W.-t.; He, X.; Gao, J.; and Deng, L.
+\newblock 2014.
+\newblock Embedding entities and relations for learning and inference in
+  knowledge bases.
+\newblock {\em arXiv preprint arXiv:1412.6575}.
+
+\bibitem[\protect\citeauthoryear{Yao and Van~Durme}{2014}]{yao2014information}
+Yao, X., and Van~Durme, B.
+\newblock 2014.
+\newblock Information extraction over structured data: Question answering with
+  freebase.
+\newblock In {\em ACL}.
+
+\end{thebibliography}

@@ -1,0 +1,338 @@
+\begin{thebibliography}{57}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abadi et~al.(2016)Abadi, Barham, Chen, Chen, Davis, Dean, Devin, Ghemawat, Irving, Isard, Kudlur, Levenberg, Monga, Moore, Murray, Steiner, Tucker, Vasudevan, Warden, Wicke, Yu, and Zheng]{DBLP:conf/osdi/AbadiBCCDDDGIIK16}
+Mart{\'{\i}}n Abadi, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, Jeffrey Dean, Matthieu Devin, Sanjay Ghemawat, Geoffrey Irving, Michael Isard, Manjunath Kudlur, Josh Levenberg, Rajat Monga, Sherry Moore, Derek~Gordon Murray, Benoit Steiner, Paul~A. Tucker, Vijay Vasudevan, Pete Warden, Martin Wicke, Yuan Yu, and Xiaoqiang Zheng.
+\newblock Tensorflow: {A} system for large-scale machine learning.
+\newblock In Kimberly Keeton and Timothy Roscoe (eds.), \emph{12th {USENIX} Symposium on Operating Systems Design and Implementation, {OSDI} 2016, Savannah, GA, USA, November 2-4, 2016}, pp.\  265--283. {USENIX} Association, 2016.
+\newblock URL \url{https://www.usenix.org/conference/osdi16/technical-sessions/presentation/abadi}.
+
+\bibitem[Bobrov(2017)]{flame}
+Anton Bobrov.
+\newblock Flameprof, 2017.
+\newblock URL \url{https://github.com/baverman/flameprof}.
+
+\bibitem[Borisyuk et~al.(2024)Borisyuk, He, Ouyang, Ramezani, Du, Hou, Jiang, Pasumarthy, Bannur, Tiwana, et~al.]{borisyuk2024lignn}
+Fedor Borisyuk, Shihai He, Yunbo Ouyang, Morteza Ramezani, Peng Du, Xiaochen Hou, Chengming Jiang, Nitin Pasumarthy, Priya Bannur, Birjodh Tiwana, et~al.
+\newblock Lignn: Graph neural networks at linkedin.
+\newblock In \emph{Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining}, pp.\  4793--4803, 2024.
+
+\bibitem[Cao et~al.(2020)Cao, Wang, Duan, Zhang, Zhu, Huang, Tong, Xu, Bai, Tong, et~al.]{cao2020spectral}
+Defu Cao, Yujing Wang, Juanyong Duan, Ce~Zhang, Xia Zhu, Congrui Huang, Yunhai Tong, Bixiong Xu, Jing Bai, Jie Tong, et~al.
+\newblock Spectral temporal graph neural network for multivariate time-series forecasting.
+\newblock \emph{Advances in neural information processing systems}, 33:\penalty0 17766--17778, 2020.
+
+\bibitem[Chang et~al.(2021)Chang, Pierson, Koh, Gerardin, Redbird, Grusky, and Leskovec]{chang2021mobility}
+Serina Chang, Emma Pierson, Pang~Wei Koh, Jaline Gerardin, Beth Redbird, David Grusky, and Jure Leskovec.
+\newblock Mobility network models of covid-19 explain inequities and inform reopening.
+\newblock \emph{Nature}, 589\penalty0 (7840):\penalty0 82--87, 2021.
+
+\bibitem[Chen et~al.(2018)Chen, Li, He, Jin, and Tang]{gclstm}
+Da~Chen, Yanfeng Li, Yilun He, Xiaojun Jin, and Jie Tang.
+\newblock Gc-lstm: Graph convolution embedded lstm for dynamic link prediction.
+\newblock In \emph{Proceedings of the 2018 IEEE International Conference on Data Mining (ICDM)}, pp.\  243--252. IEEE, 2018.
+\newblock \doi{10.1109/ICDM.2018.00038}.
+
+\bibitem[Cini \& Marisca(2022)Cini and Marisca]{Cini_Torch_Spatiotemporal_2022}
+Andrea Cini and Ivan Marisca.
+\newblock {Torch Spatiotemporal}, 3 2022.
+\newblock URL \url{https://github.com/TorchSpatiotemporal/tsl}.
+
+\bibitem[Cornell et~al.(2025)Cornell, Smirnov, Gandler, and Cao]{cornell2025power}
+Filip Cornell, Oleg Smirnov, Gabriela~Zarzar Gandler, and Lele Cao.
+\newblock On the power of heuristics in temporal graphs.
+\newblock \emph{arXiv preprint arXiv:2502.04910}, 2025.
+
+\bibitem[da~Xu et~al.(2020)da~Xu, chuanwei ruan, evren korpeoglu, sushant kumar, and kannan achan]{tgat}
+da~Xu, chuanwei ruan, evren korpeoglu, sushant kumar, and kannan achan.
+\newblock Inductive representation learning on temporal graphs.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2020.
+
+\bibitem[Devlin et~al.(2019)Devlin, Chang, Lee, and Toutanova]{DBLP:conf/naacl/DevlinCLT19}
+Jacob Devlin, Ming{-}Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock {BERT:} pre-training of deep bidirectional transformers for language understanding.
+\newblock In Jill Burstein, Christy Doran, and Thamar Solorio (eds.), \emph{Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, {NAACL-HLT} 2019, Minneapolis, MN, USA, June 2-7, 2019, Volume 1 (Long and Short Papers)}, pp.\  4171--4186. Association for Computational Linguistics, 2019.
+\newblock \doi{10.18653/V1/N19-1423}.
+\newblock URL \url{https://doi.org/10.18653/v1/n19-1423}.
+
+\bibitem[Ding et~al.(2024)Ding, Li, He, Norelli, Wu, Tresp, Bronstein, and Ma]{dygmamba}
+Zifeng Ding, Yifeng Li, Yuan He, Antonio Norelli, Jingcheng Wu, Volker Tresp, Michael Bronstein, and Yunpu Ma.
+\newblock Dygmamba: Efficiently modeling long-term temporal dependency on continuous-time dynamic graphs with state space models.
+\newblock \emph{arXiv preprint arXiv:2408.04713}, 2024.
+
+\bibitem[Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and Houlsby]{DBLP:conf/iclr/DosovitskiyB0WZ21}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock In \emph{9th International Conference on Learning Representations, {ICLR} 2021, Virtual Event, Austria, May 3-7, 2021}. OpenReview.net, 2021.
+\newblock URL \url{https://openreview.net/forum?id=YicbFdNTTy}.
+
+\bibitem[Dwivedi \& Bresson(2020)Dwivedi and Bresson]{DBLP:journals/corr/abs-2012-09699}
+Vijay~Prakash Dwivedi and Xavier Bresson.
+\newblock A generalization of transformer networks to graphs.
+\newblock \emph{CoRR}, abs/2012.09699, 2020.
+\newblock URL \url{https://arxiv.org/abs/2012.09699}.
+
+\bibitem[Fey \& Lenssen(2019)Fey and Lenssen]{DBLP:journals/corr/abs-1903-02428}
+Matthias Fey and Jan~Eric Lenssen.
+\newblock Fast graph representation learning with pytorch geometric.
+\newblock \emph{CoRR}, abs/1903.02428, 2019.
+\newblock URL \url{http://arxiv.org/abs/1903.02428}.
+
+\bibitem[Fey et~al.(2025)Fey, Sunil, Nitta, Puri, Shah, Stojanovic, Bendias, Barghi, Kocijan, Zhang, He, Lenssen, and Leskovec]{DBLP:journals/corr/abs-2507-16991}
+Matthias Fey, Jinu Sunil, Akihiro Nitta, Rishi Puri, Manan Shah, Blaz Stojanovic, Ramona Bendias, Alexandria Barghi, Vid Kocijan, Zecheng Zhang, Xinwei He, Jan~Eric Lenssen, and Jure Leskovec.
+\newblock Pyg 2.0: Scalable learning on real world graphs.
+\newblock \emph{CoRR}, abs/2507.16991, 2025.
+\newblock \doi{10.48550/ARXIV.2507.16991}.
+\newblock URL \url{https://doi.org/10.48550/arXiv.2507.16991}.
+
+\bibitem[Gao et~al.(2025)Gao, Wu, and Ding]{DBLP:journals/corr/abs-2507-11836}
+Jian Gao, Jianshe Wu, and Jingyi Ding.
+\newblock Hyperevent:learning cohesive events for large-scale dynamic link prediction.
+\newblock \emph{CoRR}, abs/2507.11836, 2025.
+\newblock \doi{10.48550/ARXIV.2507.11836}.
+\newblock URL \url{https://doi.org/10.48550/arXiv.2507.11836}.
+
+\bibitem[Gastinger et~al.(2024)Gastinger, Huang, Galkin, Loghmani, Parviz, Poursafaei, Danovitch, Rossi, Koutis, Stuckenschmidt, Rabbany, and Rabusseau]{tgb2}
+Julia Gastinger, Shenyang Huang, Mikhail Galkin, Erfan Loghmani, Ali Parviz, Farimah Poursafaei, Jacob Danovitch, Emanuele Rossi, Ioannis Koutis, Heiner Stuckenschmidt, Reihaneh Rabbany, and Guillaume Rabusseau.
+\newblock Tgb 2.0: A benchmark for learning on temporal knowledge graphs and heterogeneous graphs.
+\newblock In A.~Globerson, L.~Mackey, D.~Belgrave, A.~Fan, U.~Paquet, J.~Tomczak, and C.~Zhang (eds.), \emph{Advances in Neural Information Processing Systems}, volume~37, pp.\  140199--140229. Curran Associates, Inc., 2024.
+\newblock URL \url{https://proceedings.neurips.cc/paper_files/paper/2024/file/fda026cf2423a01fcbcf1e1e43ee9a50-Paper-Datasets_and_Benchmarks_Track.pdf}.
+
+\bibitem[Han et~al.(2014)Han, Miao, Li, Wu, Yang, Zhou, Prabhakaran, Chen, and Chen]{han2014chronos}
+Wentao Han, Youshan Miao, Kaiwei Li, Ming Wu, Fan Yang, Lidong Zhou, Vijayan Prabhakaran, Wenguang Chen, and Enhong Chen.
+\newblock Chronos: a graph engine for temporal graph analysis.
+\newblock In \emph{Proceedings of the Ninth European Conference on Computer Systems}, pp.\  1--14, 2014.
+
+\bibitem[Hochreiter \& Schmidhuber(1997)Hochreiter and Schmidhuber]{hochreiter1997long}
+Sepp Hochreiter and J{\"u}rgen Schmidhuber.
+\newblock Long short-term memory.
+\newblock \emph{Neural computation}, 9\penalty0 (8):\penalty0 1735--1780, 1997.
+
+\bibitem[Huang et~al.(2023{\natexlab{a}})Huang, Poursafaei, Danovitch, Fey, Hu, Rossi, Leskovec, Bronstein, Rabusseau, and Rabbany]{huang2023temporal}
+Shenyang Huang, Farimah Poursafaei, Jacob Danovitch, Matthias Fey, Weihua Hu, Emanuele Rossi, Jure Leskovec, Michael Bronstein, Guillaume Rabusseau, and Reihaneh Rabbany.
+\newblock Temporal graph benchmark for machine learning on temporal graphs.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:\penalty0 2056--2073, 2023{\natexlab{a}}.
+
+\bibitem[Huang et~al.(2023{\natexlab{b}})Huang, Poursafaei, Danovitch, Fey, Hu, Rossi, Leskovec, Bronstein, Rabusseau, and Rabbany]{DBLP:conf/nips/HuangPDFHRLBRR23}
+Shenyang Huang, Farimah Poursafaei, Jacob Danovitch, Matthias Fey, Weihua Hu, Emanuele Rossi, Jure Leskovec, Michael~M. Bronstein, Guillaume Rabusseau, and Reihaneh Rabbany.
+\newblock Temporal graph benchmark for machine learning on temporal graphs.
+\newblock In Alice Oh, Tristan Naumann, Amir Globerson, Kate Saenko, Moritz Hardt, and Sergey Levine (eds.), \emph{Advances in Neural Information Processing Systems 36: Annual Conference on Neural Information Processing Systems 2023, NeurIPS 2023, New Orleans, LA, USA, December 10 - 16, 2023}, 2023{\natexlab{b}}.
+\newblock URL \url{http://papers.nips.cc/paper\_files/paper/2023/hash/066b98e63313162f6562b35962671288-Abstract-Datasets\_and\_Benchmarks.html}.
+
+\bibitem[Huang et~al.(2024)Huang, Poursafaei, Rabbany, Rabusseau, and Rossi]{utg}
+Shenyang Huang, Farimah Poursafaei, Reihaneh Rabbany, Guillaume Rabusseau, and Emanuele Rossi.
+\newblock {UTG:} towards a unified view of snapshot and event based models for temporal graphs.
+\newblock In Guy Wolf and Smita Krishnaswamy (eds.), \emph{Learning on Graphs Conference, 26-29 November 2024, Virtual}, volume 269 of \emph{Proceedings of Machine Learning Research}, pp.\ ~28. {PMLR}, 2024.
+\newblock URL \url{https://proceedings.mlr.press/v269/huang25a.html}.
+
+\bibitem[Jia et~al.(2014)Jia, Shelhamer, Donahue, Karayev, Long, Girshick, Guadarrama, and Darrell]{DBLP:conf/mm/JiaSDKLGGD14}
+Yangqing Jia, Evan Shelhamer, Jeff Donahue, Sergey Karayev, Jonathan Long, Ross~B. Girshick, Sergio Guadarrama, and Trevor Darrell.
+\newblock Caffe: Convolutional architecture for fast feature embedding.
+\newblock In Kien~A. Hua, Yong Rui, Ralf Steinmetz, Alan Hanjalic, Apostol Natsev, and Wenwu Zhu (eds.), \emph{Proceedings of the {ACM} International Conference on Multimedia, {MM} '14, Orlando, FL, USA, November 03 - 07, 2014}, pp.\  675--678. {ACM}, 2014.
+\newblock \doi{10.1145/2647868.2654889}.
+\newblock URL \url{https://doi.org/10.1145/2647868.2654889}.
+
+\bibitem[Kazemi et~al.(2019)Kazemi, Goel, Eghbali, Ramanan, Sahota, Thakur, Wu, Smyth, Poupart, and Brubaker]{time2vec}
+Seyed~Mehran Kazemi, Rishab Goel, Sepehr Eghbali, Janahan Ramanan, Jaspreet Sahota, Sanjay Thakur, Stella Wu, Cathal Smyth, Pascal Poupart, and Marcus Brubaker.
+\newblock Time2vec: Learning a vector representation of time.
+\newblock \emph{arXiv preprint arXiv:1907.05321}, 2019.
+
+\bibitem[Kazemi et~al.(2020)Kazemi, Goel, Jain, Kobyzev, Sethi, Forsyth, and Poupart]{DBLP:journals/jmlr/KazemiGJKSFP20}
+Seyed~Mehran Kazemi, Rishab Goel, Kshitij Jain, Ivan Kobyzev, Akshay Sethi, Peter Forsyth, and Pascal Poupart.
+\newblock Representation learning for dynamic graphs: {A} survey.
+\newblock \emph{J. Mach. Learn. Res.}, 21:\penalty0 70:1--70:73, 2020.
+\newblock URL \url{https://jmlr.org/papers/v21/19-447.html}.
+
+\bibitem[Kipf \& Welling(2016)Kipf and Welling]{kipfsemi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In \emph{International Conference on Learning Representations}, 2016.
+
+\bibitem[Kipf \& Welling(2017)Kipf and Welling]{gcn}
+Thomas~N. Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2017.
+\newblock URL \url{https://arxiv.org/abs/1609.02907}.
+
+\bibitem[Lu et~al.(2024{\natexlab{a}})Lu, Sun, Zhu, and Lv]{DBLP:conf/nips/LuSZL24}
+Xiaodong Lu, Leilei Sun, Tongyu Zhu, and Weifeng Lv.
+\newblock Improving temporal link prediction via temporal walk matrix projection.
+\newblock In Amir Globersons, Lester Mackey, Danielle Belgrave, Angela Fan, Ulrich Paquet, Jakub~M. Tomczak, and Cheng Zhang (eds.), \emph{Advances in Neural Information Processing Systems 38: Annual Conference on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver, BC, Canada, December 10 - 15, 2024}, 2024{\natexlab{a}}.
+\newblock URL \url{http://papers.nips.cc/paper\_files/paper/2024/hash/ff7bf6014f7826da531aa50f4538ee19-Abstract-Conference.html}.
+
+\bibitem[Lu et~al.(2024{\natexlab{b}})Lu, Sun, Zhu, and Lv]{tpnet}
+Xiaodong Lu, Leilei Sun, Tongyu Zhu, and Weifeng Lv.
+\newblock Improving temporal link prediction via temporal walk matrix projection.
+\newblock In Amir Globersons, Lester Mackey, Danielle Belgrave, Angela Fan, Ulrich Paquet, Jakub~M. Tomczak, and Cheng Zhang (eds.), \emph{Advances in Neural Information Processing Systems 38: Annual Conference on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver, BC, Canada, December 10 - 15, 2024}, 2024{\natexlab{b}}.
+\newblock URL \url{http://papers.nips.cc/paper\_files/paper/2024/hash/ff7bf6014f7826da531aa50f4538ee19-Abstract-Conference.html}.
+
+\bibitem[Luo \& Li(2022)Luo and Li]{nat}
+Yuhong Luo and Pan Li.
+\newblock Neighborhood-aware scalable temporal network representation learning.
+\newblock \emph{Learning on Graphs Conference}, 2022.
+
+\bibitem[Pareja et~al.(2020)Pareja, Domeniconi, Chen, Ma, Suzumura, Kanezashi, Kaler, Schardl, and Leiserson]{DBLP:conf/aaai/ParejaDCMSKKSL20}
+Aldo Pareja, Giacomo Domeniconi, Jie Chen, Tengfei Ma, Toyotaro Suzumura, Hiroki Kanezashi, Tim Kaler, Tao~B. Schardl, and Charles~E. Leiserson.
+\newblock Evolvegcn: Evolving graph convolutional networks for dynamic graphs.
+\newblock In \emph{The Thirty-Fourth {AAAI} Conference on Artificial Intelligence, {AAAI} 2020, The Thirty-Second Innovative Applications of Artificial Intelligence Conference, {IAAI} 2020, The Tenth {AAAI} Symposium on Educational Advances in Artificial Intelligence, {EAAI} 2020, New York, NY, USA, February 7-12, 2020}, pp.\  5363--5370. {AAAI} Press, 2020.
+\newblock \doi{10.1609/AAAI.V34I04.5984}.
+\newblock URL \url{https://doi.org/10.1609/aaai.v34i04.5984}.
+
+\bibitem[Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan, Killeen, Lin, Gimelshein, Antiga, Desmaison, K{\"{o}}pf, Yang, DeVito, Raison, Tejani, Chilamkurthy, Steiner, Fang, Bai, and Chintala]{DBLP:conf/nips/PaszkeGMLBCKLGA19}
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban Desmaison, Andreas K{\"{o}}pf, Edward~Z. Yang, Zachary DeVito, Martin Raison, Alykhan Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu~Fang, Junjie Bai, and Soumith Chintala.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock In Hanna~M. Wallach, Hugo Larochelle, Alina Beygelzimer, Florence d'Alch{\'{e}}{-}Buc, Emily~B. Fox, and Roman Garnett (eds.), \emph{Advances in Neural Information Processing Systems 32: Annual Conference on Neural Information Processing Systems 2019, NeurIPS 2019, December 8-14, 2019, Vancouver, BC, Canada}, pp.\  8024--8035, 2019.
+\newblock URL \url{https://proceedings.neurips.cc/paper/2019/hash/bdbca288fee7f92f2bfa9f7012727740-Abstract.html}.
+
+\bibitem[Poursafaei et~al.(2022{\natexlab{a}})Poursafaei, Huang, Pelrine, and Rabbany]{edgebank}
+Farimah Poursafaei, Shenyang Huang, Kellin Pelrine, and Reihaneh Rabbany.
+\newblock Towards better evaluation for dynamic link prediction.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 32928--32941, 2022{\natexlab{a}}.
+
+\bibitem[Poursafaei et~al.(2022{\natexlab{b}})Poursafaei, Huang, Pelrine, and Rabbany]{poursafaei2022towards}
+Farimah Poursafaei, Shenyang Huang, Kellin Pelrine, and Reihaneh Rabbany.
+\newblock Towards better evaluation for dynamic link prediction.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 32928--32941, 2022{\natexlab{b}}.
+
+\bibitem[Ramp{\'a}{\v{s}}ek et~al.(2022)Ramp{\'a}{\v{s}}ek, Galkin, Dwivedi, Luu, Wolf, and Beaini]{rampavsek2022recipe}
+Ladislav Ramp{\'a}{\v{s}}ek, Michael Galkin, Vijay~Prakash Dwivedi, Anh~Tuan Luu, Guy Wolf, and Dominique Beaini.
+\newblock Recipe for a general, powerful, scalable graph transformer.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 14501--14515, 2022.
+
+\bibitem[Rossi et~al.(2020)Rossi, Chambers, Ying, Bronstein, and Monti]{tgn}
+Emanuele Rossi, Ben Chambers, Rex Ying, Michael Bronstein, and Federico Monti.
+\newblock Temporal graph networks for deep learning on dynamic graphs.
+\newblock In \emph{Proceedings of the 2020 ICML Workshop on Graph Representation Learning and Beyond}, 2020.
+\newblock URL \url{https://arxiv.org/abs/2006.10637}.
+
+\bibitem[Rozemberczki et~al.(2021)Rozemberczki, Scherer, He, Panagopoulos, Riedel, Astefanoaei, Kiss, B{\'{e}}res, L{\'{o}}pez, Collignon, and Sarkar]{DBLP:conf/cikm/RozemberczkiSHP21}
+Benedek Rozemberczki, Paul Scherer, Yixuan He, George Panagopoulos, Alexander Riedel, Maria~Sinziana Astefanoaei, Oliver Kiss, Ferenc B{\'{e}}res, Guzm{\'{a}}n L{\'{o}}pez, Nicolas Collignon, and Rik Sarkar.
+\newblock Pytorch geometric temporal: Spatiotemporal signal processing with neural machine learning models.
+\newblock In Gianluca Demartini, Guido Zuccon, J.~Shane Culpepper, Zi~Huang, and Hanghang Tong (eds.), \emph{{CIKM} '21: The 30th {ACM} International Conference on Information and Knowledge Management, Virtual Event, Queensland, Australia, November 1 - 5, 2021}, pp.\  4564--4573. {ACM}, 2021.
+\newblock \doi{10.1145/3459637.3482014}.
+\newblock URL \url{https://doi.org/10.1145/3459637.3482014}.
+
+\bibitem[Sar{\i}g{\"u}n(2023)]{graphmixer}
+Ahmet Sar{\i}g{\"u}n.
+\newblock Graph mixer networks.
+\newblock \emph{arXiv preprint arXiv:2301.12493}, 2023.
+
+\bibitem[Sha et~al.(2017)Sha, Li, He, and Tan]{gpma}
+Mo~Sha, Yuchen Li, Bingsheng He, and Kian-Lee Tan.
+\newblock Accelerating dynamic graph analytics on gpus.
+\newblock \emph{Proceedings of the VLDB Endowment}, 11\penalty0 (1), 2017.
+
+\bibitem[Shamsi et~al.(2022)Shamsi, Victor, Kantarcioglu, Gel, and Akcora]{DBLP:conf/nips/ShamsiVKGA22}
+Kiarash Shamsi, Friedhelm Victor, Murat Kantarcioglu, Yulia~R. Gel, and Cuneyt~Gurcan Akcora.
+\newblock Chartalist: Labeled graph datasets for {UTXO} and account-based blockchains.
+\newblock In Sanmi Koyejo, S.~Mohamed, A.~Agarwal, Danielle Belgrave, K.~Cho, and A.~Oh (eds.), \emph{Advances in Neural Information Processing Systems 35: Annual Conference on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans, LA, USA, November 28 - December 9, 2022}, 2022.
+\newblock URL \url{http://papers.nips.cc/paper\_files/paper/2022/hash/e245189a86310b6667ac633dbb922d50-Abstract-Datasets\_and\_Benchmarks.html}.
+
+\bibitem[Shamsi et~al.(2024)Shamsi, Poursafaei, Huang, Ngo, Coskunuzer, and Akcora]{DBLP:conf/iclr/ShamsiPHNCA24}
+Kiarash Shamsi, Farimah Poursafaei, Shenyang Huang, Tran Gia~Bao Ngo, Baris Coskunuzer, and Cuneyt~Gurcan Akcora.
+\newblock Graphpulse: Topological representations for temporal graph property prediction.
+\newblock In \emph{The Twelfth International Conference on Learning Representations, {ICLR} 2024, Vienna, Austria, May 7-11, 2024}. OpenReview.net, 2024.
+\newblock URL \url{https://openreview.net/forum?id=DZqic2sPTY}.
+
+\bibitem[Tjandra et~al.()Tjandra, Barbero, and Bronstein]{tgnv2}
+Benedict~Aaron Tjandra, Federico Barbero, and Michael Bronstein.
+\newblock Enhancing the expressivity of temporal graph networks through source-target identification, 2024.
+\newblock \emph{URL https://arxiv. org/abs/2411.03596}.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Veli{\v{c}}kovi{\'c} et~al.(2017)Veli{\v{c}}kovi{\'c}, Cucurull, Casanova, Romero, Lio, and Bengio]{velivckovic2017graph}
+Petar Veli{\v{c}}kovi{\'c}, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro Lio, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock \emph{arXiv preprint arXiv:1710.10903}, 2017.
+
+\bibitem[Wang et~al.(2019)Wang, Zheng, Ye, Gan, Li, Song, Zhou, Ma, Yu, Gai, et~al.]{wang2019deep}
+Minjie Wang, Da~Zheng, Zihao Ye, Quan Gan, Mufei Li, Xiang Song, Jinjing Zhou, Chao Ma, Lingfan Yu, Yu~Gai, et~al.
+\newblock Deep graph library: A graph-centric, highly-performant package for graph neural networks.
+\newblock \emph{arXiv preprint arXiv:1909.01315}, 2019.
+
+\bibitem[Wang \& Mendis(2024)Wang and Mendis]{10.1145/3620665.3640414}
+Yufeng Wang and Charith Mendis.
+\newblock Tglite: A lightweight programming framework for continuous-time temporal graph neural networks.
+\newblock In \emph{Proceedings of the 29th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2}, ASPLOS '24, pp.\  1183–1199, New York, NY, USA, 2024. Association for Computing Machinery.
+\newblock ISBN 9798400703850.
+\newblock \doi{10.1145/3620665.3640414}.
+\newblock URL \url{https://doi.org/10.1145/3620665.3640414}.
+
+\bibitem[Yoon et~al.(2020)Yoon, Hooi, Shin, and Faloutsos]{DBLP:journals/corr/abs-2011-13085}
+Minji Yoon, Bryan Hooi, Kijung Shin, and Christos Faloutsos.
+\newblock Fast and accurate anomaly detection in dynamic graphs with a two-pronged approach.
+\newblock \emph{CoRR}, abs/2011.13085, 2020.
+\newblock URL \url{https://arxiv.org/abs/2011.13085}.
+
+\bibitem[You et~al.(2022)You, Du, and Leskovec]{DBLP:conf/kdd/YouDL22}
+Jiaxuan You, Tianyu Du, and Jure Leskovec.
+\newblock {ROLAND:} graph learning framework for dynamic graphs.
+\newblock In Aidong Zhang and Huzefa Rangwala (eds.), \emph{{KDD} '22: The 28th {ACM} {SIGKDD} Conference on Knowledge Discovery and Data Mining, Washington, DC, USA, August 14 - 18, 2022}, pp.\  2358--2366. {ACM}, 2022.
+\newblock \doi{10.1145/3534678.3539300}.
+\newblock URL \url{https://doi.org/10.1145/3534678.3539300}.
+
+\bibitem[Yu et~al.(2023{\natexlab{a}})Yu, Sun, Du, and Lv]{dygfomer}
+Le~Yu, Leilei Sun, Bowen Du, and Weifeng Lv.
+\newblock Towards better dynamic graph learning: New architecture and unified library.
+\newblock \emph{Advances in Neural Information Processing Systems}, 2023{\natexlab{a}}.
+
+\bibitem[Yu et~al.(2023{\natexlab{b}})Yu, Sun, Du, and Lv]{yu2023towards}
+Le~Yu, Leilei Sun, Bowen Du, and Weifeng Lv.
+\newblock Towards better dynamic graph learning: New architecture and unified library.
+\newblock \emph{Advances in Neural Information Processing Systems}, 2023{\natexlab{b}}.
+
+\bibitem[Zhang et~al.(2021)Zhang, Zou, and Yu]{lpma}
+Fan Zhang, Lei Zou, and Yanpeng Yu.
+\newblock Lpma - an efficient data structure for dynamic graph on gpus.
+\newblock In Wenjie Zhang, Lei Zou, Zakaria Maamar, and Lu~Chen (eds.), \emph{Web Information Systems Engineering -- WISE 2021}, pp.\  469--484, Cham, 2021. Springer International Publishing.
+\newblock ISBN 978-3-030-90888-1.
+
+\bibitem[Zhang et~al.()Zhang, Wang, Wang, and Zhang]{tncn}
+Xiaohui Zhang, Yanbo Wang, Xiyuan Wang, and Muhan Zhang.
+\newblock Efficient neural common neighbor for temporal graph link prediction, 2024.
+\newblock \emph{URL https://arxiv. org/abs/2406.07926}.
+
+\bibitem[Zhao et~al.(2019)Zhao, Song, Zhang, Liu, Wang, Lin, Deng, and Li]{t-gcn}
+Ling Zhao, Yujiao Song, Chao Zhang, Yu~Liu, Pu~Wang, Tao Lin, Min Deng, and Haifeng Li.
+\newblock T-gcn: A temporal graph convolutional network for traffic prediction.
+\newblock \emph{IEEE transactions on intelligent transportation systems}, 21\penalty0 (9):\penalty0 3848--3858, 2019.
+
+\bibitem[Zhou et~al.(2022{\natexlab{a}})Zhou, Zheng, Nisa, Ioannidis, Song, and Karypis]{DBLP:journals/corr/abs-2203-14883}
+Hongkuan Zhou, Da~Zheng, Israt Nisa, Vasileios Ioannidis, Xiang Song, and George Karypis.
+\newblock {TGL:} {A} general framework for temporal {GNN} training on billion-scale graphs.
+\newblock \emph{CoRR}, abs/2203.14883, 2022{\natexlab{a}}.
+\newblock \doi{10.48550/ARXIV.2203.14883}.
+\newblock URL \url{https://doi.org/10.48550/arXiv.2203.14883}.
+
+\bibitem[Zhou et~al.(2022{\natexlab{b}})Zhou, Zheng, Nisa, Ioannidis, Song, and Karypis]{tgl_paper}
+Hongkuan Zhou, Da~Zheng, Israt Nisa, Vasileios Ioannidis, Xiang Song, and George Karypis.
+\newblock Tgl: a general framework for temporal gnn training on billion-scale graphs.
+\newblock \emph{Proc. VLDB Endow.}, 15\penalty0 (8):\penalty0 1572–1580, April 2022{\natexlab{b}}.
+\newblock ISSN 2150-8097.
+\newblock \doi{10.14778/3529337.3529342}.
+\newblock URL \url{https://doi.org/10.14778/3529337.3529342}.
+
+\bibitem[Zhou et~al.(2023{\natexlab{a}})Zhou, Zheng, Song, Karypis, and Prasanna]{10.1145/3581784.3607056}
+Hongkuan Zhou, Da~Zheng, Xiang Song, George Karypis, and Viktor Prasanna.
+\newblock Disttgl: Distributed memory-based temporal graph neural network training.
+\newblock In \emph{Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis}, SC '23, New York, NY, USA, 2023{\natexlab{a}}. Association for Computing Machinery.
+\newblock ISBN 9798400701092.
+\newblock \doi{10.1145/3581784.3607056}.
+\newblock URL \url{https://doi.org/10.1145/3581784.3607056}.
+
+\bibitem[Zhou et~al.(2023{\natexlab{b}})Zhou, Zheng, Song, Karypis, and Prasanna]{DBLP:conf/sc/ZhouZSKP23}
+Hongkuan Zhou, Da~Zheng, Xiang Song, George Karypis, and Viktor~K. Prasanna.
+\newblock Disttgl: Distributed memory-based temporal graph neural network training.
+\newblock In Dorian Arnold, Rosa~M. Badia, and Kathryn~M. Mohror (eds.), \emph{Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis, {SC} 2023, Denver, CO, USA, November 12-17, 2023}, pp.\  39:1--39:12. {ACM}, 2023{\natexlab{b}}.
+\newblock \doi{10.1145/3581784.3607056}.
+\newblock URL \url{https://doi.org/10.1145/3581784.3607056}.
+
+\end{thebibliography}

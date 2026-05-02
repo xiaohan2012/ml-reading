@@ -1,0 +1,27 @@
+\section{Relational Deep Learning Implementation}\label{sec:rdl_implementation}
+
+As part of \relbench, we provide an initial implementation of relational deep learning, based on the blueprint of 
+\cite{fey2023relational}.\footnote{Code available at: \relbenchgit.} Our implementation consists four major components: (1) heterogeneous temporal graph, (2) deep learning model, (3) temporal-aware training of the model, and (4) task-specific loss, which we briefly discuss now.
+
+\xhdr{Heterogeneous temporal graph} 
+Given a set of tables with primary-foreigh key relations between them we follow \citet{fey2023relational} to automatically construct a heterogeneous temporal graph, where each table represents a node type, each row in a table represents a node, and a primary-foreign-key relation between two table rows (nodes) represent an edge between the respective nodes. Some node types are associated with time attributes, representing the timestamp at which a node appears. The heterogeneous temporal graph is represented as a PyTorch Geometric graph object.
+Each node in the heterogeneous graph comes with a rich feature derived from diverse columns of the corresponding table. We use Tensor Frame provided by PyTorch Frame~\citep{hu2024pytorch} to represent rich node features with diverse column types, \eg, numerical, categorical, timestamp, and text.
+
+\xhdr{Deep learning model}
+First, we use deep tabular models that encode raw row-level data into initial node embeddings using PyTorch Frame \citep{hu2024pytorch} (specifically, we use the ResNet tabular model~\citep{gorishniy2021revisiting}). These initial node embeddings are then fed into a GNN to iteratively update the node embeddings based on their neighbors.
+For the GNN we use the heterogeneous version of the GraphSAGE model~\citep{hamilton2017inductive,fey2019fast} with sum-based neighbor aggregation. Output node embeddings are fed into task-specific prediction heads and are learned end-to-end.
+
+\xhdr{Temporal-aware subgraph sampling}
+We perform temporal neighbor sampling, which samples 
+a subgraph around each entity node at a given seed time. 
+Seed time is the time in history at which the prediction is made. When collecting the information to make a prediction at a given seed time, it is important for the model to only use information from before the seed time and thus not learn from the future (post the seed time). Crucially, when sampling mini-batch subgraphs we make sure that all nodes within the sampled subgraph appear before the seed time~\citep{hamilton2017inductive,fey2023relational}, which systematically avoids time leakage during training.
+The sampled subgraph is fed as input to the GNN, and trained to predict the target label.
+
+\xhdr{Task-specific prediction head and loss}
+For entity-level classification, we simply apply an MLP on an entity embedding computed by our GNN to make prediction. For the loss function, we use the binary cross entropy loss for entity classification and $L_1$ loss for entity regression.
+
+Recommendation requires computing scores between pairs of source nodes and target nodes.
+For this task type, we consider two representative predictive architectures: two-tower GNN~\citep{wang2019neural} and identity-aware GNN (ID-GNN)~\citep{you2021identity}. First, the two-tower GNN computes the pairwise scores via inner product between source and target node embeddings, and the standard Bayesian Personalized Ranking loss~\citep{rendle2012bpr} is used to train the two-tower model~\citep{wang2019neural}.
+Second, the ID-GNN computes the pairwise scores by applying an MLP prediction head on target entity embeddings computed by GNN for each source entity. The ID-GNN is trained by the standard binary cross entropy loss.
+
+

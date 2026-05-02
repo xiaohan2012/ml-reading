@@ -1,0 +1,123 @@
+\clearpage
+\section{Experiment setup details} 
+
+\subsection{Hardware specification and environment}
+We run our experiments on a single machine with Intel i$9$-$10850$K, Nvidia RTX $3090$ GPU, and 64GB RAM memory. 
+The code is written in Python $3.8$ and we use PyTorch $1.12.1$ on CUDA $11.6$ to train the model on the GPU. 
+Implementation details could be found at 
+\begin{center}
+\url{https://github.com/CongWeilin/GraphMixer}.
+\end{center}
+
+\subsection{Details on dataset} \label{section:dataset}
+
+The dataset used in this paper could be automatically downloaded by \href{https://github.com/CongWeilin/GraphMixer/blob/main/DATA/down.sh}{this} script.
+Reddit dataset\footnote{Download from \url{http://snap.stanford.edu/jodie/reddit.csv}} consists of one month of posts made by users on subreddits. The link feature is extracted by converting the text of each post into a feature vector.
+Wikipedia dataset\footnote{Download from \url{http://snap.stanford.edu/jodie/wikipedia.csv}} consists of one month of edits made by edits on Wikipedia pages. The link feature is extracted by converting the edit test into an LIWC-feature vector.
+LastFM dataset\footnote{Download from \url{http://snap.stanford.edu/jodie/lastfm.csv}}: consists of one month of who listens-to-which song information.
+MOOC dataset\footnote{Download from \url{http://snap.stanford.edu/jodie/mooc.csv}} consists of actions  done by students on a MOOC online course.
+GDELT dataset\footnote{Download from \url{https://github.com/amazon-research/tgl/blob/main/down.sh}} is a temporal knowledge graph dataset originated from the Event Database which records events happening in the world from news and articles.
+
+
+\begin{table}[h]
+\caption{Dataset statistic.} \label{table:dataset_stat}
+\centering
+\vspace{-3mm}
+\centering\setlength{\tabcolsep}{1.2mm}
+\scalebox{0.85}{
+\begin{tabular}{ l r r r r r c c c}
+\hline\hline
+       & $|\mathcal{V}|$ & $|\mathcal{E}|$ & $(t_{\max}-t_{\min})/|\mathcal{E}|$ & $\text{dim}(\mathbf{x}_i^\text{node})$ & $\text{dim}(\mathbf{x}_{ij}^\text{link})$ & Node features & Link features & Timestamps\\ \hline\hline
+Reddit & 10,984 & 672,447 & 4& 0 & 172 & No & Yes & Yes\\ 
+Wiki   & 9,227 & 157,474 & 17& 0  & 172  & No & Yes & Yes \\ 
+MOOC   &  7,144 & 411,749 & 3.6 & 0 & 0    & No & No & Yes \\ 
+LastFM & 1,980 & 1,293,103 & 106 & 0 & 0   & No & No & Yes \\ 
+GDELT  & 8,831 & 1,912,909 & 0.1 & 413 & 186 & Yes & Yes & Yes \\
+GDELT-ne & 8,831 & 1,912,909 & 0.1 & 0 & 0 & No & No & Yes\\ 
+GDELT-n & 8,831 & 1,912,909 & 0.1 & 0 & 186 & No & Yes & Yes\\ 
+% GDELT-small (+~/~-) & 8,831 & 1,912,909 & 413~/~0 & 186 \\
+% MAG    & & & 768 & 0  & Link prediction, node classification\\
+\hline
+\hline
+\end{tabular}}
+\end{table}
+
+
+\subsection{Model configurations, training and evaluation process} \label{section:model_config_train_eval_process}
+% \input{section/table/data}/
+
+% \begin{table}[h]
+% \centering
+% \caption{Model configuration for baseline implementation.}\label{table:model_configs}
+% \vspace{-3mm}
+% \scalebox{0.9}{
+% \begin{tabular}{llccccc}
+% \hline\hline
+%       & Neighbor type         & Learning rate & Dropout & Attention dropout & Attention heads & Hidden dims \\ \hline
+% Jodie & 1-hop, Recent      & 0.0001        & 0.1     & -                 & -               & 100              \\ 
+% DySAT & 2-hop, Uniform      & 0.0001        & 0.1     & 0.1               & 2               & 100              \\ 
+% TGAT  & 2-hop, Uniform      & 0.0001        & 0.1     & 0.1               & 2               & 100              \\ 
+% TGN   & 1-hop, Recent      & 0.0001        & 0.2     & 0.2               & 2               & 100              \\ \hline\hline
+% \end{tabular}
+% }
+% \end{table}
+
+
+\noindent\textbf{Baseline implementations.}
+The implementation on JODIE, DySAT, TGAT, TGN, and APPN follows the temporal graph learning framework~\cite{zhou2022tgl}\footnote{The TGL framework can be found at~\url{https://github.com/amazon-research/tgl}}.
+Compared to the original baselines' implementation, this framework's implementation could achieve a better overall score than its original implementation. 
+The implementation of CAWs-mean and CAWs-attn follows their official implementation\footnote{CAW's official implementation can be found at~\url{https://github.com/snap-stanford/CAW}}, we choose the number of random walk steps from $8, 16, 32$ to balance the training time.
+The implementation of TGSRec follows their official implementation\footnote{TGSRec's official implementation can be found at~\url{https://github.com/DyGRec/TGSRec}}.
+The implementation of DDGCL follows their official implementation\footnote{DDGCL's official implementation can be found at~\url{https://github.com/ckldan520/DDGCL}}.
+We directly test using their official implementation by changing our data structure to their required structure and using their default hyper-parameters.
+
+\noindent\textbf{\our implementation.}
+We implement \our under the TGL framework~\cite{zhou2022tgl} and use their default hyper-parameters (e.g., learning rate $0.0001$, weight decay $10^{-6}$, batch size $600$, hidden dimension $100$, etc) to achieve a fair comparison.
+In \oure, there are only two hyper-parameters as introduced in Section~\ref{section:method}: The number of 1-hop most recent neighbors $K$ and the time-slot size $T$. In practice, hyper-parameter $T$ is set the time-gap of the last $2,000$ interactions, which is fixed for all datasets; hyper-parameter $K=10$ for Reddit and LastFM, $K=20$ for MOOC, and $K=30$ for GDELT and Wiki. 
+
+% Specifically, we use batch size as $600$, time and hidden dimension as $100$, and select the model with the highest validation score for evaluation.
+% For DySAT, we use 3 snapshots with the duration of each snapshot to be 10,000 seconds on \textit{Reddit}, \textit{Wiki}, \textit{LastFM}, and \textit{MOOC} and use 6 hours on \textit{GDELT}.  
+% We apply the attention aggregator with 2 attention heads for DySAT, TGAT, and TGN. 
+% We select the learning rate from $\{0.01,0.001,0.0001\}$, dropout ratio from $\{0.1,0.2,0.3,0.4,0.5\}$, and number of neighbors from $\{10, 15, 20, 30\}$. 
+
+\noindent\textbf{Training and evaluation.}
+A unified training and evaluation process (e.g., mini-batch and data preparation) is used for \our and baselines. Specifically, each mini-batch is constructed by first sampling a set of positive node pairs and an equal amount of negative node pairs. Then, an algorithm-dependent node sampler is used to sample the neighboring of each mini-batch node and computed their node representation based on the sampled neighborhood. Finally, we concatenate each node pair and use the link prediction classifier (introduced in Section~\ref{section:method_details}) for binary classification. We conduct experiments under the transduction learning setting and use average precision for evaluation.
+
+% \subsection{Algorithm details of \our}
+% \weilin{maybe we add an algorithm in the appendix to show the details of our method?}
+
+
+\section{More discussion on existing temporal graph methods}\label{section:other_related_work}
+
+\subsection{Recent methods that we do not compare with}
+There are other temporal graph learning algorithms that are related to the temporal link prediction task but we did not compare \our with them because (1) the official implementation of some of the above works are not released by the authors and we could not reproduce their results as reported in the paper, and (2) we already compare many recent baselines that we believe it is enough to verify the success of \oure.
+
+For example, 
+\textit{\textbf{MeTA}}~\cite{wang2021adaptive} proposes data augmentation to overcome the over-fitting issue in temporal graph learning. More specifically, they generate a few graphs with different data augmentation magnitudes and perform the message passing between these graphs to provide adaptively augmented inputs for every prediction.
+\textit{\textbf{TCL}}~\cite{wang2021tcl} proposes to use a transformer to separately extract the temporal neighborhoods representations associated with the two interaction nodes and then utilizes a co-attentional transformer to model inter-dependencies at a semantic level. To boost model performance, contrastive learning is used to maximize mutual information between the predictive representations of two future interaction nodes.
+\textit{\textbf{TNS}}~\cite{wang2021time} proposes a temporal-aware neighbor sampling strategy that can provide an adaptive receptive neighborhood for every node at any time.
+\textit{\textbf{LSTSR}}~\cite{chi2022long} propose Long Short-Term Preference Modeling for Continuous-Time Sequential Recommendation to capture the evolution of short-term preference under dynamic graph.
+\textit{\textbf{DyRep}}~\cite{trivedi2019dyrep} uses RNNs to propagate messages in interactions to update node representations.
+\textit{\textbf{DynAERNN}}~\cite{goyal2018dyngraph2vec} uses a fully connected layer to first encode the network representation, then pass the encoded features to the RNN, and use the fully connected network to decode the future network structure.
+\textit{\textbf{VRGNN}}~\cite{hajiramezanali2019variational} generalizes variational GAE~\cite{kipf2016variational} to temporal graphs, which makes priors dependent on historical dynamics and captures these dynamics using RNN.
+\textit{\textbf{EvolveGCN}}~\cite{pareja2020evolvegcn} uses RNN to estimate GCN parameters for future snapshots.
+\textit{\textbf{DDGCL}}~\cite{DDGCL} is a \emph{SAM-based method} that propose a debiased GAN-type contrastive loss as the learning objective to correct the sampling bias that occurred in the negative sample construction process of temporal graph learning.
+\textit{\textbf{NAT}}~\cite{luo2022neighborhood} maintain two sets of representations for each node, i.e., node representations and link representations. For each node, NAT not only preserve a node representation, but also keep node pair representations for a subset of neighbors of the node. 
+\textit{\textbf{PINT}}~\cite{souza2022provably} studies the expressive power of temporal graph networks using 1-WL test and proposes temporal encoding to boost the expressive power.
+
+\subsection{Why existing methods are conceptually and technically complicated?}
+
+% \begin{tcolorbox}
+% \textit{Please notice that we are not claiming conceptually and technically complicated is bad. Instead, we are simply suggesting that the conceptually and technically complicated simpler methods might be more preferred than the complicated one if they could achieve similar performance.}
+% \end{tcolorbox}
+Please notice that we are not claiming conceptually and technically complicated is bad. Instead, we are simply suggesting that the conceptually and technically complicated simpler methods might be more preferred than the complicated one if they could achieve similar performance.
+
+\begin{itemize} [noitemsep,topsep=0pt,leftmargin=2mm ]
+    \item We say a method is conceptually complicated if the underlying idea behind the method is non-trivial. 
+For example, \textit{\textbf{CAWs}} represents network dynamics by ``motifs extracted using temporal random walks'', represents node identity by ``hitting counts of the nodes based on a set of sampled walks''; \textbf{TGSRec} takes ``temporal collaborative signals'' into consideration. These concepts are non-trivial to understand in the first place and could potentially require much domain knowledge from other fields to understand the behavior of the method.
+    \item We say a method is technically complicated if the method is non-trivial to implement due to many hyper-parameters and many details that need to be taken care of, which could potentially make the application to a real-world scenario challenge.
+For example, \textit{\textbf{JODIE}} and \textit{\textbf{TGN}} require maintaining a ``memory'' for each node by using RNN, and this ``memory'' needs to be reset every time after evaluation because then it might carry information about the evaluation data. \textit{\textbf{CAWs}} extracts features by using multiple temporal random walks, which makes implementing and hyper-parameter fine-tuning more challenging. \textit{\textbf{MeTA}} and \textit{\textbf{TCL}} consider many data augmentation strategies, each of which is not trivial to implement and could affect the model's performance in different ways.
+
+\end{itemize}
+
+

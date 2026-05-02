@@ -1,0 +1,107 @@
+\subsection{Loss landscape on MOOC}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{figure}[t]
+% \centering
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/mooc.pdf}
+%     \vspace{-6mm}
+%     \caption{Evaluation average precision}
+%     % \label{fig:first}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/mooc_train.pdf}
+%     \vspace{-6mm}
+%     \caption{Train average precision}
+%     % \label{fig:second}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/mooc_train_valid_diff.pdf}
+%     \vspace{-6mm}
+%     \caption{Generalization gap}
+    
+% \end{subfigure}
+% \vspace{-2mm}
+% \caption{Comparison of the link prediction average precision (AP) on \textbf{MOOC} dataset.}
+% \label{fig:average_precision_per_epochs_mooc}
+% \end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_tgat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_dysat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mixer_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{blue}{Contour}) on \textbf{MOOC} Dataset.}
+\label{fig:landscape_2d_mooc}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+    % \label{fig:first}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_tgat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+    % \label{fig:second}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_dysat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mooc_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/mooc_landscape_mixer_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{red}{Surface}) on \textbf{MOOC} Dataset.}
+\label{fig:landscape_3d_mooc}
+\end{figure}

@@ -1,0 +1,405 @@
+ \pdfoutput=1 
+ \documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_data_2024
+
+% ready for submission
+\usepackage[preprint]{neurips_data_2024}
+
+% to compile a preprint version, add the [preprint] option, e.g.:
+%     \usepackage[preprint]{neurips_data_2024}
+% This will indicate that the work is currently under review.
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_data_2024}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_data_2024}
+
+% Submissions to the datasets and benchmarks are typically non anonymous,
+% but anonymous submissions are allowed. If you feel that you must submit 
+% anonymously, you can compile an anonymous version by adding the [anonymous] 
+% option, e.g.:
+%     \usepackage[anonymous]{neurips_data_2024}
+% This will hide all author names.
+
+\usepackage{subfigure}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{array}
+\usepackage{comment}
+\usepackage{bbding}
+\usepackage{catchfile}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+
+%\usepackage{hyperref}       % hyperlinks
+%\usepackage[options]{nohyperref}  % This makes hyperref commands do nothing without errors
+%\usepackage[draft]{hyperref}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{url}            % simple URL typesetting
+\renewcommand{\baselinestretch}{0.98}
+
+
+\usepackage{booktabs}       % professional-quality tables
+\newcommand{\mr}[2]{\multirow{#1}{*}{#2}}
+\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\usepackage{amsmath,amsthm,amssymb,bm} % define this before the line numbering.
+\usepackage{xspace}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{stmaryrd}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{times}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{graphicx} % more modern
+\usepackage{algorithm}
+\usepackage{algorithmicx,algpseudocode}
+\usepackage{hyperref}
+\usepackage{sidecap}
+\usepackage{wrapfig}
+\usepackage{natbib}
+\usepackage{colortbl}
+\usepackage{arydshln}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{makecell}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+
+
+% \usepackage[symbol]{footmisc}
+
+% \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+% define the style for code examples rendered by listings
+\definecolor{dkred}{rgb}{0.5,0,0}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  morekeywords={import,from,class,def,for,while,if,is,in,elif,else,not,and,or,print,break,continue,return,True,False,None,access,as,,del,except,exec,finally,global,import,lambda,pass,print,raise,try,assert},
+  numbers=none,
+  numberstyle=\tiny\color{blue},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  frame = single, 
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  literate={0}{{\textcolor{dkred}{0}}}{1}%
+           {1}{{\textcolor{dkred}{1}}}{1}%
+           {2}{{\textcolor{dkred}{2}}}{1}%
+           {3}{{\textcolor{dkred}{3}}}{1}%
+           {4}{{\textcolor{dkred}{4}}}{1}%
+           {5}{{\textcolor{dkred}{5}}}{1}%
+           {6}{{\textcolor{dkred}{6}}}{1}%
+           {7}{{\textcolor{dkred}{7}}}{1}%
+           {8}{{\textcolor{dkred}{8}}}{1}%
+           {9}{{\textcolor{dkred}{9}}}{1}%
+           {.0}{{\textcolor{dkred}{.0}}}{2}% Following is to ensure that only periods
+           {.1}{{\textcolor{dkred}{.1}}}{2}% followed by a digit are changed.
+           {.2}{{\textcolor{dkred}{.2}}}{2}%
+           {.3}{{\textcolor{dkred}{.3}}}{2}%
+           {.4}{{\textcolor{dkred}{.4}}}{2}%
+           {.5}{{\textcolor{dkred}{.5}}}{2}%
+           {.6}{{\textcolor{dkred}{.6}}}{2}%
+           {.7}{{\textcolor{dkred}{.7}}}{2}%
+           {.8}{{\textcolor{dkred}{.8}}}{2}%
+           {.9}{{\textcolor{dkred}{.9}}}{2}%,
+}
+
+\numberwithin{equation}{section}
+\sidecaptionvpos{figure}{t}
+
+
+\def\sint{\begingroup\textstyle\int\endgroup} % small integral
+
+\newcommand{\tbl}[1]{\textsc{#1}\xspace} %relational table
+\newcommand{\clm}[1]{\textsc{#1}\xspace} %column in a relational table
+
+\newcommand{\reals}{\mathbf{R}}
+\newcommand{\integers}{\mathbf{Z}}
+\newcommand{\naturals}{\mathbf{N}}
+\newcommand{\rationals}{\mathbf{Q}}
+
+% Caligraphic alphabet
+\newcommand{\calr}{\mathcal{R}} % only because \cr already taken
+%\newcommand{\ca}{\mathcal{A}} \newcommand{\cb}{\mathcal{B}} \newcommand{\cc}{\mathcal{C}} \newcommand{\cd}{\mathcal{D}} \newcommand{\ce}{\mathcal{E}} \newcommand{\cf}{\mathcal{F}} \newcommand{\cg}{\mathcal{G}} \newcommand{\ch}{\mathcal{H}} \newcommand{\ci}{\mathcal{I}} \newcommand{\cj}{\mathcal{J}} \newcommand{\ck}{\mathcal{K}} \newcommand{\cl}{\mathcal{L}} \newcommand{\cm}{\mathcal{M}} \newcommand{\cn}{\mathcal{N}} \newcommand{\co}{\mathcal{O}} \newcommand{\cp}{\mathcal{P}} \newcommand{\cq}{\mathcal{Q}} \newcommand{\cs}{\mathcal{S}} \newcommand{\ct}{\mathcal{T}} \newcommand{\cu}{\mathcal{U}} \newcommand{\cv}{\mathcal{V}} \newcommand{\cw}{\mathcal{W}} \newcommand{\cx}{\mathcal{X}} \newcommand{\cy}{\mathcal{Y}} \newcommand{\cz}{\mathcal{Z}}
+
+\newcommand{\ind}[1]{1_{#1}} % Indicator function
+\newcommand{\pr}{\mathbb{P}} % Generic probability
+\newcommand{\ex}{\mathbb{E}} % Generic expectation
+\newcommand{\var}{\textrm{Var}}
+\newcommand{\cov}{\textrm{Cov}}
+\newcommand{\sgn}{\textrm{sgn}}
+\newcommand{\kl}{\textrm{KL}} 
+
+\newcommand{\law}{\mathcal{L}}  % \law{X}, the measure associated with r.v. X
+\newcommand{\normal}{N} % for normal distribution (can probably skip this)
+
+% Convergence
+\newcommand{\convd}{\stackrel{d}{\longrightarrow}} % convergence in distribution/law/measure
+\newcommand{\convp}{\stackrel{p}{\longrightarrow}} % convergence in probability
+\newcommand{\convas}{\stackrel{\textrm{a.s.}}{\longrightarrow}} % convergence almost surely
+
+\newcommand{\eqd}{\stackrel{d}{=}} % equal in distribution/law/measure
+\newcommand{\conv}{\textrm{conv}} % for denoting the convex hull
+
+\newcommand{\inv}[1]{{#1}^{-1}}
+% Theorem-like declarations
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\refalgo}[1]{Alg.~\ref{#1}}
+\newcommand{\refsec}[1]{Sec.~\ref{#1}}
+\newcommand{\reffig}[1]{Fig.~\ref{#1}}
+\newcommand{\reftab}[1]{Tab.~\ref{#1}}
+\newcommand{\refeq}[1]{Eq.~\ref{#1}}
+\newcommand{\refdef}[1]{Def.~\ref{#1}}
+\newcommand{\refthm}[1]{Thm.~\ref{#1}}
+\newcommand{\reflem}[1]{Lemma~\ref{#1}}
+\newcommand{\refcor}[1]{Corr.~\ref{#1}}
+
+\newcommand{\bp}{\mathbb{P}}
+
+\newcommand{\Ph}{\widehat{P}_k}
+\newcommand{\PC}{P_{\cc,k}}
+\newcommand{\Lc}{\widetilde{L}}
+\newcommand{\Yt}{\widetilde{Y}}
+\newcommand{\Pt}{\widetilde{P}}
+\newcommand{\Oc}{\mathcal{O}}
+
+\newcommand{\dist}{\kappa_{\Pi}} % distortion ratio 
+\newcommand{\pns}{\delta_{\Pi}} % probability of non-singularity (delta(M,k))
+\newcommand{\epsm}{\varepsilon_{\Pi}} % 1+\dist, epsilon(M, k)
+\newcommand{\nys}{Nystr\"om}
+
+\newcommand{\leftgr}[1]{{#1}^{\text{lr}}} % \leftgr
+\newcommand{\rightgr}[1]{{#1}^{\text{rr}}} % \rightgr
+\newcommand{\lobatto}[1]{{#1}^{\text{lo}}} % \tilde
+
+\newcommand{\loss}{\textrm{loss}}
+
+
+\newcommand{\nlsum}{\sum\nolimits}
+\newcommand{\set}[1]{\left\lbrace #1\right\rbrace}
+\DeclareMathOperator{\sspan}{span}
+
+\newcount\COMMENTs  % 0 suppresses notes to selves in text
+\COMMENTs=1   % TODO: set to 0 for final version
+\usepackage{color}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{purple}{rgb}{1,0,1}
+\newcommand{\comm}[2]{\ifnum\COMMENTs=1\textcolor{#1}{#2}\fi}
+% add yourself here:
+\newcommand{\kexin}[1]{\comm{magenta}     {[Kexin: #1]}}
+%\newcommand{\revise}[1]{\comm{purple}     {[Revise #1]}}
+\newcommand{\jure}[1]{\comm{purple}      {[JL: #1]}}
+\newcommand{\wh}[1]  {\comm{cyan}   {[WH: #1]}}
+\newcommand{\mf}[1]{\textcolor{red}{[MF: #1]}}
+% \newcommand{\hr}[1]{\comm{blue}      {[Hongyu: #1]}}
+\newcommand{\jr}[1]  {\comm{purple}   {[JR: #1]}}
+\newcommand{\rishabh}[1]{\comm{orange}{[RR: #1]}}
+\newcommand{\jiaqi}[1]{\comm{blue}{[Jiaqi: #1]}}
+\newcommand{\jel}[1]{\comm{blue}{[Jan: #1]}}
+\newcommand{\alejandro}[1]{\comm{red}      {[AD: #1]}}
+
+\newcommand{\xhdr}[1]{{\noindent\bfseries #1}.}
+
+\newcommand{\yd}[1]{\textit{{\color{blue} [ YD: #1]}}}
+\newcommand{\hide}[1]{} %hide
+\newcommand{\vpara}[1]{\vspace{0.05in}\noindent\textbf{#1 }}
+
+\newcount\REVISEs  % 0 suppresses notes to selves in text
+\REVISEs=0   % TODO: set to 0 for final version
+\usepackage{color}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{purple}{rgb}{1,0,1}
+\newcommand{\commm}[2]{\ifnum\REVISEs=1\textcolor{#1}{#2}\else#2\fi}
+% add yourself here:
+\newcommand{\revise}[1]{\commm{purple} {#1}}
+
+\newcommand{\single}{observation\xspace}
+\newcommand{\multi}{sample\xspace}
+\newcommand{\multis}{samples\xspace}
+
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\cf}{\textit{cf.}}
+\definecolor{customgray}{rgb}{0.3,0.3,0.3}
+\definecolor{customgreen}{RGB}{140,211,89}
+\newcommand{\std}[1]{\textcolor{customgray}{\scriptsize{$\pm$#1}}}
+
+
+\newcommand{\relbench}{\textsc{RelBench}\xspace}
+
+\newcommand{\amazon}{\texttt{rel-amazon}\xspace}
+\newcommand{\userChurn}{\texttt{user-churn}\xspace}
+\newcommand{\userLtv}{\texttt{user-ltv}\xspace}
+\newcommand{\itemChurn}{\texttt{item-churn}\xspace}
+\newcommand{\itemLtv}{\texttt{item-ltv}\xspace}
+\newcommand{\userItemPurchase}{\texttt{user-item-purchase}\xspace}
+\newcommand{\userItemRate}{\texttt{user-item-rate}\xspace}
+\newcommand{\userItemReview}{\texttt{user-item-review}\xspace}
+
+\newcommand{\fone}{\texttt{rel-f1}\xspace}
+\newcommand{\driverPosition}{\texttt{driver-position}\xspace}
+\newcommand{\driverConstructorResult}{\texttt{driver-constructor-result}\xspace}
+\newcommand{\driverDNF}{\texttt{driver-dnf}\xspace}
+\newcommand{\driverTopThree}{\texttt{driver-top3}\xspace}
+
+\newcommand{\handm}{\texttt{rel-hm}\xspace}
+% \newcommand{\userChurn}{\texttt{user-churn}\xspace}
+\newcommand{\itemSales}{\texttt{item-sales}\xspace}
+% \newcommand{\userItemPurchase}{\texttt{user-item-purchase}\xspace}
+
+\newcommand{\event}{\texttt{rel-event}\xspace}
+\newcommand{\userAttendance}{\texttt{user-attendance}\xspace}
+\newcommand{\userIgnore}{\texttt{user-ignore}\xspace}
+\newcommand{\userRepeat}{\texttt{user-repeat}\xspace}
+
+\newcommand{\avito}{\texttt{rel-avito}\xspace}
+\newcommand{\userClick}{\texttt{user-clicks}\xspace}
+\newcommand{\userVisit}{\texttt{user-visits}\xspace}
+\newcommand{\userAdVisit}{\texttt{user-ad-visit}\xspace}
+\newcommand{\adsCTR}{\texttt{ad-ctr}\xspace}
+
+\newcommand{\stackex}{\texttt{rel-stack}\xspace}
+\newcommand{\userEngage}{\texttt{user-engagement}\xspace}
+\newcommand{\postVotes}{\texttt{post-votes}\xspace}
+\newcommand{\userBadge}{\texttt{user-badge}\xspace}
+\newcommand{\userPostComment}{\texttt{user-post-comment}\xspace}
+\newcommand{\postPostLinked}{\texttt{post-post-related}\xspace}
+
+\newcommand{\trials}{\texttt{rel-trial}\xspace}
+\newcommand{\studyOutcome}{\texttt{study-outcome}\xspace}
+\newcommand{\studyAdverse}{\texttt{study-adverse}\xspace}
+\newcommand{\studyWithdrawal}{\texttt{study-withdrawal}\xspace}
+\newcommand{\facilitySuccess}{\texttt{site-success}\xspace}
+\newcommand{\sponsorConditionRec}{\texttt{condition-sponsor-run}\xspace}
+\newcommand{\sponsorFacilityRec}{\texttt{site-sponsor-run}\xspace}
+
+
+\newcommand{\userstudy}{\url{https://github.com/snap-stanford/relbench-user-study}\xspace}
+\newcommand{\relbenchgit}{\url{https://github.com/snap-stanford/relbench}\xspace}
+\newcommand{\website}{\url{https://relbench.stanford.edu}\xspace}
+
+
+\definecolor{darkblue}{rgb}{0.0,0.0,0.65}
+\definecolor{darkred}{rgb}{0.68,0.05,0.0}
+\definecolor{darkgreen}{rgb}{0.0,0.29,0.29}
+\definecolor{darkpurple}{rgb}{0.47,0.09,0.29}
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+
+%# Algorithm2e package
+\definecolor{keywordcolor}{RGB}{0,0,128}
+\definecolor{commentcolor}{RGB}{0,128,0}
+\definecolor{stringcolor}{RGB}{163,21,21}
+\usepackage{hyperref}
+\hypersetup{
+   colorlinks = true,
+   citecolor  = darkblue,
+   linkcolor  = darkred,
+   filecolor  = darkblue,
+   urlcolor   = darkblue,
+ }
+\newcommand*{\img}[1]{%
+    \raisebox{-.1\baselineskip}{%
+        \includegraphics[
+        height=\baselineskip,
+        width=\baselineskip,
+        keepaspectratio,
+        ]{#1}%
+    }%
+}
+\newcommand*\samethanks[1][\value{footnote}]{\footnotemark[#1]}
+\title{\img{figs/RelBench_favicon.png}~\relbench: A Benchmark for Deep Learning \\ on Relational Databases}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{
+Joshua Robinson$^{1}\thanks{Equal contribution, order chosen randomly. First authors may swap the ordering for professional purposes.}$, Rishabh Ranjan$^{1}\samethanks$, Weihua Hu$^{2}\samethanks$, Kexin Huang$^{1}\samethanks$, \\ \bf Jiaqi Han$^1$, Alejandro Dobles$^1$, Matthias Fey$^2$, Jan E. Lenssen$^{2,3}$, \\ \bf Yiwen Yuan$^2$, Zecheng Zhang$^2$, Xinwei He$^2$, Jure Leskovec$^{1,2}$ \\
+$^1$Stanford University $^2$Kumo.AI $^3$Max Planck Institute for Informatics\\ \\ 
+ \website}
+
+
+
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract.tex}
+\input{sections/intro.tex}
+\input{sections/design.tex}
+\input{appendix/implementation}
+\input{sections/datasets.tex}
+\input{sections/tasks.tex}
+\input{sections/userstudy.tex}
+% \input{sections/package.tex}
+\input{sections/related.tex}
+\input{sections/conclusion.tex}
+\input{sections/ack.tex}
+
+\bibliography{refs}
+\bibliographystyle{mynat}
+
+% \newpage
+% \input{neurips/checklist.tex}
+
+\newpage
+\appendix
+
+\input{appendix/dummy.tex}
+\input{appendix/gnn_ablations}
+\input{appendix/user_study_additional}
+\input{appendix/data_details}
+\input{appendix/table_stats}
+\input{appendix/broader_impact}
+\end{document}

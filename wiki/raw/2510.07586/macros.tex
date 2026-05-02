@@ -1,0 +1,71 @@
+\newcommand{\ah}[1]{{{\textcolor{blue}{\textbf{AH: }}}{\textcolor{blue}{#1}}}}
+\newcommand{\jc}[1]{{{\textcolor{purple}{\textbf{JC: }}}{\textcolor{purple}{#1}}}}
+\newcommand{\bn}[1]{{{\textcolor{orange}{\textbf{Bao: }}}{\textcolor{orange}{#1}}}}
+\newcommand{\fp}[1]{{{\textcolor{purple}{\textbf{FP: }}}{\textcolor{orange}{#1}}}}
+\newcommand{\ap}[1]{{{\textcolor{green}{\textbf{AP: }}}{\textcolor{green}{#1}}}}
+\newcommand{\name}{TGM\xspace}
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+
+
+\newcommand{\etc}{et al.\xspace}
+\renewcommand{\vec}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\vecs}[1]{\ensuremath{\mathbf{\boldsymbol{#1}}}}
+\newcommand{\mat}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\mats}[1]{\ensuremath{\mathbf{\boldsymbol{#1}}}}
+\newcommand{\ten}[1]{\mat{\ensuremath{\boldsymbol{\mathcal{#1}}}}}
+
+\newcommand{\vectorize}[1]{\mathrm{vec}\left(#1\right)}
+\newcommand{\rank}[1]{\mathrm{rank}(#1)}
+%
+% Tensor operations
+\newcommand{\kron}{\otimes}
+\newcommand{\krao}{\odot}
+\newcommand{\outprod}{\circ}
+\newcommand{\mlrank}[1]{\mathrm{rank}_{\textit{ml}}(#1)}
+\newcommand{\cprank}[1]{\mathrm{rank}_{\textit{CP}}(#1)}
+\newcommand{\ttm}[1]{\times_{#1}}
+\newcommand{\ttv}[1]{\bullet_{#1}}
+\newcommand{\tenmat}[2]{#1_{(#2)}}
+\newcommand{\CP}[1]{\llbracket #1 \rrbracket}
+\newcommand{\Tucker}[1]{\llbracket #1 \rrbracket}
+\newcommand{\TT}[1]{\llangle #1 \rrangle}
+
+\usepackage{pifont}
+\newcommand{\xmark}{\ding{55}}
+
+
+% \newcommand{\first}[1]{\textbf{\textcolor{red}{#1}}}
+% \newcommand{\second}[1]{\underline{\textcolor{blue}{#1}}}
+% \newcommand{\third}[1]{\emph{\textcolor{violet}{#1}}}
+\definecolor{firstcolour}{HTML}{265D86}
+\definecolor{secondcolour}{HTML}{B65A3E}
+\definecolor{MutedRed}{HTML}{BF616A}
+\definecolor{MonospaceDark}{HTML}{1F232A}
+
+\newcommand{\cfirst}[1]{\textcolor{firstcolour}{\textbf{#1}}}
+\newcommand{\csecond}[1]{\textcolor{secondcolour}{\textbf{\textit{#1}}}}
+%\newcommand{\cna}{N/A\xspace} % nice cross mark
+%\newcommand{\cna}{\textcolor{MutedRed}{\xmark}} % nice cross mark
+\newcommand{\cna}{{\scriptsize {\textcolor{MonospaceDark}{\ding{53} }}}} % nice cross mark
+
+
+\newcommand{\hfirst}{\textcolor{firstcolour}{\textbf{first}}}
+\newcommand{\hsecond}{\textcolor{secondcolour}{\textbf{\textit{second}}}}
+

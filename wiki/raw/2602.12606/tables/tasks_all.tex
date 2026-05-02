@@ -1,0 +1,127 @@
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Full list of tasks.}}
+  \label{tab:relbench_tasks_full}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \begin{tabular}{lllrrrrrr}
+    \toprule
+      \mr{2}{Dataset} &
+      \mr{2}{Task name} &
+      \mr{2}{Task type} &
+      \mc{3}{c}{\#Rows of training table} &
+      \mr{2}{\#Unique Entities} &
+      \mr{2}{\%train/test Entity Overlap} &
+      \mr{2}{\#Dst Entities} \\
+      \cmidrule(lr){4-6}
+      & & & Train & Validation & Test & & & \\
+    \midrule
+
+    \mr{7}{rel-amazon}
+    & user-churn & entity-cls & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0 & -- \\
+    & item-churn & entity-cls & 2,559,264 & 177,689 & 166,842 & 416,352 & 93.1 & -- \\
+    & user-ltv & entity-reg & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0 & -- \\
+    & item-ltv & entity-reg & 2,707,679 & 166,978 & 178,334 & 427,537 & 93.5 & -- \\
+    & user-item-purchase & recommendation & 5,112,803 & 351,876 & 393,985 & 1,632,909 & 87.4 & 12,562,384 \\
+    & user-item-rate & recommendation & 3,667,157 & 257,939 & 292,609 & 1,481,360 & 81.0 & 7,665,611 \\
+    & user-item-review & recommendation & 2,324,177 & 116,970 & 127,021 & 894,136 & 74.1 & 5,406,835 \\
+    & review-rating & auto-reg  & 11,822,796 & 806,355 & 8,217,532 & 17,255,399 & 40.5 & -- \\
+    & review-verified & auto-bcls & 11,822,796 & 806,355 & 8,217,532 & 17,255,399 & 40.5 & -- \\
+    \midrule
+
+    \mr{4}{rel-arxiv}
+    & paper-citation & entity-cls & 534,233 & 155,845 & 193,696 & 136,183 & 70.31 & -- \\
+    & author-category & entity-cls & 210,769 & 39,015 & 39,655 & 126,219 & 62.15 & -- \\
+    & author-publication & entity-reg & 210,769 & 39,015 & 39,655 & 101,886 & 62.15 & -- \\
+    & paper-paper-cocitation & recommendation & 246,341 & 71,257 & 82,033 & 94,289 & 60.57 & 138,688 \\
+    \midrule
+
+    \mr{4}{rel-avito}
+    & ad-ctr & entity-reg & 5,100 & 1,766 & 1,816 & 4,997 & 59.8 & -- \\
+    & user-clicks & entity-cls & 59,454 & 21,183 & 47,996 & 66,449 & 45.3 & -- \\
+    & user-visits & entity-cls & 86,619 & 29,979 & 36,129 & 63,405 & 64.6 & -- \\
+    & user-ad-visit & recommendation & 86,616 & 29,979 & 36,129 & 63,402 & 64.6 & 3,616,174 \\
+    & searchstream-click & auto-bcls & 2,212,750 & 1,177,380 & 924,990 & 3,976,413 & 23.8 & -- \\
+    & searchinfo-isuserloggedon & auto-bcls & 1,291,566 & 695,590 & 592,133 & 2,579,289 & 0.0  & -- \\
+    \midrule
+
+    \mr{3}{rel-event}
+    & user-attendance & entity-reg & 19,261 & 2,014 & 2,006 & 9,694 & 14.6 & -- \\
+    & user-repeat & entity-cls & 3,842 & 268 & 246 & 1,514 & 11.5 & -- \\
+    & user-ignore & entity-cls & 19,239 & 4,185 & 4,010 & 9,799 & 21.1 & -- \\
+    & event\_interest-interested & auto-bcls & 14,442 & 536  & 420  & 14,992 & 94.5 & -- \\
+    & event\_interest-not\_interested & auto-bcls & 14,442 & 536 & 420 & 14,992 & 94.5 & -- \\
+    & users-birthyear & auto-reg  & 33,937 & 1,731 & 1,002 & 36,670 & 0.0  & -- \\
+    \midrule
+
+    \mr{3}{rel-f1}
+    & driver-dnf & entity-cls & 11,411 & 566 & 702 & 821 & 50.0 & -- \\
+    & driver-top3 & entity-cls & 1,353 & 588 & 726 & 134 & 50.0 & -- \\
+    & driver-position & entity-reg & 7,453 & 499 & 760 & 826 & 44.6 & -- \\
+    & driver-circuit-compete & recommendation & 2,649 & 27 & 0 & 771 & 0.0 & 743 \\
+    & results-position & auto-reg & 8,997 & 1,400 & 4,798 & 15,195 & 0.0 & -- \\
+    & qualifying-position & auto-reg & 2,228 & 1,854 & 5,733 & 9,815 & 0.0 & -- \\
+    & constructor\_results-points & auto-reg & 8,481 & 927 & 2,882 & 12,290 & 0.0 & -- \\
+    & constructor\_standings-position & auto-reg & 9,229 & 941 & 2,881 & 13,051 & 0.0 & -- \\
+    
+    \midrule
+
+    \mr{3}{rel-hm}
+    & user-churn & entity-cls & 3,871,410 & 76,556 & 74,575 & 1,002,984 & 89.7 & -- \\
+    & item-sales & entity-reg & 5,488,184 & 105,542 & 105,542 & 105,542 & 100.0 & -- \\
+    & user-item-purchase & recommendation & 3,878,451 & 74,575 & 67,144 & 1,004,046 & 89.2 & 13,428,473 \\
+    & transactions-price & auto-reg & 14,844,291 & 235,662 & 266,364 & 15,346,317 & 0.0 & -- \\
+    \midrule
+
+    \mr{1}{rel-mimic}
+    & patient-iculengthofstay & entity-cls & 13,816 & 2,699 & 2,445 & 13,816 & 0.00 & -- \\
+    \midrule
+
+    \mr{8}{rel-ratebeer}
+    & beer-churn & entity-bcls & 2,470,686 & 92,367 & 79,927 & 516,368 & 45.46 & -- \\
+    & user-churn & entity-bcls & 373,709 & 19,908 & 9,392 & 154,071 & 35.21 & -- \\
+    & brewer-dormant & entity-bcls & 98,697 & 15,840 & 16,366 & 28,333 & 64.07 & -- \\
+    & user-count & entity-reg & 373,709 & 19,908 & 9,392 & 154,071 & 35.21 & -- \\
+    & user-beer-favorite & recommendation & 1,099 & 1,043 & 499 & 2,296 & 10.82 & 7,745 \\
+    & user-beer-liked & recommendation & 150,322 & 5,681 & 2,783 & 35,010 & 58.53 & 170,964 \\
+    & user-place-liked & recommendation & 38,444 & 547 & 351 & 7,425 & 81.77 & 46,814 \\
+    & beer\_ratings-total\_score & auto-reg & 10,620,177 & 1,227,702 & 2,495,360 & 14,343,239 & 0.0 & -- \\
+    \midrule
+
+    \mr{8}{rel-salt}
+    & item-plant & auto-mcls & 1,622,787 & 293,823 & 400,206 & 2,316,816 & 0.0 & -- \\
+    & item-shippoint & auto-mcls & 1,622,787 & 293,780 & 398,536 & 2,315,103 & 0.0 & -- \\
+    & item-incoterms & auto-mcls & 1,622,787 & 293,891 & 402,835 & 2,319,513 & 0.0 & -- \\
+    & sales-office & auto-mcls & 340,491 & 71,474 & 88,942 & 500,907 & 0.0 & -- \\
+    & sales-group & auto-mcls & 340,491 & 70,224 & 83,193 & 493,908 & 0.0 & -- \\
+    & sales-payterms & auto-mcls & 340,491 & 71,472 & 88,831 & 500,794 & 0.0 & -- \\
+    & sales-shipcond & auto-mcls & 340,491 & 71,398 & 88,422 & 500,311 & 0.0 & -- \\
+    & sales-incoterms & auto-mcls & 340,491 & 71,470 & 88,925 & 500,886 & 0.0 & -- \\
+    \midrule
+
+    \mr{5}{rel-stack}
+    & user-engagement & entity-cls & 1,360,850 & 85,838 & 88,137 & 88,137 & 97.4 & -- \\
+    & user-badge & entity-cls & 3,386,276 & 247,398 & 255,360 & 255,360 & 96.9 & -- \\
+    & post-votes & entity-reg & 2,453,921 & 156,216 & 160,903 & 160,903 & 97.1 & -- \\
+    & user-post-comment & recommendation & 21,239 & 825 & 758 & 11,453 & 59.9 & 44,940 \\
+    & post-post-related & recommendation & 5,855 & 226 & 258 & 5,924 & 8.5 & 7,456 \\
+    & badges-class & auto-mcls & 448,358 & 15,105 & 127,370 & 590,833 & 0.0 & -- \\
+    & postlinks-linktypeid & auto-bcls & 74,435 & 2,902 & 26,632 & 103,969 & 0.0 & -- \\
+
+    \midrule
+
+    \mr{5}{rel-trial}
+    & study-outcome & entity-cls & 11,994 & 960 & 825 & 13,779 & 0.0 & -- \\
+    & study-adverse & entity-reg & 43,335 & 3,596 & 3,098 & 50,029 & 0.0 & -- \\
+    & site-success & entity-reg & 151,407 & 19,740 & 22,617 & 129,542 & 42.0 & -- \\
+    & condition-sponsor-run & recommendation & 36,934 & 2,081 & 2,057 & 3,956 & 98.4 & 533,624 \\
+    & site-sponsor-run & recommendation & 669,310 & 37,003 & 27,428 & 445,513 & 48.3 & 1,565,463 \\
+    & studies-enrollment & auto-reg  & 233,072 & 14,470 & 23,430 & 270,972 & 0.0 & -- \\
+    & studies-has\_dmc & auto-bcls & 202,840 & 11,983 & 18,944 & 233,767 & 0.0 & -- \\
+    & eligibilities-adult & auto-bcls & 234,366 & 14,470 & 23,430 & 272,266 & 0.0 & -- \\
+    & eligibilities-child & auto-bcls & 234,366 & 14,470 & 23,430 & 272,266 & 0.0 & -- \\
+    \bottomrule
+
+  \end{tabular}
+  \vspace{-10pt}
+\end{table}

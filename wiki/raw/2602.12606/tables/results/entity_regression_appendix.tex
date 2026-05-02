@@ -1,0 +1,12 @@
+\begin{tabular}{lllrrrrrrr}
+\toprule
+Dataset & Task & Split & Zero & Mean & Median & Ent. Mean & Ent. Med. & LightGBM & GNN \\
+\midrule
+\multirow[c]{2}{*}{\texttt{rel-arxiv}} & \multirow[c]{2}{*}{\texttt{author-publication}} & Val & $1.681$ & $0.864$ & $0.681$ & $0.827$ & $0.804$ & $0.681_{\pm 0.000}$ & $\bm{0.435}_{\pm 0.008}$ \\
+ &  & Test & $1.577$ & $0.769$ & $0.577$ & $0.879$ & $0.874$ & $0.577_{\pm 0.000}$ & $\bm{0.513}_{\pm 0.008}$ \\
+\cmidrule{1-10} \cmidrule{2-10}
+\multirow[c]{2}{*}{\texttt{rel-ratebeer}} & \multirow[c]{2}{*}{\texttt{user-count}} & Val & $11.255$ & $28.892$ & $11.255$ & $8.363$ & $7.866$ & $7.065_{\pm 0.058}$ & $\bm{5.813}_{\pm 0.031}$ \\
+ &  & Test & $15.124$ & $29.050$ & $15.124$ & $13.883$ & $13.079$ & $20.350_{\pm 9.536}$ & $\bm{7.374}_{\pm 0.102}$ \\
+% \cmidrule{1-10} \cmidrule{2-10}
+\bottomrule
+\end{tabular}

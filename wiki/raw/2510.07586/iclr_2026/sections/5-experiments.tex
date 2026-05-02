@@ -1,0 +1,205 @@
+\section{Experiments} \label{sec:exp}
+
+
+In this section, we evaluate \name along two dimensions central to its design: efficiency and research extensibility. Correctness results are deferred to Appendix~\ref{app:correctness}, where we show that \name faithfully reproduces prior library performance. The appendix also includes peak memory measurements (~\ref{sec:gpu}) and a detailed runtime breakdown (~\ref{sec:profiler}) collected with \name’s profiling tools.
+
+
+
+
+\subsection{Efficiency Benchmark} \label{sub:efficiency}
+
+We evaluate \name on two standard TGL tasks: dynamic link property prediction and dynamic node property prediction. Because graph discretization is a core operation in DTDG methods, we additionally benchmark the efficiency of \name in this setting. All datasets are stored in CPU host memory and transferred to GPU when required. Full experimental details, including model hyperparameters and compute resources, are provided in Appendix~\ref{app:details}.
+
+
+
+\begin{table*}[t]
+\centering
+\caption{Training time per epoch (seconds, ↓) for link property prediction. The \hfirst \text{} and \hsecond \text{} best results are highlighted (\cna \text{} marks unsupported). \name achieves competitive performance to the system-optimized TGLite library on TGAT and TGN models while supporting a broader range of architectures, and consistently outperforms the widely used research library DyGLib across all datasets and models, delivering a $4.4\times$ speedup on the transformer-based DyGFormer architecture.}
+\label{tab:link_prop_perf}
+
+%================ Link Property Prediction =================%
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l|rrrr|rrrr|rrrr}
+\toprule
+\multirow{2}{*}{Model} 
+& \multicolumn{4}{c|}{\texttt{Wikipedia}} 
+& \multicolumn{4}{c|}{\texttt{Reddit}} 
+& \multicolumn{4}{c}{\texttt{LastFM}} \\
+& \name & DyGLib & TGLite & TGL 
+& \name & DyGLib & TGLite & TGL  
+& \name & DyGLib & TGLite & TGL  \\
+\midrule
+TGAT       & \csecond{6.97} & 41.24 & \cfirst{4.85} & 10.00 & \csecond{28.23} & 182.21 & \cfirst{25.00} & 53.25 & \csecond{55.32} & 349.31 & \cfirst{38.00} & 85.12 \\
+TGN        & \csecond{10.59} & 63.37 & \cfirst{6.80} & 23.32 & \csecond{61.25} & 287.06 & \cfirst{60.50} & 125.23 & \cfirst{91.23} & 392.98 & \csecond{92.93} & 250.00 \\
+DyGFormer  & \cfirst{17.00} & \csecond{75.10} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{72.29} & \csecond{326.60} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{142.40} & \csecond{633.99} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+TPNet      & \cfirst{12.28} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{49.79} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{97.23} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+GCLSTM     & \cfirst{3.56} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c|}{\cna}  & \cfirst{9.17} & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c|}{\cna}  & \cfirst{140.69} & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna} \\
+GCN        & \cfirst{2.50} & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c|}{\cna}  & \cfirst{7.88} & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c|}{\cna}  & \cfirst{96.89} & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna}  & \multicolumn{1}{c}{\cna} \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+
+\textbf{Link Property Prediction.} We benchmark \name against state-of-the-art libraries on the dynamic link property prediction task using three standard datasets: \texttt{Wikipedia}, \texttt{Reddit}, and \texttt{LastFM}~\footnote{Referred to as tgbl-wiki, tgbl-subreddit, and tgbl-lastfm in TGB.}. Competing baselines include DyGLib~\citep{dygfomer}, TGL~\citep{tgl_paper}, and TGLite~\citep{10.1145/3620665.3640414}, all of which are designed primarily for continuous-time models.
+Table~\ref{tab:link_prop_perf} reports training time per epoch across models implemented in \name and competing libraries. First, \name uniquely supports the widest range of architectures, spanning both CTDG and DTDG methods. In particular, DTDG models such as GCLSTM and GCN are supported via graph discretization and iterate-by-time functionality, and \name is the only library with native support for TPNet~\citep{DBLP:conf/nips/LuSZL24}, the state-of-the-art link prediction model on TGB as of September 2025. Second, \name consistently ranks among the top two fastest implementations across datasets and models. It outperforms DyGLib and TGL in all cases, and is only slightly behind the highly specialized TGLite on TGAT and TGN. For example, \name achieves a $4.4\times$ speedup over the alternative DyGFormer implementation on \texttt{Wikipedia}. A key driver of performance is our fully vectorized recency sampler, implemented with a circular buffer in PyTorch-native code, which enables cache-friendly memory access. Finally, \name offers native support for TGB evaluation, the standard benchmark protocol. Appendix~\ref{app:more_perf} shows that \name can be up to $246\times$ than DyGLib for TGN on \texttt{Wikipedia}, owing to batch-level de-duplication and efficient data handling: while DyGLib repeatedly samples neighbors for each prediction, \name samples once per batch. By contrast, TGL and TGLite do not support this one-vs-many evaluation, limiting their benchmarking robustness compared to \name.
+
+
+\noindent
+\begin{minipage}[t]{0.4\textwidth}  % slightly wider table
+\textbf{Node Property Prediction.} We benchmark \name on the dynamic node property prediction task, comparing against both DyGLib and the native TGB implementations on the \texttt{Trade} and \texttt{Genre} datasets. TGL and TGLite do not support this task. Table~\ref{tab:node_prop_perf} reports training time per epoch. Compared to DyGLib, \name achieves up to a $10\times$ speedup for TGN on \texttt{Trade} while reducing training time by 80 seconds on \texttt{Genre}. Moreover, \name is the only library supporting node property prediction for DTDG models: GCLSTM, GCN, and TGCN. Note, we encountered an \small{\texttt{OOM}} while running DyGLib on \texttt{Genre} with our 64GB RAM allocation (see Appendix~\ref{app:details}), requiring 256GB of memory to produce the results reported in Table~\ref{tab:node_prop_perf}.
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.57\textwidth}  % wider table
+\centering
+
+\captionof{table}{Training time per epoch (seconds, ↓) for dynamic node property prediction. The \hfirst \text{} and \hsecond \text{} best results are highlighted (\cna \text{} marks unsupported). \name has the best all-around performance and uniquely supports message-passing (TGN), snapshots-based (e.g. TGCN), and transformer-based (DyGFormer) models.}
+\label{tab:node_prop_perf}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l|rrr|rrr}
+\toprule
+\multirow{2}{*}{Model} & \multicolumn{3}{c|}{\texttt{Trade}} & \multicolumn{3}{c}{\texttt{Genre}} \\
+ & \name & DyGLib & TGB & \name & DyGLib & TGB \\
+\midrule
+TGN        & \csecond{12.94} & 19.37 & \cfirst{11.07} & \cfirst{208.88} & 918.46 & \csecond{281.36} \\
+DyGFormer  & \cfirst{16.24} & \csecond{117.13} & \cna & \cfirst{70.89} & \csecond{3539.95} & \cna \\
+P.F.       & \cfirst{0.41} & 2.09 & \csecond{0.78} & \csecond{38.15} & 41.73 & \cfirst{35.58} \\
+TGCN       & \cfirst{0.85} & \cna & \cna & \cfirst{17.27} & \cna & \cna \\
+GCLSTM     & \cfirst{0.88} & \cna & \cna & \cfirst{17.71} & \cna & \cna \\
+GCN        & \cfirst{0.80} & \cna & \cna & \cfirst{17.21} & \cna & \cna \\
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+
+% \footnotetext{DyGLib encountered an \small{\texttt{OOM}} while running \texttt{Genre} on our 64GB RAM allocation (see Appendix~\ref{app:details}), and required a 256GB memory configuration to successfully produce the results reported in Table~\ref{tab:node_prop_perf}.}
+
+
+%------------------- Time Discretization -------------------%
+\begin{minipage}[t]{0.56\textwidth}  % text column
+\textbf{Graph Discretization.} Enabling DTDG models on CTDG tasks requires discretizing the original graph into snapshots. We compare \name's implementation with that of UTG~\citep{utg}. Table~\ref{tab:discretization_latency} shows that \name achieves dramatic speedups, up to $433\times$ on \texttt{LastFM}. This improvement stems from a fully vectorized, PyTorch-native implementation that avoids cache-unfriendly Python dictionaries and other overheads common in prior repositories. This result underscores our commitment to high-performance, research-ready tooling, setting \name apart from existing libraries in efficiency and engineering standards.
+
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.4\textwidth}  % table column
+\centering
+\captionof{table}{Discretization Latency to Hourly Snapshots (seconds, ↓). \name has substantial speedups due to our vectorized, PyTorch-native implementation.}
+\label{tab:discretization_latency}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l | rrr}
+\toprule
+Dataset & UTG & \name & Speedup \\
+\midrule
+\texttt{Wikipedia} & 1.94 & 0.04 & 49.62× \\
+\texttt{Reddit}    & 8.83 & 0.21 & 41.63× \\
+\texttt{LastFM}    & 19.94 & 0.05 & 433.39× \\
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+
+% \vspace{-5em}
+
+
+\begin{table}[t]
+\centering
+\caption{The choice of snapshot time granularity significantly affects link prediction performance. Reported metric is MRR (↑) with the \hfirst{} and \hsecond{} best result for each dataset highlighted.}
+\label{tab:snapshot_granularity_effect}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.9}
+\resizebox{0.9\linewidth}{!}{%
+\begin{tabular}{l|ccc|ccc}
+\toprule
+\multirow{2}{*}{Time Gran.} & \multicolumn{3}{c|}{\texttt{Wikipedia}} & \multicolumn{3}{c}{\texttt{Reddit}} \\
+ & GCN & T-GCN & GCLSTM & GCN & T-GCN & GCLSTM \\
+\midrule
+Hourly & 0.510 \scriptsize{$\pm$ 0.001} & 0.509 \scriptsize{$\pm$ 0.004} & 0.395 \scriptsize{$\pm$ 0.022} & \cfirst{0.529 \scriptsize{$\pm$ 0.012}} & \csecond{0.374 \scriptsize{$\pm$ 0.004}} & 0.219 \scriptsize{$\pm$ 0.003} \\
+Daily  & \cfirst{0.702 \scriptsize{$\pm$ 0.007}} & \csecond{0.540 \scriptsize{$\pm$ 0.008}} & 0.372 \scriptsize{$\pm$ 0.017} & 0.266 \scriptsize{$\pm$ 0.007} & 0.231 \scriptsize{$\pm$ 0.003} & 0.212 \scriptsize{$\pm$ 0.004} \\
+Weekly & 0.393 \scriptsize{$\pm$ 0.005} & 0.330 \scriptsize{$\pm$ 0.009} & 0.323 \scriptsize{$\pm$ 0.010} & 0.191 \scriptsize{$\pm$ 0.002} & 0.212 \scriptsize{$\pm$ 0.001} & 0.206 \scriptsize{$\pm$ 0.004} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+
+\subsection{\name Research Experiments}
+\label{sec:research_exp}
+
+In addition to its efficiency, \name is designed as a flexible framework for exploring research questions in temporal graph learning. By supporting both CTDG and DTDG methods, along with native time conversions and composable hooks, \name allows researchers to implement and test novel ideas effortlessly. We ran all three example experiments using a single script, which we include in our anonymized code release. These experiments investigate the following questions: RQ1: How accurately can we predict the future evolution of a graph property? RQ2: How does the time granularity of graph snapshots impact DTDG performance on a continuous-time graph? RQ3: How do batching strategies, by fixed edges versus by time, affect the performance of a CTDG model?
+
+
+\begin{minipage}[t]{0.51\textwidth}
+\textbf{RQ1: Dynamic Graph Property Prediction.} 
+Graph-level tasks require grouping edges into snapshots. The ability to natively support iteration by time is unique to \name framework, thus allowing researchers to effortlessly explore research questions in dynamic graph property prediction. As shown in Table~\ref{tab:graphproppred}, we leverage this capability to benchmark models on predicting whether a future transaction network snapshot will grow, a key problem for understanding network evolution. The results highlight the sensitivity of model performance to temporal granularity: T-GCN performs best on weekly snapshots with an AUC of 0.800, while GCLSTM excels at the daily scale with an AUC of 0.589.
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\centering
+\captionof{table}{Binary classification task predicting whether the next daily snapshot will see an increase in the number of edges. Reported metric is AUC (↑) with the \hfirst{} and \hsecond{} best result for each dataset highlighted. }
+\label{tab:graphproppred}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l|r|r }
+\toprule
+Model & \texttt{Wikipedia} & \texttt{Reddit}  \\
+\midrule
+ P.F. & 0.018 \scriptsize{$\pm$ 0.058} & \cfirst{0.617 \scriptsize{$\pm$ 0.047}} \\
+ T-GCN & \cfirst{\textbf{0.667 \scriptsize{$\pm$ 0.083}}}& \csecond{0.600 \scriptsize{$\pm$ 0.147}}\\
+ GCLSTM& 0.567 \scriptsize{$\pm$ 0.047}  & 0.526 \scriptsize{$\pm$ 0.020} \\
+GCN & \csecond{0.577 \scriptsize{$\pm$ 0.053}}  & 0.200 \scriptsize{$\pm$ 0.000} \\
+
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+
+% This experiment was conducted entirely within our unified framework, from dynamic snapshot generation to target formulation and model evaluation. By abstracting these complex steps into a configurable pipeline, \name enables researchers to explore novel graph-level prediction tasks that were previously impractical, significantly broadening the scope of temporal graph learning research.
+% \begin{table*}[t]
+% \centering
+% \caption{Binary classification whether the future snapshot grows in terms of the number of edges. AUC performance of Persistent Forecasting, T-GCN and GCLSTM on Stablecoin ERC20 transactions~\citep{DBLP:conf/nips/ShamsiVKGA22}}
+% \label{tab:graphproppred}
+% \resizebox{\linewidth}{!}{%
+% \begin{tabular}{l|c|c|c}
+% \toprule
+% \multirow{2}{*}{Task Gran.} & \multicolumn{3}{c}{ERC20}  \\
+% \cmidrule(lr){2-4} 
+%  & P.F. & T-GCN & GCLSTM  \\
+% \midrule
+% Weekly & 0.578 \scriptsize{$\pm$ 0.079} & \textbf{0.800 \scriptsize{$\pm$ 0.114}} & {0.524 \scriptsize{$\pm$ 0.057}} \\
+% Daily & 0.470 \scriptsize{$\pm$ 0.007} & 0.558 \scriptsize{$\pm$ 0.018} & \textbf{0.589 \scriptsize{$\pm$ 0.036}} \\
+% \bottomrule
+% \end{tabular}
+% }
+% \end{table*}
+
+
+% \label{sec:exp_snapshot}
+\textbf{RQ2: Effect of Time Granularity for DTDG methods. }
+Table~\ref{tab:snapshot_granularity_effect} demonstrates that the choice of snapshot granularity, i.e. hourly, daily, or weekly, has a substantial impact on the performance of snapshot-based temporal graph models. On the Wikipedia dataset, the impact is particularly pronounced: GCN’s MRR increases by 30\% when moving from weekly to daily snapshots, while T-GCN and GCLSTM improve by 21\% and 5\%, respectively. On Reddit, the same trend is observed, though less extreme: GCN achieves 0.529 MRR with hourly snapshots, dropping to 0.191 with weekly snapshots. These results underscore the importance of selecting an appropriate snapshot granularity for DTDG models. \name makes this process effortless, allowing users to adjust the time granularity with a single line of code, treating it effectively as a hyperparameter.
+
+\begin{minipage}[t]{0.52\textwidth}
+\textbf{RQ3: Effect of Batch Size for CTDG methods.} Our analysis reveals that the configuration of the evaluation process itself is a critical, yet previously overlooked, hyperparameter in temporal graph learning. As demonstrated in Table~\ref{tab:batch_size}, the choice of validation batch size and temporal unit significantly impacts the reported performance of the TGAT model on link prediction.  Note that when iterating by time, the number of edges in each batch is different, however, each batch spans a fixed amount of time instead. We observe a pronounced degradation in MRR with larger batch sizes and coarser temporal units (e.g., Day versus Hour). \name supports flexible temporal batching via our graph formulation, enabling the investigation of batch size at test time. 
+
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.43\textwidth}
+\centering
+\captionof{table}{The choice of validation batch size and batch unit affects the performance of TGAT link prediction on \texttt{Wikipedia} dataset. \hfirst{} and \hsecond{} are highlighted.}
+\label{tab:batch_size}
+\small
+\begin{tabular}{l| c |c}
+\toprule
+ & Size/Unit & Test MRR (↑)\\
+ \cmidrule(lr){2-2} \cmidrule(lr){3-3} 
+ \multirow{3}{*}{Batch size} & 1 & \cfirst{0.449 $\pm$ \scriptsize{0.001}}\\
+ & 50 & 0.414 $\pm$ \scriptsize{0.006} \\
+ & 100 & \csecond{0.414 $\pm$ \scriptsize{0.004}} \\
+ & 200 & 0.403 $\pm$ \scriptsize{0.004} \\
+\cmidrule(lr){1-1} \cmidrule(lr){2-2} \cmidrule(lr){3-3} 
+ \multirow{2}{*}{Batch unit} & Hour & 0.402 $\pm$ \scriptsize{0.012} \\
+ & Day & 0.349 $\pm$ \scriptsize{0.004} \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+

@@ -1,0 +1,30 @@
+\begin{tabular}{lllrr}
+\toprule
+Dataset & Task & Split & LightGBM & GNN \\
+\midrule
+\multirow[c]{4}{*}{\texttt{rel-avito}} & \multirow[c]{2}{*}{\texttt{searchinfo-isuserloggedon}} & Val & $59.09$ & $\bm{82.57}$ \\
+ &  & Test & $50.00$ & $\bm{73.00}$ \\
+\cmidrule{2-5}
+ & \multirow[c]{2}{*}{\texttt{searchstream-click}} & Val & $\bm{68.33}$ & $50.39$ \\
+ &  & Test & $49.92$ & $\bm{55.92}$ \\
+\cmidrule{1-5} \cmidrule{2-5}
+\multirow[c]{4}{*}{\texttt{rel-event}} & \multirow[c]{2}{*}{\texttt{event\_interest-interested}} & Val & $51.25$ & $\bm{54.16}$ \\
+ &  & Test & $49.57$ & $47.64$ \\
+\cmidrule{2-5}
+ & \multirow[c]{2}{*}{\texttt{event\_interest-not\_interested}} & Val & $51.98$ & $49.74$ \\
+ &  & Test & $52.88$ & $\bm{60.40}$ \\
+\cmidrule{1-5} \cmidrule{2-5}
+\multirow[c]{6}{*}{\texttt{rel-trial}} & \multirow[c]{2}{*}{\texttt{eligibilities-adult}} & Val & $58.10$ & $\bm{94.91}$ \\
+ &  & Test & $50.00$ & $\bm{93.73}$ \\
+\cmidrule{2-5}
+ & \multirow[c]{2}{*}{\texttt{eligibilities-child}} & Val & $59.78$ & $\bm{85.91}$ \\
+ &  & Test & $50.00$ & $\bm{87.25}$ \\
+\cmidrule{2-5}
+ & \multirow[c]{2}{*}{\texttt{studies-has\_dmc}} & Val & $76.47$ & $\bm{78.21}$ \\
+ &  & Test & $50.00$ & $\bm{75.72}$ \\
+\cmidrule{1-5} \cmidrule{2-5}
+\multicolumn{2}{c}{\multirow{2}{*}{Average}} & Val & $60.71$ & $\bm{70.84}$ \\
+ &  & Test & $50.34$ & $\bm{70.52}$ \\
+% \cmidrule{1-5} \cmidrule{2-5}
+\bottomrule
+\end{tabular}

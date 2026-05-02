@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{relbench.datasets} \PYG{k+kn}{import} \PYG{n}{get\PYGZus{}dataset}
+\PYG{n}{dataset} \PYG{o}{=} \PYG{n}{get\PYGZus{}dataset}\PYG{p}{(}\PYG{n}{name}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}rel\PYGZhy{}amazon\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,101 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "main.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/ctx-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/ctx-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/enc-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/enc-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/ft-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/ft-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/layer-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/layer-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/mask-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/mask-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/order-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/order-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/zs-auc.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/zs-r2-no-llm.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "auto-tables/zs-r2.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "iclr2026_conference.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "main.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "manual-tables/autocomplete_clf_rows.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "manual-tables/autocomplete_reg_rows.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "manual-tables/ctx-stats-clf.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "manual-tables/ctx-stats-reg.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "references.bib"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

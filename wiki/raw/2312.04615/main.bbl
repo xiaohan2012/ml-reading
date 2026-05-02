@@ -1,0 +1,323 @@
+\begin{thebibliography}{48}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Amodei et~al.(2016)Amodei, Ananthanarayanan, Anubhai, Bai, Battenberg,
+  Case, Casper, Catanzaro, Cheng, Chen, et~al.]{amodei2016deep}
+Dario Amodei, Sundaram Ananthanarayanan, Rishita Anubhai, Jingliang Bai, Eric
+  Battenberg, Carl Case, Jared Casper, Bryan Catanzaro, Qiang Cheng, Guoliang
+  Chen, et~al.
+\newblock Deep speech 2: End-to-end speech recognition in english and mandarin.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2016.
+
+\bibitem[Arik and Pfister(2021)]{arik2021tabnet}
+Sercan~{\"O} Arik and Tomas Pfister.
+\newblock Tabnet: Attentive interpretable tabular learning.
+\newblock In \emph{Proceedings of the AAAI conference on artificial
+  intelligence}, volume~35, pages 6679--6687, 2021.
+
+\bibitem[Bordes et~al.(2013)Bordes, Usunier, Garcia-Duran, Weston, and
+  Yakhnenko]{bordes2013translating}
+Antoine Bordes, Nicolas Usunier, Alberto Garcia-Duran, Jason Weston, and Oksana
+  Yakhnenko.
+\newblock Translating embeddings for modeling multi-relational data.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2013.
+
+\bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell, et~al.]{brown2020language}
+Tom~B Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla
+  Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell,
+  et~al.
+\newblock Language models are few-shot learners.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2020.
+
+\bibitem[Chamberlin and Boyce(1974)]{chamberlin1974sequel}
+Donald~D Chamberlin and Raymond~F Boyce.
+\newblock Sequel: A structured english query language.
+\newblock In \emph{Proceedings of the 1974 ACM SIGFIDET (now SIGMOD) workshop
+  on Data description, access and control}, pages 249--264, 1974.
+
+\bibitem[Chen et~al.(2023)Chen, Chiang, Chou, Chen, and Chang]{chen2023trompt}
+Kuan-Yu Chen, Ping-Han Chiang, Hsin-Rung Chou, Ting-Wei Chen, and Tien-Hao
+  Chang.
+\newblock Trompt: Towards a better deep neural network for tabular data.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2023.
+
+\bibitem[Chen and Guestrin(2016)]{chen2016xgboost}
+Tianqi Chen and Carlos Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+  (KDD)}, pages 785--794, 2016.
+
+\bibitem[Codd(1970)]{codd1970relational}
+Edgar~F Codd.
+\newblock A relational model of data for large shared data banks.
+\newblock \emph{Communications of the ACM}, 13\penalty0 (6):\penalty0 377--387,
+  1970.
+
+\bibitem[Cvitkovic(2019)]{cvitkovic2020supervisedrd}
+Milan Cvitkovic.
+\newblock Supervised learning on relational databases with graph neural
+  networks.
+\newblock \emph{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds}, 2019.
+
+\bibitem[{DB-Engines}(2023)]{db-engines}
+{DB-Engines}.
+\newblock {DBMS popularity broken down by database model}, 2023.
+\newblock Available: \url{https://db-engines.com/en/ranking_categories}.
+
+\bibitem[De~Raedt(2008)]{de2008logical}
+Luc De~Raedt.
+\newblock \emph{Logical and relational learning}.
+\newblock Springer Science \& Business Media, 2008.
+
+\bibitem[Devlin et~al.(2018)Devlin, Chang, Lee, and Toutanova]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock In \emph{North American Chapter of the Association for Computational
+  Linguistics (NAACL)}, 2018.
+
+\bibitem[Fey and Lenssen(2019)]{fey2019fast}
+Matthias Fey and Jan~Eric Lenssen.
+\newblock Fast graph representation learning with pytorch geometric.
+\newblock \emph{ICLR 2019 (RLGM Workshop)}, 2019.
+
+\bibitem[Garcia-Molina et~al.(2008)Garcia-Molina, Ullman, and
+  Widom]{ullman-book}
+Hector Garcia-Molina, Jeffrey~D. Ullman, and Jennifer Widom.
+\newblock \emph{Database Systems: The Complete Book}.
+\newblock Prentice Hall Press, USA, 2 edition, 2008.
+\newblock ISBN 9780131873254.
+
+\bibitem[Geirhos et~al.(2020)Geirhos, Jacobsen, Michaelis, Zemel, Brendel,
+  Bethge, and Wichmann]{geirhos2020shortcut}
+Robert Geirhos, J{\"o}rn-Henrik Jacobsen, Claudio Michaelis, Richard Zemel,
+  Wieland Brendel, Matthias Bethge, and Felix~A Wichmann.
+\newblock Shortcut learning in deep neural networks.
+\newblock \emph{Nature Machine Intelligence}, 2\penalty0 (11):\penalty0
+  665--673, 2020.
+
+\bibitem[Getoor et~al.(2001)Getoor, Friedman, Koller, and
+  Pfeffer]{getoor2001learning}
+Lise Getoor, Nir Friedman, Daphne Koller, and Avi Pfeffer.
+\newblock Learning probabilistic relational models.
+\newblock \emph{Relational data mining}, pages 307--335, 2001.
+
+\bibitem[Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl]{gilmer2017mpgnn}
+Justin Gilmer, Samuel~S. Schoenholz, Patrick~F. Riley, Oriol Vinyals, and
+  George~E. Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, page
+  1263–1272, 2017.
+
+\bibitem[Gorishniy et~al.(2021)Gorishniy, Rubachev, Khrulkov, and
+  Babenko]{gorishniy2021revisiting}
+Yury Gorishniy, Ivan Rubachev, Valentin Khrulkov, and Artem Babenko.
+\newblock Revisiting deep learning models for tabular data.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~34, pages 18932--18943, 2021.
+
+\bibitem[Gorishniy et~al.(2022)Gorishniy, Rubachev, and
+  Babenko]{gorishniy2022embeddings}
+Yury Gorishniy, Ivan Rubachev, and Artem Babenko.
+\newblock On embeddings for numerical features in tabular deep learning.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  35:\penalty0 24991--25004, 2022.
+
+\bibitem[Hamilton et~al.(2017)Hamilton, Ying, and
+  Leskovec]{hamilton2017inductive}
+Will Hamilton, Zhitao Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2017.
+
+\bibitem[Hannun et~al.(2014)Hannun, Case, Casper, Catanzaro, Diamos, Elsen,
+  Prenger, Satheesh, Sengupta, Coates, et~al.]{hannun2014deep}
+Awni Hannun, Carl Case, Jared Casper, Bryan Catanzaro, Greg Diamos, Erich
+  Elsen, Ryan Prenger, Sanjeev Satheesh, Shubho Sengupta, Adam Coates, et~al.
+\newblock Deep speech: Scaling up end-to-end speech recognition.
+\newblock \emph{arXiv preprint arXiv:1412.5567}, 2014.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 770--778, 2016.
+
+\bibitem[Hu et~al.(2023)Hu, Fey, Yuan, Zhang, Nitta, Cao, and
+  Kocijan]{Hu_PyTorch_Frame_A_2023}
+Weihua Hu, Matthias Fey, Yiwen Yuan, Zecheng Zhang, Akihiro Nitta, Kaidi Cao,
+  and Vid Kocijan.
+\newblock {PyTorch Frame: A Deep Learning Framework for Tabular Data}, October
+  2023.
+\newblock URL \url{https://github.com/pyg-team/pytorch-frame}.
+
+\bibitem[Hu et~al.(2020)Hu, Dong, Wang, and Sun]{hu2020hgt}
+Ziniu Hu, Yuxiao Dong, Kuansan Wang, and Yizhou Sun.
+\newblock Heterogeneous graph transformer.
+\newblock In \emph{Proceedings of The Web Conference 2020}, page 2704–2710,
+  2020.
+
+\bibitem[Huang et~al.(2020)Huang, Khetan, Cvitkovic, and
+  Karnin]{huang2020tabtransformer}
+Xin Huang, Ashish Khetan, Milan Cvitkovic, and Zohar Karnin.
+\newblock Tabtransformer: Tabular data modeling using contextual embeddings.
+\newblock \emph{arXiv preprint arXiv:2012.06678}, 2020.
+
+\bibitem[Johnson et~al.(2016)Johnson, Pollard, Shen, Lehman, Feng, Ghassemi,
+  Moody, Szolovits, Anthony~Celi, and Mark]{johnson2016mimic}
+Alistair~EW Johnson, Tom~J Pollard, Lu~Shen, Li-wei~H Lehman, Mengling Feng,
+  Mohammad Ghassemi, Benjamin Moody, Peter Szolovits, Leo Anthony~Celi, and
+  Roger~G Mark.
+\newblock Mimic-iii, a freely accessible critical care database.
+\newblock \emph{Scientific data}, 3\penalty0 (1):\penalty0 1--9, 2016.
+
+\bibitem[{Kaggle}(2022)]{kaggle-survey}
+{Kaggle}.
+\newblock {Kaggle Data Science \& Machine Learning Survey}, 2022.
+\newblock Available:
+  \url{https://www.kaggle.com/code/paultimothymooney/kaggle-survey-2022-all-results/notebook}.
+
+\bibitem[Kapoor and Narayanan(2023)]{kapoor2023leakage}
+Sayash Kapoor and Arvind Narayanan.
+\newblock Leakage and the reproducibility crisis in machine-learning-based
+  science.
+\newblock \emph{Patterns}, 4\penalty0 (9), 2023.
+
+\bibitem[Lavrac and Dzeroski(1994)]{lavrac1994inductive}
+Nada Lavrac and Saso Dzeroski.
+\newblock Inductive logic programming.
+\newblock In \emph{WLP}, pages 146--160. Springer, 1994.
+
+\bibitem[Minsky(1974)]{minsky1974framework}
+Marvin Minsky.
+\newblock A framework for representing knowledge, 1974.
+
+\bibitem[{PubMed}(1996)]{pubmed}
+{PubMed}.
+\newblock {National Center for Biotechnology Information, U.S. National Library
+  of Medicine}, 1996.
+\newblock Available: \url{https://www.ncbi.nlm.nih.gov/pubmed/}.
+
+\bibitem[Reimers and Gurevych(2019)]{reimers2019sentence}
+Nils Reimers and Iryna Gurevych.
+\newblock Sentence-bert: Sentence embeddings using siamese bert-networks.
+\newblock \emph{arXiv preprint arXiv:1908.10084}, 2019.
+
+\bibitem[Richardson and Domingos(2006)]{richardson2006markov}
+Matthew Richardson and Pedro Domingos.
+\newblock Markov logic networks.
+\newblock \emph{Machine learning}, 62:\penalty0 107--136, 2006.
+
+\bibitem[Rossi et~al.(2020)Rossi, Chamberlain, Frasca, Eynard, Monti, and
+  Bronstein]{rossi2020temporal}
+Emanuele Rossi, Ben Chamberlain, Fabrizio Frasca, Davide Eynard, Federico
+  Monti, and Michael Bronstein.
+\newblock Temporal graph networks for deep learning on dynamic graphs.
+\newblock \emph{ICML Workshop on Graph Representation Learning 2020}, 2020.
+
+\bibitem[Russakovsky et~al.(2015)Russakovsky, Deng, Su, Krause, Satheesh, Ma,
+  Huang, Karpathy, Khosla, Bernstein, et~al.]{russakovsky2015imagenet}
+Olga Russakovsky, Jia Deng, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma,
+  Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael Bernstein, et~al.
+\newblock Imagenet large scale visual recognition challenge.
+\newblock \emph{International journal of computer vision}, 115\penalty0
+  (3):\penalty0 211--252, 2015.
+
+\bibitem[Schlichtkrull et~al.(2018)Schlichtkrull, Kipf, Bloem, van den Berg,
+  Titov, and Welling]{schlichtkrull2018relational}
+Michael Schlichtkrull, Thomas~N. Kipf, Peter Bloem, Rianne van den Berg, Ivan
+  Titov, and Max Welling.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In Aldo Gangemi, Roberto Navigli, Maria-Esther Vidal, Pascal Hitzler,
+  Rapha{\"e}l Troncy, Laura Hollink, Anna Tordai, and Mehwish Alam, editors,
+  \emph{The Semantic Web}, pages 593--607, Cham, 2018. Springer International
+  Publishing.
+
+\bibitem[Shwartz-Ziv and Armon(2022)]{shwartz2022tabular}
+Ravid Shwartz-Ziv and Amitai Armon.
+\newblock Tabular data: Deep learning is not all you need.
+\newblock \emph{Information Fusion}, 81:\penalty0 84--90, 2022.
+
+\bibitem[{\v{S}}{\'\i}r(2021)]{vsir2021deep}
+Gustav {\v{S}}{\'\i}r.
+\newblock \emph{Deep Learning with Relational Logic Representations}.
+\newblock Czech Technical University, 2021.
+
+\bibitem[Varma and Zisserman(2005)]{varma2005statistical}
+Manik Varma and Andrew Zisserman.
+\newblock A statistical approach to texture classification from single images.
+\newblock \emph{International journal of computer vision}, 62:\penalty0 61--81,
+  2005.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2017.
+
+\bibitem[Wang et~al.(2017)Wang, Mao, Wang, and Guo]{wang2017knowledge}
+Quan Wang, Zhendong Mao, Bin Wang, and Li~Guo.
+\newblock Knowledge graph embedding: A survey of approaches and applications.
+\newblock \emph{IEEE Transactions on Knowledge and Data Engineering},
+  29\penalty0 (12):\penalty0 2724--2743, 2017.
+
+\bibitem[Wang et~al.(2021)Wang, Cai, Liang, Ding, Wang, and
+  Hooi]{wang2021temporalsampling}
+Yiwei Wang, Yujun Cai, Yuxuan Liang, Henghui Ding, Changhu Wang, and Bryan
+  Hooi.
+\newblock Time-aware neighbor sampling for temporal graph networks.
+\newblock In \emph{arXiv pre-print}, 2021.
+
+\bibitem[Wang et~al.(2014)Wang, Zhang, Feng, and Chen]{wang2014knowledge}
+Zhen Wang, Jianwen Zhang, Jianlin Feng, and Zheng Chen.
+\newblock Knowledge graph embedding by translating on hyperplanes.
+\newblock In \emph{Proceedings of the AAAI conference on artificial
+  intelligence}, volume~28, 2014.
+
+\bibitem[Xu et~al.(2020)Xu, Li, Zhang, Du, Kawarabayashi, and
+  Jegelka]{xu2019can}
+Keyulu Xu, Jingling Li, Mozhi Zhang, Simon~S Du, Ken-ichi Kawarabayashi, and
+  Stefanie Jegelka.
+\newblock What can neural networks reason about?
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2020.
+
+\bibitem[Yang et~al.(2022)Yang, Ding, Xu, Yang, and Tang]{yang2022stam}
+Zhen Yang, Ming Ding, Bin Xu, Hongxia Yang, and Jie Tang.
+\newblock Stam: A spatiotemporal aggregation method for graph neural
+  network-based recommendation.
+\newblock In \emph{Proceedings of the ACM Web Conference 2022}, pages
+  3217--3228, 2022.
+
+\bibitem[Zahradn{\'\i}k et~al.(2023)Zahradn{\'\i}k, Neumann, and
+  {\v{S}}{\'\i}r]{zahradnik2023deep}
+Luk{\'a}{\v{s}} Zahradn{\'\i}k, Jan Neumann, and Gustav {\v{S}}{\'\i}r.
+\newblock A deep learning blueprint for relational databases.
+\newblock In \emph{NeurIPS 2023 Second Table Representation Learning Workshop},
+  2023.
+
+\bibitem[Zhang et~al.(2023)Zhang, Luo, Wang, and He]{zhang2023rethinking}
+Bohang Zhang, Shengjie Luo, Liwei Wang, and Di~He.
+\newblock Rethinking the expressive power of gnns via graph biconnectivity.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2023.
+
+\bibitem[Zhu et~al.(2023)Zhu, Shi, Erickson, Li, Karypis, and
+  Shoaran]{zhu2023xtab}
+Bingzhao Zhu, Xingjian Shi, Nick Erickson, Mu~Li, George Karypis, and Mahsa
+  Shoaran.
+\newblock Xtab: Cross-table pretraining for tabular transformers.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2023.
+
+\end{thebibliography}

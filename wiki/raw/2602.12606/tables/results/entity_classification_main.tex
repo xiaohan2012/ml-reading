@@ -1,0 +1,24 @@
+\begin{tabular}{lllrr}
+\toprule
+Dataset & Task & Split & LightGBM & GNN \\
+\midrule
+\multirow[c]{2}{*}{\texttt{rel-arxiv}} & \multirow[c]{2}{*}{\texttt{paper-citation}} & Val & $71.94$ & $\bm{82.45}$ \\
+ &  & Test & $71.21$ & $\bm{82.50}$ \\
+\cmidrule{1-5} \cmidrule{2-5}
+\multirow[c]{2}{*}{\texttt{rel-mimic}} & \multirow[c]{2}{*}{\texttt{patient-iculengthofstay}} & Val & $53.64$ & $\bm{56.52}$ \\
+ &  & Test & $51.81$ & $\bm{55.01}$ \\
+\cmidrule{1-5} \cmidrule{2-5}
+\multirow[c]{6}{*}{\texttt{rel-ratebeer}} & \multirow[c]{2}{*}{\texttt{beer-churn}} & Val & $81.90$ & $\bm{90.47}$ \\
+ &  & Test & $76.21$ & $\bm{78.67}$ \\
+\cmidrule{2-5}
+ & \multirow[c]{2}{*}{\texttt{brewer-dormant}} & Val & $76.39$ & $\bm{82.10}$ \\
+ &  & Test & $75.79$ & $\bm{80.51}$ \\
+\cmidrule{2-5}
+ & \multirow[c]{2}{*}{\texttt{user-churn}} & Val & $87.02$ & $\bm{96.85}$ \\
+ &  & Test & $83.92$ & $\bm{94.27}$ \\
+\cmidrule{1-5} \cmidrule{2-5}
+\multicolumn{2}{c}{\multirow{2}{*}{Average}} & Val & $74.18$ & $\bm{81.68}$ \\
+ &  & Test & $71.79$ & $\bm{78.19}$ \\
+% \cmidrule{1-5} \cmidrule{2-5}
+\bottomrule
+\end{tabular}

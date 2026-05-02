@@ -1,0 +1,92 @@
+
+\subsection{TGN with fixed time-encoding function}
+
+
+% \begin{table}[h]
+% \centering
+% \caption{Comparison on the accuracy with fixed and trainable time-encoding function on TGN model.}\label{table:fixed_vs_trainable_tgn_time_encoder}
+% \vspace{-4mm}
+% \scalebox{0.9}{
+% \begin{tabular}{ l c c c c c}
+% \hline\hline
+%                       & Reddit & Wiki   & MOOC   & LastFM & GDELT-e \\ \hline\hline
+% Trainable time-encoding function & 0.9980 & 0.9955 & 0.9962 & 0.8223 & 0.9604    \\ 
+% Fixed time-encoding function     & 0.9983 & 0.9954 & 0.9962 & 0.8758 & 0.9734    \\ \hline\hline
+% \end{tabular}}
+% \end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/reddit_landscape_reddit_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{Reddit}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/wiki_landscape_wiki_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{Wiki}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/mooc_landscape_mooc_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{MOOC}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/lastfm_landscape_lastfm_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{LastFM}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/gdelt_lite_landscape_gdelt_lite_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{GDELT-e}
+\end{subfigure}
+% \vspace{-3mm}
+\caption{Training loss landscape (\textcolor{blue}{Contour}) of \textbf{TGN} with \textit{fixed time-encoding function}.}
+\label{fig:landscape_2d_tgn_fixed_time_encoder}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/reddit_landscape_reddit_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{Reddit}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/wiki_landscape_wiki_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{Wiki}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/mooc_landscape_mooc_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{MOOC}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/lastfm_landscape_lastfm_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{LastFM}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/tgn_fixed_time_encoder/gdelt_lite_landscape_gdelt_lite_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{GDELT-e}
+\end{subfigure}
+% \vspace{-3mm}
+\caption{Training loss landscape (\textcolor{red}{Surface}) of \textbf{TGN} with \textit{fixed time-encoding function}.}
+\label{fig:landscape_3d_tgn_fixed_time_encoder}
+\end{figure}

@@ -1,0 +1,63 @@
+---
+title: "RDL Reading Plan"
+tags: [query, analysis, relational-deep-learning, reading-plan]
+sources: [relational-deep-learning-position, relbench-v1, relgnn, relational-graph-transformer, relational-transformer, kumorfm-1, kumorfm-2, gcn, graphsage, gat, gin, hgt, graphgps, tgn, dygformer]
+updated: 2026-04-29
+---
+
+# RDL Reading Plan
+
+## Critical Path (4 papers — covers the full landscape)
+
+1. **[relational-deep-learning-position](relational-deep-learning-position.md)** — Fey et al., ICML 2024
+   Blueprint. Defines REG, Training Table, temporal neighbor sampling. GNN = differentiable SQL JOIN+AGG. Start here.
+
+2. **[relbench-v1](relbench-v1.md)** — Robinson et al., NeurIPS 2024
+   Empirical companion. Validates RDL beats data scientist baseline on 30 tasks with 96% fewer human hours.
+
+3. **[relgnn](relgnn.md)** — Chen et al., ICML 2025
+   Best supervised method. Bridge/hub topology analysis; composite message passing FUSE op. Concise and principled.
+
+4. **[relational-transformer](relational-transformer.md)** — Ranjan et al., ICLR 2026
+   Best zero-shot model. Cell-level tokens + Relational Attention; 93% of supervised AUROC at 22M params; beats 27B LLMs.
+
+## Core Architectures (add after critical path)
+
+5. **[relational-graph-transformer](relational-graph-transformer.md)** — Dwivedi et al., 2025
+   Best supervised GT. 5-element tokenization + subgraph GNN PE. Understand before reading KumoRFM.
+
+6. **[griffin](griffin.md)** — Wang et al., ICML 2025
+   First pretrained RFM. Cross-attention within rows + GNN across tables; strongest in low-data regimes.
+
+## Foundation Models (add after core architectures)
+
+7. **[kumorfm-1](kumorfm-1.md)** — Fey et al., 2025 whitepaper
+   First end-to-end RFM system. PQL interface, ICL, explainability (saliency-per-cell), fine-tuning path.
+
+8. **[kumorfm-2](kumorfm-2.md)** — Fey et al., 2025 (arxiv 2604.12596)
+   Scales to 500B+ rows. Hierarchical 4-scale attention, task-conditioned ICL. First few-shot model to beat supervised SOTA.
+
+## GNN Background (read if unfamiliar with GNNs)
+
+- **[gin](gin.md)** — ICLR 2019. Most important for expressiveness theory: sum+MLP = WL-level; proves GCN/GraphSAGE are not injective.
+- **[graphsage](graphsage.md)** — NeurIPS 2017. Inductive GNN via neighborhood sampling; HeteroGraphSAGE = RDL baseline.
+- **[gcn](gcn.md)** — ICLR 2017. Spectral GNN; renormalization trick. Foundational but transductive.
+- **[gat](gat.md)** — ICLR 2018. Learned attention weights per neighbor; multi-head; inductive.
+- **[hgt](hgt.md)** — WWW 2020. Heterogeneous graph transformer; the standard baseline RDL papers compare against.
+- **[graphgps](graphgps.md)** — NeurIPS 2022. GPS recipe (MPNN ∥ GlobalAttn per layer); parent design to RelGT.
+
+## Temporal Graph Background (read if focusing on temporal RDL)
+
+- **[tgn](tgn.md)** — 2020. Memory module + temporal graph attention; 30× faster than TGAT; canonical CTDG model.
+- **[dygformer](dygformer.md)** — NeurIPS 2023. First-hop Transformer + patching + neighbor co-occurrence encoding; current CTDG SOTA.
+
+## Reading Order by Goal
+
+| Goal | Papers |
+|---|---|
+| Understand RDL from scratch | 1 → 2 → 3 → 4 |
+| Build a supervised RDL model | 1 → 2 → 3 → 5 |
+| Build a foundation model | 1 → 2 → 4 → 6 → 7 → 8 |
+| Benchmark/reproduce results | 2 → 3 → 5 (all use RelBench v1) |
+| Temporal graph focus | tgn → dygformer → 1 → 2 |
+| GNN theory background | gcn → gin → graphsage → 1 |

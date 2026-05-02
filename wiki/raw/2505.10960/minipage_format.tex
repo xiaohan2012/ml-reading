@@ -1,0 +1,157 @@
+\begin{table}[ht]
+\centering
+\begin{minipage}{.49\textwidth}
+\centering
+\small
+\caption{Results on the entity classification tasks in RelBench. Higher is better. Best values are in \textbf{bold}. Relative gains are in percentage.}
+\label{tab:main-results-classification}
+\scalebox{0.63}{
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Dataset} & \textbf{Task (\# train)} & \textbf{AUC $\uparrow$} & \makecell{\textbf{RDL}\\\textbf{Baseline}} & \makecell{\textbf{Rel-GT}\\ \textbf{(ours)}} & \makecell{\textbf{Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{4}{*}{rel-f1} 
+ & \multirow{2}{*}{driver-dnf (11k)} & Test & 0.7262 & \textbf{0.759} & 4.52 \\
+ & & Val & 0.7136 & 0.680 &  \\
+ & \multirow{2}{*}{driver-top3 (1k)} & Test & 0.7554 & \textbf{0.835} & 10.54 \\
+ & & Val & 0.7764 & 0.796 & \\
+\midrule
+\multirow{4}{*}{rel-avito}
+ & \multirow{2}{*}{user-clicks (59k)} & Test & 0.6590 & \textbf{0.683} & 3.64 \\
+ & & Val & 0.6473 & 0.665 &  \\
+ & \multirow{2}{*}{user-visits (86k)} & Test & 0.6620 & \textbf{0.668} & 0.91 \\
+ & & Val & 0.6965 & 0.702 & \\
+
+\midrule
+\multirow{4}{*}{rel-event}
+ & \multirow{2}{*}{user-repeat (3k)} & Test & \textbf{0.7689} & 0.756 & -1.68 \\
+ & & Val & 0.7125 & 0.725 &  \\
+ & \multirow{2}{*}{user-ignore (19k)} & Test & \textbf{0.8162} & \textbf{0.816} & 0.00 \\
+ & & Val & 0.9170 & 0.887 &  \\
+
+\midrule
+\multirow{2}{*}{rel-trial}
+ & \multirow{2}{*}{study-outcome (11k)} & Test & \textbf{0.6860} & \textbf{0.686} & 0.00 \\
+ & & Val & 0.6818 & 0.668 &  \\
+
+ \midrule
+\multirow{4}{*}{rel-amazon}
+ & \multirow{2}{*}{user-churn (4.7m)} & Test & 0.7042 & \textbf{0.705} & 0.11 \\
+ & & Val & 0.7045 & 0.706 &  \\
+ & \multirow{2}{*}{item-churn (2.6m)} & Test & \textbf{0.8281} & 0.826 & -0.25\\
+ & & Val & 0.8239 & 0.822 &  \\
+
+ \midrule
+\multirow{4}{*}{rel-stack}
+ & \multirow{2}{*}{user-engagement (1.4m)} & Test & 0.9021 & \textbf{0.906} & 0.43 \\
+ & & Val & 0.9059 & 0.904 &  \\
+ & \multirow{2}{*}{user-badge (3.4m)} & Test & \textbf{0.8986} & 0.863 & -3.96 \\
+ & & Val & 0.8886 & 0.874 &  \\
+
+\midrule
+\multirow{2}{*}{rel-hm}
+ & \multirow{2}{*}{user-churn (3.9m)} & Test & \textbf{0.6988} & 0.694 & -0.69 \\
+ & & Val & 0.7042 & 0.701 &  \\
+
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+\hspace{2pt}
+\begin{minipage}{.49\textwidth}
+\centering
+\small
+\caption{Results on the entity regression tasks in RelBench. Lower is better. Best values are in \textbf{bold}. Relative gains are in percentage.}
+\label{tab:main-results-classification}
+\scalebox{0.63}{
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Dataset} & \textbf{Task (\# train)} & \textbf{MAE $\downarrow$} & \makecell{\textbf{RDL}\\\textbf{Baseline}} & \makecell{\textbf{Rel-GT}\\ \textbf{(ours)}} & \makecell{\textbf{Rel.}\\ \textbf{Gain}} \\
+\midrule
+
+\multirow{2}{*}{rel-f1} 
+ & \multirow{2}{*}{driver-position (7k)} & Test & 4.022 & \textbf{3.917} & 2.61 \\
+ & & Val & 3.193 & 3.326 & \\
+
+\midrule
+\multirow{2}{*}{rel-avito}
+ & \multirow{2}{*}{ad-ctr (5k)} & Test & 0.041 & \textbf{0.035} & 14.63 \\
+ & & Val & 0.037 & 0.031 & \\
+
+
+\midrule
+\multirow{2}{*}{rel-event}
+ & \multirow{2}{*}{user-attendance (19k)} & Test & 0.258 & \textbf{0.250} & 3.10 \\
+ & & Val & 0.255 & 0.255 & \\
+
+
+\midrule
+\multirow{4}{*}{rel-trial}
+ & \multirow{2}{*}{study-adverse (43k)} & Test & 44.473 & \textbf{44.225} & 0.56 \\
+ & & Val & 46.290 & 46.180 & \\
+ & \multirow{2}{*}{site-success (151k)} & Test & 0.400 & \textbf{0.326} & 18.50 \\
+ & & Val & 0.401 & 0.359 &  \\
+
+\midrule
+\multirow{4}{*}{rel-amazon}
+ & \multirow{2}{*}{user-ltv (4.7m)} & Test & 14.313 & \textbf{14.266} & 0.33 \\
+ & & Val & 12.132 & 12.115 & \\
+ & \multirow{2}{*}{item-ltv (2.7m)} & Test & 50.053 & \textbf{48.670} & 2.76 \\
+ & & Val & 45.1401 & 43.243 &  \\
+
+\midrule
+\multirow{2}{*}{rel-stack}
+ & \multirow{2}{*}{post-votes (2.5m)} & Test & \textbf{0.065} & \textbf{0.065} & 0.00 \\
+ & & Val & 0.059 & 0.059 & \\
+
+\midrule
+\multirow{2}{*}{rel-hm}
+ & \multirow{2}{*}{item-sales (5.5m)} & Test & 0.056 & \textbf{0.053} & 5.36 \\
+ & & Val & 0.065 & 0.062 & \\
+
+\bottomrule
+\end{tabular}
+}
+\end{minipage}
+\end{table}
+
+
+
+
+
+% Equations in section 3.1
+
+% To process each token in the 5-tuple representation $(x_{v_j}, \phi(v_j), p(v_i, v_j), \tau(v_j) - \tau(v_i), \text{GNN-PE}_{v_j})$, we employ specialized encoders that transform each element into a $d$-dimensional vector space. The node feature encoding transforms the raw attributes using the PyTorch Frame encoder:
+% \begin{equation}
+%     \mathbf{h}_{\text{feat}}(v_j) = \text{Frame}(x_{v_j})
+% \end{equation}
+
+% For categorical elements, we use learnable embedding matrices. The node type encoding maps each table-specific entity type to a dense representation:
+% \begin{equation}
+%     \mathbf{h}_{\text{type}}(v_j) = \mathbf{W}_{\text{type}} \cdot \mathbf{onehot}(\phi(v_j))
+% \end{equation}
+% where $\mathbf{W}_{\text{type}} \in \mathbb{R}^{d \times |\mathcal{T}|}$ is the learnable weight matrix and $|\mathcal{T}|$ is the number of node types.
+
+% Similarly, the hop distance encoding captures the structural proximity between nodes:
+% \begin{equation}
+%     \mathbf{h}_{\text{hop}}(v_i, v_j) = \mathbf{W}_{\text{hop}} \cdot \mathbf{onehot}(p(v_i, v_j))
+% \end{equation}
+% with $\mathbf{W}_{\text{hop}} \in \mathbb{R}^{d \times h_{\max}}$ mapping hop distances to vector representations.
+
+% The temporal encoding linearly transforms the time difference between nodes:
+% \begin{equation}
+%     \mathbf{h}_{\text{time}}(v_i, v_j) = \mathbf{W}_{\text{time}} \cdot (\tau(v_j) - \tau(v_i)) + \mathbf{b}_{\text{time}}
+% \end{equation}
+% where $\mathbf{W}_{\text{time}} \in \mathbb{R}^{d \times 1}$ and $\mathbf{b}_{\text{time}} \in \mathbb{R}^{d}$ are learnable parameters.
+
+% For capturing local graph structure, we apply a lightweight GNN to the subgraph:
+% \begin{equation}
+%     \mathbf{h}_{\text{pe}}(v_j) = \text{GNN}(\mathbf{A}_{\text{local}}, \mathbf{Z}_{\text{random}})_j
+% \end{equation}
+% where $\mathbf{A}_{\text{local}} \in \mathbb{R}^{K \times K}$ is the adjacency matrix of the sampled subgraph and $\mathbf{Z}_{\text{random}} \in \mathbb{R}^{K \times d_{\text{init}}}$ are randomly initialized node features.
+
+% The final token representation combines all encoded elements:
+% \begin{equation}
+%     \mathbf{h}_{\text{token}}(v_j) = \mathbf{h}_{\text{feat}}(v_j) + \mathbf{h}_{\text{type}}(v_j) + \mathbf{h}_{\text{hop}}(v_i, v_j) + \mathbf{h}_{\text{time}}(v_i, v_j) + \mathbf{h}_{\text{pe}}(v_j)
+% \end{equation}

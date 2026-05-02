@@ -1,0 +1,84 @@
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2022
+
+
+% ready for submission
+\usepackage{neurips_2022}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2022}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2022}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2022}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+% Our packages
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\DeclareUnicodeCharacter{2212}{−}
+\usepgfplotslibrary{groupplots,dateplot}
+%\usetikzlibrary{external}
+%\tikzexternalize[prefix=tikz/]
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{backgrounds,fit}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows}
+
+\usepackage{svg}
+\usepackage{listings}
+\usepackage{amsmath,amssymb}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\usepackage[ruled,vlined]{algorithm2e}
+
+
+\usepackage{todonotes}
+\newcommand{\frank}[1]{\todo[inline,color=yellow]{Frank: #1}}
+\newcommand{\sam}[1]{\todo[inline,color=green]{Sam: #1}}
+\newcommand{\noah}[1]{\todo[inline,color=orange]{Noah: #1}}
+\newcommand{\katha}[1]{\todo[inline,color=white]{Katha: #1}}
+
+
+%\title{Probabilistic AutoML in a Single Forward Pass}
+% Probabilistic
+% Causal
+% 
+\title{Meta-Learning Fast Tabular AutoML for Small Data}
+
+\begin{document}
+
+
+We extend BNNs to represent a subclass of Structural Causal Models (SCMs~\citep{causalinferencelearningbook}).
+We focus in specific on functional SCMs, that have variables of the form $X = \{x_1,\dots,x_n\}$, where each variable $x_i$ is set by a deterministic function $f_i$ and some independent noise $\eps_i$ as
+\begin{align}
+    %x_i = f_i(X_{\text{PA}_{\mathcal{G}}(i)}) + \eps_i,
+\end{align}
+where $\mathcal{G}$ is an underlying causal graph in which $\text{PA}_{\mathcal{G}}(i)}$ refers to the parents of the $i$th node.
+underlying causal DAG $(V,E)$ in which the value for each source variable $v \in V$, all nodes without parents, is defined purely as noise $x = \$ non variable $v \in V$ is defined by a the form
+That is we use SCMs as a language to describe our hypotheses, we are inspired by science showing causal mechanisms to be a strong prior in human reasoning as well \citep{johnson2014explanatory, wojtowicz2020probability}.
+\end{document}

@@ -1,0 +1,107 @@
+% \documentclass{article}
+% \usepackage{pgfplots}
+% \usepackage{tikz}
+% \usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+% \begin{document}
+\begin{tikzpicture}[-Latex,auto,node distance =0.2 cm and 0.3 cm,semithick,
+    state/.style ={ellipse, draw, minimum width = .7 cm, minimum height = 0.7 cm},every node/.style={scale=0.3},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}]
+    \node[state,fill=gray!40!white] (1) {$x^{(1)}$};
+    \node[state,fill=gray!40!white] (2) [right =of 1] {$x^{(2)}$};
+    
+    \node[state] (3) [above left =of 1,yshift=0.2cm, xshift=1cm] {$H_1$};
+    \node[state] (4) [above =of 1, xshift=1cm] {$H_2$};
+    \node[state] (5) [above =of 2, xshift=1cm] {$H_3$};
+    
+    \node[state] (8) [above =of 3] {$H_1$};
+    \node[state] (9) [above =of 4] {$H_2$};
+    \node[state] (10) [above =of 5] {$H_3$};
+    
+    \node[state] (7) [above =of 9,fill=gray!40!white] {$y$};
+
+    \path (1) edge (3);
+    \path (1) edge (4);
+    \path (1) edge (5);
+    \path (2) edge (3);
+    \path (2) edge (4);
+    \path (2) edge (5);
+    
+    \path (3) edge (8);
+    \path (4) edge (8);
+    \path (5) edge (8);
+    \path (3) edge (9);
+    \path (4) edge (9);
+    \path (5) edge (9);
+    \path (3) edge (10);
+    \path (4) edge (10);
+    \path (5) edge (10);
+    
+    \path (8) edge (7);
+    \path (9) edge (7);
+    \path (10) edge (7);
+\end{tikzpicture}
+\begin{tikzpicture}[-Latex,auto,node distance =0.3 cm and 0.3 cm,semithick,
+    state/.style ={ellipse, draw, minimum width = .7 cm, minimum height = 0.7 cm},every node/.style={scale=0.3},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}]
+    \node[state,fill=gray!40!white] (1) {$x^{(1)}$};
+    \node[state,fill=gray!40!white] (2) [right =of 1] {$x^{(2)}$};
+    \node[state] (3) [above left =of 1,yshift=0.2cm] {$H_1$};
+    \node[state] (4) [above =of 1] {$H_2$};
+    \node[state] (5) [above =of 2] {$H_3$};
+    \node[state] (6) [above right =of 2,yshift=0.2cm] {$H_4$};
+    \node[state] (7) [above =of 4,xshift=0.8cm,fill=gray!40!white] {$y$};
+
+    \path (1) edge (3);
+    \path (1) edge (4);
+    \path (1) edge (5);
+    \path (1) edge(6);
+    \path (2) edge (3);
+    \path (2) edge (4);
+    \path (2) edge (5);
+    \path (2) edge (6);
+    
+    \path (3) edge (7);
+    \path (4) edge (7);
+    \path (5) edge (7);
+    \path (6) edge (7);
+\end{tikzpicture}
+\begin{tikzpicture}[-Latex,auto,node distance =0.3 cm and 0.15 cm,semithick,
+    state/.style ={ellipse, draw, minimum width = .7 cm, minimum height = 0.7 cm},every node/.style={scale=0.3},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}]
+    \node[state,fill=gray!40!white] (1) {$x^{(1)}$};
+    \node[state,fill=gray!40!white] (2) [right =of 1] {$x^{(2)}$};
+    \node[state] (3) [above left =of 1,yshift=0.2cm] {$H_1$};
+    \node[state] (4) [above =of 1] {$H_2$};
+    \node[state] (5) [above =of 2] {$H_3$};
+    \node[state] (8) [left =of 3] {$H_2$};
+    \node[state] (6) [above right =of 2,yshift=0.2cm] {$H_4$};
+    \node[state] (9) [right =of 6] {$H_3$};
+    \node[state] (7) [above =of 4,xshift=0.8cm,fill=gray!40!white] {$y$};
+
+    \path (1) edge (3);
+    \path (1) edge (4);
+    \path (1) edge (5);
+    \path (1) edge(6);
+    \path (1) edge (8);
+    \path (1) edge (9);
+    \path (2) edge (3);
+    \path (2) edge (4);
+    \path (2) edge (5);
+    \path (2) edge (6);
+    \path (2) edge (8);
+    \path (2) edge (9);
+    
+    \path (3) edge (7);
+    \path (4) edge (7);
+    \path (5) edge (7);
+    \path (6) edge (7);
+    \path (8) edge (7);
+    \path (9) edge (7);
+\end{tikzpicture}
+% \end{document}

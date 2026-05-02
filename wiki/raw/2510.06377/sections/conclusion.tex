@@ -1,0 +1,22 @@
+\section{Discussion and Conclusion}
+\label{sec:conclusion}
+% \textbf{Zero-shot transfer.}
+It is striking that pretraining on only $6$ datasets
+yields such strong zero-shot transfer on completely unseen datasets,
+especially considering that the $7$ datasets in RelBench
+are quite diverse.
+Our ablation studies in \S \ref{sec:analysis}
+have uncovered the following key components that
+enable zero-shot transfer, in order of importance:
+(1) time-series forecasting from past task rows for the target entity,
+(2) column attention with the help of Relational Attention to generalize to new column distributions,
+(3) feature attention, both in the same table and in parent tables,
+with the help of Relational Attention to generalize to new entity types,
+(4) schema semantics from table and column names,
+(5) in-context learning from task rows for other entities.
+
+% \textbf{Limitations and future directions.}
+Limitations of RT include inability to handle recommendation or link prediction tasks. Further, it does not incorporate the names of primary-key and foreign-key columns, which often carry useful semantics. RT also does not disambiguate between different foreign key columns: for instance, in a \texttt{product} table with both \texttt{buyer\_id} and \texttt{seller\_id} as foreign keys to the \texttt{user} table, the model cannot distinguish which \texttt{user} bought and which sold the product. Extending RT to handle such cases, and more generally to support link prediction, remains an important direction for future work. Finally, more advanced cell encoders can be explored, including graph positional encodings, to enhance performance for supervised fine-tuning settings in large-data regimes.
+
+To conclude, we introduced the Relational Transformer (RT), a general architecture that advances foundation models on relational data. RT introduces three key innovations: (i) cell-level tokenization that unifies diverse predictive tasks as masked token prediction, (ii) Relational Attention layers that explicitly capture and generalize column, row, and primary–foreign key structures, and (iii) task table prompting that enables zero-shot prediction across heterogeneous schemas. Through pretraining on diverse databases, RT achieves strong zero-shot transfer, rapid fine-tuning, and state-of-the-art results on classification and regression tasks. These advances demonstrate that relational databases share transferable patterns and position RT as a foundation for general-purpose relational modeling.
+

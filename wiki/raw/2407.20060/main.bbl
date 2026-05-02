@@ -1,0 +1,222 @@
+\begin{thebibliography}{31}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Chen and Guestrin(2016)]{chen2016xgboost}
+Tianqi Chen and Carlos Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{ACM SIGKDD Conference on Knowledge Discovery and Data Mining
+  (KDD)}, pages 785--794, 2016.
+
+\bibitem[Cvitkovic(2019)]{cvitkovic2020supervisedrd}
+Milan Cvitkovic.
+\newblock Supervised learning on relational databases with graph neural
+  networks.
+\newblock \emph{ICLR Workshop on Representation Learning on Graphs and
+  Manifolds}, 2019.
+
+\bibitem[Deng \emph{et~al.}(2009)Deng, Dong, Socher, Li, Li, and
+  Fei-Fei]{deng2009imagenet}
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li~Fei-Fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In \emph{2009 IEEE conference on computer vision and pattern
+  recognition}, pages 248--255. Ieee, 2009.
+
+\bibitem[Devlin \emph{et~al.}(2018)Devlin, Chang, Lee, and
+  Toutanova]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock In \emph{North American Chapter of the Association for Computational
+  Linguistics (NAACL)}, 2018.
+
+\bibitem[Fey and Lenssen(2019)]{fey2019fast}
+Matthias Fey and Jan~Eric Lenssen.
+\newblock Fast graph representation learning with pytorch geometric.
+\newblock \emph{ICLR 2019 (RLGM Workshop)}, 2019.
+
+\bibitem[Fey \emph{et~al.}(2024)Fey, Hu, Huang, Lenssen, Ranjan, Robinson,
+  Ying, You, and Leskovec]{fey2023relational}
+Matthias Fey, Weihua Hu, Kexin Huang, Jan~Eric Lenssen, Rishabh Ranjan, Joshua
+  Robinson, Rex Ying, Jiaxuan You, and Jure Leskovec.
+\newblock Relational deep learning: Graph representation learning on relational
+  databases.
+\newblock \emph{ICML Position Paper}, 2024.
+
+\bibitem[Gilmer \emph{et~al.}(2017)Gilmer, Schoenholz, Riley, Vinyals, and
+  Dahl]{gilmer2017mpgnn}
+Justin Gilmer, Samuel~S. Schoenholz, Patrick~F. Riley, Oriol Vinyals, and
+  George~E. Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, page
+  1263–1272, 2017.
+
+\bibitem[Gorishniy \emph{et~al.}(2021)Gorishniy, Rubachev, Khrulkov, and
+  Babenko]{gorishniy2021revisiting}
+Yury Gorishniy, Ivan Rubachev, Valentin Khrulkov, and Artem Babenko.
+\newblock Revisiting deep learning models for tabular data.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~34, pages 18932--18943, 2021.
+
+\bibitem[Hamilton \emph{et~al.}(2017)Hamilton, Ying, and
+  Leskovec]{hamilton2017inductive}
+Will Hamilton, Zhitao Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2017.
+
+\bibitem[Hanley and McNeil(1983)]{hanley1983method}
+James~A Hanley and Barbara~J McNeil.
+\newblock A method of comparing the areas under receiver operating
+  characteristic curves derived from the same cases.
+\newblock \emph{Radiology}, 148\penalty0 (3):\penalty0 839--843, 1983.
+
+\bibitem[Heaton(2016)]{heaton2016empirical}
+Jeff Heaton.
+\newblock An empirical analysis of feature engineering for predictive modeling.
+\newblock In \emph{SoutheastCon 2016}, pages 1--6. IEEE, 2016.
+
+\bibitem[Hu \emph{et~al.}(2020)Hu, Fey, Zitnik, Dong, Ren, Liu, Catasta, and
+  Leskovec]{hu2020open}
+Weihua Hu, Matthias Fey, Marinka Zitnik, Yuxiao Dong, Hongyu Ren, Bowen Liu,
+  Michele Catasta, and Jure Leskovec.
+\newblock Open graph benchmark: Datasets for machine learning on graphs.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2020.
+
+\bibitem[Hu \emph{et~al.}(2024)Hu, Yuan, Zhang, Nitta, Cao, Kocijan, Leskovec,
+  and Fey]{hu2024pytorch}
+Weihua Hu, Yiwen Yuan, Zecheng Zhang, Akihiro Nitta, Kaidi Cao, Vid Kocijan,
+  Jure Leskovec, and Matthias Fey.
+\newblock Pytorch frame: A modular framework for multi-modal tabular learning.
+\newblock \emph{arXiv preprint arXiv:2404.00776}, 2024.
+
+\bibitem[Huang \emph{et~al.}(2024)Huang, Poursafaei, Danovitch, Fey, Hu, Rossi,
+  Leskovec, Bronstein, Rabusseau, and Rabbany]{huang2024temporal}
+Shenyang Huang, Farimah Poursafaei, Jacob Danovitch, Matthias Fey, Weihua Hu,
+  Emanuele Rossi, Jure Leskovec, Michael Bronstein, Guillaume Rabusseau, and
+  Reihaneh Rabbany.
+\newblock Temporal graph benchmark for machine learning on temporal graphs.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem[Johnson \emph{et~al.}(2016)Johnson, Pollard, Shen, Lehman, Feng,
+  Ghassemi, Moody, Szolovits, Anthony~Celi, and Mark]{johnson2016mimic}
+Alistair~EW Johnson, Tom~J Pollard, Lu~Shen, Li-wei~H Lehman, Mengling Feng,
+  Mohammad Ghassemi, Benjamin Moody, Peter Szolovits, Leo Anthony~Celi, and
+  Roger~G Mark.
+\newblock Mimic-iii, a freely accessible critical care database.
+\newblock \emph{Scientific data}, 3\penalty0 (1):\penalty0 1--9, 2016.
+
+\bibitem[{Kaggle}(2022)]{kaggle-survey}
+{Kaggle}.
+\newblock {Kaggle Data Science \& Machine Learning Survey}, 2022.
+\newblock Available:
+  \url{https://www.kaggle.com/code/paultimothymooney/kaggle-survey-2022-all-results/notebook}.
+
+\bibitem[Kapoor and Narayanan(2023)]{kapoor2023leakage}
+Sayash Kapoor and Arvind Narayanan.
+\newblock Leakage and the reproducibility crisis in machine-learning-based
+  science.
+\newblock \emph{Patterns}, 4\penalty0 (9), 2023.
+
+\bibitem[Ke \emph{et~al.}(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and
+  Liu]{ke2017lightgbm}
+Guolin Ke, Qi~Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei
+  Ye, and Tie-Yan Liu.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, volume~30, 2017.
+
+\bibitem[Krizhevsky \emph{et~al.}(2017)Krizhevsky, Sutskever, and
+  Hinton]{krizhevsky2017imagenet}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock \emph{Communications of the ACM}, 60\penalty0 (6):\penalty0 84--90,
+  2017.
+
+\bibitem[Lundberg and Lee(2017)]{lundberg2017unified}
+Scott~M Lundberg and Su-In Lee.
+\newblock A unified approach to interpreting model predictions.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Morris \emph{et~al.}(2020)Morris, Kriege, Bause, Kersting, Mutzel, and
+  Neumann]{morris2020tudataset}
+Christopher Morris, Nils~M Kriege, Franka Bause, Kristian Kersting, Petra
+  Mutzel, and Marion Neumann.
+\newblock Tudataset: A collection of benchmark datasets for learning with
+  graphs.
+\newblock \emph{arXiv preprint arXiv:2007.08663}, 2020.
+
+\bibitem[Ni \emph{et~al.}(2019)Ni, Li, and McAuley]{ni2019justifying}
+Jianmo Ni, Jiacheng Li, and Julian McAuley.
+\newblock Justifying recommendations using distantly-labeled reviews and
+  fine-grained aspects.
+\newblock In \emph{Proceedings of the 2019 conference on empirical methods in
+  natural language processing and the 9th international joint conference on
+  natural language processing (EMNLP-IJCNLP)}, pages 188--197, 2019.
+
+\bibitem[Pennington \emph{et~al.}(2014)Pennington, Socher, and
+  Manning]{pennington2014glove}
+Jeffrey Pennington, Richard Socher, and Christopher~D Manning.
+\newblock Glove: Global vectors for word representation.
+\newblock In \emph{Proceedings of the 2014 conference on empirical methods in
+  natural language processing (EMNLP)}, pages 1532--1543, 2014.
+
+\bibitem[{PubMed}(1996)]{pubmed}
+{PubMed}.
+\newblock {National Center for Biotechnology Information, U.S. National Library
+  of Medicine}, 1996.
+\newblock Available: \url{https://www.ncbi.nlm.nih.gov/pubmed/}.
+
+\bibitem[Rendle \emph{et~al.}(2012)Rendle, Freudenthaler, Gantner, and
+  Schmidt-Thieme]{rendle2012bpr}
+Steffen Rendle, Christoph Freudenthaler, Zeno Gantner, and Lars Schmidt-Thieme.
+\newblock Bpr: Bayesian personalized ranking from implicit feedback.
+\newblock \emph{arXiv preprint arXiv:1205.2618}, 2012.
+
+\bibitem[Schlichtkrull \emph{et~al.}(2018)Schlichtkrull, Kipf, Bloem, van den
+  Berg, Titov, and Welling]{schlichtkrull2018relational}
+Michael Schlichtkrull, Thomas~N. Kipf, Peter Bloem, Rianne van den Berg, Ivan
+  Titov, and Max Welling.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In Aldo Gangemi, Roberto Navigli, Maria-Esther Vidal, Pascal Hitzler,
+  Rapha{\"e}l Troncy, Laura Hollink, Anna Tordai, and Mehwish Alam, editors,
+  \emph{The Semantic Web}, pages 593--607, Cham, 2018. Springer International
+  Publishing.
+
+\bibitem[{\v{S}}{\'\i}r(2021)]{vsir2021deep}
+Gustav {\v{S}}{\'\i}r.
+\newblock \emph{Deep Learning with Relational Logic Representations}.
+\newblock Czech Technical University, 2021.
+
+\bibitem[Wang \emph{et~al.}(2019)Wang, He, Wang, Feng, and
+  Chua]{wang2019neural}
+Xiang Wang, Xiangnan He, Meng Wang, Fuli Feng, and Tat-Seng Chua.
+\newblock Neural graph collaborative filtering.
+\newblock In \emph{Proceedings of the 42nd international ACM SIGIR conference
+  on Research and development in Information Retrieval}, pages 165--174, 2019.
+
+\bibitem[You \emph{et~al.}(2021)You, Gomes-Selman, Ying, and
+  Leskovec]{you2021identity}
+Jiaxuan You, Jonathan~M Gomes-Selman, Rex Ying, and Jure Leskovec.
+\newblock Identity-aware graph neural networks.
+\newblock In \emph{Proceedings of the AAAI conference on artificial
+  intelligence}, pages 10737--10745, 2021.
+
+\bibitem[Zahradn{\'\i}k \emph{et~al.}(2023)Zahradn{\'\i}k, Neumann, and
+  {\v{S}}{\'\i}r]{zahradnik2023deep}
+Luk{\'a}{\v{s}} Zahradn{\'\i}k, Jan Neumann, and Gustav {\v{S}}{\'\i}r.
+\newblock A deep learning blueprint for relational databases.
+\newblock In \emph{NeurIPS 2023 Second Table Representation Learning Workshop},
+  2023.
+
+\bibitem[Zheng and Casari(2018)]{zheng2018feature}
+Alice Zheng and Amanda Casari.
+\newblock \emph{Feature engineering for machine learning: principles and
+  techniques for data scientists}.
+\newblock " O'Reilly Media, Inc.", 2018.
+
+\end{thebibliography}

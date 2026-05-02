@@ -1,0 +1,39 @@
+\begin{tabular}{@{\hskip 0mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 0mm}}
+\toprule
+{} &        LightGBM &        CatBoost &         XGBoost &         ASKL2.0 &               AutoGluon &  TabPFN$_{n.e.}$ &          TabPFN &        TabPFN + AutoGluon \\
+\midrule
+\midrule
+Wins AUC OVO
+                                         &               0 &               0 &               2 &               2 &                       2 &                4 &      \textbf{5} &                \textbf{5} \\
+Wins Acc.            &               0 &               2 &               2 &               3 &                       3 &                0 &               6 &                \textbf{8} \\
+Wins CE              &               0 &               1 &               3 &               1 &                       7 &                1 &               6 &                \textbf{9} \\
+\midrule
+M. rank AUC OVO
+                                      &          6.6167 &          4.9667 &          5.4167 &            4.05 &                  3.7833 &             4.65 &             3.7 &           \textbf{2.8167} \\
+Mean rank Acc.       &          6.5333 &          4.9833 &          5.1833 &          4.8667 &                  3.8167 &           4.5333 &          3.6167 &           \textbf{2.4667} \\
+Mean rank CE         &          5.7333 &             5.6 &          5.4667 &             5.8 &                  2.8667 &           4.6167 &          3.5333 &           \textbf{2.3833} \\
+\midrule
+Win/T/L AUC
+                             vs Tab.. &          5/4/21 &          9/4/17 &          6/5/19 &         10/6/14 &                 13/4/13 &           4/8/18 &           --/--/-- &                    15/7/8 \\
+Win/T/L Acc vs Tab.. &          6/0/24 &          9/1/20 &         11/0/19 &         11/2/17 &                 12/0/18 &           6/3/21 &           --/--/-- &                    19/3/8 \\
+Win/T/L CE vs TabP.. &          6/0/24 &          8/0/22 &          8/0/22 &          8/0/22 &                 20/0/10 &           1/4/25 &           --/--/-- &                    23/0/7 \\
+\midrule
+Mean AUC OVO
+                                         &  0.884$\pm$.012 &   0.89$\pm$.011 &  0.891$\pm$.011 &   0.894$\pm$.01 &           0.895$\pm$.01 &    0.891$\pm$.01 &   0.894$\pm$.01 &  \textbf{0.898}$\pm$.0097 \\
+Mean Acc.            &  0.815$\pm$.014 &  0.818$\pm$.011 &  0.821$\pm$.013 &  0.821$\pm$.016 &           0.83$\pm$.012 &    0.82$\pm$.013 &  0.825$\pm$.012 &   \textbf{0.834}$\pm$.011 \\
+Mean CE              &  0.782$\pm$.074 &  0.767$\pm$.061 &  0.758$\pm$.047 &   0.815$\pm$.06 &  \textbf{0.72}$\pm$.015 &   0.742$\pm$.021 &  0.732$\pm$.018 &            0.721$\pm$.015 \\
+\midrule
+Mean time (s) 
+                                    &            \multirow{2}{*}{3241} &            \multirow{2}{*}{3718} &            \multirow{2}{*}{3304} &            \multirow{2}{*}{3601} &                    \multirow{2}{*}{3127} &  \textbf{0.8688} (CPU) &          24.57 (CPU) &                      3152 (CPU) \\
+(Tune + Train + Predict)                                                                        &             &             &             &             &                     &  \textbf{0.0187} (GPU) &          0.5335 (GPU) &                      3128 (GPU) \\
+\bottomrule
+\end{tabular}

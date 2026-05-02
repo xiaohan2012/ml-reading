@@ -1,0 +1,143 @@
+
+\section{Predictive Tasks on \relbench Datasets}
+\label{sec:tasks}
+% Table
+% Dataset-task table\\
+% row: dataset\\
+% col: task type\\
+% entry: concrete tasks
+
+
+
+\relbench introduces 30 new predictive tasks defined over the databases introduced in Section~\ref{sec:datasets}.
+A full list of tasks is given in Table~\ref{tab:task_stats}, with high-level descriptions given in Appendix \ref{app: task info} (and our \href{https://relbench.stanford.edu/}{website}) due to space limitations.
+Tasks are grouped into three task types: entity classification (Section~\ref{sec:node_classification}), entity regression (Section~\ref{sec:node_regression}), and entity link prediction (Section~\ref{sec:link_prediction}). Tasks differ significantly in the number of train/val/test entities, number of unique entities (the same entity may appear multiple times at different timestamps), and the proportion of test entities seen during training. Note this is not data leakage, since entity predictions are timestamp dependent, and can change over time. Tasks with no overlap are pure inductive tasks, whilst other tasks are (partially) transductive. 
+
+%\wh{I am wondering why don't we put data scientist baseline in Tables 3, 4, and 5? Otherwise, I would feel all these baselines are too weak. For reviewers, the only ``interesting'' comparison is data scientist (remember one ICML reviewer that asks for a stronger baseline).}
+
+%For each task type, we describe the target label, evaluation metric, and baseline methods with the notable inclusion of a strong data scientist baseline discussed in detail in Section~\ref{sec:ds_baseline}. We also report results comparing our relational deep learning implementation (Appendix~\ref{sec:rdl_implementation}) against these baselines, finding competitive performance.
+%and several task-type-specific basic baselines (Sections~\ref{sec:node_classification},~\ref{sec:node_regression}, and~\ref{sec:link_prediction}).
+
+
+
+\subsection{Entity Classification}
+\label{sec:node_classification}
+
+% \begin{wraptable}[20]{r}{0.5\textwidth}
+\begin{table}
+    \caption{Entity classification results (AUROC, higher is better) on \relbench. Best values are in bold. See Table~\ref{tab:app_classif} in Appendix~\ref{app:gnn_ablations} for standard deviations.
+    % \jure{See Average row (FIX IT)!}
+    }
+    \centering
+    % \setlength{\tabcolsep}{3pt}
+    % \scriptsize
+    \tiny
+    \CatchFileDef{\tabledata}{tables/node_classification.tex}{}
+    \begin{tabular}{lllrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{Split} & \textbf{LightGBM} & \textbf{RDL} & \makecell{\textbf{Rel. Gain}\\\textbf{of RDL}} \\
+    \midrule
+    \tabledata
+    \bottomrule
+    \end{tabular}
+    \label{tab:classif results}
+\end{table}
+% \end{wraptable}
+
+The first task type is entity-level classification. The task is to predict binary labels of a given entity at a given seed time. We use the ROC-AUC~\citep{hanley1983method} metric for evaluation (higher is better). We compare to a LightGBM classifier baseline over the raw entity table features. Note that here only information from the single entity table is used.
+
+
+
+\paragraph{Experimental results.} Results are given in Table \ref{tab:classif results}, with RDL outperforming or matching baselines in all cases. Notably, LightGBM achieves similar performance to RDL on the \studyOutcome task from \trials. This task has extremely rich features in the target table (28 columns total), giving the LightGBM many potentially useful features even without feature engineering. It is an interesting research question how to design RDL models better able to extract these features and unify them with cross-table information in order to outperform the LightGBM model on this dataset.
+
+\subsection{Entity Regression}
+\label{sec:node_regression}
+
+Entity-level regression tasks involve predicting numerical labels of an entity at a given seed time. We use Mean Absolute Error (MAE) as our metric (lower is better). We consider the following baselines:
+\begin{itemize}[leftmargin=0.6cm,itemsep=3pt, parsep=0pt]
+    \item \textbf{Entity mean/median} calculates the mean/median label value for each entity in training data and predicts the mean/median value for the entity.
+    \item \textbf{Global mean/median} calculates the global mean/median label value over the training data and predicts the same mean/median value across all entities.
+    \item \textbf{Global zero} predicts zero for all entities.
+    \item \textbf{LightGBM} learns a LightGBM~\citep{ke2017lightgbm} regressor over the raw entity features to predict the numerical targets. Note that only information from the single entity table is used.
+\end{itemize}
+
+
+
+
+\xhdr{Experimental results} Results in Table \ref{tab: regression} show our RDL implementation outperforms or matches baselines in all cases. A number of tasks, such as \driverPosition and \studyAdverse, have matching performance up to statistical significance, suggesting some room for improvement. We analyze this further in Appendix \ref{app: user study}, identifying one potential cause, suggesting an opportunity for improved performance for regression tasks. 
+
+
+
+\begin{table}
+\caption{Entity regression results (MAE, lower is better) on \relbench. Best values are in bold. See Table~\ref{tab:app_regression} in Appendix~\ref{app:gnn_ablations} for standard deviations.
+% \jure{See Average row (FIX IT)!}
+}
+\centering
+\setlength{\tabcolsep}{5pt}
+% \scriptsize
+\tiny
+\CatchFileDef{\tabledata}{tables/node_regression.tex}{}
+\begin{tabular}{lllrrrrrrrr}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \textbf{Split} & \makecell{\textbf{Global}\\\textbf{Zero}} & \makecell{\textbf{Global}\\\textbf{Mean}} & \makecell{\textbf{Global}\\\textbf{Median}} & \makecell{\textbf{Entity}\\\textbf{Mean}} & \makecell{\textbf{Entity}\\\textbf{Median}} &
+\textbf{LightGBM} &
+\textbf{RDL} & 
+\makecell{\textbf{Rel. Gain}\\\textbf{of RDL}}\\
+\midrule
+\tabledata
+% manually entered
+\bottomrule
+\end{tabular}
+\label{tab: regression}
+\end{table}
+
+
+\subsection{Recommendation}\label{sec:link_prediction}
+
+Finally, we also introduce recommendation tasks on pairs of entities. The task is to predict a list of top $K$ target entities given a source entity at a given seed time.
+The metric we use is Mean Average Precision (MAP) @$K$, where $K$ is set per task (higher is better). We consider the following baselines:
+\begin{itemize}[leftmargin=0.6cm,itemsep=3pt, parsep=0pt]
+    \item \textbf{Global popularity} computes the top $K$ most popular target entities (by count) across the entire training table and predict the $K$ globally popular target entities across all source entities.
+    \item \textbf{Past visit} computes the top $K$ most visited target entities for each source entity within the training table and predict those past-visited target entities for each entity.
+    \item \textbf{LightGBM} learns a LightGBM~\citep{ke2017lightgbm} classifier over the raw features of the source and target entities (concatenated) to predict the link. Additionally, global popularity and past visit ranks are also provided as inputs.
+\end{itemize}
+
+% Task table\\
+% row: tasks\\
+% col: stats (number of time frames, timedelta, number of rows, number of entities involved, number of train/val/test data)
+
+For recommendation, it is also important to ensure a certain density of links in the training data in order for there to be sufficient predictive signal. In Appendix \ref{app: task info} we report statistics on the average number of destination entities each source entity links to. For most tasks the density is $\geq 1$, with the exception of \stackex which is more sparse, but is included to test in extreme sparse settings.
+
+\xhdr{Experimental results} Results are given in Table \ref{tab:link results}. We find that either the RDL implementation using GraphSAGE \citep{hamilton2017inductive}, or ID-GNN \citep{you2021identity} as the GNN component performs best, often by a very significant margin. ID-GNN excels in cases were predictions are entity-specific (\ie, Past Visit baseline outperforms Global Popularity), whilst the plain GNN excels in the reverse case. This reflects the inductive biases of each model, with GraphSAGE being able to learn structural features, and ID-GNN able to take into account the specific node ID.
+%RDL underperforms in two trial recommendation tasks, potentially because these tasks require historical information which current implementations may fail to capture, suggesting an exciting future RDL research direction.
+
+% Results table\\
+% row: methods\\
+% cols: tasks (or swap rows/cols)
+
+\begin{table}
+\caption{Recommendation results (MAP, higher is better) on \relbench. Best values are in bold. See Table~\ref{tab:app_link} in Appendix~\ref{app:gnn_ablations} for standard deviations.
+% \jure{See Average Row. Fix it!}
+% \jure{to all tables, can be get avg. relative improvement/difference between RDL and DT?}
+}
+\centering
+% \setlength{\tabcolsep}{4pt}
+% \scriptsize
+\tiny
+\CatchFileDef{\tabledata}{tables/link_prediction.tex}{}
+\begin{tabular}{lllrrrrrr}
+\toprule
+\textbf{Dataset} & \textbf{Task} & \textbf{Split} &
+\makecell{\textbf{Global}\\\textbf{Popularity}} & \makecell{\textbf{Past}\\\textbf{Visit}} &
+\textbf{LightGBM} &
+\makecell{\textbf{RDL}\\\textbf{(GraphSAGE)}} & \makecell{\textbf{RDL}\\\textbf{(ID-GNN)}} &
+\makecell{\textbf{Rel. Gain}\\\textbf{of RDL}}
+\\
+\midrule
+\tabledata
+\bottomrule
+\end{tabular}
+\label{tab:link results}
+\end{table}
+
+% GNN is better.

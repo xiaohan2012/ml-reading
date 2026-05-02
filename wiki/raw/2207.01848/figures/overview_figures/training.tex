@@ -1,0 +1,22 @@
+\begin{tikzpicture}[
+sample/.style={-stealth,decorate,decoration={snake}},
+input/.style={-stealth},
+]
+  \node[] (style_prior) {$p(\psi)$};
+  \node[] (style) [right=of style_prior] {$\psi$};
+  \node[] (prior) [below=of style,yshift=.7cm] {$p(D_{train} \cup \{x_{val},y_{val}\} | \psi)$};
+  \node[] (data_sample) [right=of prior] {$D_{train} \cup \{x_{val},y_{val}\}$};
+  \node[] (pfn) [above right=of data_sample, xshift=-2cm,yshift=-.8cm, rectangle,align=left] {$q_{\textcolor{orange}{\theta}}(y_{val}|x_{val},D_{train},\psi)$};
+  \node[] (loss) [below=of pfn, yshift=.4cm] {CE$(\cdot,\cdot)$};
+  
+  \draw[sample] (style_prior.east) -- (style.west) node[midway, below] {sample};
+  \draw[input] (style.south) -- (prior.north) node[midway, above] {};
+  \draw[sample] (prior.east) -- (data_sample.west) node[midway, below] {sample};
+  \draw[input] (style.east) -- ([yshift=.1cm]pfn.west) node[midway, above] {};
+  \draw[input] ([xshift=-1cm]data_sample.north) |- ([yshift=0cm]pfn.west);
+  \draw[input] ([xshift=.2cm]data_sample.north) |- ([yshift=-.1cm]pfn.west);
+  \draw[input] ([xshift=1cm]data_sample.south) |- ([yshift=0cm]loss.west);
+  
+  \draw[input] (pfn.south) -- (loss.north);
+  
+\end{tikzpicture}

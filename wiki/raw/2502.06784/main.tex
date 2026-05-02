@@ -1,0 +1,860 @@
+%%%%%%%% ICML 2025 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2025} with \usepackage[nohyperref]{icml2025} above.
+\usepackage{hyperref}
+
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\newcommand{\method}{\textsc{RelGNN}} 
+
+% Use the following line for the initial blind version submitted for review:
+% \usepackage{icml2025}
+
+% If accepted, instead use the following line for the camera-ready submission:
+\usepackage[accepted]{icml2025}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{xspace}
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+%\usepackage[disable,textsize=tiny]{todonotes}
+\usepackage[textsize=tiny]{todonotes}
+\usepackage{catchfile}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{subcaption}
+
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{\method: Composite Message Passing for Relational Deep Learning}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{
+\method: Composite Message Passing for Relational Deep Learning
+}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2025
+% package.
+
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Tianlang Chen}{stanford}
+\icmlauthor{Charilaos Kanatsoulis}{stanford}
+\icmlauthor{Jure Leskovec}{stanford}
+\end{icmlauthorlist}
+
+\icmlaffiliation{stanford}{Computer Science Department, Stanford University}
+
+\icmlcorrespondingauthor{Tianlang Chen}{tlchen@cs.stanford.edu}
+
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{Machine Learning, ICML}
+
+\vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+% \printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
+\printAffiliationsAndNotice{} 
+
+\newcommand{\xhdr}[1]{\paragraph{#1.}\xspace}
+\newcommand{\relbench}{\textsc{RelBench}\xspace}
+
+\newcommand{\amazon}{\textit{rel-amazon}\xspace}
+\newcommand{\amazonn}{\texttt{rel-amazon}\xspace}
+\newcommand{\userChurn}{\texttt{user-churn}\xspace}
+\newcommand{\userLtv}{\texttt{user-ltv}\xspace}
+\newcommand{\itemChurn}{\texttt{item-churn}\xspace}
+\newcommand{\itemLtv}{\texttt{item-ltv}\xspace}
+\newcommand{\userItemPurchase}{\texttt{user-item-purchase}\xspace}
+\newcommand{\userItemRate}{\texttt{user-item-rate}\xspace}
+\newcommand{\userItemReview}{\texttt{user-item-review}\xspace}
+\newcommand{\customer}{\textit{customer}\xspace}
+\newcommand{\transaction}{\textit{transaction}\xspace}
+\newcommand{\items}{\textit{item}\xspace}
+
+\newcommand{\fone}{\texttt{rel-f1}\xspace}
+\newcommand{\driverPosition}{\texttt{driver-position}\xspace}
+\newcommand{\driverConstructorResult}{\texttt{driver-constructor-result}\xspace}
+\newcommand{\driverDNF}{\texttt{driver-dnf}\xspace}
+\newcommand{\driverTopThree}{\texttt{driver-top3}\xspace}
+\newcommand{\race}{\textit{races}\xspace}
+\newcommand{\driver}{\textit{drivers}\xspace}
+\newcommand{\constructor}{\textit{constructors}\xspace}
+\newcommand{\standing}{\textit{standings}\xspace}
+\newcommand{\circuits}{\textit{circuits}\xspace}
+\newcommand{\res}{\textit{results}\xspace}
+
+\newcommand{\handm}{\texttt{rel-hm}\xspace}
+\newcommand{\itemSales}{\texttt{item-sales}\xspace}
+
+\newcommand{\event}{\texttt{rel-event}\xspace}
+\newcommand{\userAttendance}{\texttt{user-attendance}\xspace}
+\newcommand{\userIgnore}{\texttt{user-ignore}\xspace}
+\newcommand{\userRepeat}{\texttt{user-repeat}\xspace}
+
+\newcommand{\avito}{\texttt{rel-avito}\xspace}
+\newcommand{\userClick}{\texttt{user-clicks}\xspace}
+\newcommand{\userVisit}{\texttt{user-visits}\xspace}
+\newcommand{\userAdVisit}{\texttt{user-ad-visit}\xspace}
+\newcommand{\adsCTR}{\texttt{ad-ctr}\xspace}
+
+\newcommand{\stackex}{\texttt{rel-stack}\xspace}
+\newcommand{\userEngage}{\texttt{user-engagement}\xspace}
+\newcommand{\postVotes}{\texttt{post-votes}\xspace}
+\newcommand{\userBadge}{\texttt{user-badge}\xspace}
+\newcommand{\userPostComment}{\texttt{user-post-comment}\xspace}
+\newcommand{\postPostLinked}{\texttt{post-post-related}\xspace}
+\newcommand{\posts}{\texttt{posts}\xspace}
+
+\newcommand{\trials}{\texttt{rel-trial}\xspace}
+\newcommand{\studyOutcome}{\texttt{study-outcome}\xspace}
+\newcommand{\studyAdverse}{\texttt{study-adverse}\xspace}
+\newcommand{\studyWithdrawal}{\texttt{study-withdrawal}\xspace}
+\newcommand{\facilitySuccess}{\texttt{site-success}\xspace}
+\newcommand{\sponsorConditionRec}{\texttt{condition-sponsor-run}\xspace}
+\newcommand{\sponsorFacilityRec}{\texttt{site-sponsor-run}\xspace}
+
+\newcommand{\src}{\texttt{src}\xspace}
+\newcommand{\midd}{\texttt{mid}\xspace}
+\newcommand{\dst}{\texttt{dst}\xspace}
+\newcommand{\fuse}{\texttt{fuse}\xspace}
+\newcommand{\tea}{\texttt{T}\xspace}
+
+\newcommand{\tbl}[1]{\textsc{#1}\xspace}
+
+\newcommand{\mr}[2]{\multirow{#1}{*}{#2}}
+\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+
+
+\begin{abstract}
+\looseness=-1 Predictive tasks on relational databases are critical in real-world applications spanning e-commerce, healthcare, and social media. To address these tasks effectively, Relational Deep Learning (RDL) encodes relational data as graphs, enabling Graph Neural Networks (GNNs) to exploit relational structures for improved predictions. However, existing RDL methods often overlook the intrinsic structural properties of the graphs built from relational databases, leading to modeling inefficiencies, particularly in handling many-to-many relationships. Here we introduce \method, a novel GNN framework specifically designed to leverage the unique structural characteristics of the graphs built from relational databases. At the core of our approach is the introduction of atomic routes, which are simple paths that enable direct single-hop interactions between the source and destination nodes. Building upon these atomic routes, \method~designs new composite message passing and graph attention mechanisms that reduce redundancy, highlight key signals, and enhance predictive accuracy. \method~is evaluated on 30 diverse real-world tasks from \relbench~\cite{fey2023relational}, and achieves state-of-the-art performance on the vast majority of tasks, with improvements of up to 25\%. Code is available at \url{https://github.com/snap-stanford/RelGNN}
+\end{abstract}
+
+
+\section{Introduction}\label{intro}
+\looseness=-1 Predictive modeling over relational data (multiple tables connected via primary-foreign key relations) is central to numerous real-world applications: e-commerce platforms forecast product demand, music streaming services personalize recommendations, financial institutions assess credit risk, etc. The common strategy to tackle these predictive tasks relies on classical tabular machine learning approaches~\citep{chen2016xgboost} that often require flattening relational data into a single table through manual feature engineering~\citep{kaggle-survey}. This approach is not only labor-intensive but also leads to a substantial loss of predictive signal, as it oversimplifies the interconnected structure of relational data during the flattening process.
+
+\looseness=-1 To overcome the limitations of tabular approaches, \citet{fey2023relational} introduced \textit{Relational Deep Learning (RDL)}, a new machine learning paradigm that enables end-to-end trainable neural networks to perform predictive modeling directly on relational databases. In RDL, relational data is represented as a \textit{graph}, where each entity is represented as a node, and the primary-foreign key links between entities define the edges. This graph-based representation allows Graph Neural Networks (GNNs) ~\citep{gilmer2017mpgnn, hamilton2017inductive} to serve as predictive models, capturing complex relational dependencies that traditional approaches overlook. Complementing this advancement, \relbench ~\citep{robinson2024relbench} provides the first comprehensive benchmark for evaluating and developing RDL models.
+
+\looseness=-1 Building effective RDL models is essential for tackling predictive tasks, yet remains quite challenging: \textit{Relational entity graphs} are large-scale, heterogeneous, and temporally dynamic. The models introduced by \citet{robinson2024relbench} apply standard heterogeneous GNNs \citep{schlichtkrull2018relational,hu2020heterogeneous} to relational entity graphs. This design choice can be suboptimal, since standard heterogeneous GNNs are developed for generic multi-relational graphs, where each edge-type denotes a direct semantic interaction between nodes. In relational databases, however, edges are defined by \emph{primary–foreign key} links that merely record table connectivity, rather than a native semantic relation. Treating these schema-driven links as ordinary semantic edges overlooks the database’s characteristic topology (e.g., many-to-many motifs, as discussed later), misrepresents how information should propagate, and ultimately limits model fidelity. 
+These differences motivate the design of architectures tailored to the structural regularities of relational databases.
+
+
+\begin{figure*}[!t]
+    \centering
+\includegraphics[width=\textwidth]{figures/fig-intro.pdf}
+    \caption{An illustration of the key concepts in our method. \textbf{(a)} The primary-foreign key relation of the \fone dataset. Arrows point from a node with a foreign key to the node with the corresponding primary key. Nodes with zero or one foreign key are marked in pink, and the corresponding foreign key is illustrated by a solid line. Nodes with two or more foreign keys are marked in purple, and the corresponding foreign keys are illustrated by dotted lines. \textbf{(b)} An example of the bridge structure, where \standing node is a bridge node. \textbf{(c)} An example of the hub structure, where \res node is a hub node. \textbf{(d)} Examples of three atomic routes, where the nodes within each box constitute a distinct atomic route.}
+    \label{fig:main}
+\end{figure*}
+
+\vspace{-9pt}
+\xhdr{Our contribution} 
+\looseness=-1 We analyze the distinctive structural patterns of \emph{relational entity graphs}. Our work builds upon a central insight: Relational databases abound with \textit{many-to-many relationships}; because each foreign key can reference only one primary key, these associations cannot be encoded by a single primary–foreign key edge. Instead, they are materialized through \emph{junction} tables that sit between the two entity tables, decomposing each many-to-many association into a pair of one-to-many links. In the resulting graph, these tables give rise to two common substructures: (i) bridge nodes (cf. Figure \ref{fig:main}(b)), which contain exactly two foreign keys and connect pairs of entities via tripartite pattern \(\textit{(node-type 3} \leftarrow \textit{node-type 1} \rightarrow \textit{node-type 2)}\) and (ii) hub nodes (cf. Figure \ref{fig:main}(c)), which possess three or more foreign keys, forming star-shaped subgraphs. Bridge and hub nodes function mostly as `routers', i.e., they contribute little semantic content, but channel information among their neighbors. Standard message passing GNNs repeatedly aggregate signals through the same bridge or hub nodes, generating over-smoothed representations. Moreover, the star-shaped motifs around hub nodes encode latent clique-like dependencies that conventional message passing cannot exploit.
+
+To address these challenges, we propose \method, a novel GNN framework that introduces the \textit{composite message passing} and {graph attention mechanism} to fully exploit the unique structural properties of graphs built from relational database. \method~introduces the concept of \textit{atomic routes}, which are simple paths that support complete, single-hop information exchange between the source and destination nodes, grounded in primary–foreign key relationships (cf. Figure \ref{fig:main}(d)). When a table has a single foreign key, an atomic route consists of a pair of node-types and the edge connecting them. When a table has multiple foreign keys, it induces a set of atomic routes in the form of (\textit{source} $\rightarrow$ \textit{intermediate} $\rightarrow$ \textit{destination}) paths, each of which connects two entities through a shared intermediate node (i.e., a bridge or hub node). Although reminiscent of meta-paths~\citep{sun2011pathsim} used in conventional heterogeneous graphs, atomic routes differ fundamentally in how they are constructed. While meta-paths typically rely on manual design guided by domain expertise, atomic routes are automatically and systematically derived from primary–foreign key relationships in relational databases, making them both broadly applicable and highly scalable across diverse datasets. Building on these routes, \method~designs composite message passing with attention mechanism that directly aggregates messages along atomic routes in a single step, avoiding redundant hops and preventing irrelevant information aggregation. This enables more efficient and accurate extraction of predictive signals compared to conventional heterogeneous GNNs.
+
+We assess the performance of the proposed \method~across all tasks in \relbench~\citep{fey2023relational}, a benchmark which spans seven diverse relational databases covering e-commerce, social networks, sports, and medical platforms. \relbench~features 30 real-world predictive tasks cast as entity classification, entity regression, and recommendation. \method~surpasses all baselines on 27 of the 30 tasks while performing comparably on the remaining three. 
+Notably, \method~achieves more than a 4\% improvement over a standard heterogeneous GNN in 17 out of 30 tasks, and provides up to a 25\% improvement on the \texttt{site-success} regression task in the \texttt{rel-trial} database.
+
+
+\begin{figure*}[!t]
+    \centering
+\includegraphics[width=\textwidth]{figures/fig-concept.pdf}
+\vspace{-5pt}
+    \caption{Illustration of key concepts of RDL. \textbf{(a)} An example relational database. \textbf{(b)} Relational tables connected by primary-foreign key relations. \textbf{(c)} Relational entity graph built from relational tables. \textbf{(d)} Subgraph sampled with termporal neighbor sampling. Figures from ~\citet{fey2023relational}.
+    }
+    \label{fig: concept}
+    \vspace{-5pt}
+\end{figure*}
+
+
+
+\section{Preliminaries}
+\label{sec: prelim}
+
+\subsection{Relational Database}
+\label{sec:notation}
+
+A relational database $(\mathcal{T}, \mathcal{L})$ consists of a set of tables $\mathcal{T} = \{T_1, \ldots, T_n\}$ and a set of links between them $\mathcal{L} \subseteq \mathcal{T} \times \mathcal{T}$. Each table is a set $T = \{v_1, ..., v_{n_T}\}$, where the elements $v_i \in T$ are called rows or entities. Each entity $v \in T$ has a unique \textbf{primary key} $p_v$ that distinguishes it from other entities within the table. An entity can possess one or more \textbf{foreign keys}. Formally, each foreign key $\mathcal K_v\subseteq \{p_{v'}:  v' \in T'\text{ and } (T, T') \in \mathcal L \}$ links an entity $v\in T$ to entity $v' \in T'$, where $p_{v'}$ is the primary key of $v'$ in table $T'$. 
+An entity may have several attributes $x_v$, which represent the informational content, and may optionally include a timestamp $t_v$, indicating when the corresponding event occurred. 
+Primary keys, foreign keys, attributes, and the timestamp are all realized as table columns.
+A link $L = (T_{\rm fkey}$, $T_{\rm pkey})$ between tables exists if a foreign key column in $T_{\rm fkey}$ references a primary key column of $T_{\rm pkey}$.
+
+In Figure \ref{fig: concept} (a), the \tbl{Transactions} table contains one primary key column (\tbl{TransactionID}), two foreign key columns (\tbl{ProductID} and \tbl{CustomerID}), a numerical attribute column (\tbl{Price}), and a timestamp column (\tbl{Timestamp}). The \tbl{Products} table, by contrast, has a single primary key column (\tbl{ProductID}), no foreign keys, and three attribute columns (\tbl{Description}, \tbl{Image}, \tbl{Size}); it does not record timestamps. The black lines illustrate the foreign-key$\rightarrow$primary-key links between the tables.
+
+To capture the structural relationships between tables, we introduce the \emph{schema graph}, which encodes the table-level topology of a relational database. Given a relational database $(\mathcal{T}, \mathcal{L})$, the schema graph is defined as $(\mathcal{T}, \mathcal{L})$, where each table (i.e., node-type) corresponds to a node, and each primary–foreign key relationship defines a directed edge from the foreign key table to the primary key table. Figure~\ref{fig:main} (a) illustrates the schema graph of \fone dataset and Figure~\ref{fig:relbench-schema} shows the schema graphs of all the other datasets in \relbench. This definition corresponds to the directed variant of the schema graph described in ~\citet{fey2023relational}. Note that a node in the schema graph corresponds to a node-type in the relational entity graph, which we introduce in the next subsection.
+
+
+\subsection{Relational Deep Learning (RDL)}
+\label{sec:rdl}
+\citet{fey2023relational} introduced RDL, an end-to-end framework for predictive modeling on relational databases with neural networks. RDL represents the database as a \textbf{relational entity graph}, which is a temporal, heterogeneous graph, where each table becomes a node-type, each row (entity) an individual node, and every primary–foreign key relationship an edge (Figure \ref{fig: concept} (b)–(c)). The columns of each table provide the initial feature vector for their corresponding nodes. The transformation from the relational database to its relational entity graph form is lossless, preserving all information contained in the original tables.
+
+Time is a first-class citizen in RDL. Each entity $v$ may carry a timestamp $t_v$ that records when the corresponding event occurred—for example, every row in the \tbl{Transactions} table logs the moment of purchase. Many tasks are inherently temporal (e.g., predicting next-week product sales), so the model must respect causality. RDL therefore employs \emph{temporal neighbor sampling} \citep{hamilton2017inductive,fey2023relational}: for a seed entity at time $t$, it builds a subgraph that contains only nodes with timestamps $\le t$, excluding all future information to avoid leakage. A GNN is then trained end-to-end on these time-consistent subgraphs, eliminating the need for manual feature engineering (Figure \ref{fig: concept} (d)).
+
+
+
+\section{Bridge and Hub Topology in RDL (our work)}
+\label{sec: analysis}
+\subsection{Structural Patterns in Relational Databases}\label{sec: structural-patterns}
+
+ \xhdr{Heterogeneous graph topology} \looseness=-1 General heterogeneous graphs encode information between nodes and edges of different types. The basic structural unit of the heterogeneous graph schema is a relation, written as a triplet (\textit{source node-type, edge-type, destination node-type}). For example, a retail purchase is captured by the triplet \textit{(customer, transaction, item)}, which represents a customer purchasing an item. Heterogeneous GNNs \cite{schlichtkrull2018relational,hu2020heterogeneous}, are designed to process these relations through edge-semantic message passing, e.g., a message originating at a \textit{customer node} traverses a \textit{transaction edge} and is aggregated at the corresponding \textit{item node} in a single hop. This message passing mechanism learns representations of both nodes and edge-types, and preserves the distinct semantics of each relation. 
+
+
+\vspace{-5pt}
+\xhdr{Relational entity graph topology} \looseness=-1 Unlike general heterogeneous graphs, where an edge denotes a semantically meaningful relation, the edges of relational entity graphs are formed by references to primary foreign keys in the database schema. Hence, each edge-type carries no intrinsic semantics beyond “table A points to table B,”  and the basic structural unit collapses to a pair \textit{(node-type 1, node-type 2)}, rather than a semantic triplet. Consider the retail example: instead of a single relation \textit{(customer, transaction, item)}, the database materializes a junction table \textit{transaction}. In the relational entity graph, this becomes an explicit intermediate node-type, producing two edges \textit{(transaction, customer)} and \textit{(transaction, item)}. Because these edges encode only primary-foreign key relationships—not the semantic of purchasing—the usual message passing assumptions for heterogeneous graphs no longer hold. This shift from semantic triplets to purely structural links therefore calls for further investigation.
+
+\vspace{-5pt}
+\xhdr{Many-to-many relationships} \looseness=-1 The transition from semantic triplets to primary–foreign key edges significantly impacts how many-to-many relationships are represented in relational databases. A many-to-many relationship describes a scenario where multiple instances of one entity type are associated with multiple instances of another. Although many-to-many relationships are ubiquitous, they cannot be directly encoded using a single primary–foreign key connection, as by definition, a foreign key can reference only one unique primary key. To address this, databases introduce junction tables that decompose many-to-many relationships into pairs of one-to-many links. 
+In the retail example, customers and items form a many-to-many relationship—each customer can purchase multiple items, and each item can be purchased by multiple customers. This association is mediated by a transaction node, which serves as an intermediate connector in the relational entity graph. Each transaction node contains a pair of foreign keys, one referencing a customer node and the other referencing an item node, thereby decomposing the many-to-many association into two one-to-many links.
+
+The previous observations lead to the following categorization of node-types in relational entity graphs: (i) node-types with zero or one foreign key, and  (ii) node-types with two or more foreign keys. 
+To illustrate them, consider the \fone schema, which tracks all-time Formula 1 racing data since 1950 (cf. Figure~\ref{fig:main} (a)). In this schema, \constructor, \race, and \driver each have zero foreign keys, and \textit{circuits} has one. \textit{Constructor\_standings}, \textit{constructor\_results}, and \standing each have two foreign keys, and \res and \textit{qualifying} each have three. Node-types with zero or one foreign key, highlighted in pink, do not require intermediate nodes to support message exchange and they exhibit a standard topology. In contrast, node-types with two or more foreign keys, highlighted in purple, serve as structural intermediaries in the schema. Given the ubiquity of many-to-many relationships in real-world interactions, cases involving (ii) are common in relational entity graphs and play a central role in shaping information flow. Next, we analyze the limitations of standard message passing over these structures and motivate a more specialized approach.
+\subsection{Challenges in Message Passing for RDL}\label{sec: method-challenge}
+
+\subsubsection{Node-type with two foreign keys (bridge)} 
+When a node-type has two foreign keys, it forms a subgraph of the form \(\textit{(node-type 3} \leftarrow \textit{node-type 1} \rightarrow \textit{node-type 2)}\), creating a local tripartite structure among these three node-types. In this configuration, \(\textit{node-type 1}\) simply acts as an aggregating bridge between \(\textit{node-type 2}\) and \(\textit{node-type 3}\).  
+Under standard heterogeneous GNNs, message passing over this structure involves two hops: from the source to the bridge, and then from the bridge to the destination. However, this two-hop communication introduces two inefficiencies. First, \textit{redundancy}: information from the destination node is passed to the bridge in the first hop and then routed back to itself in the second, duplicating self-information. Second, \textit{imbalance}: since the bridge node is an one-hop neighbor of the destination node while the source node is two hops away, the destination aggregates information from the bridge in both hops but receives information from the source only in the second. This leads to an overemphasis on the bridge node and under-utilization of the source node, which often carries more informative and predictive signals. 
+
+For example, consider the task of predicting race outcomes, where information flows from a \race node (source) to a \driver node (destination) via a \standing node (bridge) (cf. Figure~\ref{fig:main} (b)). In standard two-hop message passing, information from \standing reaches the \driver node in both hops, while information from \race arrives only in the second. Since the \race node typically contains more contextual information relevant to driver performance, this imbalance may degrade performance.
+As we show in the next section, modeling such structure as an atomic route enables direct one-hop message passing between the relevant node-types without any loss of information. 
+
+
+\subsubsection{Node-type with three or more foreign keys (hub)} 
+\looseness=-1 When a node-type has three or more foreign keys, it forms a star-shaped subgraph that acts as a communication hub, connecting multiple other node-types. For example, as shown in Figure~\ref{fig:main} (c), the \res node links \constructor, \race, and \driver, thereby mediating interactions among \constructor-\race, \race-\driver, and \constructor-\driver. 
+These hub node-types inherit the same inefficiencies observed in the two-foreign key case (bridge structures): Standard two-hop message passing leads to redundant communication paths and imbalanced predictive signals since information from hub nodes is aggregated multiple times, while more informative signals from source nodes may be underrepresented. Furthermore, the star-shaped connectivity patterns around hub node-types induce latent second-order clique structures at the schema level—structures that are typically overlooked and underutilized by standard modeling approaches. Our proposed approach, detailed next, is designed to exploit these latent clique structures, which constitute critical subgraphs in many real-world domains. This shift from star-shaped to clique-like connectivity substantially increases graph density and transforms the geometry of information flow.
+
+\section{Proposed Architecture: \method}
+\label{sec: method}
+\subsection{Atomic Routes in RDL}
+\label{sec: method-atomic}
+To address the limitations of standard message passing in relational entity graphs outlined above, we introduce the concept of \emph{atomic routes}.
+
+\begin{definition}[Atomic Route]
+\label{def:atomic_routes}
+An atomic route is a simple path between node-types that enables a single-hop interaction between the source and destination node-type. We distinguish two cases:
+\begin{enumerate}
+    \item \textbf{Single foreign key.} If a table has exactly one foreign key referencing to another table, the atomic route is an edge between the foreign key node-type (source) and the primary key node-type (destination), forming a simple path (\textit{source} $\rightarrow$ \textit{destination}).
+    \item \textbf{Multiple foreign keys.} If a table has multiple foreign keys referencing to different tables, the atomic routes are hyperedges that connect pairs of foreign key node-types (source and destination) via the intermediate primary key node-type, forming simple paths of type (\textit{source} $\rightarrow$ \textit{intermediate} $\rightarrow$ \textit{destination}).
+\end{enumerate}
+\end{definition}
+
+Figure \ref{fig:main} and \ref{fig:atomic_routes} illustrate the primary-foreign key relationships in the \fone dataset and the atomic routes derived from these relationships. For instance, the \circuits table has only one foreign key, which points to the \race table, forming atomic routes (\circuits $\to$ \race) and (\race $\to$ \circuits). In contrast, the \standing table has two foreign keys connecting it to both the \driver and \race tables. This results in atomic routes (\driver $\to$ \standing $\to$ \race) and (\race $\to$ \standing $\to$ \driver). These routes capture the necessary interactions among multiple entities within a single step.
+
+
+\xhdr{Comparison to Meta-paths} 
+We compare atomic routes to meta-paths, a widely utilized concept in heterogeneous graph learning (cf. Section \ref{sec: related_work} for an extended discussion of meta-paths). Although both structures facilitate message propagation, they differ fundamentally in their construction and purpose. Meta-paths typically necessitate manual design guided by domain knowledge and task-specific intuition. This manual design process makes them labor-intensive, sensitive to dataset-specific characteristics, and susceptible to introducing selection bias. In contrast, atomic routes are derived automatically from the primary–foreign key relationships defined in the database schema. This enables their extraction without human supervision, ensuring applicability across a wide range of relational databases—including those with complex or previously unseen schemas.
+While meta-paths are often constructed to emphasize particular semantic patterns relevant to a task, atomic routes serve a fundamentally different function: they systematically capture the minimal pathways to avoid structural inefficiencies due to the primary-foreign key constraints. 
+
+
+\subsection{Composite Message Passing for RDL}
+\label{sec: method-composite}
+In this subsection, we build upon the concept of atomic routes and design composite message passing mechanisms for RDL. We begin this discussion by applying a standard heterogeneous GNN on a subgraph that encodes tables with multiple foreign keys. We assign \src, \dst, and \midd to represent nodes corresponding to source, destination, and intermediate node-types, respectively. 
+In standard heterogeneous GNNs, it takes two steps to complete the full information exchange. In the first step, each \midd node aggregates information from all its neighbor nodes:
+\begin{equation}
+\label{eq_vanilla}
+      \mathbf{h}_{\midd}^{(l+1)}=\operatorname{UPD}(\{\!\{ \mathbf{m}_{R}^{(l+1)}|\forall R=(\tea,\  \phi(\midd))\in\mathcal{R} \}\!\}),
+\end{equation}
+where
+\begin{equation*}
+    \mathbf{m}_{R}^{(l+1)}=\operatorname{AGGR}(\mathbf{h}_{\midd}^{(l)},\{\!\{ \mathbf{h}_{u}^{(l)}| \phi(u)=\tea \}\!\}),
+\end{equation*}
+$\mathbf{h}_v^{(l)}$ denotes the embedding of node $v$ at the $l$-th layer, $\operatorname{UPD}$ and $\operatorname{AGGR}$ are arbitrary differentiable functions with optimizable parameters, $\{\!\{\cdot\}\!\}$ denotes a permutation invariant set aggregator (e.g. mean, sum), $\mathcal{R}$ denotes the edge set consisting of pairs of node-types connected through primary-foreign key relationships and $\phi(\cdot)$ denotes a function mapping a node to its corresponding node-type.
+Then in the second step, the message passed from \midd to \dst is 
+\begin{equation}
+\label{eq_vanilla_2}
+    \mathbf{m}_{(\midd,\ \dst)}^{(l+2)}=\operatorname{AGGR}(\mathbf{h}_{\dst}^{(l+1)},\{\!\{ \mathbf{h}_{\midd}^{(l+1)} \}\!\})
+\end{equation}
+Note that in Equation (\ref{eq_vanilla}), \tea represents all node-types connected to the intermediate node-type. Therefore, in addition to the information from the source node-type, information from other node-types connected to the intermediate node-type is also aggregated during this step. Furthermore, the information from \dst is passed to \midd in this step, and subsequently passed back to \dst again in Equation (\ref{eq_vanilla_2}), leading to redundancy, as discussed in Section \ref{sec: method-challenge}.
+
+To avoid these modeling inefficiencies we propose a novel composite message passing scheme based on atomic routes.
+\begin{equation}
+\label{eq-relgnn}
+    \mathbf{m}_{(\dst,\midd,\src)}^{(l+1)}=\operatorname{AGGR}(\mathbf{h}_{\dst}^{(l)},\{\!\{ \operatorname{FUSE}(\mathbf{h}_{\midd}^{(l)} ,\mathbf{h}_{\src}^{(l)} ) \}\!\})
+\end{equation}
+Equation (\ref{eq-relgnn}) describes a composite information exchange from \src via \midd to \dst that is completed within a single step. As a result, there is no extraneous information entangled in the process. In summary, our approach effectively tackles the challenges that standard heterogeneous GNNs may encounter, such as multiple steps needed for complete information exchange and redundant aggregation during message passing.
+
+\begin{figure}[!t]
+    \centering
+\includegraphics[width=\linewidth]{figures/fig-routes.pdf}
+    \caption{All the atomic routes derived from \fone dataset. The primary–foreign key relations of \fone is illustrated in Figure \ref{fig:main} (a).}
+    \label{fig:atomic_routes}
+    \vspace{-10pt}
+\end{figure}
+
+
+\subsection{\method: Composite Message Passing with Atomic Routes}
+\label{sec: method-relgnn}
+The introduction of atomic routes and composite message passing enables the design of new architectures specifically tailored to relational entity graphs. Equation (\ref{eq-relgnn}) admits multiple instantiations, offering a flexible framework for message passing using atomic routes. Here, we propose \method, a graph attention instantiation of Equation (\ref{eq-relgnn}).
+When multiple foreign keys are involved, \method~instantiates Equation (\ref{eq-relgnn}) as follows: for each \midd node, it fuses information from each \src node connected via a primary–foreign key relationship. Specifically, \(\operatorname{FUSE}(\cdot)\) is implemented as a linear combination:
+\begin{equation}
+\label{eq:fuse}
+\operatorname{FUSE}(\mathbf{h}_{\midd}^{(l)},\mathbf{h}_{\src}^{(l)} )=\mathbf{W}_1\mathbf{h}_{\midd}^{(l)}+\mathbf{W}_2\mathbf{h}_{\src}^{(l)}.
+\end{equation}
+Note that, due to the nature of foreign keys, each \midd node is connected to only one \src node.
+Then, \method~instantiates  $\operatorname{AGGR(\cdot)}$ with the standard multi-head attention mechanism ~\citep{vaswani2017attention, transformerconv}, where embeddings from destination nodes serve as queries, and embeddings derived from the fusion operation in Equation (\ref{eq:fuse})  serve as keys and values. Let $\mathbf{h}_{\fuse}^{(l)}:=\operatorname{FUSE}(\mathbf{h}_{\midd}^{(l)},\mathbf{h}_{\src}^{(l)} )$ as defined in Equation (\ref{eq:fuse}).  $\operatorname{AGGR(\cdot)}$ is realized as:
+
+\begin{align}
+\label{eq:attn}
+    \operatorname{AGGR}(\mathbf{h}_{\dst}^{(l)},\{\!\{\mathbf{h}_{\fuse}^{(l)}\}\!\})= \mathbf{W}_{\operatorname{proj}}\mathbf{h}_{\dst}^{(l)}\nonumber\\+\sum_{\fuse\in \mathcal{N}(\dst)}\alpha_{\dst,\fuse}\mathbf{W}_V\mathbf{h}_{\fuse}^{(l)},
+\end{align}
+where the attention coefficients $\alpha_{\dst,\fuse}$ are computed via multi-head attention (with the multi-head notation omitted for brevity):
+\begin{equation*}
+    \alpha_{\dst,\fuse} = \textrm{softmax} \left(
+        \frac{(\mathbf{W}_Q\mathbf{h}_{\dst}^{(l)})^{\top} (\mathbf{W}_K\mathbf{h}_{\fuse}^{(l)})}
+        {\sqrt{d}} \right).
+\end{equation*}
+
+In cases where tables with multiple foreign keys are not present, there is only a source and destination node-type, so the fusion operation is not needed. We directly substitute $\mathbf{h}_{\fuse}$  with $\mathbf{h}_{\src}$  in Equation (\ref{eq:attn}):
+
+\begin{equation}
+    \label{eq:dim-dim}
+      \mathbf{m}_{(\dst,\src)}^{(l+1)}=\operatorname{AGGR}(\mathbf{h}_{\dst}^{(l)},\{\!\{\mathbf{h}_{\src}^{(l)}  \}\!\})
+\end{equation}
+
+We use different weight matrices in Equation (\ref{eq:fuse})  and Equation (\ref{eq:attn}) for each atomic route, enabling \method~to capture different types of information across routes. 
+
+Finally, the destination node aggregates information from all atomic routes related to it using a simple summation and updates its embedding:
+\begin{equation}
+    \mathbf{h}_{\dst}^{(l+1)}=\sum_{t\in\mathcal{T}(\dst)}\mathbf{m}_t^{(l+1)},
+\end{equation}
+where $\mathcal{T}(\dst)$ denotes the set of atomic routes with \dst as the destination node, and $\mathbf{m}_t^{(l+1)}$ denotes the message from atomic route $t$, as defined in  Equation (\ref{eq-relgnn}) or Equation (\ref{eq:dim-dim}). Note that this final update operation will not lead to information entanglement, as the model learns distinct weight matrices for each atomic route, therefore learning to assign an appropriate weights to message from each atomic route during the summation.
+
+
+\section{Experiments}
+\label{sec: exp}
+\looseness=-1 We evaluate~\method~on \relbench~\citep{robinson2024relbench}, a public benchmark  designed for predictive tasks over relational databases using GNNs. 
+\relbench offers a diverse collection of real-world relational databases and realistic predictive tasks. The benchmark covers 7 datasets, each carefully processed from real-world sources across diverse domains such as e-commerce, social networks, medical records, Q\&A platforms, and sports. These datasets vary significantly in size, with differences in the number of rows, columns, and tables, serving as a challenging and comprehensive benchmark for RDL model evaluation.  Appendix~\ref{app: dataset} provides description and detailed statistics for each dataset.
+
+\looseness=-1 \relbench  introduces 30 predictive tasks covering a wide range of real-world use cases, grouped into three representative types: entity classification (Section \ref{sec:node_cls}), entity regression  (Section~\ref{sec:node_reg}), and recommendation  (Section~\ref{sec:rec}). 
+These tasks are designed to reflect practical applications, such as predicting event attendance, estimating sales of an item, and recommending posts to users. The data is split temporally, with models trained on data from earlier time periods and tested on data from future time periods. To attach target labels, each task defines a \emph{training table} that links entities of interest to their target labels and timestamps via foreign keys, enabling automatic supervision from historical data while ensuring temporal consistency during training. The tasks vary significantly in the number of entities in the train/validation/test split and the proportion of test entities encountered during training. Detailed description of each task can be found in Appendix~\ref{app: task}.
+
+\looseness=-1 We follow the data processing pipeline introduced in \citet{robinson2024relbench}. Relational data is transformed into heterogeneous temporal graphs, and temporal neighbor sampling is used to construct subgraphs centered around each entity and timestamp. Initial node embeddings are extracted from raw table attributes using PyTorch Frame~\citep{hu2024pytorch}. Final node embeddings are passed to prediction heads specific to the type of task to generate final predictions.
+
+\looseness=-1 For baselines, we compare with the heterogeneous GraphSAGE ~\citep{hamilton2017inductive,fey2019fast,robinson2024relbench} used in the original \relbench paper. To ensure a fair comparison, we maintain identical settings, including the data processing pipeline and training table, the temporal neighbor sampling algorithm, the initial node embeddings extraction model, the prediction head, and the loss function. We also incorporate a Light Gradient Boosting Machine (LightGBM) ~\citep{ke2017lightgbm} as an additional non-RDL baseline, which is applied directly to the raw entity table features, following the setting in \citet{robinson2024relbench}. 
+
+
+\subsection{Entity Classification}
+\label{sec:node_cls}
+
+\xhdr{Experimental Setup}
+The entity classification task involves predicting binary labels for a given entity at a specific seed time. The performance is evaluated with the ROC-AUC ~\citep{hanley1983method} metric, where higher values indicate better performance. The prediction head for this task consists of a multi-layer perceptron (MLP) applied to the GNN-generated node embeddings. The model is trained using binary cross-entropy loss. All results are averaged over five different seeds.
+
+\vspace{-5pt}
+\xhdr{Results}
+Table~\ref{tab:cls}  presents the results, along with the relative improvement of \method~over the standard heterogeneous GNN. \method~outperforms the baselines on 10 out of 12 tasks and achieves comparable performance on the remaining two. Notably, the relative gain is more significant on datasets with a more complex primary-foreign key structure (e.g., \fone; see Appendix~\ref{app: vis} for visualizations).  In contrast, performance improvements are smaller on datasets with simpler primary-foreign key structures, like \amazonn and \handm. This trend aligns with the core design principle of \method, demonstrating that its performance gains arise from effectively highlighting key predictive signals and eliminating redundant message aggregation—key challenges faced by standard heterogeneous GNNs when applied directly to relational entity graphs.
+
+\vspace{-5pt}
+\xhdr{Discussion and Limitations}
+\looseness=-1 On the \stackex dataset, \method~does not achieve significant improvements. A potential cause might be the unique self-loop structure, where primary-foreign key links connect nodes of the same type (\posts). This pattern does not present in other datasets in \relbench and introduces an orthogonal modeling challenge. We provide a potential solution in Appendix~\ref{self-loop}. Since robust handling of self-loops is orthogonal to our core contribution, we leave it for future work.
+
+
+\begin{table}
+    \caption{Entity classification results (ROC-AUC(\%), higher is better) on \relbench test set. Best values are in bold.
+    }
+    \centering
+    \resizebox{\linewidth}{!}{
+    \tiny
+    \CatchFileDef{\tabledata}{tables/node_classification.tex}{}
+    \begin{tabular}{llrrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{LightGBM} & \makecell{\textbf{Hetero-}\\\textbf{GNN}} & \makecell{\textbf{\method}\\\textbf{(ours)}} & \makecell{\textbf{Relative}\\\textbf{Gain}} \\
+    \midrule
+    \tabledata
+    \bottomrule
+    \end{tabular}
+    } % resize
+    \label{tab:cls}
+\end{table}
+
+\subsection{Entity Regression}
+\label{sec:node_reg}
+
+\xhdr{Experimental Setup}
+\looseness=-1 Entity regression task requires predicting numerical labels for an entity at a specific seed time. The evaluation metric is Mean Absolute Error (MAE), where lower values indicate better performance. The prediction head is an MLP applied to GNN-generated node embeddings, identical to the setup used for entity classification. The model is trained using L1 loss. Results are averaged over five random seeds.
+
+\xhdr{Results}
+Table~\ref{tab: reg} presents the results and the relative gain of our model over the standard heterogeneous GNN. \method~outperforms the baselines on 8 out of 9 tasks and achieves comparable performance on the remaining one. As in the classification task, improvements are most pronounced on datasets with complex primary-foreign key structures, highlighting that \method’s effectiveness in modeling relational structure translates to consistent gains in both classification and regression settings.
+
+\xhdr{Discussion and Limitations}
+\looseness=-1 The performance gain on \stackex is limited, as discussed in Section~\ref{sec:node_cls}.
+We also observe divergent results across tasks in the \trials dataset. A potential cause might be the inherent limitation of the prediction head for the entity regression task rather than the GNN model itself, as noted in the original \relbench paper~\citep{robinson2024relbench}. In particular, \studyAdverse involves estimating an unbounded target (the number of patients with severe outcomes), while \facilitySuccess predicts a bounded success rate. One possible explanation is that unbounded predictions may be more challenging given the inherently constrained design of the regression head. Enhancing prediction heads for regression tasks is an important direction for future work.
+
+\begin{table}
+\caption{Entity regression results (MAE, lower is better) on \relbench test set. Best values are in bold.
+}
+\centering
+\setlength{\tabcolsep}{5pt}
+\resizebox{\linewidth}{!}{
+\tiny
+\CatchFileDef{\tabledata}{tables/node_regression.tex}{}
+\begin{tabular}{llrrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{LightGBM} & \makecell{\textbf{Hetero-}\\\textbf{GNN}} & \makecell{\textbf{\method}\\\textbf{(ours))}} & \makecell{\textbf{Relative}\\\textbf{Gain}} \\
+\midrule
+\tabledata
+\bottomrule
+\end{tabular}
+} % resize
+\label{tab: reg}
+\end{table}
+
+\subsection{Recommendation}
+\label{sec:rec}
+
+\xhdr{Experimental Setup}
+Recommendation tasks involve predicting a ranked list of top $K$ target entities for a given source entity at a specific seed time,  where $K$ is predefined per task. This requires computing pairwise scores between source and target entities. We follow \relbench implementation and use two types of prediction heads: a two-tower GNN ~\citep{wang2019neural} and an identity-aware GNN (ID-GNN) ~\citep{you2021identity}. The two-tower GNN calculates pairwise scores through the inner product of source and target node embeddings and is trained using the Bayesian Personalized Ranking loss ~\citep{rendle2012bpr}. ID-GNN computes scores by applying an MLP to the embedding of the target entity within the subgraph sampled around each source entity and is trained using binary cross-entropy loss. Consistent with the original implementation, we use two-tower GNN for tasks in \amazonn dataset and ID-GNN for tasks in the remaining datasets. The evaluation metric is Mean Average Precision (MAP) @$K$, where higher values indicate better performance.  All results are averaged over five seeds.
+
+\xhdr{Results}
+ Results are presented in Table~\ref{tab:link results}. 
+\method~ achieves better or same performance compared to baselines on all 9 tasks. These consistent improvements across diverse datasets and tasks underscore the versatility of our approach and demonstrate its effectiveness in modeling complex relational information and extracting key predictive signals crucial for recommendation.
+
+\xhdr{Discussion and Limitations}
+\looseness=-1 One limitation comes from the ID-GNN prediction head, which restricts recommendation candidates to nodes sampled within the source entity's subgraph for efficiency. This limitation is quantified by the \textit{locality score}~\citep{yuan2024contextgnn}, which measures the fraction of ground-truth targets present in the sampled subgraph. A high locality score suggests users tend to re-engage with previously interacted entities, while a low score indicates a preference for novel items. ID-GNN struggles on low-locality tasks where ground-truth targets often fall outside the sampled subgraph. Accordingly, \method~shows greater gains on high-locality tasks (e.g., \stackex) than on low-locality ones (e.g., \handm, \trials). Designing improved prediction heads for recommendation tasks is orthogonal to our core contribution and remains a valuable direction for future work.
+\begin{table}
+\caption{Recommendation results (MAP(\%), higher is better) on \relbench test set. Best values are in bold.
+}
+\centering
+\resizebox{\linewidth}{!}{
+\tiny
+\CatchFileDef{\tabledata}{tables/link_prediction.tex}{}
+\begin{tabular}{llrrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{LightGBM} & \makecell{\textbf{Hetero-}\\\textbf{GNN}} & \makecell{\textbf{\method}\\\textbf{(ours)}} & \makecell{\textbf{Relative}\\\textbf{Gain}} \\
+\midrule
+\tabledata
+\bottomrule
+\end{tabular}
+} % resize
+\label{tab:link results}
+\vspace{-5pt}
+\end{table}
+
+
+\section{Related Work}
+\label{sec: related_work}
+\xhdr{Deep Learning on Relational Data} 
+ \looseness=-1 Several works have explored the use of GNNs for learning on relational data ~\citep{schlichtkrull2018relational, cvitkovic2020supervisedrd, vsir2021deep, zahradnik2023deep,kanatsoulis2025learning}. These works investigated different GNN architectures that utilize the relational structure. More recently, \citet{fey2023relational} introduced Relational Deep Learning (RDL) (cf. Sec. \ref{sec:rdl}), establishing a new subfield of machine learning. RDL has enabled various research opportunities, such as advancements in relational graph construction algorithms, GNN architectures, and task-specific prediction heads. \citet{yuan2024contextgnn} focused on improving recommendation tasks by addressing limitations of the currently employed two-tower and pair-wise prediction heads. In contrast, our work focuses on improving GNN architectures applied to all task types, offering an orthogonal contribution. 
+Recently, a series of works have explored the use of large language models (LLMs) for heterogeneous graphs. HiGPT  \citep{tang2024higpt} introduced a language-enhanced heterogeneous graph tokenizer combined with LLMs. \citet{wydmuch2024tackling}  proposed leveraging LLMs for predictive tasks in RDL, showing improvements on certain node-level tasks.
+
+\vspace{-5pt}
+\xhdr{Meta-paths in Heterogeneous Graphs}  
+ \looseness=-1 Meta-paths~\citep{sun2011pathsim} are widely used in heterogeneous graph learning to capture semantic relationships between different types of entities~\citep{shang2016meta,dong2017metapath2vec,hu2018leveraging,shi2018easing,wang2019heterogeneous,fu2020magnn}. A meta-path is a manually designed sequence of node and edge-types in a heterogeneous graph intended to capture specific relational patterns. For example, in an academic graph, a meta-path \textit{Author–Paper–Author} models co-authorship, and a meta-path \textit{Author–Paper–Conference–Paper–Author} captures co-conference patterns. While effective in many settings, meta-paths have some known limitations~\citep{shi2016survey,hu2020heterogeneous,GNNBook-ch16-shi}. They typically rely on manual specification, which requires domain expertise and may introduce bias or overlook important patterns.  Designing an effective set of meta-paths for complex graphs can be time-consuming and may fail to comprehensively capture all relevant interactions.
+
+
+\vspace{-5pt}
+\xhdr{Distinction between RDL and Knowledge Graphs} 
+ \looseness=-1 The literature of knowledge graphs ~\citep{{bordes2013translating,wang2014knowledge,wang2017knowledge}} differs from RDL in terms of the tasks being tackled. Knowledge graph models mainly focus on \emph{completion} tasks like predicting missing entities (e.g., Q: Who is the author of \textit{Harry Potter}? A: J.K. Rowling) or missing relationships (e.g., Q: Did Yoshua Bengio win a Turing Award? A: Yes). 
+In contrast, RDL focuses on making \emph{predictions} about entities or groups of entities in the future timestamp (e.g., Will a customer churn in the next month? How much will a customer spend in the upcoming week?) 
+
+\section{Conclusion}
+\label{sec: conclusion}
+In this paper, we introduced \method, a novel graph neural network framework specifically designed to address the structural inefficiencies of existing heterogeneous GNNs for relational databases. By leveraging atomic routes, we designed a composite message passing mechanism that enables direct single-hop interactions between the source and destination nodes. This avoids redundant aggregation and highlights key predictive signals, leading to more efficient and accurate predictive modeling.
+Through extensive evaluation on \relbench, a diverse benchmark covering 30 predictive tasks across 7 relational databases, \method\ outperforms state-of-the-art baselines on the vast majority of tasks, achieving up to a 25\% improvement in predictive accuracy. Our findings emphasize the limitations of conventional heterogeneous GNNs when applied to relational data and highlight the necessity of models that explicitly account for primary-foreign key relationships.
+
+
+\section*{Acknowledgments}
+\looseness=-1 We thank Rishabh Ranjan and Vijay Prakash Dwivedi for discussions and for providing feedback on our manuscript.
+We also gratefully acknowledge the support of
+NSF under Nos. OAC-1835598 (CINES), CCF-1918940 (Expeditions), DMS-2327709 (IHBEM), IIS-2403318 (III);
+Stanford Data Applications Initiative,
+Wu Tsai Neurosciences Institute,
+Stanford Institute for Human-Centered AI,
+Chan Zuckerberg Initiative,
+Amazon, Genentech, GSK, Hitachi, SAP, and UCB.
+
+\looseness=-1 The content is solely the responsibility of the authors and does not necessarily represent the official views of the funding entities.
+
+\section*{Impact Statement}
+This paper presents work whose goal is to advance the field of Machine Learning. There are many potential societal consequences of our work, none which we feel must be specifically highlighted here.
+
+\bibliography{main}
+\bibliographystyle{icml2025}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\appendix
+\onecolumn
+\section{\relbench Details}
+\label{app: details}
+
+
+\begin{table}[t]
+  \centering
+  \caption{{Statistics of \relbench.}  }
+  \label{tab:stats}
+  \setlength{\tabcolsep}{4pt}
+  \tiny
+  \begin{tabular}{lllcccll}
+    \toprule
+      \mr{2}{\textbf{Dataset}} & \mr{2}{\textbf{Task name}} & \mr{2}{\textbf{Task type}} & \mc{3}{c}{\textbf{\#Rows of training table}} & \#Unique & \%train/test  \\
+      & & & Train & Validation & Test & Entities & Entity Overlap   \\
+    \midrule
+      \mr{6}{\amazonn}
+      & \userChurn & classification & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0  \\
+      & \itemChurn & classification & 2,559,264 & 177,689 & 166,842 & 416,352 & 93.1   \\
+      & \userLtv & regression  & 4,732,555 & 409,792 & 351,885 & 1,585,983 & 88.0  \\
+      & \itemLtv & regression   & 2,707,679 & 166,978 & 178,334 & 427,537 & 93.5 \\
+      & \userItemPurchase & recommendation   & 5,112,803 & 351,876 & 393,985 & 1,632,909 & 87.4 \\
+      & \userItemRate & recommendation  & 3,667,157 & 257,939 & 292,609 & 1,481,360 & 81.0 \\
+      & \userItemReview & recommendation  & 2,324,177 & 116,970 & 127,021 & 894,136 & 74.1 \\
+    \midrule
+    \mr{4}{\avito}
+    & \userClick & classification & 59,454 & 21,183 & 47,996 & 66,449 & 45.3 \\
+    & \userVisit & classification & 86,619 & 29,979 & 36,129 & 63,405 & 64.6 \\
+    & \adsCTR & regression & 5,100 & 1,766 & 1,816 & 4,997 & 59.8 \\
+    & \userAdVisit & recommendation & 86,616 & 29,979 & 36,129 & 63,402 & 64.6 \\
+    \midrule
+    \mr{3}{\event}
+    & \userRepeat & classification & 3,842 & 268 & 246 &1,514 & 11.5\\
+    & \userIgnore & classification & 19,239 & 4,185 & 4,010 &9,799 & 21.1\\
+    & \userAttendance & regression & 19,261 & 2,014 & 2,006 &9,694 & 14.6\\
+    \midrule
+    \mr{3}{\fone}
+      & \driverDNF & classification & 11,411 & 566 & 702 & 821 & 50.0  \\
+      & \driverTopThree & classification  & 1,353 & 588 & 726 & 134 & 50.0  \\
+      & \driverPosition & regression & 7,453 & 499 & 760 & 826 & 44.6  \\
+    \midrule
+    \mr{3}{\handm}
+      & \userChurn & classification  & 3,871,410 & 76,556 & 74,575 & 1,002,984 & 89.7  \\
+      & \itemSales & regression & 5,488,184 & 105,542 & 105,542 & 105,542 & 100.0  \\
+      & \userItemPurchase & recommendation & 3,878,451 & 74,575 & 67,144 & 1,004,046 & 89.2 \\
+    \midrule
+    \mr{5}{\stackex}
+      & \userEngage & classification & 1,360,850 & 85,838 & 88,137 & 88,137 & 97.4  \\
+      & \userBadge & classification  & 3,386,276 & 247,398 & 255,360 & 255,360 & 96.9  \\
+      & \postVotes & regression  & 2,453,921 & 156,216 & 160,903 & 160,903 & 97.1  \\
+      & \userPostComment & recommendation  & 21,239 & 825 & 758 & 11,453 & 59.9 \\
+      & \postPostLinked & recommendation  & 5,855 & 226 & 258 & 5,924 & 8.5  \\
+    \midrule
+    \mr{5}{\trials}
+      & \studyOutcome & classification  & 11,994 & 960 & 825 & 13,779 & 0.0  \\
+      & \studyAdverse & regression  & 43,335 & 3,596 & 3,098 & 50,029 & 0.0  \\
+      & \facilitySuccess & regression  & 151,407 & 19,740 & 22,617 & 129,542 & 42.0  \\
+      & \sponsorConditionRec & recommendation  & 36,934 & 2,081 & 2,057 & 3,956 & 98.4 \\
+      & \sponsorFacilityRec & recommendation  & 669,310 & 37,003 & 27,428 & 445,513 & 48.3  \\
+   \bottomrule
+  \end{tabular}
+\end{table}
+
+
+
+In this section, we provide a detailed description and related statistics of  \relbench . Table~\ref{tab:stats} provides detailed statistics for each dataset and task.
+
+
+\subsection{Datasets}
+\label{app: dataset}
+\relbench consists of 7 datasets, covering a diverse range of domains and scales. Below is a detailed description for each dataset.
+
+\xhdr{\amazonn} The Amazon E-commerce dataset contains product, user, and review interactions on Amazon's platform. It includes product metadata (e.g., price, category), review details (e.g., rating, text), and user engagement. 
+
+\xhdr{\avito} Avito, a major online marketplace, facilitates buying and selling across categories such as real estate, vehicles, and consumer goods. This dataset contains user search queries, ad characteristics, and additional contextual data for developing predictive models.
+
+\xhdr{\event} The Event Recommendation dataset is derived from Hangtime, a mobile app that tracks users' social plans. It contains user interactions, event metadata, demographic information, and social network connections, offering insights into how social relationships influence user behavior.
+
+\xhdr{\fone} The F1 dataset records comprehensive Formula 1 racing data since 1950, covering drivers, constructors, engine and tire manufacturers, and race circuits). It includes historical race results, season standings, and granular data on practice sessions, qualifying rounds, sprints, and pit stops.
+
+\xhdr{\handm} The H\&M dataset captures customer and product interactions from the retailer’s e-commerce platform. It includes metadata on customers and products (e.g., demographic attributes, product descriptions), and purchase histories.
+
+\xhdr{\stackex} Stack Exchange is a network of Q\&A websites where users earn reputation based on contributions. The dataset contains detailed activity logs, including user biographies, posts, comments, edit histories, votes, and linked questions. 
+
+\xhdr{\trials} The clinical trial dataset, sourced from the AACT initiative, aggregates study protocols and results. It includes trial design details, participant demographics, intervention specifics, and outcome measures, serving as a valuable resource for medical research and policy analysis.
+
+
+\subsection{Tasks}
+\label{app: task}
+
+The following list outlines the description predictive tasks included in \relbench. 
+\begin{enumerate}
+\item \amazonn
+
+    \begin{enumerate}
+    \item \userChurn: Predict whether a user will stop reviewing products within the next three months.
+    \item \itemChurn: Predict whether a product will receive no reviews in the next three months.
+    \item \userLtv: Estimate the total dollar value of products a user will purchase and review over the next three months.
+
+    \item \itemLtv: Estimate the total dollar value of purchases and reviews a product will receive in the next three months.
+
+    \item \userItemPurchase: Predict the set of items a user will purchase in the next three months.
+    \item \userItemRate: Predict the set of items a user will purchase and rate five stars in the next three months.
+    \item \userItemReview: Predict the set of distinct items a user will purchase and write a detailed review for in the next three months.
+    \end{enumerate}
+    
+\item \avito
+
+    
+    \begin{enumerate}
+    \item \userVisit: Predict if a user will interact with multiple ads within next four days.
+    \item \userClick: Predict if a user will engage with more than one ad by clicking within next four days.
+    \item \adsCTR: Estimate the click-through rate for an ad, assuming it receives a click within four days.
+    \item \userAdVisit: Predict the list of ads a user will visit within next four days.
+    \end{enumerate}
+
+\item \event
+    \begin{enumerate}
+    \item \userAttendance: Predict the number of events a user will RSVP "yes" or "maybe" to in the next seven days.
+    \item \userRepeat: Predict whether a user will attend an event (by responding "yes" or "maybe") in the next seven days, given they attended an event in the last 14 days.
+    \item \userIgnore: Predict whether a user will ignore more than two event invitations in the next seven days.
+    \end{enumerate}
+
+    
+\item \fone
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \driverDNF: Predict whether a driver will fail to finish a race within the next month.
+    \item \driverTopThree: Predict if a driver will secure a top-three qualifying position in a race within the next month.
+    \item \driverPosition: Predict a driver's average finishing placement across all races in the next two months.
+    \end{enumerate}
+
+
+\item \handm
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \userChurn: Predict if a customer will become inactive (no transactions) in the next week.
+    \item \itemSales: Predict total revenue generated by an article in the upcoming week.
+    \item \userItemPurchase: Predict the list of articles a customer will over the next seven days.
+    \end{enumerate}
+
+\item \stackex
+
+    \begin{enumerate}
+    \item \userEngage: Predict whether a user will participate by voting, posting, or commenting within the next three months.
+    \item \userBadge: Predict if a user will earn a new badge within the next three months.
+    \item \postVotes: Predict the number of votes a user’s post will receive over the next three months.
+    \item \userPostComment: Predict which existing posts a user will comment on in the next two years.
+    \item \postPostLinked: Identify a list of existing posts that will be linked to a given post within the next two years.
+    \end{enumerate}
+
+\item \trials
+
+    \begin{enumerate}
+    \item \studyOutcome: Predict if a clinical trial will meet its primary outcome within the next year.
+    \item \studyAdverse: Estimate the number of patients who will experience severe adverse events or death in a clinical trial over the next year.
+    \item \facilitySuccess: Predict the success rate of a trial site in the next year.
+    \item \sponsorConditionRec: Predict which sponsors will be associated with a particular condition.
+    \item \sponsorFacilityRec: Predict whether a specific sponsor will conduct a trial at a given facility.
+    \end{enumerate}
+    
+
+\end{enumerate}
+
+
+
+
+
+\section{Visualization of Primary-Foreign Key Relationships}
+\label{app: vis}
+
+We visualize the primary-foreign key relationships of all datasets in \relbench in Figure~\ref{fig:relbench-schema} (\fone is visualized in Figure~\ref{fig:main} (a)).
+
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/amazon.pdf}
+        \caption*{(a) \amazonn}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/hm.pdf}
+        \caption*{(b) \handm}
+    \end{minipage}
+
+    \vspace{0.03\textheight}
+
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/avito.pdf}
+        \caption*{(c) \avito}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/event.pdf}
+        \caption*{(d) \event}
+    \end{minipage}
+
+    \vspace{0.03\textheight}
+
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/stack.pdf}
+        \caption*{(e) \stackex}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/trial.pdf}
+        \caption*{(f) \trials}
+    \end{minipage}
+
+    \caption{Primary-foreign key relationships of datasets in \relbench.}
+    \label{fig:relbench-schema}
+\end{figure}
+
+
+\section{Ablation Study}
+
+To isolate the contribution of atomic routes, we conduct an ablation study comparing variants of \method~with and without the attention mechanism. In our instantiation and main experiments, the \texttt{FUSE} operation of \method~is instantiated using the same design as GraphSAGE (cf. Equation (\ref{eq:fuse})). For this ablation, we additionally configure the \texttt{AGGR} operation to use GraphSAGE-style aggregation instead of attention. This ensures that the only architectural difference between the baseline and \method~is the inclusion of atomic routes.
+
+As shown in Tables~\ref{tab:ablation-cls},~\ref{tab:ablation-reg}, and~\ref{tab:ablation-link}, \method~achieves consistent gains over the baselines, even when using the same aggregation mechanism. Notably, the performance improvement is not attributable to attention alone: the gap between \method~with and without attention is modest. These results indicate that the performance gains stem primarily from the use of atomic routes, which enable more efficient and targeted message passing across relational structures.
+
+We also include additional baselines using GAT~\citep{velivckovic2018graph} and GIN~\citep{xu2018powerful} as backbone architectures. As shown in Tables~\ref{tab:ablation-cls},~\ref{tab:ablation-reg}, and~\ref{tab:ablation-link}, \method outperforms all baselines regardless of the backbone GNN.
+
+\begin{table}
+    \caption{Ablation results for entity classification (ROC-AUC(\%), higher is better) on \relbench test set. The best values are in \textbf{bold}, and the second-best values are \underline{underlined}.
+    }
+    \centering
+    \resizebox{.8\linewidth}{!}{
+    \tiny
+    \CatchFileDef{\tabledata}{tables/node_cls_ablation.tex}{}
+    \begin{tabular}{llrrrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{GraphSAGE} & \textbf{GAT} & \textbf{GIN} & \textbf{\method} & \makecell{\textbf{\method}\\\textbf{w/o attn}} \\
+    \midrule
+    \tabledata
+    \bottomrule
+    \end{tabular}
+    } % resize
+    \label{tab:ablation-cls}
+\end{table}
+
+\begin{table}
+    \caption{Ablation results for entity regression results (MAE, lower is better) on \relbench test set. The best values are in \textbf{bold}, and the second-best values are \underline{underlined}.
+    }
+    \centering
+    \resizebox{.8\linewidth}{!}{
+    \tiny
+    \CatchFileDef{\tabledata}{tables/node_reg_ablation.tex}{}
+    \begin{tabular}{llrrrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{GraphSAGE} & \textbf{GAT} & \textbf{GIN} & \textbf{\method} & \makecell{\textbf{\method}\\\textbf{w/o attn}} \\
+    \midrule
+    \tabledata
+    \bottomrule
+    \end{tabular}
+    } % resize
+    \label{tab:ablation-reg}
+\end{table}
+
+\begin{table}
+    \caption{Ablation results for recommendation results (MAP(\%), higher is better) on \relbench test set. The best values are in \textbf{bold}, and the second-best values are \underline{underlined}.
+    }
+    \centering
+    \resizebox{.8\linewidth}{!}{
+    \tiny
+    \CatchFileDef{\tabledata}{tables/link_ablation.tex}{}
+    \begin{tabular}{llrrrrr}
+    \toprule
+    \textbf{Dataset} & \textbf{Task} & \textbf{GraphSAGE} & \textbf{GAT} & \textbf{GIN} & \textbf{\method} & \makecell{\textbf{\method}\\\textbf{w/o attn}} \\
+    \midrule
+    \tabledata
+    \bottomrule
+    \end{tabular}
+    } % resize
+    \label{tab:ablation-link}
+\end{table}
+
+
+\section{Additional Discussion}
+
+\xhdr{Scalability and Efficiency in Large Relational Databases}
+A common concern is whether the complexity of computing atomic routes increases with database size. In our framework, atomic routes are computed at the schema graph level, where nodes represent table types rather than individual entities. Even in large databases with millions of rows, the number of table types typically remains in the tens. This schema-level design makes \method~agnostic to the number of entities and allows it to scale efficiently as the database grows.
+
+Another related concern is the complexity introduced by tables with many foreign keys. In practice, we follow the standard RDL sampling strategy, which samples a fixed-size local neighborhood around each seed node. As a result, only a subset of the foreign key links is activated at training or inference time. The number of active connections remains bounded by the sampling configuration, ensuring that the message passing remains efficient even when some tables connect to many others. 
+
+\xhdr{A Potential Approach for Handling Self-Loop Tables}
+\label{self-loop}
+\looseness=-1 Although self-loop tables are rare in relational databases (only 1 out of 7 datasets in \relbench), it is worthwhile to improve the model handling of such cases. The key to addressing this challenge is enhancing the model's ability to distinguish messages coming from the same table type (for self-loop tables) versus those from different types (for non-self-loop tables). To address this, we propose incorporating relative positional encoding (RPE) over the schema graph (where nodes are table types and edges are primary-foreign key relations). RPE helps the model identify whether two tables are of the same type and also offers additional benefits. Since the schema graph defines the database structure at a macro level, it can provide global relational context that complements the local structural information captured by GNNs on the relational entity graph. Moreover, schema graphs are typically small (with only tens of nodes even in large databases) and static, so the RPE can be precomputed once with negligible overhead and reused throughout training and inference.
+
+\looseness=-1 To evaluate, we implemented an RPE method based on ~\citet{huangstability}: eigen-decompose the Laplacian of the schema graph $L=V\text{diag}(\lambda)V^{\top}$, apply $m$ element-wise MLPs $\phi_k(\cdot)$ to obtain $Q[:,:,k]=V\text{diag}(\phi_k(\lambda))V^{\top}$, for $k\in[m]$, resulting in a tensor $Q\in\mathbb{R}^{N\times N\times m}$, and project via an MLP $\rho$ to obtain $RPE=\rho(Q)\in\mathbb{R}^{N\times N\times d}$, where $N$ is the number of node-types of $d$ is the dimension of node embeddings. For a message from node-type $i$ to $j$, we update the original message $m$ as $m' = m + \alpha \cdot RPE[i, j]$ with learnable $\alpha$. This resulted in a 2\% improvement on both classification tasks in rel-stack, which contains self-loops.
+
+\xhdr{Integration with Advanced Components}
+We focus on improving the core design of message passing, but the \method~framework is flexible and accommodates more advanced components.
+
+\begin{itemize}
+    \item \textbf{Advanced GNN Aggregators.} \method~allows easy integration of different GNN aggregators by re-instantiating the AGGR operation in Equation (\ref{eq:attn}). For example, PNA ~\citep{corso2020principal} improves expressiveness by combining multiple aggregators and degree-scalers. It can be integrated into \method~by instatiating Equation (\ref{eq:attn}) with $AGGR(\mathbf{h}_{dst}^{(l)},\{\{\mathbf{h}_{fuse}^{(l)}\}\})=\mathbf{W}_{\text{proj}}\mathbf{h}_{dst}^{(l)}+\sum_{fuse\in \mathcal{N}(dst)} M(\mathbf{h}_{fuse}^{(l)})$ where $M(\cdot)$ is the PNA operator. Model-agnostic aggregators can also be integrated on top of \method. For instance, Jumping Knowledge Network ~\citep{xu2018representation} improves performance by adaptively combining representations from multiple layers. This can be implemented by collecting outputs from each \method~layer and passing them to PyG’s JumpingKnowledge module, with the result used as input to the final prediction layer.
+    \item \textbf{Effective Time Encodings.} Many RDL tasks involve temporal prediction, and various temporal encodings can be incorporated as additional node features for \method. For example, Time2Vec ~\citep{kazemi2019time2vec} maps timestamps $t$ to $\mathbb{R}^d$ via $\text{Time2Vec}(t)[i]=sin(\omega_it+\phi_i)$ with learnable parameters  $\omega_i$ and $\phi_i$. GraphMixer ~\citep{congwe} introduces a fixed time encoding $t \rightarrow \cos(t \omega)$, where $\omega=\{\alpha^{-\frac{i-1}{\beta}}\}_{i=1}^d$and the choice of $\alpha,\beta$ depends on the dataset's time range. These techniques are compatible with \method and introduce minimal overhead.
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}
+
+

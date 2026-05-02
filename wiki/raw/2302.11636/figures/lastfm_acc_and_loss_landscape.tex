@@ -1,0 +1,106 @@
+\subsection{Loss landscape on LastFM}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{figure}[t]
+% \centering
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/lastfm.pdf}
+%     \vspace{-6mm}
+%     \caption{Evaluation average precision}
+%     % \label{fig:first}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/lastfm_train.pdf}
+%     \vspace{-6mm}
+%     \caption{Train average precision}
+%     % \label{fig:second}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.3\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/lastfm_train_valid_diff.pdf}
+%     \vspace{-6mm}
+%     \caption{Generalization gap}
+    
+% \end{subfigure}
+% \vspace{-2mm}
+% \caption{Comparison of the link prediction average precision (AP) on \textbf{LastFM} dataset.}
+% \label{fig:average_precision_per_epochs_lastfm}
+% \end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_tgat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_dysat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_mixer_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{blue}{Contour}) on \textbf{LastFM} Dataset.}
+\label{fig:landscape_2d_lastfm}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_tgat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_dysat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_lastfm_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/lastfm_landscape_mixer_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+    
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{red}{Surface}) on \textbf{LastFM} Dataset.}
+\label{fig:landscape_3d_lastfm}
+\end{figure}

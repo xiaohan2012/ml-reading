@@ -1,0 +1,424 @@
+\begin{thebibliography}{57}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arik and Pfister(2021)]{arik2021tabnet}
+S.~Arik and T.~Pfister.
+\newblock {TabNet}: Attentive interpretable tabular learning.
+\newblock In Q.~Yang, K.~Leyton-Brown, and Mausam, editors, \emph{Proceedings
+  of the Thirty-Fifth Conference on Artificial Intelligence ({AAAI}'21)}, pages
+  6679--6687. {AAAI} Press, 2021.
+
+\bibitem[Beltagy et~al.(2020)Beltagy, Peters, and Cohan]{beltagy2020longformer}
+I.~Beltagy, M.~Peters, and A.~Cohan.
+\newblock Longformer: The long-document transformer.
+\newblock \emph{arXiv:2004.05150 {[cs.CL]}}, 2020.
+
+\bibitem[Bischl et~al.(2021)Bischl, Casalicchio, Feurer, Gijsbers, Hutter,
+  Lang, Mantovani, {van Rijn}, and Vanschoren]{bischl-neuripsdbt21a}
+B.~Bischl, G.~Casalicchio, M.~Feurer, P.~Gijsbers, F.~Hutter, M.~Lang,
+  R.~Mantovani, J.~{van Rijn}, and J.~Vanschoren.
+\newblock {OpenML} benchmarking suites.
+\newblock In J.~Vanschoren, S.~Yeung, and M.~Xenochristou, editors,
+  \emph{Proceedings of the Neural Information Processing Systems Track on
+  Datasets and Benchmarks}, 2021.
+
+\bibitem[Borisov et~al.(2021)Borisov, Leemann, Se{\ss}ler, Haug, Pawelczyk, and
+  Kasneci]{nnsfortabular}
+V.~Borisov, T.~Leemann, K.~Se{\ss}ler, J.~Haug, M.~Pawelczyk, and G.~Kasneci.
+\newblock Deep neural networks and tabular data: A survey.
+\newblock \emph{arXiv:2110.01889 {[cs.LG]}}, 2021.
+
+\bibitem[Breimann(2001)]{breimann-mlj01a}
+L.~Breimann.
+\newblock Random forests.
+\newblock \emph{Machine Learning Journal}, 45:\penalty0 5--32, 2001.
+
+\bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell, Agarwal, Herbert-Voss, Krueger, Henighan,
+  Child, Ramesh, Ziegler, Wu, Winter, Hesse, Chen, Sigler, Litwin, Gray, Chess,
+  Clark, Berner, McCandlish, Radford, Sutskever, and
+  Amodei]{NEURIPS2020_1457c0d6}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla
+  Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell,
+  Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon
+  Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris
+  Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess,
+  Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever,
+  and Dario Amodei.
+\newblock Language models are few-shot learners.
+\newblock In H.~Larochelle, M.~Ranzato, R.~Hadsell, M.F. Balcan, and H.~Lin,
+  editors, \emph{Advances in Neural Information Processing Systems}, volume~33,
+  pages 1877--1901. Curran Associates, Inc., 2020.
+\newblock URL
+  \url{https://proceedings.neurips.cc/paper_files/paper/2020/file/1457c0d6bfcb4967418bfb8ac142f64a-Paper.pdf}.
+
+\bibitem[Chen and Guestrin(2016)]{chen-kdd16a}
+T.~Chen and C.~Guestrin.
+\newblock Xgboost: {A} scalable tree boosting system.
+\newblock In B.~Krishnapuram, M.~Shah, A.~Smola, C.~Aggarwal, D.~Shen, and
+  R.~Rastogi, editors, \emph{Proceedings of the 22nd {ACM} {SIGKDD}
+  International Conference on Knowledge Discovery and Data Mining ({KDD}'16)},
+  pages 785--794. ACM Press, 2016.
+
+\bibitem[Chen et~al.(2020)Chen, Kornblith, Swersky, Norouzi, and
+  Hinton]{chen-arxiv20a}
+T.~Chen, S.~Kornblith, K.~Swersky, M.~Norouzi, and G.~Hinton.
+\newblock Big self-supervised models are strong semi-supervised learners.
+\newblock \emph{arXiv:2006.10029v2 [cs.LG]}, 2020.
+
+\bibitem[Chui et~al.(2018)Chui, Manyika, Miremadi, Henke, Chung, Nel, and
+  Malhotra]{chui-mckinsey18a}
+M.~Chui, J.~Manyika, M.~Miremadi, N.~Henke, R.~Chung, P.~Nel, and S.~Malhotra.
+\newblock Notes from the {AI} frontier: insights from hundreds of use cases,
+  2018.
+
+\bibitem[Demšar(2006)]{demsar-06a}
+J.~Demšar.
+\newblock Statistical comparisons of classifiers over multiple data sets.
+\newblock \emph{Journal of Machine Learning Research}, 7:\penalty0 1--30, 2006.
+
+\bibitem[Dua and Graff(2017)]{dua_2019}
+Dheeru Dua and Casey Graff.
+\newblock {UCI} machine learning repository, 2017.
+\newblock URL \url{http://archive.ics.uci.edu/ml}.
+
+\bibitem[Erickson et~al.(2020)Erickson, Mueller, Shirkov, Zhang, Larroy, Li,
+  and Smola]{erickson-arxiv20a}
+N.~Erickson, J.~Mueller, A.~Shirkov, H.~Zhang, P.~Larroy, M.~Li, and A.~Smola.
+\newblock Autogluon-tabular: Robust and accurate automl for structured data.
+\newblock \emph{arXiv:2003.06505 [stat.ML]}, 2020.
+
+\bibitem[Feurer and Hutter(2019)]{feurer-automlbook19a}
+M.~Feurer and F.~Hutter.
+\newblock Hyperparameter {O}ptimization.
+\newblock In F.~Hutter, L.~Kotthoff, and J.~Vanschoren, editors,
+  \emph{Automated Machine Learning: Methods, Systems, Challenges}, chapter~1,
+  pages 3--38. Springer, 2019.
+\newblock Available for free at http://automl.org/book.
+
+\bibitem[Feurer et~al.(2015)Feurer, Klein, Eggensperger, Springenberg, Blum,
+  and Hutter]{feurer-nips15a}
+M.~Feurer, A.~Klein, K.~Eggensperger, J.~Springenberg, M.~Blum, and F.~Hutter.
+\newblock Efficient and robust automated machine learning.
+\newblock In C.~Cortes, N.~Lawrence, D.~Lee, M.~Sugiyama, and R.~Garnett,
+  editors, \emph{Proceedings of the 28th International Conference on Advances
+  in Neural Information Processing Systems ({N}eur{IPS}'15)}, pages 2962--2970.
+  Curran Associates, 2015.
+
+\bibitem[Feurer et~al.(2021)Feurer, Eggensperger, Falkner, Lindauer, and
+  Hutter]{feurer-arxiv20v2}
+M.~Feurer, K.~Eggensperger, S.~Falkner, M.~Lindauer, and F.~Hutter.
+\newblock Auto-sklearn 2.0: Hands-free {AutoML} via meta-learning.
+\newblock \emph{arXiv:2007.04074 {[cs.LG]}}, 2021.
+
+\bibitem[Friedman(2001)]{friedman-as01a}
+J.~Friedman.
+\newblock Greedy function approximation: a gradient boosting machine.
+\newblock \emph{Annals of statistics}, pages 1189--1232, 2001.
+
+\bibitem[Gal(2016)]{gal-phdthesis16a}
+Y.~Gal.
+\newblock \emph{Uncertainty in Deep Learning}.
+\newblock PhD thesis, University of Cambridge, 2016.
+
+\bibitem[Grinsztajn et~al.(2022)Grinsztajn, Oyallon, and
+  Varoquaux]{grinsztajn2022why}
+L.~Grinsztajn, E.~Oyallon, and G.~Varoquaux.
+\newblock Why do tree-based models still outperform deep learning on tabular
+  data?
+\newblock \emph{arXiv:2207.08815 [cs.LG]}, 2022.
+
+\bibitem[Janzing(2020)]{NEURIPS2019_2172fde4}
+D.~Janzing.
+\newblock Causal regularization.
+\newblock In H.~Larochelle, M.~Ranzato, R.~Hadsell, M.-F. Balcan, and H.~Lin,
+  editors, \emph{Proceedings of the 33rd International Conference on Advances
+  in Neural Information Processing Systems ({N}eur{IPS}'20)}. Curran
+  Associates, 2020.
+
+\bibitem[Kadra et~al.(2021)Kadra, Lindauer, Hutter, and Grabocka]{regcocktail}
+A.~Kadra, M.~Lindauer, F.~Hutter, and J.~Grabocka.
+\newblock Well-tuned simple nets excel on tabular datasets.
+\newblock In M.~Ranzato, A.~Beygelzimer, K.~Nguyen, P.~Liang, J.~Vaughan, and
+  Y.~Dauphin, editors, \emph{Proceedings of the 34th International Conference
+  on Advances in Neural Information Processing Systems ({N}eur{IPS}'21)}, pages
+  23928--23941. Curran Associates, 2021.
+
+\bibitem[Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and
+  Liu]{ke-neurips17a}
+G.~Ke, Q.~Meng, T.~Finley, T.~Wang, W.~Chen, W.~Ma, Q.~Ye, and T.-Y. Liu.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock In I.~Guyon, U.~von Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
+  S.~Vishwanathan, and R.~Garnett, editors, \emph{Proceedings of the 30th
+  International Conference on Advances in Neural Information Processing Systems
+  ({N}eur{IPS}'17)}. Curran Associates, 2017.
+
+\bibitem[Ke et~al.(2022)Ke, Chiappa, Wang, Goyal, Bornschein, Rey, Weber,
+  Botvinic, Mozer, and Rezende]{ke2022}
+Nan~Rosemary Ke, Silvia Chiappa, Jane Wang, Anirudh Goyal, Jorg Bornschein,
+  Melanie Rey, Theophane Weber, Matthew Botvinic, Michael Mozer, and
+  Danilo~Jimenez Rezende.
+\newblock Learning to induce causal structure, 2022.
+\newblock URL \url{https://arxiv.org/abs/2204.04875}.
+
+\bibitem[Kingma and Ba(2015)]{kingma-iclr15a}
+D.~Kingma and J.~Ba.
+\newblock Adam: {A} method for stochastic optimization.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations ({ICLR}'15)}, 2015.
+\newblock Published online: \url{iclr.cc}.
+
+\bibitem[Kossen et~al.(2021)Kossen, Band, Lyle, Gomez, Rainforth, and
+  Gal]{kossen2021self}
+J.~Kossen, N.~Band, C.~Lyle, A.~Gomez, T.~Rainforth, and Y.~Gal.
+\newblock Self-attention between datapoints: Going beyond individual
+  input-output pairs in deep learning.
+\newblock In M.~Ranzato, A.~Beygelzimer, K.~Nguyen, P.~Liang, J.~Vaughan, and
+  Y.~Dauphin, editors, \emph{Proceedings of the 34th International Conference
+  on Advances in Neural Information Processing Systems ({N}eur{IPS}'21)}, pages
+  28742--28756. Curran Associates, 2021.
+
+\bibitem[Kyono et~al.(2020)Kyono, Zhang, and {van der
+  Schaar}]{NEURIPS2020_1068bceb}
+T.~Kyono, Y.~Zhang, and M.~{van der Schaar}.
+\newblock {CASTLE}: Regularization via auxiliary causal graph discovery.
+\newblock In H.~Larochelle, M.~Ranzato, R.~Hadsell, M.-F. Balcan, and H.~Lin,
+  editors, \emph{Proceedings of the 33rd International Conference on Advances
+  in Neural Information Processing Systems ({N}eur{IPS}'20)}, pages 1501--1512.
+  Curran Associates, 2020.
+
+\bibitem[Kyono et~al.(2021)Kyono, Zhang, Bellot, and van~der
+  Schaar]{SchaarMiracleCDL}
+T.~Kyono, Y.~Zhang, A.~Bellot, and M.~van~der Schaar.
+\newblock Miracle: Causally-aware imputation via learning missing data
+  mechanisms.
+\newblock In M.~Ranzato, A.~Beygelzimer, K.~Nguyen, P.~Liang, J.~Vaughan, and
+  Y.~Dauphin, editors, \emph{Advances in Neural Information Processing
+  Systems}, pages 23806--23817. Curran Associates, 2021.
+
+\bibitem[Lin et~al.(2021)Lin, Sperrin, Jenkins, Martin, and
+  Peek]{lin2021scoping}
+L.~Lin, M.~Sperrin, D.~A Jenkins, G.~Martin, and N.~Peek.
+\newblock A scoping review of causal methods enabling predictions under
+  hypothetical interventions.
+\newblock \emph{Diagnostic and prognostic research}, 5\penalty0 (1):\penalty0
+  1--16, 2021.
+
+\bibitem[Lorch et~al.(2022)Lorch, Sussex, Rothfuss, Krause, and
+  Schölkopf]{lorch2022amortized}
+Lars Lorch, Scott Sussex, Jonas Rothfuss, Andreas Krause, and Bernhard
+  Schölkopf.
+\newblock Amortized inference for causal structure learning, 2022.
+
+\bibitem[Loshchilov and Hutter(2017)]{loshchilov-iclr17a}
+I.~Loshchilov and F.~Hutter.
+\newblock {SGDR}: Stochastic gradient descent with warm restarts.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations ({ICLR}'17)}, 2017.
+\newblock Published online: \url{iclr.cc}.
+
+\bibitem[M{\"u}ller et~al.(2022)M{\"u}ller, Hollmann, Arango, Grabocka, and
+  Hutter]{muller-iclr22a}
+S.~M{\"u}ller, N.~Hollmann, S.~Arango, J.~Grabocka, and F.~Hutter.
+\newblock Transformers can do bayesian inference.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations ({ICLR}'22)}, 2022.
+\newblock URL \url{https://openreview.net/forum?id=KSugKcbNf9}.
+\newblock Published online: \url{iclr.cc}.
+
+\bibitem[Nair and Hinton(2010)]{nair2010rectified}
+V.~Nair and G.~Hinton.
+\newblock Rectified linear units improve restricted {B}oltzmann machines.
+\newblock In J.~F{\"u}rnkranz and T.~Joachims, editors, \emph{Proceedings of
+  the 27th International Conference on Machine Learning ({ICML}'10)}.
+  Omnipress, 2010.
+
+\bibitem[Neal(1996)]{neal-bayes96a}
+R.~Neal.
+\newblock \emph{Bayesian Learning for Neural Networks}.
+\newblock Lecture Notes in Computer Science. Springer, 1996.
+
+\bibitem[Ng(2004)]{ng2004feature}
+A.~Ng.
+\newblock Feature selection, l1 vs. l2 regularization, and rotational
+  invariance.
+\newblock In R.~Greiner, editor, \emph{Proceedings of the 21st International
+  Conference on Machine Learning ({ICML}'04)}. Omnipress, 2004.
+
+\bibitem[Pearl(2009)]{pearl_2009}
+J.~Pearl.
+\newblock \emph{Causality}.
+\newblock Cambridge University Press, 2 edition, 2009.
+
+\bibitem[Pearl(2010)]{pearl2010causal}
+J.~Pearl.
+\newblock Causal inference.
+\newblock \emph{Causality: objectives and assessment}, pages 39--58, 2010.
+
+\bibitem[Pearl and Mackenzie(2018)]{PearlMackenzie18}
+J.~Pearl and D.~Mackenzie.
+\newblock \emph{The Book of Why}.
+\newblock Basic Books, 2018.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion,
+  Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
+  Cournapeau, Brucher, Perrot, and Duchesnay]{scikit-learn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay.
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830,
+  2011.
+
+\bibitem[Peters et~al.(2017)Peters, Janzing, and
+  Sch{\"o}lkopf]{causalinferencelearningbook}
+J.~Peters, D.~Janzing, and B.~Sch{\"o}lkopf.
+\newblock \emph{Elements of causal inference: foundations and learning
+  algorithms}.
+\newblock The MIT Press, 2017.
+
+\bibitem[Prokhorenkova et~al.(2018)Prokhorenkova, Gusev, Vorobev, Dorogush, and
+  Gulin]{prokhorenkova-neurips18a}
+L.~Prokhorenkova, G.~Gusev, A.~Vorobev, A.~Dorogush, and A.~Gulin.
+\newblock {CatBoost}: unbiased boosting with categorical features.
+\newblock In S.~Bengio, H.~Wallach, H.~Larochelle, K.~Grauman,
+  N.~Cesa{-}Bianchi, and R.~Garnett, editors, \emph{Proceedings of the 31st
+  International Conference on Advances in Neural Information Processing Systems
+  ({N}eur{IPS}'18)}. Curran Associates, 2018.
+
+\bibitem[Rothenhäusler et~al.(2018)Rothenhäusler, Meinshausen, Bühlmann, and
+  Peters]{rotenh2018}
+D.~Rothenhäusler, N.~Meinshausen, P.~Bühlmann, and J.~Peters.
+\newblock Anchor regression: heterogeneous data meets causality.
+\newblock \emph{arXiv:1801.06229 [stat.ME]}, 2018.
+
+\bibitem[Schmidhuber(2002)]{speedprior}
+J.~Schmidhuber.
+\newblock The speed prior: A new simplicity measure yielding near-optimal
+  computable predictions.
+\newblock In J.~Kivinen and R.~Sloan, editors, \emph{Computational Learning
+  Theory}, pages 216--228. Springer, 2002.
+
+\bibitem[Schwartz et~al.(2020)Schwartz, Dodge, Smith, and
+  Etzioni]{schwartz2020green}
+R.~Schwartz, J.~Dodge, N.~Smith, and Etzioni.
+\newblock Green {AI}.
+\newblock \emph{Communications of the ACM}, 63\penalty0 (12):\penalty0 54--63,
+  2020.
+
+\bibitem[Schölkopf et~al.(2012)Schölkopf, Janzing, Peters, Sgouritsa, Zhang,
+  and Mooij]{scholkopf2012causal}
+B.~Schölkopf, D.~Janzing, J.~Peters, E.~Sgouritsa, K.~Zhang, and J.~Mooij.
+\newblock On causal and anticausal learning.
+\newblock In J.~Langford and J.~Pineau, editors, \emph{Proceedings of the 29th
+  International Conference on Machine Learning ({ICML}'12)}, pages 459--466.
+  Omnipress, 2012.
+
+\bibitem[Shwartz-Ziv and Armon(2022)]{nnsfortabular2}
+R.~Shwartz-Ziv and A.~Armon.
+\newblock Tabular data: Deep learning is not all you need.
+\newblock \emph{Information Fusion}, 81:\penalty0 84--90, 2022.
+
+\bibitem[Somepalli et~al.(2021)Somepalli, Goldblum, Schwarzschild, Bruss, and
+  Goldstein]{somepalli2021saint}
+G.~Somepalli, M.~Goldblum, A.~Schwarzschild, C.~Bruss, and T.~Goldstein.
+\newblock {SAINT}: Improved neural networks for tabular data via row attention
+  and contrastive pre-training.
+\newblock \emph{arXiv:2106.01342 {[cs.LG]}}, 2021.
+
+\bibitem[Srivastava et~al.(2014)Srivastava, Hinton, Krizhevsky, Sutskever, and
+  Salakhutdinov]{srivastava-jmlr14a}
+N.~Srivastava, G.~Hinton, A.~Krizhevsky, I.~Sutskever, and R.~Salakhutdinov.
+\newblock Dropout: A simple way to prevent neural networks from overfitting.
+\newblock \emph{Journal of Machine Learning Research}, 15:\penalty0 1929--1958,
+  2014.
+
+\bibitem[Tunguz(2022)]{xgboost_search_space_tunguz}
+Bojan Tunguz.
+\newblock Xgboost search space tweet.
+\newblock \url{https://twitter.com/tunguz/status/1572642449302106112}, 2022.
+\newblock Accessed: 2022-09-28.
+
+\bibitem[Vanschoren et~al.(2014)Vanschoren, van Rijn, Bischl, and
+  Torgo]{vanschoren-sigkdd14a}
+J.~Vanschoren, J.~van Rijn, B.~Bischl, and L.~Torgo.
+\newblock {OpenML}: Networked science in machine learning.
+\newblock \emph{SIGKDD Explorations}, 15\penalty0 (2):\penalty0 49--60, 2014.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{vaswani-neurips17a}
+A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~Gomez, L.~Kaiser,
+  and I.~Polosukhin.
+\newblock Attention is all you need.
+\newblock In I.~Guyon, U.~von Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
+  S.~Vishwanathan, and R.~Garnett, editors, \emph{Proceedings of the 30th
+  International Conference on Advances in Neural Information Processing Systems
+  ({N}eur{IPS}'17)}. Curran Associates, Inc., 2017.
+
+\bibitem[Waldmann and Hagmayer(2013)]{waldmann2013causal}
+M.~Waldmann and Y.~Hagmayer.
+\newblock Causal reasoning.
+\newblock \emph{The Oxford handbook of cognitive psychology}, pages
+  733–--752, 2013.
+
+\bibitem[Wenzel et~al.(2020)Wenzel, Snoek, D., Tran, and
+  Jenatton]{hyperensemble}
+F.~Wenzel, J.~Snoek, D., Tran, and R.~Jenatton.
+\newblock Hyperparameter ensembles for robustness and uncertainty
+  quantification.
+\newblock In H.~Larochelle, M.~Ranzato, R.~Hadsell, M.-F. Balcan, and H.~Lin,
+  editors, \emph{Proceedings of the 33rd International Conference on Advances
+  in Neural Information Processing Systems ({N}eur{IPS}'20)}, pages 6514--6527.
+  Curran Associates, 2020.
+
+\bibitem[Wojtowicz and DeDeo(2020)]{explanatoryvalues}
+Z.~Wojtowicz and S.~DeDeo.
+\newblock From probability to consilience: How explanatory values implement
+  bayesian reasoning.
+\newblock \emph{Trends in Cognitive Sciences}, 24\penalty0 (12):\penalty0
+  981--993, 2020.
+
+\bibitem[Wu et~al.(2021)Wu, Liu, Xie, Chow, and Wei]{ensemblediversity}
+Yanzhao Wu, Ling Liu, Zhongwei Xie, Ka-Ho Chow, and Wenqi Wei.
+\newblock Boosting ensemble accuracy by revisiting ensemble diversity metrics.
+\newblock In \emph{2021 IEEE/CVF Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 16464--16472, 2021.
+\newblock \doi{10.1109/CVPR46437.2021.01620}.
+
+\bibitem[Yeo and Johnson(2000)]{yeo2000new}
+I.~Yeo and R.~Johnson.
+\newblock A new family of power transformations to improve normality or
+  symmetry.
+\newblock \emph{Biometrika}, 87\penalty0 (4):\penalty0 954--959, 2000.
+
+\bibitem[Zaheer et~al.(2020)Zaheer, Guruganesh, Dubey, Ainslie, Alberti,
+  Ontanon, Pham, Ravula, Qifan, Yang, and Amr]{zaheer2020big}
+M.~Zaheer, G.~Guruganesh, K.~Dubey, J.~Ainslie, C.~Alberti, S.~Ontanon,
+  P.~Pham, A.~Ravula, Q.~Wang Qifan, L.~Yang, and A.~Amr.
+\newblock Big bird: Transformers for longer sequences.
+\newblock In H.~Larochelle, M.~Ranzato, R.~Hadsell, M.-F. Balcan, and H.~Lin,
+  editors, \emph{Proceedings of the 33rd International Conference on Advances
+  in Neural Information Processing Systems ({N}eur{IPS}'20)}, pages
+  17283--17297. Curran Associates, 2020.
+
+\bibitem[Zaidi et~al.(2021)Zaidi, Zela, Elsken, Holmes, Hutter, and
+  Teh]{zaidi-neurips21a}
+S.~Zaidi, A.~Zela, T.~Elsken, C.~Holmes, F.~Hutter, and Y.~Teh.
+\newblock Neural ensemble search for uncertainty estimation and dataset shift.
+\newblock In M.~Ranzato, A.~Beygelzimer, K.~Nguyen, P.~Liang, J.~Vaughan, and
+  Y.~Dauphin, editors, \emph{Proceedings of the 34th International Conference
+  on Advances in Neural Information Processing Systems ({N}eur{IPS}'21)}, pages
+  7898--7911. Curran Associates, 2021.
+
+\bibitem[Zoph and Le(2017)]{zoph-iclr17a}
+B.~Zoph and Q.~V. Le.
+\newblock {N}eural {A}rchitecture {S}earch with reinforcement learning.
+\newblock In \emph{Proceedings of the International Conference on Learning
+  Representations ({ICLR}'17)}, 2017.
+\newblock Published online: \url{iclr.cc}.
+
+\end{thebibliography}

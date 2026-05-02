@@ -1,0 +1,121 @@
+\vspace{-5pt}
+\section{Overview and Design}
+\label{sec:design}
+\vspace{-5pt}
+
+
+
+%The goal of \relbench is to facilitate research on relational deep learning~\citep{fey2023relational}, an emerging field of research aiming to develop machine learning algorithms that can learn directly over relational databases without manual feature engineering.
+\relbench provides a collection of diverse real-world \textbf{relational databases} along with a set of realistic \textbf{predictive tasks} associated with each database. Concretely, we provide:
+
+\vspace{-5pt}
+\begin{itemize}[leftmargin=0.6cm,itemsep=3pt, parsep=0pt]
+    \item \textbf{Relational databases}, consisting of a set of tables connected via primary-foreign key relationships. Each table has columns storing diverse information about each entity. Some tables also come with \emph{time columns}, indicating the time at which the entity is created (\eg, transaction date). %For each relational database, we define \textsc{val\_timestamp} and \textsc{test\_timestamp} to be used to split data, as we describe below. 
+    \item \textbf{Predictive tasks over a relational database}, which are defined by a \textbf{training table}~\citep{fey2023relational} with columns for Entity ID, seed time, and target labels.The seed time indicates \emph{at which time} the target is to be predicted, filtering future data. 
+\end{itemize}
+
+    %\footnote{It is the responsibility of machine learning algorithms to avoid time leakage during training and validation. For instance, \citet{fey2023relational} presented an elegant solution based on temporal neighbor sampling, which we adopt in our implementation.}
+
+Next we outline key design principles of \relbench with an emphasis on data curation, data splits, research flexibility, and open-source implementation.
+
+\xhdr{Data Curation} Relational databases are widespread, so there are many candidate predictive tasks. 
+For the purpose of benchmarking we carefully curate a collection of relational databases and tasks chosen for their rich relational structure and column features. We also adopt the following principles:
+
+
+%facilitate effective and efficient comparison of different algorithms, in a similar spirit to earlier graph benchmarks~\citep{hu2020open}. We adopt the following principles for selecting databases and designing tasks. 
+
+\vspace{-0.1cm}
+\begin{itemize}[leftmargin=0.6cm,itemsep=3pt, parsep=0pt]
+    \item \textbf{Diverse domains:} To ensure algorithms developed on \relbench will be useful across a wide range of application domains, we select real-world relational databases from diverse domains. 
+    \item \textbf{Diverse task types:} Tasks cover a wide range of real-world use-cases, including three representative task types: entity classification, entity regression, and recommendation.
+\end{itemize}
+\vspace{-0.1cm}
+
+
+\begin{table}[t]
+  \centering
+  \caption{{\bf Statistics of  \relbench datasets.} Datasets vary significantly in the number of tables, total number of rows, and number of columns. In this table, we only count rows available for test inference, i.e., rows upto the test time cutoff.
+  %\jure{Great! Let's also add a "total" row summing up all the tables, rows, cols, and tasks.}\kexin{done}
+  }
+  \label{tab:datasets_stats}
+  \renewcommand{\arraystretch}{1.1}
+  %\setlength{\tabcolsep}{3pt}
+  % \resizebox{\linewidth}{!}{
+\scriptsize
+\begin{tabular}{lllrrrccc}
+    \toprule
+      \mr{2}{Name} & \mr{2}{Domain} &  \mr{2}{\#Tasks} & \mc{3}{c}{Tables} &  \mc{3}{c}{Timestamp (year-mon-day)} \\
+       \cmidrule(lr){4-6}\cmidrule(lr){7-9}
+      & &  & \#Tables & \#Rows & \#Cols & Start & Val & Test  \\
+    \midrule
+    \amazon & E-commerce & 7 & 3 & 15,000,713 & 15 & 2008-01-01 & 2015-10-01 & 2016-01-01 \\
+    \avito & E-commerce & 4 & 8 & 20,679,117 & 42 & 2015-04-25 & 2015-05-08 & 2015-05-14 \\
+    \event & Social & 3 & 5 & 41,328,337 & 128 & 1912-01-01 & 2012-11-21 & 2012-11-29\\ 
+    \fone & Sports & 3 & 9 & 74,063 & 67 & 1950-05-13 & 2005-01-01 & 2010-01-01 \\
+    \handm & E-commerce & 3 & 3 & 16,664,809 & 37 & 2019-09-07 & 2020-09-07 & 2020-09-14 \\
+    \stackex & Social & 5 & 7 & 4,247,264 & 52 & 2009-02-02 & 2020-10-01 & 2021-01-01 \\
+    \trials & Medical & 5 & 15 & 5,434,924 & 140 & 2000-01-01 & 2020-01-01 & 2021-01-01 \\
+    \midrule
+   \multicolumn{2}{c}{Total} & 30 & 51 &  103,466,370 & 489 & / & / & / \\
+    \bottomrule
+  \end{tabular}
+  % }
+  \vspace{-10pt}
+\end{table}
+
+% \iffalse
+% \begin{table}[t]
+%   \centering
+%   \caption{{\bf Statistics of currently-available \relbench datasets.} Dimension tables store descriptive attributes about entities (analogous to nodes in a graph), and fact tables store transactional information about (multiple) entities (analogous to edges in a graph).
+%   \jure{why do we separate out fact vs. dimension talbes. Why not just give total tables/columns/rows information. Let's also add "number of tasks" for each dataset to the table.}
+%   }
+%   \label{tab:datasets_stats}
+%   \renewcommand{\arraystretch}{1.1}
+%   %\setlength{\tabcolsep}{3pt}
+%   \resizebox{\linewidth}{!}{
+% \begin{tabular}{llrrrrrrccc}
+%     \toprule
+%       \mr{2}{Name} & \mr{2}{Domain} & \mc{3}{c}{Dimension tables} & \mc{3}{c}{Fact tables} &  \mc{3}{c}{Timestamp (year-mon-day)} \\
+%         \cmidrule(lr){3-5}\cmidrule(lr){6-8}\cmidrule(lr){9-11}
+%       & & \#Tables & \#Rows & \#Cols & \#Tables & \#Rows & \#Cols & Start & Val & Test  \\
+%     \midrule
+%     \amazon & E-commerce & 2 & 2,356,205 & 8 & 1 & 21,935,284 & 7 & 1996-06-25 & 2015-10-01 & 2016-01-01 \\
+%     \handm & E-commerce & 2 & 1,477,522 & 32 & 1 & 31,788,324 & 5 & 2018-09-20 & 2020-09-07 & 2020-09-14\\
+%     \stackex & Q\&A platform & 1 & 564,580 & 7 & 6 & 37,545,248 & 44 & 2010-03-27 & 2019-01-01 & 2021-01-01\\
+%     \trials & Medical & 5 & 787,069 & 42 & 10 & 5,065,088 & 98 & 2000-01-01 & 2020-01-01 & 2021-01-01 \\
+%     \fone & Sport & 3 & 1,145 & 18 & 6 & 96,461 & 49 & 1950-05-13 & 2005-01-01 & 2010-01-01 \\
+%     \event & Social & 2 & 3,176,181 & 117 & 3 & 77,744 & 11 & 2012-06-20 & 2012-11-21 & 2012-11-29\\
+%     \avito & E-commerce & 4 & 17,963,872 & 20 & 4 & 94,824,102 & 23 & 2015-04-25 & 2015-05-09 & 2015-05-14\\
+%     \bottomrule
+%   \end{tabular}
+%   }
+%   \vspace{-10pt}
+% \end{table}
+% \fi
+
+\relbench databases are summarized in Table~\ref{tab:datasets_stats}, covering E-commerce, social, medical, and sports domains. The databases vary significantly in the numbers of rows (\ie, data scale) the number of columns and tables, as well as the time ranges of the databases. Tasks are summarized in Table~\ref{tab:task_stats},  each corresponding to a predictive problem of practical interest such as predicting customer churn,  predicting the number of adverse events in a clinical trial, and recommending  posts to users.
+
+\vspace{-2pt}
+\xhdr{Data Splits} Data is split temporally, with models trained on rows up to \textsc{val\_timestamp}, validated on the rows between \textsc{val\_timestamp} and \textsc{test\_timestamp}, and tested on the rows after \textsc{test\_timestamp}. 
+    Our implementation carefully hides data after \textsc{test\_timestamp} during inference to systematically avoid test time data leakage~\citep{kapoor2023leakage}, and uses an elegant solution proposed by  \citet{fey2023relational} to avoid time leakage during training and validation through temporal neighbor sampling. In general, it is the designers responsibility to avoid time leakage. We recommend using our carefully tested implementation where possible.
+
+\vspace{-2pt}
+\xhdr{Research Flexibility} \relbench is designed to allow significant freedom in future research directions. For example, \relbench tasks share the same (\textsc{val\_timestamp} and \textsc{test\_timestamp}) splits across tasks within the same relational database. This opens up exciting opportunities for multi-task learning and pre-training to simultaneously improve different predictive tasks within the same relational database. We also expose the logic for converting databases into graphs. This allows future work to consider modified graph constructions, or creative uses of the raw data.
+
+%Our open-source implementation of relational deep learning provides an initial logic for converting database into a graph, which can be modified to alter the graph design, and also provides the original set of tables (prior to graph conversion) to be used in any creative ways researchers see fit.
+
+\vspace{-2pt}
+\xhdr{Open-source RDL Implementation}
+As well as datasets and tasks, we provide the first open-source implementation of relational deep learning. See Figure 2 of \citet{fey2023relational} for a high-level overview. A neural network is learned over a heterogeneous temporal graph that exactly represents the database in order to make prediction over nodes (for entity classification and regression) and links (for recommendation). Our implementation is built on top of PyTorch Frame~\citep{hu2024pytorch} for extracting initial node embeddings from raw table features, and PyTorch Geometric~\citep{fey2019fast} for GNN modeling. See Section \ref{sec:rdl_implementation} for further  details.
+
+
+
+The rest of the paper is organized as follows. Section~\ref{sec:datasets} describes the \relbench relational databases.
+Section~\ref{sec:tasks} introduces predictive tasks for each \relbench databases covering the three task types in Sections~\ref{sec:node_classification}, \ref{sec:node_regression}, and \ref{sec:link_prediction}, respectively.
+Section~\ref{sec:tasks} also extensively benchmarks our RDL implementation against challenging baselines. Most importantly, we compare to a strong ``data scientist'' baseline (Section \ref{sec:ds_baseline}), finding that end-to-end RDL models outperform manual feature engineering, the current gold-standard
+%We demonstrate the promising results of the relational deep learning approach compared to the baselines across tasks.
+Finally, Section~\ref{sec:related} discusses related work and  Section~\ref{sec:conclusion} draws final conclusions.
+
+
+
+

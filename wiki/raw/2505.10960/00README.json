@@ -1,0 +1,41 @@
+{
+   "sources" : [
+      {
+         "usage" : "toplevel",
+         "filename" : "iclr2026_conference.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/hgt_vs_hgtpe_comparison.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/k-ablation-fig.png"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "figures/k-plot.pdf"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "iclr2026_conference.bbl"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "iclr2026_conference.bst"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "minipage_format.tex"
+      },
+      {
+         "usage" : "ignore",
+         "filename" : "neurips_2025.bib"
+      }
+   ],
+   "spec_version" : 1,
+   "texlive_version" : "2025",
+   "process" : {
+      "compiler" : "pdflatex"
+   }
+}

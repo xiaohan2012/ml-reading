@@ -1,0 +1,18 @@
+\section{Dataset Origins and Licenes}\label{app:data}
+
+%\subsection{Origins and Licenses}
+This section details the sources for all data used in \relbench. In all cases, the data providers consent for their data to be used freely for non-commercial and research purposes. The only database with potentially personally identifiable information is \stackex, which draws from the Stack Exchange site, which sometimes has individuals' names as their username.  This information shared with consent, as all users must agree to the Stack Exchange privacy policy, see: \url{https://stackoverflow.com/legal/privacy-policy}.
+
+\xhdr{\amazon} Data obtained from the Amazon Review Data Dump from \cite{ni2019justifying}. See the website: \url{https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/}. Data license is not specified.
+
+\xhdr{\avito} Data is obtained from Kaggle \url{https://www.kaggle.com/competitions/avito-context-ad-clicks}. All \relbench users must download data from Kaggle themselves, a part of which is accepting the data usage terms. These terms include use only for non-commercial and academic purposes. Note that after data download, we further downsample the avito dataset by randomly selecting approximately 100,000 data point from user table and sample all other tables that have connections to the sampled users.
+
+\xhdr{\stackex} Data was obtained from The Internet Archive, whose stated mission is to provide ``universal access to all knowledge. We downloaded our data from \url{https://archive.org/download/stackexchange} in Novermber 2023. Data license is not specified.
+
+\xhdr{\fone} Data was sourced from the Ergast API (\url{https://ergast.com/mrd/}) in February 2024. The Ergast Developer API is an experimental web service which provides a historical record of motor racing data for non-commercial purposes. As far as we are able to determine the data is public and license is not specified.
+
+\xhdr{\trials} Data was downloaded from the \url{ClinicalTrials.gov} website in January 2024. This data is provided by the NIH, an official branch of the US Government. The terms of use state that data are available to all requesters, both within and outside the United States, at no charge. Our \trials database is a snapshot from January 2024, and will not be updated with newer trials results.
+
+\xhdr{\handm} Data is obtained from Kaggle \url{https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations}. All \relbench users must download data from Kaggle themselves, a part of which is accepting the data usage terms. These terms include use only for non-commercial and academic purposes.
+
+\xhdr{\event} The dataset employed in this research was initially released on Kaggle for the Event Recommendation Engine Challenge, which can be accessed at \url{https://www.kaggle.com/c/event-recommendation-engine-challenge/data}. We have obtained explicit consent from the creators of this dataset to use it within \relbench. We extend our sincere gratitude to Allan Carroll for his support and generosity in sharing the data with the academic community.

@@ -1,0 +1,309 @@
+\begin{thebibliography}{60}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alon \& Yahav(2020)Alon and Yahav]{alon2020bottleneck}
+Uri Alon and Eran Yahav.
+\newblock On the bottleneck of graph neural networks and its practical implications.
+\newblock \emph{arXiv preprint arXiv:2006.05205}, 2020.
+
+\bibitem[Bronstein et~al.(2021)Bronstein, Bruna, Cohen, and Veli{\v{c}}kovi{\'c}]{bronstein2021geometric}
+Michael~M Bronstein, Joan Bruna, Taco Cohen, and Petar Veli{\v{c}}kovi{\'c}.
+\newblock Geometric deep learning: Grids, groups, graphs, geodesics, and gauges.
+\newblock \emph{arXiv preprint arXiv:2104.13478}, 2021.
+
+\bibitem[Cant{\"u}rk et~al.(2023)Cant{\"u}rk, Liu, Lapointe-Gagn{\'e}, L{\'e}tourneau, Wolf, Beaini, and Ramp{\'a}{\v{s}}ek]{canturk2023graph}
+Semih Cant{\"u}rk, Renming Liu, Olivier Lapointe-Gagn{\'e}, Vincent L{\'e}tourneau, Guy Wolf, Dominique Beaini, and Ladislav Ramp{\'a}{\v{s}}ek.
+\newblock Graph positional and structural encoder.
+\newblock \emph{arXiv preprint arXiv:2307.07107}, 2023.
+
+\bibitem[Chen et~al.(2022)Chen, Gao, Li, and He]{chen2022nagphormer}
+Jinsong Chen, Kaiyuan Gao, Gaichao Li, and Kun He.
+\newblock Nagphormer: A tokenized graph transformer for node classification in large graphs.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2022.
+
+\bibitem[Chen et~al.(2025)Chen, Kanatsoulis, and Leskovec]{chen2025relgnn}
+Tianlang Chen, Charilaos Kanatsoulis, and Jure Leskovec.
+\newblock Relgnn: Composite message passing for relational deep learning.
+\newblock In \emph{Forty-second International Conference on Machine Learning}, 2025.
+
+\bibitem[Chen \& Guestrin(2016)Chen and Guestrin]{chen2016xgboost}
+Tianqi Chen and Carlos Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining}, pp.\  785--794, 2016.
+
+\bibitem[Clauset \& Eagle(2012)Clauset and Eagle]{clauset2012persistence}
+Aaron Clauset and Nathan Eagle.
+\newblock Persistence and periodicity in a dynamic proximity network.
+\newblock \emph{arXiv preprint arXiv:1211.7343}, 2012.
+
+\bibitem[Codd(1970)]{codd1970relational}
+Edgar~F Codd.
+\newblock A relational model of data for large shared data banks.
+\newblock \emph{Communications of the ACM}, 13\penalty0 (6):\penalty0 377--387, 1970.
+
+\bibitem[Dwivedi \& Bresson(2021)Dwivedi and Bresson]{dwivedi2021generalization}
+Vijay~Prakash Dwivedi and Xavier Bresson.
+\newblock A generalization of transformer networks to graphs.
+\newblock \emph{AAAI Workshop on Deep Learning on Graphs: Methods and Applications}, 2021.
+
+\bibitem[Dwivedi et~al.(2020)Dwivedi, Joshi, Luu, Laurent, Bengio, and Bresson]{dwivedi2020benchmarking}
+Vijay~Prakash Dwivedi, Chaitanya~K Joshi, Anh~Tuan Luu, Thomas Laurent, Yoshua Bengio, and Xavier Bresson.
+\newblock Benchmarking graph neural networks.
+\newblock \emph{arXiv:2003.00982}, 2020.
+
+\bibitem[Dwivedi et~al.(2022)Dwivedi, Luu, Laurent, Bengio, and Bresson]{dwivedi2022graph}
+Vijay~Prakash Dwivedi, Anh~Tuan Luu, Thomas Laurent, Yoshua Bengio, and Xavier Bresson.
+\newblock Graph neural networks with learnable structural and positional representations.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Dwivedi et~al.(2023)Dwivedi, Liu, Luu, Bresson, Shah, and Zhao]{dwivedi2023graph}
+Vijay~Prakash Dwivedi, Yozen Liu, Anh~Tuan Luu, Xavier Bresson, Neil Shah, and Tong Zhao.
+\newblock Graph transformers for large graphs.
+\newblock \emph{arXiv preprint arXiv:2312.11109}, 2023.
+
+\bibitem[Fey \& Lenssen(2019)Fey and Lenssen]{fey2019fast}
+Matthias Fey and Jan~Eric Lenssen.
+\newblock Fast graph representation learning with pytorch geometric.
+\newblock \emph{arXiv preprint arXiv:1903.02428}, 2019.
+
+\bibitem[Fey et~al.(2024)Fey, Hu, Huang, Lenssen, Ranjan, Robinson, Ying, You, and Leskovec]{fey2023relational}
+Matthias Fey, Weihua Hu, Kexin Huang, Jan~Eric Lenssen, Rishabh Ranjan, Joshua Robinson, Rex Ying, Jiaxuan You, and Jure Leskovec.
+\newblock Position: Relational deep learning-graph representation learning on relational databases.
+\newblock In \emph{Forty-first International Conference on Machine Learning}, 2024.
+
+\bibitem[Gilmer et~al.(2017)Gilmer, Schoenholz, Riley, Vinyals, and Dahl]{gilmer2017neural}
+Justin Gilmer, Samuel~S Schoenholz, Patrick~F Riley, Oriol Vinyals, and George~E Dahl.
+\newblock Neural message passing for quantum chemistry.
+\newblock In \emph{International conference on machine learning}, pp.\  1263--1272. PMLR, 2017.
+
+\bibitem[Grattafiori et~al.(2024)Grattafiori, Dubey, Jauhri, Pandey, Kadian, Al-Dahle, Letman, Mathur, Schelten, Vaughan, et~al.]{grattafiori2024llama}
+Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, Alan Schelten, Alex Vaughan, et~al.
+\newblock The llama 3 herd of models.
+\newblock \emph{arXiv preprint arXiv:2407.21783}, 2024.
+
+\bibitem[Grover \& Leskovec(2016)Grover and Leskovec]{grover2016node2vec}
+Aditya Grover and Jure Leskovec.
+\newblock node2vec: Scalable feature learning for networks.
+\newblock In \emph{Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining}, pp.\  855--864, 2016.
+
+\bibitem[Hamilton et~al.(2017)Hamilton, Ying, and Leskovec]{hamilton2017inductive}
+Will Hamilton, Zhitao Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Hu et~al.(2024)Hu, Yuan, Zhang, Nitta, Cao, Kocijan, Sunil, Leskovec, and Fey]{hu2024pytorch}
+Weihua Hu, Yiwen Yuan, Zecheng Zhang, Akihiro Nitta, Kaidi Cao, Vid Kocijan, Jinu Sunil, Jure Leskovec, and Matthias Fey.
+\newblock Pytorch frame: A modular framework for multi-modal tabular learning.
+\newblock \emph{arXiv preprint arXiv:2404.00776}, 2024.
+
+\bibitem[Hu et~al.(2020)Hu, Dong, Wang, and Sun]{hu2020heterogeneous}
+Ziniu Hu, Yuxiao Dong, Kuansan Wang, and Yizhou Sun.
+\newblock Heterogeneous graph transformer.
+\newblock In \emph{Proceedings of the web conference 2020}, pp.\  2704--2710, 2020.
+
+\bibitem[Huang et~al.(2024)Huang, Poursafaei, Rabbany, Rabusseau, and Rossi]{huang2024utg}
+Shenyang Huang, Farimah Poursafaei, Reihaneh Rabbany, Guillaume Rabusseau, and Emanuele Rossi.
+\newblock Utg: Towards a unified view of snapshot and event based models for temporal graphs.
+\newblock \emph{arXiv preprint arXiv:2407.12269}, 2024.
+
+\bibitem[Huang et~al.()Huang, Lu, Robinson, Yang, Zhang, Jegelka, and Li]{huangstability}
+Yinan Huang, William Lu, Joshua Robinson, Yu~Yang, Muhan Zhang, Stefanie Jegelka, and Pan Li.
+\newblock On the stability of expressive positional encodings for graphs.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}.
+
+\bibitem[Jiang \& Pu(2023)Jiang and Pu]{jiang2023exploring}
+Xiangjian Jiang and Yanyi Pu.
+\newblock Exploring time granularity on temporal graphs for dynamic link prediction in real-world networks.
+\newblock \emph{arXiv preprint arXiv:2311.12255}, 2023.
+
+\bibitem[Joshi(2020)]{joshi2020transformers}
+Chaitanya Joshi.
+\newblock Transformers are graph neural networks.
+\newblock \emph{The Gradient}, 12:\penalty0 17, 2020.
+
+\bibitem[Kanatsoulis \& Ribeiro(2024)Kanatsoulis and Ribeiro]{kanatsoulis2024counting}
+Charilaos Kanatsoulis and Alejandro Ribeiro.
+\newblock Counting graph substructures with graph neural networks.
+\newblock In \emph{The twelfth international conference on learning representations}, 2024.
+
+\bibitem[Kanatsoulis et~al.(2025)Kanatsoulis, Choi, Jegelka, Leskovec, and Ribeiro]{kanatsoulis2025learning}
+Charilaos~I Kanatsoulis, Evelyn Choi, Stephanie Jegelka, Jure Leskovec, and Alejandro Ribeiro.
+\newblock Learning efficient positional encodings with graph neural networks.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and Liu]{ke2017lightgbm}
+Guolin Ke, Qi~Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Kipf \& Welling(2016)Kipf and Welling]{kipf2016semi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock \emph{arXiv preprint arXiv:1609.02907}, 2016.
+
+\bibitem[Kong et~al.(2023)Kong, Chen, Kirchenbauer, Ni, Bruss, and Goldstein]{kong2023goat}
+Kezhi Kong, Jiuhai Chen, John Kirchenbauer, Renkun Ni, C~Bayan Bruss, and Tom Goldstein.
+\newblock Goat: A global transformer on large-scale graphs.
+\newblock In \emph{International Conference on Machine Learning}, 2023.
+
+\bibitem[Kreuzer et~al.(2021)Kreuzer, Beaini, Hamilton, L{\'e}tourneau, and Tossou]{kreuzer2021rethinking}
+Devin Kreuzer, Dominique Beaini, Will Hamilton, Vincent L{\'e}tourneau, and Prudencio Tossou.
+\newblock Rethinking graph transformers with spectral attention.
+\newblock \emph{Advances in Neural Information Processing Systems}, 34:\penalty0 21618--21629, 2021.
+
+\bibitem[Lachi et~al.(2024)Lachi, Longa, Bevilacqua, Lepri, Passerini, and Ribeiro]{lachiover}
+Veronica Lachi, Antonio Longa, Beatrice Bevilacqua, Bruno Lepri, Andrea Passerini, and Bruno Ribeiro.
+\newblock Over 100x speedup in relational deep learning via static gnns and tabular distillation.
+\newblock 2024.
+
+\bibitem[Lim et~al.(2022)Lim, Robinson, Zhao, Smidt, Sra, Maron, and Jegelka]{limsign}
+Derek Lim, Joshua~David Robinson, Lingxiao Zhao, Tess Smidt, Suvrit Sra, Haggai Maron, and Stefanie Jegelka.
+\newblock Sign and basis invariant networks for spectral graph representation learning.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}, 2022.
+
+\bibitem[Loukas(2019)]{loukas2019graph}
+Andreas Loukas.
+\newblock What graph neural networks cannot learn: depth vs width.
+\newblock \emph{arXiv preprint arXiv:1907.03199}, 2019.
+
+\bibitem[Mao et~al.(2023)Mao, Liu, Liu, and Sun]{mao2023hinormer}
+Qiheng Mao, Zemin Liu, Chenghao Liu, and Jianling Sun.
+\newblock Hinormer: Representation learning on heterogeneous information networks with graph transformer.
+\newblock In \emph{Proceedings of the ACM web conference 2023}, pp.\  599--610, 2023.
+
+\bibitem[Mialon et~al.(2021)Mialon, Chen, Selosse, and Mairal]{mialon2021graphit}
+Gr{\'e}goire Mialon, Dexiong Chen, Margot Selosse, and Julien Mairal.
+\newblock Graphit: Encoding graph structure in transformers.
+\newblock \emph{arXiv preprint arXiv:2106.05667}, 2021.
+
+\bibitem[Morris et~al.(2019)Morris, Ritzert, Fey, Hamilton, Lenssen, Rattan, and Grohe]{morris2019weisfeiler}
+Christopher Morris, Martin Ritzert, Matthias Fey, William~L Hamilton, Jan~Eric Lenssen, Gaurav Rattan, and Martin Grohe.
+\newblock Weisfeiler and leman go neural: higher-order graph neural networks.
+\newblock In \emph{Proceedings of the Thirty-Third AAAI Conference on Artificial Intelligence and Thirty-First Innovative Applications of Artificial Intelligence Conference and Ninth AAAI Symposium on Educational Advances in Artificial Intelligence}, pp.\  4602--4609, 2019.
+
+\bibitem[M{\"u}ller et~al.(2023)M{\"u}ller, Galkin, Morris, and Ramp{\'a}{\v{s}}ek]{muller2023attending}
+Luis M{\"u}ller, Mikhail Galkin, Christopher Morris, and Ladislav Ramp{\'a}{\v{s}}ek.
+\newblock Attending to graph transformers.
+\newblock \emph{arXiv preprint arXiv:2302.04181}, 2023.
+
+\bibitem[Paszke(2019)]{paszke2019pytorch}
+A~Paszke.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock \emph{arXiv preprint arXiv:1912.01703}, 2019.
+
+\bibitem[Post{\u{a}}varu et~al.(2020)Post{\u{a}}varu, Tsitsulin, de~Almeida, Tian, Lattanzi, and Perozzi]{postuavaru2020instantembedding}
+{\c{S}}tefan Post{\u{a}}varu, Anton Tsitsulin, Filipe Miguel~Gon{\c{c}}alves de~Almeida, Yingtao Tian, Silvio Lattanzi, and Bryan Perozzi.
+\newblock Instantembedding: Efficient local node representations.
+\newblock \emph{arXiv preprint arXiv:2010.06992}, 2020.
+
+\bibitem[Ramp{\'a}{\v{s}}ek et~al.(2022)Ramp{\'a}{\v{s}}ek, Galkin, Dwivedi, Luu, Wolf, and Beaini]{rampavsek2022recipe}
+Ladislav Ramp{\'a}{\v{s}}ek, Michael Galkin, Vijay~Prakash Dwivedi, Anh~Tuan Luu, Guy Wolf, and Dominique Beaini.
+\newblock Recipe for a general, powerful, scalable graph transformer.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 14501--14515, 2022.
+
+\bibitem[Robinson et~al.(2024)Robinson, Ranjan, Hu, Huang, Han, Dobles, Fey, Lenssen, Yuan, Zhang, et~al.]{robinson2025relbench}
+Joshua Robinson, Rishabh Ranjan, Weihua Hu, Kexin Huang, Jiaqi Han, Alejandro Dobles, Matthias Fey, Jan~Eric Lenssen, Yiwen Yuan, Zecheng Zhang, et~al.
+\newblock Relbench: A benchmark for deep learning on relational databases.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:\penalty0 21330--21341, 2024.
+
+\bibitem[Sato et~al.(2021)Sato, Yamada, and Kashima]{sato2021random}
+Ryoma Sato, Makoto Yamada, and Hisashi Kashima.
+\newblock Random features strengthen graph neural networks.
+\newblock In \emph{Proceedings of the 2021 SIAM international conference on data mining (SDM)}, pp.\  333--341. SIAM, 2021.
+
+\bibitem[Schlichtkrull et~al.(2018)Schlichtkrull, Kipf, Bloem, Van Den~Berg, Titov, and Welling]{schlichtkrull2018modeling}
+Michael Schlichtkrull, Thomas~N Kipf, Peter Bloem, Rianne Van Den~Berg, Ivan Titov, and Max Welling.
+\newblock Modeling relational data with graph convolutional networks.
+\newblock In \emph{The semantic web: 15th international conference, ESWC 2018, Heraklion, Crete, Greece, June 3--7, 2018, proceedings 15}, pp.\  593--607. Springer, 2018.
+
+\bibitem[Shirzad et~al.(2023)Shirzad, Velingker, Venkatachalam, Sutherland, and Sinop]{shirzad2023exphormer}
+Hamed Shirzad, Ameya Velingker, Balaji Venkatachalam, Danica~J Sutherland, and Ali~Kemal Sinop.
+\newblock Exphormer: Sparse transformers for graphs.
+\newblock \emph{arXiv preprint arXiv:2303.06147}, 2023.
+
+\bibitem[Sypetkowski et~al.(2024)Sypetkowski, Wenkel, Poursafaei, Dickson, Suri, Fradkin, and Beaini]{sypetkowski2024scalability}
+Maciej Sypetkowski, Frederik Wenkel, Farimah Poursafaei, Nia Dickson, Karush Suri, Philip Fradkin, and Dominique Beaini.
+\newblock On the scalability of gnns for molecular graphs.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:\penalty0 19870--19906, 2024.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock \emph{Advances in Neural Information Processing Systems}, 30, 2017.
+
+\bibitem[Velickovic et~al.(2017)Velickovic, Cucurull, Casanova, Romero, Lio, Bengio, et~al.]{velickovic2017graph}
+Petar Velickovic, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro Lio, Yoshua Bengio, et~al.
+\newblock Graph attention networks.
+\newblock \emph{stat}, 1050\penalty0 (20):\penalty0 10--48550, 2017.
+
+\bibitem[Wang et~al.(2019)Wang, Ji, Shi, Wang, Ye, Cui, and Yu]{wang2019heterogeneous}
+Xiao Wang, Houye Ji, Chuan Shi, Bai Wang, Yanfang Ye, Peng Cui, and Philip~S Yu.
+\newblock Heterogeneous graph attention network.
+\newblock In \emph{The world wide web conference}, pp.\  2022--2032, 2019.
+
+\bibitem[Wang et~al.(2025)Wang, Wang, Gan, Wang, Yang, Wipf, and Zhang]{wang2025griffin}
+Yanbo Wang, Xiyuan Wang, Quan Gan, Minjie Wang, Qibin Yang, David Wipf, and Muhan Zhang.
+\newblock Griffin: Towards a graph-centric relational database foundation model.
+\newblock \emph{arXiv preprint arXiv:2505.05568}, 2025.
+
+\bibitem[Wang(2025)]{wang2025htgformer}
+Yili Wang.
+\newblock Htgformer: Heterogeneous temporal graph transformer.
+\newblock In \emph{Proceedings of the 48th International ACM SIGIR Conference on Research and Development in Information Retrieval}, pp.\  2550--2554, 2025.
+
+\bibitem[Wu et~al.(2023)Wu, Zhao, Yang, Zhang, Nie, Jiang, Bian, and Yan]{wu2023sgformer}
+Qitian Wu, Wentao Zhao, Chenxiao Yang, Hengrui Zhang, Fan Nie, Haitian Jiang, Yatao Bian, and Junchi Yan.
+\newblock Sgformer: Simplifying and empowering transformers for large-graph representations.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:\penalty0 64753--64773, 2023.
+
+\bibitem[Wydmuch et~al.(2024)Wydmuch, Borchmann, and Grali{\'n}ski]{wydmuch2024tackling}
+Marek Wydmuch, {\L}ukasz Borchmann, and Filip Grali{\'n}ski.
+\newblock Tackling prediction tasks in relational databases with llms.
+\newblock \emph{arXiv preprint arXiv:2411.11829}, 2024.
+
+\bibitem[Xu et~al.(2019)Xu, Hu, Leskovec, and Jegelka]{xu2018powerful}
+Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka.
+\newblock How powerful are graph neural networks?
+\newblock In \emph{International Conference on Learning Representations}, 2019.
+\newblock URL \url{https://openreview.net/forum?id=ryGs6iA5Km}.
+
+\bibitem[Ying et~al.(2021)Ying, Cai, Luo, Zheng, Ke, He, Shen, and Liu]{ying2021transformers}
+Chengxuan Ying, Tianle Cai, Shengjie Luo, Shuxin Zheng, Guolin Ke, Di~He, Yanming Shen, and Tie-Yan Liu.
+\newblock Do transformers really perform badly for graph representation?
+\newblock \emph{Advances in Neural Information Processing Systems}, 34:\penalty0 28877--28888, 2021.
+
+\bibitem[You et~al.(2021)You, Gomes-Selman, Ying, and Leskovec]{you2021identity}
+Jiaxuan You, Jonathan~M Gomes-Selman, Rex Ying, and Jure Leskovec.
+\newblock Identity-aware graph neural networks.
+\newblock In \emph{Proceedings of the AAAI conference on artificial intelligence}, volume~35, pp.\  10737--10745, 2021.
+
+\bibitem[Yuan et~al.(2024)Yuan, Zhang, He, Nitta, Hu, Wang, Shah, Huang, Stojanovi{\v{c}}, Krumholz, et~al.]{yuan2024contextgnn}
+Yiwen Yuan, Zecheng Zhang, Xinwei He, Akihiro Nitta, Weihua Hu, Dong Wang, Manan Shah, Shenyang Huang, Bla{\v{z}} Stojanovi{\v{c}}, Alan Krumholz, et~al.
+\newblock Contextgnn: Beyond two-tower recommendation systems.
+\newblock \emph{arXiv preprint arXiv:2411.19513}, 2024.
+
+\bibitem[Zhai et~al.(2024)Zhai, Liao, Liu, Wang, Li, Cao, Gao, Gong, Gu, He, et~al.]{zhai2024actions}
+Jiaqi Zhai, Lucy Liao, Xing Liu, Yueming Wang, Rui Li, Xuan Cao, Leon Gao, Zhaojie Gong, Fangda Gu, Michael He, et~al.
+\newblock Actions speak louder than words: Trillion-parameter sequential transducers for generative recommendations.
+\newblock \emph{arXiv preprint arXiv:2402.17152}, 2024.
+
+\bibitem[Zhang et~al.(2022)Zhang, Liu, Hu, and Lee]{zhang2022hierarchical}
+Zaixi Zhang, Qi~Liu, Qingyong Hu, and Chee-Kong Lee.
+\newblock Hierarchical graph transformer with adaptive node sampling.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 21171--21183, 2022.
+
+\bibitem[Zhao et~al.(2021)Zhao, Li, Wen, Wang, Liu, Sun, Xie, and Ye]{zhao2021gophormer}
+Jianan Zhao, Chaozhuo Li, Qianlong Wen, Yiqi Wang, Yuming Liu, Hao Sun, Xing Xie, and Yanfang Ye.
+\newblock Gophormer: Ego-graph transformer for node classification.
+\newblock \emph{arXiv preprint arXiv:2110.13094}, 2021.
+
+\bibitem[Zhu et~al.(2023)Zhu, Wen, Song, Ma, and Wang]{zhu2023hierarchical}
+Wenhao Zhu, Tianyu Wen, Guojie Song, Xiaojun Ma, and Liang Wang.
+\newblock Hierarchical transformer for scalable graph learning.
+\newblock \emph{arXiv preprint arXiv:2305.02866}, 2023.
+
+\end{thebibliography}

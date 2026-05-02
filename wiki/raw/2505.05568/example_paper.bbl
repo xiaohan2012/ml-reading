@@ -1,0 +1,333 @@
+\begin{thebibliography}{65}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arik \& Pfister(2021)Arik and Pfister]{arik2021tabnet}
+Arik, S.~{\"O}. and Pfister, T.
+\newblock Tabnet: Attentive interpretable tabular learning.
+\newblock In \emph{Proceedings of the AAAI conference on artificial intelligence}, volume~35, pp.\  6679--6687, 2021.
+
+\bibitem[Bai et~al.(2021)Bai, Wang, Li, Ding, Zhang, and Gao]{bai2021atj}
+Bai, J., Wang, J., Li, Z., Ding, D., Zhang, J., and Gao, J.
+\newblock Atj-net: Auto-table-join network for automatic learning on relational databases.
+\newblock In \emph{Proceedings of the Web Conference 2021}, pp.\  1540--1551, 2021.
+
+\bibitem[Bolstad et~al.(2003)Bolstad, Irizarry, {\AA}strand, and Speed]{bolstad2003comparison}
+Bolstad, B.~M., Irizarry, R.~A., {\AA}strand, M., and Speed, T.~P.
+\newblock A comparison of normalization methods for high density oligonucleotide array data based on variance and bias.
+\newblock \emph{Bioinformatics}, 19\penalty0 (2):\penalty0 185--193, 2003.
+
+\bibitem[Brown(2020)]{brown2020language}
+Brown, T.~B.
+\newblock Language models are few-shot learners.
+\newblock \emph{arXiv preprint arXiv:2005.14165}, 2020.
+
+\bibitem[Cappuzzo et~al.(2020)Cappuzzo, Papotti, and Thirumuruganathan]{cappuzzo2020creating}
+Cappuzzo, R., Papotti, P., and Thirumuruganathan, S.
+\newblock Creating embeddings of heterogeneous relational datasets for data integration tasks.
+\newblock In \emph{Proceedings of the 2020 ACM SIGMOD international conference on management of data}, pp.\  1335--1349, 2020.
+
+\bibitem[Chen \& Guestrin(2016)Chen and Guestrin]{chen2016xgboost}
+Chen, T. and Guestrin, C.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining}, pp.\  785--794, 2016.
+
+\bibitem[Chen et~al.(2025)Chen, Kanatsoulis, and Leskovec]{chen2025relgnn}
+Chen, T., Kanatsoulis, C., and Leskovec, J.
+\newblock Relgnn: Composite message passing for relational deep learning.
+\newblock \emph{arXiv preprint arXiv:2502.06784}, 2025.
+
+\bibitem[Chen et~al.(2019)Chen, Wang, Chen, Zhang, Wang, Li, Zhou, and Wang]{chen2019tabfact}
+Chen, W., Wang, H., Chen, J., Zhang, Y., Wang, H., Li, S., Zhou, X., and Wang, W.~Y.
+\newblock Tabfact: A large-scale dataset for table-based fact verification.
+\newblock \emph{arXiv preprint arXiv:1909.02164}, 2019.
+
+\bibitem[Chepurko et~al.(2020)Chepurko, Marcus, Zgraggen, Fernandez, Kraska, and Karger]{chepurko2020arda}
+Chepurko, N., Marcus, R., Zgraggen, E., Fernandez, R.~C., Kraska, T., and Karger, D.
+\newblock Arda: automatic relational data augmentation for machine learning.
+\newblock \emph{arXiv preprint arXiv:2003.09758}, 2020.
+
+\bibitem[Cvetkov-Iliev et~al.(2023)Cvetkov-Iliev, Allauzen, and Varoquaux]{cvetkov2023relational}
+Cvetkov-Iliev, A., Allauzen, A., and Varoquaux, G.
+\newblock Relational data embeddings for feature enrichment with background information.
+\newblock \emph{Machine Learning}, 112\penalty0 (2):\penalty0 687--720, 2023.
+
+\bibitem[Cvitkovic(2020)]{cvitkovic2020supervised}
+Cvitkovic, M.
+\newblock Supervised learning on relational databases with graph neural networks.
+\newblock \emph{arXiv preprint arXiv:2002.02046}, 2020.
+
+\bibitem[Du et~al.(2021)Du, Gao, Chen, Jia, Wang, Zhang, Han, and Zhang]{du2021tabularnet}
+Du, L., Gao, F., Chen, X., Jia, R., Wang, J., Zhang, J., Han, S., and Zhang, D.
+\newblock Tabularnet: A neural network architecture for understanding semantic structures of tabular data.
+\newblock In \emph{Proceedings of the 27th ACM SIGKDD Conference on Knowledge Discovery \& Data Mining}, pp.\  322--331, 2021.
+
+\bibitem[Ehrig et~al.(2024)Ehrig, Sonnleitner, Neumann, Cleophas, and Forestier]{ehrig2024impact}
+Ehrig, C., Sonnleitner, B., Neumann, U., Cleophas, C., and Forestier, G.
+\newblock The impact of data set similarity and diversity on transfer learning success in time series forecasting.
+\newblock \emph{arXiv preprint arXiv:2404.06198}, 2024.
+
+\bibitem[Fey et~al.(2023)Fey, Hu, Huang, Lenssen, Ranjan, Robinson, Ying, You, and Leskovec]{fey2023relational}
+Fey, M., Hu, W., Huang, K., Lenssen, J.~E., Ranjan, R., Robinson, J., Ying, R., You, J., and Leskovec, J.
+\newblock Relational deep learning: Graph representation learning on relational databases.
+\newblock \emph{arXiv preprint arXiv:2312.04615}, 2023.
+
+\bibitem[Fey et~al.(2024)Fey, Hu, Huang, Lenssen, Ranjan, Robinson, Ying, You, and Leskovec]{fey2024position}
+Fey, M., Hu, W., Huang, K., Lenssen, J.~E., Ranjan, R., Robinson, J., Ying, R., You, J., and Leskovec, J.
+\newblock Position: Relational deep learning-graph representation learning on relational databases.
+\newblock In \emph{Forty-first International Conference on Machine Learning}, 2024.
+
+\bibitem[Gorishniy et~al.(2021)Gorishniy, Rubachev, Khrulkov, and Babenko]{gorishniy2021revisiting}
+Gorishniy, Y., Rubachev, I., Khrulkov, V., and Babenko, A.
+\newblock Revisiting deep learning models for tabular data.
+\newblock \emph{Advances in Neural Information Processing Systems}, 34:\penalty0 18932--18943, 2021.
+
+\bibitem[Gorishniy et~al.(2022)Gorishniy, Rubachev, and Babenko]{gorishniy2022embeddings}
+Gorishniy, Y., Rubachev, I., and Babenko, A.
+\newblock On embeddings for numerical features in tabular deep learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 24991--25004, 2022.
+
+\bibitem[Gorishniy et~al.(2023)Gorishniy, Rubachev, Kartashev, Shlenskii, Kotelnikov, and Babenko]{gorishniy2023tabr}
+Gorishniy, Y., Rubachev, I., Kartashev, N., Shlenskii, D., Kotelnikov, A., and Babenko, A.
+\newblock Tabr: Tabular deep learning meets nearest neighbors in 2023.
+\newblock \emph{arXiv preprint arXiv:2307.14338}, 2023.
+
+\bibitem[Grover \& Leskovec(2016)Grover and Leskovec]{grover2016node2vec}
+Grover, A. and Leskovec, J.
+\newblock node2vec: Scalable feature learning for networks.
+\newblock In \emph{Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining}, pp.\  855--864, 2016.
+
+\bibitem[Guo et~al.(2021)Guo, Quan, Zhao, Yao, Li, and Tu]{guo2021tabgnn}
+Guo, X., Quan, Y., Zhao, H., Yao, Q., Li, Y., and Tu, W.
+\newblock Tabgnn: Multiplex graph neural network for tabular data prediction.
+\newblock \emph{arXiv preprint arXiv:2108.09127}, 2021.
+
+\bibitem[He et~al.(2023)He, Bresson, Laurent, Perold, LeCun, and Hooi]{he2023harnessing}
+He, X., Bresson, X., Laurent, T., Perold, A., LeCun, Y., and Hooi, B.
+\newblock Harnessing explanations: Llm-to-lm interpreter for enhanced text-attributed graph representation learning.
+\newblock \emph{arXiv preprint arXiv:2305.19523}, 2023.
+
+\bibitem[He \& Hooi(2024)He and Hooi]{he2024unigraph}
+He, Y. and Hooi, B.
+\newblock Unigraph: Learning a cross-domain graph foundation model from natural language.
+\newblock \emph{arXiv preprint arXiv:2402.13630}, 2024.
+
+\bibitem[Hegselmann et~al.(2023)Hegselmann, Buendia, Lang, Agrawal, Jiang, and Sontag]{hegselmann2023tabllm}
+Hegselmann, S., Buendia, A., Lang, H., Agrawal, M., Jiang, X., and Sontag, D.
+\newblock Tabllm: Few-shot classification of tabular data with large language models.
+\newblock In \emph{International Conference on Artificial Intelligence and Statistics}, pp.\  5549--5581. PMLR, 2023.
+
+\bibitem[Herzig et~al.(2020)Herzig, Nowak, M{\"u}ller, Piccinno, and Eisenschlos]{herzig2020tapas}
+Herzig, J., Nowak, P.~K., M{\"u}ller, T., Piccinno, F., and Eisenschlos, J.~M.
+\newblock Tapas: Weakly supervised table parsing via pre-training.
+\newblock \emph{arXiv preprint arXiv:2004.02349}, 2020.
+
+\bibitem[Hollmann et~al.(2022)Hollmann, M{\"u}ller, Eggensperger, and Hutter]{hollmann2022tabpfn}
+Hollmann, N., M{\"u}ller, S., Eggensperger, K., and Hutter, F.
+\newblock Tabpfn: A transformer that solves small tabular classification problems in a second.
+\newblock \emph{arXiv preprint arXiv:2207.01848}, 2022.
+
+\bibitem[Hollmann et~al.(2025)Hollmann, M{\"u}ller, Purucker, Krishnakumar, K{\"o}rfer, Hoo, Schirrmeister, and Hutter]{hollmann2025accurate}
+Hollmann, N., M{\"u}ller, S., Purucker, L., Krishnakumar, A., K{\"o}rfer, M., Hoo, S.~B., Schirrmeister, R.~T., and Hutter, F.
+\newblock Accurate predictions on small data with a tabular foundation model.
+\newblock \emph{Nature}, 637\penalty0 (8045):\penalty0 319--326, 2025.
+
+\bibitem[Hu et~al.(2024)Hu, Yuan, Zhang, Nitta, Cao, Kocijan, Sunil, Leskovec, and Fey]{hu2024pytorch}
+Hu, W., Yuan, Y., Zhang, Z., Nitta, A., Cao, K., Kocijan, V., Sunil, J., Leskovec, J., and Fey, M.
+\newblock Pytorch frame: A modular framework for multi-modal tabular learning.
+\newblock \emph{arXiv preprint arXiv:2404.00776}, 2024.
+
+\bibitem[Huang et~al.(2020)Huang, Khetan, Cvitkovic, and Karnin]{huang2020tabtransformer}
+Huang, X., Khetan, A., Cvitkovic, M., and Karnin, Z.
+\newblock Tabtransformer: Tabular data modeling using contextual embeddings.
+\newblock \emph{arXiv preprint arXiv:2012.06678}, 2020.
+
+\bibitem[Jiang et~al.(2022)Jiang, Mao, He, Neubig, and Chen]{jiang2022omnitab}
+Jiang, Z., Mao, Y., He, P., Neubig, G., and Chen, W.
+\newblock Omnitab: Pretraining with natural and synthetic data for few-shot table-based question answering.
+\newblock \emph{arXiv preprint arXiv:2207.03637}, 2022.
+
+\bibitem[Kanter \& Veeramachaneni(2015)Kanter and Veeramachaneni]{kanter2015deep}
+Kanter, J.~M. and Veeramachaneni, K.
+\newblock Deep feature synthesis: Towards automating data science endeavors.
+\newblock In \emph{2015 IEEE international conference on data science and advanced analytics (DSAA)}, pp.\  1--10. IEEE, 2015.
+
+\bibitem[Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and Liu]{ke2017lightgbm}
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., and Liu, T.-Y.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock \emph{Advances in neural information processing systems}, 30, 2017.
+
+\bibitem[Kim et~al.(2024)Kim, Grinsztajn, and Varoquaux]{kim2024carte}
+Kim, M.~J., Grinsztajn, L., and Varoquaux, G.
+\newblock Carte: pretraining and transfer for tabular learning.
+\newblock \emph{arXiv preprint arXiv:2402.16785}, 2024.
+
+\bibitem[Lei et~al.(2024)Lei, Chen, Ye, Cao, Shin, Su, Suo, Gao, Hu, Yin, et~al.]{lei2024spider}
+Lei, F., Chen, J., Ye, Y., Cao, R., Shin, D., Su, H., Suo, Z., Gao, H., Hu, W., Yin, P., et~al.
+\newblock Spider 2.0: Evaluating language models on real-world enterprise text-to-sql workflows.
+\newblock \emph{arXiv preprint arXiv:2411.07763}, 2024.
+
+\bibitem[Li et~al.(2023)Li, Hui, Qu, Yang, Li, Li, Wang, Qin, Geng, Huo, et~al.]{li2023can}
+Li, J., Hui, B., Qu, G., Yang, J., Li, B., Li, B., Wang, B., Qin, B., Geng, R., Huo, N., et~al.
+\newblock Can llm already serve as a database interface? a big bench for large-scale database grounded text-to-sqls.
+\newblock \emph{Advances in Neural Information Processing Systems}, 36:\penalty0 42330--42357, 2023.
+
+\bibitem[Liu et~al.(2023)Liu, Feng, Kong, Liang, Tao, Chen, and Zhang]{liu2023one}
+Liu, H., Feng, J., Kong, L., Liang, N., Tao, D., Chen, Y., and Zhang, M.
+\newblock One for all: Towards training one graph model for all classification tasks.
+\newblock \emph{arXiv preprint arXiv:2310.00149}, 2023.
+
+\bibitem[Liu et~al.(2021)Liu, Chen, Guo, Ziyadi, Lin, Chen, and Lou]{liu2021tapex}
+Liu, Q., Chen, B., Guo, J., Ziyadi, M., Lin, Z., Chen, W., and Lou, J.-G.
+\newblock Tapex: Table pre-training via learning a neural sql executor.
+\newblock \emph{arXiv preprint arXiv:2107.07653}, 2021.
+
+\bibitem[Nussbaum et~al.(2024)Nussbaum, Morris, Duderstadt, and Mulyar]{nussbaum2024nomic}
+Nussbaum, Z., Morris, J.~X., Duderstadt, B., and Mulyar, A.
+\newblock Nomic embed: Training a reproducible long context text embedder.
+\newblock \emph{arXiv preprint arXiv:2402.01613}, 2024.
+
+\bibitem[Pennington et~al.(2014)Pennington, Socher, and Manning]{pennington2014glove}
+Pennington, J., Socher, R., and Manning, C.~D.
+\newblock Glove: Global vectors for word representation.
+\newblock In \emph{Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP)}, pp.\  1532--1543, 2014.
+
+\bibitem[Prokhorenkova et~al.(2018)Prokhorenkova, Gusev, Vorobev, Dorogush, and Gulin]{prokhorenkova2018catboost}
+Prokhorenkova, L., Gusev, G., Vorobev, A., Dorogush, A.~V., and Gulin, A.
+\newblock Catboost: unbiased boosting with categorical features.
+\newblock \emph{Advances in neural information processing systems}, 31, 2018.
+
+\bibitem[Qiu et~al.(2024)Qiu, Peng, He, Yuan, and Wang]{qiu2024tqa}
+Qiu, Z., Peng, Y., He, G., Yuan, B., and Wang, C.
+\newblock Tqa-bench: Evaluating llms for multi-table question answering with scalable context and symbolic extension.
+\newblock \emph{arXiv preprint arXiv:2411.19504}, 2024.
+
+\bibitem[Ristoski \& Paulheim(2016)Ristoski and Paulheim]{ristoski2016rdf2vec}
+Ristoski, P. and Paulheim, H.
+\newblock Rdf2vec: Rdf graph embeddings for data mining.
+\newblock In \emph{The Semantic Web--ISWC 2016: 15th International Semantic Web Conference, Kobe, Japan, October 17--21, 2016, Proceedings, Part I 15}, pp.\  498--514. Springer, 2016.
+
+\bibitem[Robinson et~al.(2024)Robinson, Ranjan, Hu, Huang, Han, Dobles, Fey, Lenssen, Yuan, Zhang, et~al.]{robinson2024relbench}
+Robinson, J., Ranjan, R., Hu, W., Huang, K., Han, J., Dobles, A., Fey, M., Lenssen, J.~E., Yuan, Y., Zhang, Z., et~al.
+\newblock Relbench: A benchmark for deep learning on relational databases.
+\newblock \emph{arXiv preprint arXiv:2407.20060}, 2024.
+
+\bibitem[Somepalli et~al.(2021)Somepalli, Goldblum, Schwarzschild, Bruss, and Goldstein]{somepalli2021saint}
+Somepalli, G., Goldblum, M., Schwarzschild, A., Bruss, C.~B., and Goldstein, T.
+\newblock Saint: Improved neural networks for tabular data via row attention and contrastive pre-training.
+\newblock \emph{arXiv preprint arXiv:2106.01342}, 2021.
+
+\bibitem[Su et~al.(2024)Su, Wang, Ye, Zhou, Zhang, Chen, Zhu, Wang, Xu, Chen, et~al.]{su2024tablegpt2}
+Su, A., Wang, A., Ye, C., Zhou, C., Zhang, G., Chen, G., Zhu, G., Wang, H., Xu, H., Chen, H., et~al.
+\newblock Tablegpt2: A large multimodal model with tabular data integration.
+\newblock \emph{arXiv preprint arXiv:2411.02059}, 2024.
+
+\bibitem[Tang et~al.(2024)Tang, Yang, Wei, Shi, Su, Cheng, Yin, and Huang]{tang2024graphgpt}
+Tang, J., Yang, Y., Wei, W., Shi, L., Su, L., Cheng, S., Yin, D., and Huang, C.
+\newblock Graphgpt: Graph instruction tuning for large language models.
+\newblock In \emph{Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval}, pp.\  491--500, 2024.
+
+\bibitem[Terpilowski(2019)]{terpilowski2019scikit}
+Terpilowski, M.~A.
+\newblock scikit-posthocs: Pairwise multiple comparison tests in python.
+\newblock \emph{Journal of Open Source Software}, 4\penalty0 (36):\penalty0 1169, 2019.
+
+\bibitem[Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, et~al.]{touvron2023llama}
+Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M.-A., Lacroix, T., Rozi{\`e}re, B., Goyal, N., Hambro, E., Azhar, F., et~al.
+\newblock Llama: Open and efficient foundation language models.
+\newblock \emph{arXiv preprint arXiv:2302.13971}, 2023.
+
+\bibitem[Wang et~al.(2024)Wang, Gan, Wipf, Cai, Li, Tang, Zhang, Zhang, Mao, Song, et~al.]{wang20244dbinfer}
+Wang, M., Gan, Q., Wipf, D., Cai, Z., Li, N., Tang, J., Zhang, Y., Zhang, Z., Mao, Z., Song, Y., et~al.
+\newblock 4dbinfer: A 4d benchmarking toolbox for graph-centric predictive modeling on relational dbs.
+\newblock \emph{arXiv preprint arXiv:2404.18209}, 2024.
+
+\bibitem[Wang et~al.(2023)Wang, Dai, Chen, Huang, Li, Zhu, Hu, Lu, Lu, Li, et~al.]{wang2023internimage}
+Wang, W., Dai, J., Chen, Z., Huang, Z., Li, Z., Zhu, X., Hu, X., Lu, T., Lu, L., Li, H., et~al.
+\newblock Internimage: Exploring large-scale vision foundation models with deformable convolutions.
+\newblock In \emph{Proceedings of the IEEE/CVF conference on computer vision and pattern recognition}, pp.\  14408--14419, 2023.
+
+\bibitem[Wang \& Sun(2022)Wang and Sun]{wang2022transtab}
+Wang, Z. and Sun, J.
+\newblock Transtab: Learning transferable tabular transformers across tables.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 2902--2915, 2022.
+
+\bibitem[Wu et~al.(2024)Wu, Yang, Chai, Zhang, Liu, Du, Liang, Shu, Cheng, Sun, et~al.]{wu2024tablebench}
+Wu, X., Yang, J., Chai, L., Zhang, G., Liu, J., Du, X., Liang, D., Shu, D., Cheng, X., Sun, T., et~al.
+\newblock Tablebench: A comprehensive and complex benchmark for table question answering.
+\newblock \emph{arXiv preprint arXiv:2408.09174}, 2024.
+
+\bibitem[Yan et~al.(2024)Yan, Zheng, Xu, Zhu, Chen, Sun, Wu, and Chen]{yan2024making}
+Yan, J., Zheng, B., Xu, H., Zhu, Y., Chen, D.~Z., Sun, J., Wu, J., and Chen, J.
+\newblock Making pre-trained language models great on tabular prediction.
+\newblock \emph{arXiv preprint arXiv:2403.01841}, 2024.
+
+\bibitem[Yang et~al.(2024)Yang, Wang, Liu, Wu, and Liu]{yang2024unitabe}
+Yang, Y., Wang, Y., Liu, G., Wu, L., and Liu, Q.
+\newblock Unitabe: A universal pretraining protocol for tabular foundation model in data science.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem[Yarullin \& Isaev(2023)Yarullin and Isaev]{yarullin2023numerical}
+Yarullin, R. and Isaev, S.
+\newblock Numerical embeddings for reasoning over text and tables.
+\newblock 2023.
+
+\bibitem[Ye et~al.(2025)Ye, Yin, Zhan, and Chao]{ye2025revisiting}
+Ye, H., Yin, H., Zhan, D., and Chao, W.
+\newblock Revisiting nearest neighbor for tabular data: A deep tabular baseline two decades later.
+\newblock \emph{ICLR}, 2\penalty0 (3):\penalty0 4, 2025.
+
+\bibitem[Yin et~al.(2020)Yin, Neubig, Yih, and Riedel]{yin2020tabert}
+Yin, P., Neubig, G., Yih, W.-t., and Riedel, S.
+\newblock Tabert: Pretraining for joint understanding of textual and tabular data.
+\newblock \emph{arXiv preprint arXiv:2005.08314}, 2020.
+
+\bibitem[You et~al.(2020)You, Ma, Ding, Kochenderfer, and Leskovec]{you2020handling}
+You, J., Ma, X., Ding, Y., Kochenderfer, M.~J., and Leskovec, J.
+\newblock Handling missing data with graph representation learning.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:\penalty0 19075--19087, 2020.
+
+\bibitem[Yu et~al.(2018)Yu, Zhang, Yang, Yasunaga, Wang, Li, Ma, Li, Yao, Roman, et~al.]{yu2018spider}
+Yu, T., Zhang, R., Yang, K., Yasunaga, M., Wang, D., Li, Z., Ma, J., Li, I., Yao, Q., Roman, S., et~al.
+\newblock Spider: A large-scale human-labeled dataset for complex and cross-domain semantic parsing and text-to-sql task.
+\newblock \emph{arXiv preprint arXiv:1809.08887}, 2018.
+
+\bibitem[Yuan et~al.(2021)Yuan, Chen, Chen, Codella, Dai, Gao, Hu, Huang, Li, Li, et~al.]{yuan2021florence}
+Yuan, L., Chen, D., Chen, Y.-L., Codella, N., Dai, X., Gao, J., Hu, H., Huang, X., Li, B., Li, C., et~al.
+\newblock Florence: A new foundation model for computer vision.
+\newblock \emph{arXiv preprint arXiv:2111.11432}, 2021.
+
+\bibitem[Yuan et~al.(2024)Yuan, Zhang, He, Nitta, Hu, Wang, Shah, Huang, Stojanovi{\v{c}}, Krumholz, et~al.]{yuan2024contextgnn}
+Yuan, Y., Zhang, Z., He, X., Nitta, A., Hu, W., Wang, D., Shah, M., Huang, S., Stojanovi{\v{c}}, B., Krumholz, A., et~al.
+\newblock Contextgnn: Beyond two-tower recommendation systems.
+\newblock \emph{arXiv preprint arXiv:2411.19513}, 2024.
+
+\bibitem[Zhang et~al.(2023{\natexlab{a}})Zhang, Gan, Wipf, and Zhang]{zhang2023gfs}
+Zhang, H., Gan, Q., Wipf, D., and Zhang, W.
+\newblock Gfs: Graph-based feature synthesis for prediction over relational database.
+\newblock \emph{Proceedings of the VLDB Endowment. ISSN}, 2150:\penalty0 8097, 2023{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2023{\natexlab{b}})Zhang, Wen, Zheng, Xu, and Bian]{zhang2023towards}
+Zhang, H., Wen, X., Zheng, S., Xu, W., and Bian, J.
+\newblock Towards foundation models for learning on tabular data.
+\newblock \emph{arXiv preprint arXiv:2310.07338}, 2023{\natexlab{b}}.
+
+\bibitem[Zhao et~al.(2023)Zhao, Zhuo, Shen, Qu, Liu, Bronstein, Zhu, and Tang]{zhao2023graphtext}
+Zhao, J., Zhuo, L., Shen, Y., Qu, M., Liu, K., Bronstein, M., Zhu, Z., and Tang, J.
+\newblock Graphtext: Graph reasoning in text space.
+\newblock \emph{arXiv preprint arXiv:2310.01089}, 2023.
+
+\bibitem[Zhao et~al.(2024)Zhao, Mostafa, Galkin, Bronstein, Zhu, and Tang]{zhao2024graphany}
+Zhao, J., Mostafa, H., Galkin, M., Bronstein, M., Zhu, Z., and Tang, J.
+\newblock Graphany: A foundation model for node classification on any graph.
+\newblock \emph{arXiv preprint arXiv:2405.20445}, 2024.
+
+\bibitem[Zhu et~al.(2023)Zhu, Shi, Erickson, Li, Karypis, and Shoaran]{zhu2023xtab}
+Zhu, B., Shi, X., Erickson, N., Li, M., Karypis, G., and Shoaran, M.
+\newblock Xtab: Cross-table pretraining for tabular transformers.
+\newblock \emph{arXiv preprint arXiv:2305.06090}, 2023.
+
+\end{thebibliography}

@@ -1,0 +1,149 @@
+% This file was created with tikzplotlib v0.9.12.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.194607843137255,0.453431372549019,0.632843137254902}
+\definecolor{color1}{rgb}{0.881862745098039,0.505392156862745,0.173039215686275}
+
+\begin{groupplot}[group style={group size=3 by 1}]
+\nextgroupplot[
+height=5cm,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.97,0.03)},
+  anchor=south east,
+  draw=white!80!black
+},
+minor xtick={},
+minor ytick={},
+tick align=outside,
+tick pos=left,
+title={Has Categorical Features},
+width=5cm,
+x grid style={white!69.0196078431373!black},
+xlabel={Normalized ROC AUC},
+xmin=0, xmax=1,
+xtick style={color=black},
+xtick={0,0.25,0.5,0.75,1},
+y dir=reverse,
+y grid style={white!69.0196078431373!black},
+ymin=-0.5, ymax=6.5,
+ytick style={color=black},
+ytick={0,1,2,3,4,5,6},
+yticklabels={TabPFN,Autosklearn2,Autogluon,Catboost,XGB,LGBM,Reg. Cocktail}
+]
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,-0.4) rectangle (axis cs:0.88985322045472,0);
+\addlegendimage{ybar,ybar legend,draw=none,fill=color0,line width=1pt}
+\addlegendentry{False}
+
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,0.6) rectangle (axis cs:0.76890888576935,1);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,1.6) rectangle (axis cs:0.798489991236987,2);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,2.6) rectangle (axis cs:0.636875934457407,3);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,3.6) rectangle (axis cs:0.443650918529101,4);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,4.6) rectangle (axis cs:0.299675428955759,5);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,5.6) rectangle (axis cs:0.449646221628231,6);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,-2.77555756156289e-17) rectangle (axis cs:0.582815422126868,0.4);
+\addlegendimage{ybar,ybar legend,draw=none,fill=color1,line width=1pt}
+\addlegendentry{True}
+
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,1) rectangle (axis cs:0.82859759137097,1.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,2) rectangle (axis cs:0.81345721390492,2.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,3) rectangle (axis cs:0.67499397174847,3.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,4) rectangle (axis cs:0.7464450252186,4.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,5) rectangle (axis cs:0.387279199764912,5.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,6) rectangle (axis cs:0.325021787440162,6.4);
+
+\nextgroupplot[
+height=5cm,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.97,0.03)},
+  anchor=south east,
+  draw=white!80!black
+},
+minor xtick={},
+minor ytick={},
+scaled y ticks=manual:{}{\pgfmathparse{#1}},
+tick align=outside,
+tick pos=left,
+title={Has Nans in Features},
+width=5cm,
+x grid style={white!69.0196078431373!black},
+xlabel={Normalized ROC AUC},
+xmin=0, xmax=1,
+xtick style={color=black},
+xtick={0,0.25,0.5,0.75,1},
+y dir=reverse,
+y grid style={white!69.0196078431373!black},
+ymin=-0.5, ymax=6.5,
+ytick style={color=black},
+ytick={0,1,2,3,4,5,6},
+yticklabels={}
+]
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,-0.4) rectangle (axis cs:0.842801832138622,0);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,0.6) rectangle (axis cs:0.782480423273864,1);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,1.6) rectangle (axis cs:0.797219654492428,2);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,2.6) rectangle (axis cs:0.640144165931972,3);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,3.6) rectangle (axis cs:0.537812758653069,4);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,4.6) rectangle (axis cs:0.320371196903669,5);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,5.6) rectangle (axis cs:0.371827031122947,6);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,-2.77555756156289e-17) rectangle (axis cs:0.566329109839361,0.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,1) rectangle (axis cs:0.814103911753995,1.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,2) rectangle (axis cs:0.828516709328443,2.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,3) rectangle (axis cs:0.687333070710921,3.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,4) rectangle (axis cs:0.571660402515729,4.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,5) rectangle (axis cs:0.362898641846041,5.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,6) rectangle (axis cs:0.553215593335918,6.4);
+
+\nextgroupplot[
+height=5cm,
+legend cell align={left},
+legend style={
+  fill opacity=0.8,
+  draw opacity=1,
+  text opacity=1,
+  at={(0.97,0.03)},
+  anchor=south east,
+  draw=white!80!black
+},
+minor xtick={},
+minor ytick={},
+scaled y ticks=manual:{}{\pgfmathparse{#1}},
+tick align=outside,
+tick pos=left,
+title={Multiclass},
+width=5cm,
+x grid style={white!69.0196078431373!black},
+xlabel={Normalized ROC AUC},
+xmin=0, xmax=1,
+xtick style={color=black},
+xtick={0,0.25,0.5,0.75,1},
+y dir=reverse,
+y grid style={white!69.0196078431373!black},
+ymin=-0.5, ymax=6.5,
+ytick style={color=black},
+ytick={0,1,2,3,4,5,6},
+yticklabels={}
+]
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,-0.4) rectangle (axis cs:0.781792011758519,0);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,0.6) rectangle (axis cs:0.765607260538324,1);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,1.6) rectangle (axis cs:0.80606966333272,2);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,2.6) rectangle (axis cs:0.756229121422002,3);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,3.6) rectangle (axis cs:0.560185023926927,4);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,4.6) rectangle (axis cs:0.331119845477845,5);
+\draw[draw=none,fill=color0,line width=1pt] (axis cs:0,5.6) rectangle (axis cs:0.421152131844848,6);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,-2.77555756156289e-17) rectangle (axis cs:0.79498111003602,0.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,1) rectangle (axis cs:0.819140784611169,1.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,2) rectangle (axis cs:0.800091360548668,2.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,3) rectangle (axis cs:0.510120257112216,3.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,4) rectangle (axis cs:0.524178708923867,4.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,5) rectangle (axis cs:0.325943323356995,5.4);
+\draw[draw=none,fill=color1,line width=1pt] (axis cs:0,6) rectangle (axis cs:0.391042774277216,6.4);
+\end{groupplot}
+
+\end{tikzpicture}

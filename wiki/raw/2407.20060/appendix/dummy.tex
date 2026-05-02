@@ -1,0 +1,120 @@
+\section{Additional Task Information}
+\label{app: task info}
+
+For reference, the following list documents all the predictive tasks in \relbench.
+\begin{enumerate}
+\item \amazon
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \userChurn: For each user, predict 1 if the customer does not review any product in the next 3 months, and 0 otherwise.
+    \item \userLtv: For each user, predict the $\$$ value of the total number of products they buy and review in the next 3 months.
+    \item \itemChurn: For each product, predict 1 if the  product does not receive any reviews in the next 3 months.
+    \item \itemLtv: For each product, predict the $\$$ value of the total number purchases and reviews it recieves in the next 3 months.
+    \end{enumerate}
+
+    Link-level tasks:
+    \begin{enumerate}
+    \item \userItemPurchase: Predict the list of distinct items each customer will purchase in the
+    next 3 months. 
+    \item \userItemRate: Predict the list of distinct items each customer will purchase and give a 5 star review in the
+    next 3 months.
+    \item \userItemReview: Predict the list of distinct items each customer will purchase and give a detailed review in the
+    next 3 months.
+    \end{enumerate}
+\item \avito
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \userVisit: Predict whether each customer will visit more than one Ad in the next 4 days.
+    \item \userClick: Predict whether each customer will click on more than one Ads in the next 4 day.
+    \item \adsCTR: Assuming the Ad will be clicked in the next 4 days, predict the Click-Through-Rate (CTR) for each Ad.
+    \end{enumerate}
+    Link-level tasks:
+    \begin{enumerate}
+    \item \userAdVisit: Predict the list of ads a user will visit in the next 4 days.
+    \end{enumerate}
+\item \fone
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \driverPosition: Predict the average finishing position of each driver
+    all races in the next 2 months.
+    \item \driverDNF: For each driver predict the if they will DNF (did not finish) a race in the next 1 month.
+    \item \driverTopThree: For each driver predict if they will qualify in the top-3 for a race in the next 1 month.
+    \end{enumerate}
+
+   % Link-level tasks:
+   % \begin{enumerate}
+  %  \item \driverConstructorResult: For each driver predict which constructors they will join in the next 10 years. \jr{TODO: delete}
+    %\end{enumerate}
+
+\item \handm
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \userChurn: Predict the churn for a customer (no transactions) in the next week.
+    \item \itemSales: Predict the total sales for an article (the sum of prices of the
+    associated transactions) in the next week.
+    \end{enumerate}
+
+    Link-level tasks:
+    \begin{enumerate}
+    \item \userItemPurchase: Predict the list of articles each customer will purchase in the next
+    seven days.
+    \end{enumerate}
+
+\item \stackex
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \userEngage: For each user predict if a user will make any votes, posts, or comments in the next 3 months.
+    \item \postVotes: For each user post predict how many votes it will receive in the next 3 months
+    \item \userBadge: For each user predict if each user will receive in a new badge the next 3 months.
+    \end{enumerate}
+
+    Link-level tasks:
+    \begin{enumerate}
+    \item \userPostComment: Predict a list of existing posts that a user will comment in the next
+    two years.
+    \item \postPostLinked: Predict a list of existing posts that users will link a given post to in the next
+    two years.
+    \end{enumerate}
+
+\item \trials
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \studyOutcome: Predict if the trials in the next 1 year will achieve its primary outcome.
+    \item \studyAdverse: Predict the number of affected patients with severe advsere events/death for the trial in the next 1 year.
+    \item \facilitySuccess: Predict the success rate of a trial site in the next 1 year.
+    \end{enumerate}
+
+    Link-level tasks:
+    \begin{enumerate}
+    \item \sponsorConditionRec: Predict whether this condition will have which sponsors.
+    \item \sponsorFacilityRec: Predict whether this sponsor will have a trial in a facility.
+    \end{enumerate}
+    
+\item \event
+
+    Node-level tasks:
+    \begin{enumerate}
+    \item \userAttendance: Predict how many events each user will respond yes or maybe in the next seven days.
+    \item \userRepeat: Predict whether a user will attend an event(by responding yes or maybe) in the next 7 days if they have already attended an event in the last 14 days.
+    \item \userIgnore: Predict whether a user will ignore more than 2 event invitations
+    in the next 7 days.
+    \end{enumerate}
+%\item \avito
+
+%    Node-level tasks:
+%    \begin{enumerate}
+%    \item \userClicks: For each user of Avito, predict how many ads they will click in the next four days.
+%    \end{enumerate}
+    
+    % Link-level tasks:
+    % \begin{enumerate}
+    %    \item \userAdClick: For each user of Avito, predict which ad they will click in the next four days.
+    % \end{enumerate}
+\end{enumerate}
+

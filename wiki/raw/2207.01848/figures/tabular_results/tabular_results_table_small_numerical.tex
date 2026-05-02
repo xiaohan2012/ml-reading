@@ -1,0 +1,33 @@
+\begin{tabular}{@{\hskip 0mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 1mm}
+l@{\hskip 0mm}}
+\toprule
+{} &        LightGBM &        CatBoost &         XGBoost &          ASKL2.0 &        AutoGluon &  TabPFN$_{n.e.}$ &                    TabPFN &        TabPFN + AutoGluon \\
+%\midrule
+%Wins AUC OVO
+%                                                       &               0 &               0 &               0 &                0 &                1 &                3 &                \textbf{4} &                         3 \\
+%Wins Acc.                        &               0 &               1 &               1 &                0 &                1 &                0 &                \textbf{6} &                         4 \\
+%Wins CE                          &               0 &               1 &               0 &                1 &                3 &                1 &                         3 &                \textbf{7} \\
+\midrule
+M. rank AUC OVO
+                                                  &          6.9722 &          4.9444 &          6.1944 &           4.4722 &                4 &           3.8056 &                    2.9444 &           \textbf{2.6667} \\
+Mean rank Acc.                   &          6.8889 &          4.9722 &          6.0556 &           5.1667 &           3.8889 &           3.8889 &                    2.8889 &             \textbf{2.25} \\
+Mean rank CE                     &          5.7778 &          5.4444 &               6 &           6.4167 &           3.1111 &           4.1389 &                    3.0278 &           \textbf{2.0833} \\
+\midrule
+Mean AUC OVO
+                                                     &   0.92$\pm$.013 &  0.924$\pm$.011 &   0.924$\pm$.01 &  0.929$\pm$.0096 &   0.93$\pm$.0091 &  0.932$\pm$.0088 &  \textbf{0.934}$\pm$.0086 &  \textbf{0.934}$\pm$.0084 \\
+Mean Acc.                        &  0.862$\pm$.012 &  0.864$\pm$.011 &  0.866$\pm$.011 &    0.87$\pm$.014 &    0.881$\pm$.01 &  0.873$\pm$.0095 &           0.879$\pm$.0089 &  \textbf{0.886}$\pm$.0094 \\
+Mean CE                          &   0.75$\pm$.039 &  0.747$\pm$.029 &   0.759$\pm$.04 &   0.813$\pm$.073 &   0.714$\pm$.014 &   0.727$\pm$.021 &            0.716$\pm$.019 &   \textbf{0.711}$\pm$.014 \\
+\midrule
+Mean time (s) 
+                                    &            \multirow{2}{*}{3280} &            \multirow{2}{*}{3746} &            \multirow{2}{*}{3364} &            \multirow{2}{*}{3601} &                    \multirow{2}{*}{3077} &  \textbf{1.301} (CPU) &           37.59 (CPU) &                      3109 (CPU) \\
+(Tune + Train + Predict)                                                                        &             &             &             &             &                     &  \textbf{0.0519} (GPU) &           0.6172 (GPU) &                      3077 (GPU) \\
+\bottomrule
+\end{tabular}

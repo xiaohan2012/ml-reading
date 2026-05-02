@@ -1,0 +1,252 @@
+\begin{thebibliography}{10}
+
+\bibitem{AkoTonKou15}
+Leman Akoglu, Hanghang Tong, and Danai Koutra.
+\newblock Graph based anomaly detection and description: a survey.
+\newblock {\em Data Mining and Knowledge Discovery}, 29(3):626--688, 2015.
+
+\bibitem{GetTas07}
+Lise Getoor and Ben Taskar.
+\newblock {\em Introduction to Statistical Relational Learning (Adaptive
+  Computation and Machine Learning)}.
+\newblock 2007.
+
+\bibitem{LbKle03}
+David Liben-Nowell and Jon Kleinberg.
+\newblock The link prediction problem for social networks.
+\newblock In {\em CIKM}, 2003.
+
+\bibitem{SenNamBilMusGetGakEli08}
+Prithviraj Sen, Galileo Namata, Mustafa Bilgic, Lise Getoor, Brian Galligher,
+  and Tina Eliassi-Rad.
+\newblock Collective classification in network data.
+\newblock {\em AI Magazine}, 2008.
+
+\bibitem{CaoLuXu15}
+Shaosheng Cao, Wei Lu, and Qiongkai Xu.
+\newblock Grarep: Learning graph representations with global structural
+  information.
+\newblock In {\em CIKM}, 2015.
+
+\bibitem{GroLes16}
+Aditya Grover and Jure Leskovec.
+\newblock node2vec: Scalable feature learning for networks.
+\newblock In {\em KDD}, 2016.
+
+\bibitem{PerAlSki14}
+Bryan Perozzi, Rami Al-Rfou, and Steven Skiena.
+\newblock Deepwalk: Online learning of social representations.
+\newblock In {\em KDD}, 2014.
+
+\bibitem{TanQuWanZhaetal15}
+Jian Tang, Meng Qu, Mingzhe Wang, Ming Zhang, Jun Yan, and Qiaozhu Mei.
+\newblock Line: Large-scale information network embedding.
+\newblock In {\em WWW}, 2015.
+
+\bibitem{WanCuiZhu16}
+Daixin Wang, Peng Cui, and Wenwu Zhu.
+\newblock Structural deep network embedding.
+\newblock In {\em KDD}, 2016.
+
+\bibitem{WanCuiWanPeiZhuYan17}
+Xiao Wang, Peng Cui, Jing Wang, Jian Pei, Wenwu Zhu, and Shiquiang Yang.
+\newblock Community preserving network embedding.
+\newblock In {\em AAAI}, 2017.
+
+\bibitem{XuWeiCaoYu17}
+Linchuan Xu, Xiaokai Wei, Jiannong Cao, and Philip~Y. Yu.
+\newblock Embedding identity and interest for social networks.
+\newblock In {\em WWW}, 2017.
+
+\bibitem{HamYinLes2017}
+William~L. Hamilton, Rex Ying, and Jure Leskovec.
+\newblock Representation learning on graphs: Methods and applications.
+\newblock {\em arXiv:1709.05584}, 2017.
+
+\bibitem{Far17}
+Damien Farine.
+\newblock The dynamics of transmission and the dynamics of networks.
+\newblock {\em Journal of Animal Ecology}, 86(3):415--418, 2017.
+
+\bibitem{ArtRamMig17}
+Oriol Artime, Jose~J. Ramasco, and Maxi~San Miguel.
+\newblock Dynamics on networks: competition of temporal and topological
+  correlations.
+\newblock {\em arXiv:1604.04155}, 2017.
+
+\bibitem{Cha12}
+Bernard Chazelle.
+\newblock Natural algorithms and influence systems.
+\newblock {\em Communications of the ACM}, 2012.
+
+\bibitem{FarWanGomLietal15}
+Mehrdad Farajtabar, Yichen Wang, Manuel Gomez-Rodriguez, Shuang Li, Hongyuan
+  Zha, and Le~Song.
+\newblock Coevolve: A joint point process model for information diffusion and
+  network co-evolution.
+\newblock In {\em NIPS}, 2015.
+
+\bibitem{DalVer07}
+DJ~Daley and D~Vere-Jones.
+\newblock {\em An Introduction to the Theory of Point Processes: Volume I:
+  Elementary Theory and Methods}.
+\newblock 2007.
+
+\bibitem{AalBorGje08}
+Odd Aalen, Ornulf Borgan, and Hakon Gjessing.
+\newblock {\em Survival and event history analysis: a process point of view}.
+\newblock 2008.
+
+\bibitem{FarDuRodValZhaSon14}
+Mehrdad Farajtabar, Nan Du, Manuel~Gomez Rodriguez, Isabel Valera, Hongyuan
+  Zha, and Le~Song.
+\newblock Shaping social activity by incentivizing users.
+\newblock In {\em NIPS}, 2014.
+
+\bibitem{Hawkes71}
+Alan~G Hawkes.
+\newblock Spectra of some self-exciting and mutually exciting point processes.
+\newblock {\em Biometrika}, 58(1):83--90, 1971.
+
+\bibitem{WanXieDuSon16}
+Yichen Wang, Bo~Xie, Nan Du, and Le~Song.
+\newblock Isotonic hawkes processes.
+\newblock In {\em ICML}, 2016.
+
+\bibitem{TabValFarSonSchGom17}
+Behzad Tabibian, Isabel Valera, Mehrdad Farajtabar, Le~Song, Bernhard
+  Sch{\"o}lkopf, and Manuel Gomez-Rodriguez.
+\newblock Distilling information reliability and source trustworthiness from
+  digital traces.
+\newblock In {\em WWW}, 2017.
+
+\bibitem{IshWes79}
+V.~Isham and M.~Westcott.
+\newblock A self-correcting point process.
+\newblock {\em Advances in Applied Probability}, 37:629--646, 1979.
+
+\bibitem{FarYeHarSonZha16}
+Mehrdad Farajtabar, Xiaojing Ye, Sahar Harati, Le~Song, and Hongyuan Zha.
+\newblock Multistage campaigning in social networks.
+\newblock In {\em NIPS}, 2016.
+
+\bibitem{ZarKhoFarRabZha17}
+Ali Zarezade, Ali Khodadadi, Mehrdad Farajtabar, Hamid~R Rabiee, and Hongyuan
+  Zha.
+\newblock Correlated cascades: Compete or cooperate.
+\newblock In {\em AAAI}, 2017.
+
+\bibitem{FarYanYeXuTriKhaLiSonZha17}
+Mehrdad Farajtabar, Jiachen Yang, Xiaojing Ye, Huan Xu, Rakshit Trivedi, Elias
+  Khalil, Shuang Li, Le~Song, and Hongyuan Zha.
+\newblock Fake news mitigation via point process based intervention.
+\newblock In {\em ICML}, 2017.
+
+\bibitem{TraFarSonZha15}
+Long Tran, Mehrdad Farajtabar, Le~Song, and Hongyuan Zha.
+\newblock Netcodec: Community detection from individual activities.
+\newblock In {\em SDM}, 2015.
+
+\bibitem{MeiEis17}
+Hongyuan Mei and Jason~M Eisner.
+\newblock The neural hawkes process: A neurally self-modulating multivariate
+  point process.
+\newblock In {\em NIPS}, 2017.
+
+\bibitem{ParBenLes17}
+Ashwin Paranjape, Austin~R. Benson, and Jure Leskovec.
+\newblock Motifs in temporal networks.
+\newblock In {\em WSDM}, 2017.
+
+\bibitem{TriDaiWanSon17}
+Rakshit Trivedi, Hanjun Dai, Yichen Wang, and Le~Song.
+\newblock Know-evolve: Deep temporal reasoning for dynamic knowledge graphs.
+\newblock In {\em ICML}, 2017.
+
+\bibitem{GoyKamHeLiu17}
+Palash Goyal, Nitin Kamra, Xinran He, and Yan Liu.
+\newblock Dyngem: Deep embedding method for dynamic graphs.
+\newblock {\em IJCAI International Workshop on Representation Learning for
+  Graphs}, 2017.
+
+\bibitem{HamYinLes17}
+William~L Hamilton, Rex Ying, and Jure Leskovec.
+\newblock Inductive representation learning on large graphs.
+\newblock In {\em NIPS}, 2017.
+
+\bibitem{DuWanHeetal15}
+Nan Du, Yichen Wang, Niao He, and Le~Song.
+\newblock Time sensitive recommendation from recurrent user activities.
+\newblock In {\em NIPS}, 2015.
+
+\bibitem{ScaGorTsoHagetal09}
+Franco Scarselli, Marco Gori, Ah~Chung Tsoi, Markus Hagenbuchner, and Gabriele
+  Monfardini.
+\newblock The graph neural network model.
+\newblock {\em Neural Networks, IEEE Transactions on}, 20(1):61--80, 2009.
+
+\bibitem{LiTarBroZem15}
+Yujia Li, Daniel Tarlow, Marc Brockschmidt, and Richard Zemel.
+\newblock Gated graph sequence neural networks.
+\newblock In {\em ICLR}, 2016.
+
+\bibitem{DaiDaiSon16}
+Hanjun Dai, Bo~Dai, and Le~Song.
+\newblock Discriminative embeddings of latent variable models for structured
+  data.
+\newblock In {\em ICML}, 2016.
+
+\bibitem{KipWel16}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In {\em ICLR}, 2017.
+
+\bibitem{KipWel16b}
+Thomas~N Kipf and Max Welling.
+\newblock Variational graph auto-encoders.
+\newblock {\em arXiv:1611.07308}, 2016.
+
+\bibitem{BruZarSzlLeC13}
+Joan Bruna, Wojciech Zaremba, Arthur Szlam, and Yann LeCun.
+\newblock Spectral networks and locally connected networks on graphs.
+\newblock In {\em ICLR}, 2014.
+
+\bibitem{LiDanHuTanChaLiu17}
+Jundong Li, Harsh Dani, Xia Hu, Jilaing Tang, Yi~Change, and Huan Liu.
+\newblock Attributed network embedding for learning in a dynamic environment.
+\newblock In {\em CIKM}, 2017.
+
+\bibitem{BamMan17}
+Robert Bamler and Stephan Mandt.
+\newblock Dynamic word embedding.
+\newblock In {\em ICML}, 2017.
+
+\bibitem{RudBle18}
+Maja Rudolph and David Blei.
+\newblock Dynamic embeddings for language evolution.
+\newblock In {\em WWW}, 2018.
+
+\bibitem{YanLiuWanLiuHan17}
+Carl Yang, Mengxiong Liu, Zongyi Wang, Liuyan Liu, and Jiawei Han.
+\newblock Graph clustering with dynamic embedding.
+\newblock {\em arXiv:1712.08249}, 2017.
+
+\bibitem{SarSidGor07}
+Purnamrita Sarkar, Sajid Siddiqi, and Geoffrey Gordon.
+\newblock A latent space approach to dynamic embedding of co-occurence data.
+\newblock In {\em AISTATS}, 2007.
+
+\bibitem{DuDaiTriUpaGomSon16}
+Nan Du, Hanjun Dai, Rakshit Trivedi, Utkarsh Upadhyay, Manuel Gomez-Rodriguez,
+  and Le~Song.
+\newblock Recurrent marked temporal point processes: Embedding event history to
+  vector.
+\newblock In {\em KDD}, 2016.
+
+\bibitem{XiaFarYeYanYanSonZha17}
+Shuai Xiao, Mehrdad Farajtabar, Xiaojing Ye, Junchi Yan, Le~Song, and Hongyuan
+  Zha.
+\newblock Wasserstein learning of deep generative point process models.
+\newblock In {\em NIPS}, 2017.
+
+\end{thebibliography}

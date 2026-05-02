@@ -1,0 +1,154 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_data_2022
+
+% ready for submission
+%\usepackage[anonymous]{neurips_data_2022}
+% \usepackage{neurips_data_2023}
+% \usepackage[final]{neurips_data_2023}
+\usepackage[nonatbib,final]{neurips_data_2023}
+% \usepackage[preprint]{neurips_data_2023}
+
+% to compile a preprint version, add the [preprint] option, e.g.:
+%     \usepackage[preprint]{neurips_data_2022}
+% This will indicate that the work is currently under review.
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_data_2022}
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_data_2022}
+
+% Submissions to the datasets and benchmarks are typically non anonymous,
+% but anonymous submissions are allowed. If you feel that you must submit 
+% anonymously, you can compile an anonymous version by adding the [anonymous] 
+% option, e.g.:
+%     \usepackage[anonymous]{neurips_data_2022}
+% This will hide all author names.
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+% \usepackage{wrapfig,lipsum,booktabs}
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{color, colortbl}
+\definecolor{red}{rgb}{0.9,0.1,0.1}
+\usepackage[first=0,last=9]{lcg}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{todonotes}
+\usepackage{tabu}
+
+
+
+\hypersetup{
+    colorlinks=true,
+    urlcolor=cyan
+    }
+\usepackage{amsmath}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{56}}%
+
+\newcount\COMMENTs  % 0 suppresses notes to selves in text
+\COMMENTs=1   % TODO: set to 0 for final version
+\usepackage{color}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{purple}{rgb}{1,0,1}
+\newcommand{\comm}[2]{\ifnum\COMMENTs=1\textcolor{#1}{#2}\fi}
+% add yourself here:
+\newcommand{\wh}[1]  {\comm{cyan}   {[WH: #1]}}
+\newcommand{\mf}[1]{\textcolor{red}{[MF: #1]}}
+\newcommand{\gr}[1]{{\color{blue}[GR: #1]}}
+\newcommand{\ah}[1]{{\color{orange}[AH: #1]}}
+
+
+% \usepackage[utf8]{inputenc} % allow utf-8 input
+% \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+% \usepackage{url}            % simple URL typesetting
+% \usepackage{booktabs}       % professional-quality tables
+% \usepackage{amsfonts}       % blackboard math symbols
+% \usepackage{nicefrac}       % compact symbols for 1/2, etc.
+% \usepackage{microtype}      % microtypography
+% \usepackage{array,multirow}
+% \usepackage{subcaption}
+% \usepackage{caption}
+% \usepackage{xspace}
+% \usepackage{multirow}
+% \usepackage{enumitem}
+% \usepackage{graphicx}
+% \usepackage{wrapfig}
+% \usepackage{float}
+% % \usepackage{booktabs}
+% \usepackage{hyperref}
+% \hypersetup{
+%     colorlinks=true,
+%     urlcolor=cyan
+%     }
+% \usepackage{tikz}
+% \usepackage{collcell}
+% \usepackage{amssymb}% http://ctan.org/pkg/amssymb
+% \usepackage{pifont}% http://ctan.org/pkg/pifont
+% % \usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+% % \usepackage[authoryear,round,longnamesfirst]{natbib}
+% \usepackage{amsmath}
+% \usepackage{soul}
+
+
+
+% \title{TGB: A Large Scale Benchmark for Machine Learning on Temporal Graphs
+% }
+\title{Temporal Graph Benchmark \\
+for Machine Learning on Temporal Graphs}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\input{000authors}
+
+\begin{document}
+\input{000macros}
+
+\maketitle
+
+\input{001abstract}
+\input{010intro}
+\input{020related}
+% \input{030preliminaries} 
+\input{040tasks}
+\input{050datasets}
+\input{060exp}
+\input{070conclusion}
+\input{99ack}
+
+\bibliographystyle{abbrv}
+\bibliography{refs}
+\input{090checklist}
+
+\newpage
+
+\appendix
+\input{100app}
+
+\end{document}

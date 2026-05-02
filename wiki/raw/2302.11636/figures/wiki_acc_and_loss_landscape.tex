@@ -1,0 +1,105 @@
+\subsection{Loss landscape on Wiki}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{figure}[t]
+% \centering
+% \begin{subfigure}{0.32\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/wiki.pdf}
+%     \vspace{-6mm}
+%     \caption{Evaluation average precision}
+%     % \label{fig:first}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.32\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/wiki_train.pdf}
+%     \vspace{-6mm}
+%     \caption{Train average precision}
+%     % \label{fig:second}
+% \end{subfigure}
+% \hspace{0cm}
+% \begin{subfigure}{0.32\textwidth}
+%     \includegraphics[width=\textwidth]{figures/average_precision_per_epochs/wiki_train_valid_diff.pdf}
+%     \vspace{-6mm}
+%     \caption{Generalization gap}
+    
+% \end{subfigure}
+% \vspace{-2mm}
+% \caption{Comparison of the link prediction average precision (AP) on \textbf{Wiki} dataset.}
+% \label{fig:average_precision_per_epochs_wiki}
+% \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_tgn_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_tgat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_dysat_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_mixer_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{blue}{Contour}) on \textbf{Wiki} Dataset.}
+\label{fig:landscape_2d_wiki}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGN}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_tgat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{TGAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_dysat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{DySAT}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_wiki_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{JODIE}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth]{figures/landscape/wiki_landscape_mixer_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{\our}
+\end{subfigure}
+\vspace{-2mm}
+\caption{Comparison on the training loss landscape (\textcolor{red}{Surface}) on \textbf{Wiki} Dataset.}
+\label{fig:landscape_3d_wiki}
+\end{figure}

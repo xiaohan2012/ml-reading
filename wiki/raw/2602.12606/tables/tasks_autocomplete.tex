@@ -1,0 +1,64 @@
+
+\begin{tabular}{lllrrrrrr}
+    \toprule
+      \mr{2}{Dataset} &
+      \mr{2}{Task name} &
+      \mr{2}{Task type} &
+      \mc{3}{c}{\#Rows of training table} &
+      \mr{2.5}{\shortstack{\#Unique\\Entities}} &
+      \mr{2.8}{\shortstack{\%train/test\\Entity\\Overlap}} &
+      \mr{2.5}{\shortstack{\#Dst\\Entities}} \\
+      \cmidrule(lr){4-6}
+      & & & Train & Validation & Test & & & \\
+    \midrule
+
+    \mr{1}{rel-amazon}
+    & review-rating & auto-reg  & 11,822,796 & 806,355 & 8,217,532 & 17,255,399 & 40.5 & -- \\
+    \midrule
+
+    \mr{2}{rel-avito}
+    & searchstream-click & auto-bcls & 2,212,750 & 1,177,380 & 924,990 & 3,976,413 & 23.8 & -- \\
+    & searchinfo-isuserloggedon & auto-bcls & 1,291,566 & 695,590 & 592,133 & 2,579,289 & 0.0  & -- \\
+    \midrule
+
+    \mr{3}{rel-event}
+    & event\_interest-interested & auto-bcls & 14,442 & 536  & 420  & 14,992 & 94.5 & -- \\
+    & event\_interest-not\_interested & auto-bcls & 14,442 & 536 & 420 & 14,992 & 94.5 & -- \\
+    & users-birthyear & auto-reg  & 33,937 & 1,731 & 1,002 & 36,670 & 0.0  & -- \\
+    \midrule
+
+    \mr{2}{rel-f1}
+    & results-position & auto-reg & 8,997 & 1,400 & 4,798 & 15,195 & 0.0 & -- \\
+    & qualifying-position & auto-reg & 2,228 & 1,854 & 5,733 & 9,815 & 0.0 & -- \\
+    \midrule
+
+    \mr{1}{rel-hm}
+    & transactions-price & auto-reg & 14,844,291 & 235,662 & 266,364 & 15,346,317 & 0.0 & -- \\
+    \midrule
+
+    \mr{1}{rel-ratebeer}
+    & beer\_ratings-total\_score & auto-reg & 10,620,177 & 1,227,702 & 2,495,360 & 14,343,239 & 0.0 & -- \\
+    \midrule
+
+    \mr{8}{rel-salt}
+    & item-plant & auto-mcls & 1,622,787 & 293,823 & 400,206 & 2,316,816 & 0.0 & -- \\
+    & item-shippoint & auto-mcls & 1,622,787 & 293,780 & 398,536 & 2,315,103 & 0.0 & -- \\
+    & item-incoterms & auto-mcls & 1,622,787 & 293,891 & 402,835 & 2,319,513 & 0.0 & -- \\
+    & sales-office & auto-mcls & 340,491 & 71,474 & 88,942 & 500,907 & 0.0 & -- \\
+    & sales-group & auto-mcls & 340,491 & 70,224 & 83,193 & 493,908 & 0.0 & -- \\
+    & sales-payterms & auto-mcls & 340,491 & 71,472 & 88,831 & 500,794 & 0.0 & -- \\
+    & sales-shipcond & auto-mcls & 340,491 & 71,398 & 88,422 & 500,311 & 0.0 & -- \\
+    & sales-incoterms & auto-mcls & 340,491 & 71,470 & 88,925 & 500,886 & 0.0 & -- \\
+    \midrule
+
+    \mr{1}{rel-stack}
+    & badges-class & auto-mcls & 448,358 & 15,105 & 127,370 & 590,833 & 0.0 & -- \\
+    \midrule
+
+    \mr{4}{rel-trial}
+    & studies-enrollment & auto-reg  & 233,072 & 14,470 & 23,430 & 270,972 & 0.0 & -- \\
+    & studies-has\_dmc & auto-bcls & 202,840 & 11,983 & 18,944 & 233,767 & 0.0 & -- \\
+    & eligibilities-adult & auto-bcls & 234,366 & 14,470 & 23,430 & 272,266 & 0.0 & -- \\
+    & eligibilities-child & auto-bcls & 234,366 & 14,470 & 23,430 & 272,266 & 0.0 & -- \\
+    \bottomrule
+\end{tabular}

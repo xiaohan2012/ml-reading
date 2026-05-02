@@ -1,0 +1,103 @@
+\documentclass[tikz,border=1pt]{standalone}
+\usetikzlibrary{calc,decorations.pathmorphing,patterns,positioning,shapes,shadings}
+
+\usepackage{bm}
+\usepackage{amsmath}
+
+\definecolor{purple}{RGB}{147,7,204}
+\definecolor{green}{RGB}{5,100,18}
+\definecolor{blue}{RGB}{10,153,201}
+\definecolor{red}{RGB}{213,42,45}
+\definecolor{orange}{RGB}{254,128,41}
+\definecolor{gray}{RGB}{239,240,241}
+\definecolor{orangetype}{RGB}{197,90,17}
+\definecolor{greentype}{RGB}{84,130,53}
+
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main}
+
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+
+\begin{document}
+\begin{tikzpicture}
+
+\def\boxwidth{15pt}
+\def\boxheight{15pt}
+
+\tikzset{line/.style={draw,semithick}}
+\tikzset{arrow/.style={line,<->,>=stealth}}
+\tikzset{arrowone/.style={line,->,>=stealth}}
+\tikzset{textnode/.style={inner sep=0pt}}
+\tikzset{node/.style={circle,inner sep=0pt,minimum width=15pt}}
+\tikzset{box/.style={line,inner sep=0pt,minimum width=\boxwidth,minimum height=\boxheight}}
+\tikzset{snake/.style={arrow,very thick,decorate,decoration={snake,amplitude=1,segment length=6,post length=5}}}
+\tikzset{gradient/.style={shading=axis,shading angle=-45}}
+\tikzset{legend/.style={node,rectangle,minimum width=8pt,minimum height=8pt,rounded corners=2pt,draw=none}}
+
+\tikzset{orangenode/.style={line,node,gradient,left color=orange!80!white,right color=orange!85!white}}
+\tikzset{bluenode/.style={line,node,gradient,left color=blue!80!white,right color=blue!85!white}}
+\tikzset{graynode/.style={line,node,gradient,left color=white!90!black,right color=white!95!black}}
+\tikzset{greennode/.style={line,node,gradient,left color=green!60!white,right color=green!65!white}}
+
+
+
+%\node[textnode] at (4.1,0.625) {$\vec{f}^{(1)}_{\mat{\theta}}$};
+
+\node[node,rectangle,fill=white!85!black,minimum height=3.75cm,minimum width=18pt,rounded corners=9pt] at (4.5,-0.31) {};
+\node[bluenode] (l1-v1) at (4.5,1.25) {\small$v_1$};
+\node[bluenode] (l1-v2) at (4.5,0.6125) {\small$v_2$};
+\node[bluenode] (l1-v3) at (4.5,0) {\small$v_3$};
+\node[bluenode] (l1-v4) at (4.5,-0.6125) {\small$v_4$};
+\node[bluenode] (l1-v5) at (4.5,-1.25) {\small$v_5$};
+\node[bluenode] (l1-v6) at (4.5,-1.8665) {\small$v_6$};
+\begin{scope}[shift={(0,0.2)}]
+\node[node,rectangle,fill=white!85!black,minimum height=1.9cm,minimum width=18pt,rounded corners=9pt] (l1-blue) at (7,0.6125) {};
+\node[orangenode] (l2-v1) at (7.0,1.25) {\small$v_7$};
+\node[orangenode] (l2-v2) at (7,0.6125) {\small$v_8$};
+\node[orangenode] (l2-v3) at (7.0,0) {\small$v_9$};
+\end{scope}
+
+\begin{scope}[shift={(0,-0.2)}]
+\node[node,rectangle,fill=white!85!black,minimum height=1.9cm,minimum width=18pt,rounded corners=9pt] (l1-blue) at (7,-1.25) {};
+\node[greennode] (l3-v1) at (7.0,-0.6125) {\small$v_{10}$};
+\node[greennode] (l3-v2) at (7,-1.25) {\small$v_{11}$};
+\node[greennode] (l3-v3) at (7.0,-1.8665) {\small$v_{12}$};
+\end{scope}
+
+\path[arrow, greentype, ultra thick] (l1-v2) to (l3-v1);
+\path[arrow, greentype, ultra thick] (l1-v1) to (l3-v2);
+\path[arrow, greentype, ultra thick] (l1-v3) to (l3-v2);
+\path[arrow, greentype, ultra thick] (l1-v4) to (l3-v3);
+\path[arrow, greentype, ultra thick] (l1-v5) to (l3-v2);
+\path[arrow, greentype, ultra thick] (l1-v6) to (l3-v3);
+
+\path[arrow, orangetype, ultra thick] (l1-v1) to (l2-v1);
+\path[arrow, orangetype, ultra thick] (l1-v2) to (l2-v1);
+\path[arrow, orangetype, ultra thick] (l1-v3) to (l2-v2);
+\path[arrow, orangetype, ultra thick] (l1-v4) to (l2-v2);
+\path[arrow, orangetype, ultra thick] (l1-v5) to (l2-v3);
+\path[arrow, orangetype, ultra thick] (l1-v6) to (l2-v2);
+
+\path[arrowone] (4,1.25) to (4,-1.8665);
+\node[textnode, rotate=270] at (3.8,-0.3) {Time};
+\node[textnode] at (3.8,1.25) {$0$};
+\node[textnode] at (3.8,-1.8665) {$6$};
+\node[textnode] at (3.,-1.8665) {};
+\node[textnode] at (8.2,-1.8665) {};
+\node (ex1) at (4.5,1.75)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.2]{figs/tikz/transaction.png}};
+
+\node (ex1) at (7,1.96)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.15]{figs/tikz/product.png}};
+
+\node (ex1) at (7,-0.32)
+{\includegraphics[trim={0.0cm 0cm 0cm 0cm}, clip, scale=0.15]{figs/tikz/customer.png}};
+
+\begin{pgfonlayer}{bg}
+
+
+\end{pgfonlayer}
+
+\end{tikzpicture}
+\end{document}

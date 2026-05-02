@@ -1,0 +1,92 @@
+
+\subsection{JODIE with fixed time-encoding function}
+
+
+% \begin{table}[h]
+% \centering
+% \caption{Comparison on the accuracy with fixed and trainable time-encoding function on JODIE model.}\label{table:fixed_vs_trainable_jodie_time_encoder}
+% \vspace{-4mm}
+% \scalebox{0.9}{
+% \begin{tabular}{ l c c c c c}
+% \hline\hline
+%                       & Reddit & Wiki   & MOOC   & LastFM & GDELT-e \\ \hline\hline
+% Trainable time-encoding function & 0.9930 & 0.9881 & 0.9916 & 0.6751 & 0.9696    \\ 
+% Fixed time-encoding function     & 0.9976 & 0.9900 & 0.9917 & 0.7989 & 0.9696    \\ \hline\hline
+% \end{tabular}}
+% \end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/reddit_landscape_reddit_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{Reddit}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/wiki_landscape_wiki_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{Wiki}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/mooc_landscape_mooc_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{MOOC}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/lastfm_landscape_lastfm_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{LastFM}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/gdelt_lite_landscape_gdelt_lite_jodie_surf_file.h5_train_loss_2dcontour.pdf}
+    \vspace{-6mm}
+    \caption{GDELT-e}
+\end{subfigure}
+% \vspace{-3mm}
+\caption{Training loss landscape (\textcolor{blue}{Contour}) of \textbf{JODIE} with \textit{fixed time-encoding function}.}
+\label{fig:landscape_2d_jodie_fixed_time_encoder}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/reddit_landscape_reddit_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{Reddit}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/wiki_landscape_wiki_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{Wiki}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/mooc_landscape_mooc_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{MOOC}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/lastfm_landscape_lastfm_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{LastFM}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.30\textwidth}
+    \includegraphics[width=\textwidth]{figures/jodie_fixed_time_encoder/gdelt_lite_landscape_gdelt_lite_jodie_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6mm}
+    \caption{GDELT-e}
+\end{subfigure}
+% \vspace{-3mm}
+\caption{Training loss landscape (\textcolor{red}{Surface}) of \textbf{JODIE} with \textit{fixed time-encoding function}.}
+\label{fig:landscape_3d_jodie_fixed_time_encoder}
+\end{figure}

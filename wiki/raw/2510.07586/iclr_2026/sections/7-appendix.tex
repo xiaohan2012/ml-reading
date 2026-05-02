@@ -1,0 +1,330 @@
+\appendix
+
+% \section{LLM Usage}
+
+% We acknowledge the use of LLMs to assist in polishing the writing of this paper. All content, ideas, and results are our own. The LLM helped improve clarity, grammar, style, and LaTeX formatting.
+
+
+\section{Additional Results}\label{app:more_perf}
+
+\subsection{Validation Latency Benchmarks}
+
+In Table~\ref{tab:eval}, we report the TGB validation evaluation time per epoch for \name and other libraries. Note that \name supports highly optimized evaluation time for the robust TGB link prediction evaluation when compared to DyGLib. \name consistently outperforms the widely used research library DyGLib across datasets and models. TGLite and TGL do not support the one-vs-many TGB-based link prediction evaluation ~\citep{tgb2}.
+
+
+\begin{table*}[t]
+\centering
+\caption{Validation time per epoch (seconds, ↓) for link property prediction (top) and node property prediction (bottom). The \hfirst \text{} and \hsecond \text{} best results are highlighted (\cna \text{} marks unsupported).  \normalsize{\texttt{OOT}} indicates that a single validation epoch did not complete after 3 hours.}
+
+%================ Link Property Prediction =================%
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|rrrr|rrrr|rrrr}
+\toprule
+\multirow{2}{*}{Model} 
+& \multicolumn{4}{c|}{\texttt{Wikipedia}} 
+& \multicolumn{4}{c|}{\texttt{Reddit}} 
+& \multicolumn{4}{c}{\texttt{LastFM}} \\
+& \name & DyGLib & TGLite & TGL 
+& \name & DyGLib & TGLite & TGL  
+& \name & DyGLib & TGLite & TGL  \\
+\midrule
+EdgeBank       & \cfirst{11.08} & \csecond{950.05} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{50.01} & \csecond{134.55} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{223.01} & \csecond{470.08} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+TGAT       & \cfirst{532.89} & \csecond{2898.53} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{2241.70} & \multicolumn{1}{c}{\normalsize{\texttt{OOT}}} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{4163.20} & \multicolumn{1}{c}{\normalsize{\texttt{OOT}}} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+TGN        & \cfirst{13.84} & \csecond{3404.82} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{60.30} & \multicolumn{1}{c}{\normalsize{\texttt{OOT}}} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{112.23} & \multicolumn{1}{c}{\normalsize{\texttt{OOT}}} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+DyGFormer  & \cfirst{6.97} & \csecond{6125.05} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{1856.78} & \multicolumn{1}{c}{\normalsize{\texttt{OOT}}} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{3554.252} & \multicolumn{1}{c}{\texttt{OOT}} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+TPNet      & \cfirst{408.91} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{1735.71} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{3308.91} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+GCLSTM     & \cfirst{11.92} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{51.68} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{110.16} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+GCN        & \cfirst{11.70} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{50.88} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{102.56} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+\bottomrule
+\end{tabular}
+}
+
+\vspace{1em} % small vertical space between tables
+
+%================ Node Property Prediction =================%
+\resizebox{0.55\linewidth}{!}{
+\begin{tabular}{l|rrr|rrr}
+\toprule
+\multirow{2}{*}{Model} & \multicolumn{3}{c|}{\texttt{Trade}} & \multicolumn{3}{c}{\texttt{Genre}} \\
+ & \name & DyGLib & TGB & \name & DyGLib & TGB \\
+\midrule
+P.F.                & \cfirst{0.06} & 1.35 & \csecond{0.15} & \cfirst{6.02} & 8.56 & \csecond{6.66} \\
+TGN                 & \csecond{2.44} & 2.54 & \cfirst{2.19} & \cfirst{25.37} & 106.34 & \csecond{58.13} \\
+DyGFormer           & \cfirst{3.49} & \csecond{21.13} & \multicolumn{1}{c|}{\cna} & \cfirst{11.78} & \csecond{588.69} & \multicolumn{1}{c}{\cna} \\
+TGCN                & \cfirst{0.08} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{6.39} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+GCLSTM              & \cfirst{0.07} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{6.48} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+GCN                 & \cfirst{0.07} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c|}{\cna} & \cfirst{6.46} & \multicolumn{1}{c}{\cna} & \multicolumn{1}{c}{\cna} \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:eval}
+\end{table*}
+
+
+
+\subsection{Peak GPU Usage}
+\label{sec:gpu}
+\noindent
+\begin{minipage}{0.45\textwidth}  % reduce text width
+Table~\ref{tab:gpu_usage_per_model} shows the peak GPU memory usage of each model across three standard datasets. Lightweight models such as GCN and GCLSTM consume minimal memory, making them efficient choices for resource-constrained environments, whereas larger architectures like GraphMixer and DyGFormer require significantly more GPU memory. This comparison highlights the trade-offs between model size and memory efficiency, providing a practical reference for selecting models in temporal graph learning tasks.
+\end{minipage}%
+\hfill
+\begin{minipage}{0.50\textwidth}  % increase table width
+\centering
+\captionof{table}{Peak GPU memory usage (GB) per model on different datasets.}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Model} & \texttt{Wikipedia} & \texttt{Reddit} & \texttt{LastFM} \\
+\midrule
+TGAT       & 0.55 & 0.57 & 0.30 \\
+TGN        & 0.67 & 0.81 & 0.11 \\
+GraphMixer & 2.61 & 2.62 & 2.62 \\
+DyGFormer  & 1.34 & 1.36 & 1.03 \\
+TPNet      & 1.37 & 1.47 & 1.15 \\
+GCLSTM     & 0.01 & 0.18 & 0.07 \\
+GCN        & 0.01 & 0.09 & 0.05 \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:gpu_usage_per_model}
+\end{minipage}
+
+
+\subsection{CProfiler Model Breakdown}
+\label{sec:profiler}
+
+Table \ref{tab:tgat_runtime_breakdown} shows a runtime decomposition of TGAT on the \texttt{LastFM} dataset. The largest costs arise from the backward pass (25.8\%), model forward (26.5\%), and optimizer updates (19.1\%), together accounting for over 70\% of total runtime. Within data loading (26.5\%), hook execution (15.1\%) and graph materialization (11.4\%) dominate, with the recency sampler alone contributing 13.2\%. Inside TGAT forward, attention layers (14.7\%) and MLPs (6.0\%) form the bulk of computation, while time encoding adds 3.5\%. Using a profiler in this way helps researchers and practitioners identify which components are the main bottlenecks and prioritize optimizations accordingly.
+
+\definecolor{rowcolor}{HTML}{DDEBF7}
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\caption{Breakdown of TGAT runtime on \texttt{LastFM} dataset.}
+\label{tab:tgat_runtime_breakdown}
+\begin{tabular}{lp{6cm}r}
+\toprule
+\textbf{Category} & \textbf{Component} & \textbf{Percent (\%)} \\
+\midrule
+\multirow{6}{*}{Data Loading} 
+  & \cellcolor{rowcolor} Hook execution & \cellcolor{rowcolor}15.09 \\
+  & \texttt{|--} Recency sampler & 13.19 \\
+  & \texttt{|   |--} Get neighbors & 7.76 \\
+  & \texttt{|   |--} Update circular buffer & 5.43 \\
+  & \texttt{|--} Other hooks & 1.90 \\
+  & \cellcolor{rowcolor} Graph materialization & \cellcolor{rowcolor} 11.40 \\
+\midrule
+\multirow{4}{*}{Model Forward} 
+  & \cellcolor{rowcolor} TGAT forward & \cellcolor{rowcolor} 24.20 \\
+  & \texttt{|--} Attention layers & 14.70 \\
+  & \texttt{|--} MLP layers & 5.96 \\
+  & \texttt{|--} Time encoding & 3.54 \\
+  & \cellcolor{rowcolor} Other forward (decoders) & \cellcolor{rowcolor} 2.30 \\
+\midrule
+\multirow{4}{*}{Optimization} 
+    & \cellcolor{rowcolor}Backward pass  & \cellcolor{rowcolor}25.80 \\
+    & \cellcolor{rowcolor}Optimizer (Adam)  & \cellcolor{rowcolor} 19.10 \\
+    & \cellcolor{rowcolor}Loss computation  & \cellcolor{rowcolor} 0.62 \\
+\midrule
+Other & - & 1.61 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Correctness Tests} \label{app:correctness}
+
+Table \ref{tab:compact_performance_split} reports validation and MRR performance on \texttt{Wikipedia} for dynamic link property prediction, as well as validation NDCG and test NDCG on \texttt{Trade} for node property prediction. We cross-reference these results with TGB-reported performance and find that all models fall within the expected range. Note that we did not perform hyperparameter optimization, early stopping, or tuning, but instead used the hyperparameters listed in Table \ref{tab:hyperparams}.
+
+
+\label{tab:compact_performance_split}
+
+\begin{table}[ht]
+\centering
+\caption{Performance on \texttt{Wikipedia} and \texttt{Trade} datasets. Numbers are mean $\pm$ std over 3 runs.}
+\label{tab:compact_performance_split}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Category} & \textbf{Model} 
+& \multicolumn{2}{c}{\texttt{Wikipedia}} 
+& \multicolumn{2}{c}{\texttt{Trade}} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+ & & Validation MRR (↑) & Test MRR (↑) & Validation NDCG (↑) & Test NDCG (↑) \\
+\midrule
+\multirow{2}{*}{\textbf{Baselines}} 
+ & Edgebank           & $0.495$ & $0.527$ & --- & --- \\
+ & P.F. & --- & --- & $0.860$ & $0.855$ \\
+\midrule
+\multirow{3}{*}{\textbf{DTDG}} 
+ & GCN       & $0.465 \pm$  \scriptsize{0.013} & $0.410 \pm$ \scriptsize{0.019} & \csecond{0.670 $\pm$ \scriptsize{0.013}} & \csecond{0.629 $\pm$ \scriptsize{0.009}} \\
+ & GCLSTM    & $0.402 \pm$ \scriptsize{0.016} & $0.364 \pm$ \scriptsize{0.015} & \cfirst{0.761 $\pm$ \scriptsize{0.003}} & \cfirst{0.692 $\pm$ \scriptsize{0.002}} \\
+ & TGCN      & --- & --- & $0.515 \pm $\scriptsize{0.006} & $0.458 \pm$ \scriptsize{0.007} \\
+\midrule
+\multirow{5}{*}{\textbf{CTDG}}
+ & TGAT       & $0.380 \pm$ \scriptsize{0.013} & $0.322 \pm$ \scriptsize{0.013} & --- & --- \\
+ & TGN        & $0.210 \pm$ \scriptsize{0.186} & $0.244 \pm$ \scriptsize{0.061} & $0.394$ & $0.329$ \\
+ & GraphMixer & $0.610 \pm$ \scriptsize{0.010} & $0.567 \pm$ \scriptsize{0.018} & --- & --- \\
+ & DyGFormer  & \csecond{0.743 $\pm$ \scriptsize{0.006}} & \csecond{0.712 $\pm$ \scriptsize{0.009}} & $0.386 \pm$ \scriptsize{0.0012} & $0.312 \pm$ \scriptsize{0.0003} \\
+ & TPNet      & \cfirst{0.771 $\pm$ \scriptsize{0.033}} & \cfirst{0.747 $\pm$ \scriptsize{0.037}} & --- & --- \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+
+\section{Additional Background: DTDG vs. CTDG}\label{app:DTDGvsCTDG}
+
+As defined in Section~\ref{sec:tgm_frame}, a temporal graph is a graph whose structure and attributes evolve over time, capturing not only the relationships between entities but also the dynamics of their interactions. Unlike static graphs, which provide a single snapshot of connectivity, temporal graphs represent edges (and sometimes nodes) as time-stamped events or intervals, enabling modelling of when and how relationships form, change, or disappear. Temporal graph neural networks are typically categorized into two types: continuous-time dynamic graph (CTDG) methods and discrete-time dynamic graph (DTDG) methods. Section~\ref{app:DTDG} and Section~\ref{app:CTDG} provide further information about common approaches from each category.
+% \name supports a wide variety of TG models as shown in Section~\ref{sec:exp}. The details of the supported models are as follows:
+
+% \begin{itemize}
+%     \item Persistence Forecast (P.F.): 
+%     \item TGN~\cite{}:
+% \end{itemize}
+
+% This section provides a high-level overview of temporal graph learning, including the two formulations of dynamic graphs, everyday tasks, and associated model components. We follow the treatment in \cite{utg}.
+
+% \subsection{A comparision between DTDG and CTDG methods} 
+
+\subsection{DTDG methods} \label{app:DTDG}
+
+DTDG, or snapshot-based methods, take as input a sequence of graph snapshots, each representing the state of the temporal graph at discrete time intervals (e.g., hours or days). These approaches process each snapshot as a whole, typically using a graph learning model, and employ mechanisms to capture temporal dependencies across snapshots.
+
+The majority of DTDG methods consist of two main components: a spatial encoder, commonly GNN-based, and a temporal encoder, usually an RNN or one of its variants. Given a snapshot $G_i$, a spatial representation is learned, $Z_i = f(V_i, E_i)$, where $f$ is a trainable or non-trainable function that takes the graph structure of the current snapshot and returns either node-level representations in $G_i$ or a representation of the entire snapshot. GCN~\citep{gcn} is used as $f$ in TGCN~\citep{t-gcn}, EvolveGCN~\citep{DBLP:conf/aaai/ParejaDCMSKKSL20}, and GCLSTM~\citep{gclstm}. In contrast, GraphPulse~\citep{DBLP:conf/iclr/ShamsiPHNCA24} encodes a whole-graph representation by extracting topological features from both the original graph $G_i$ and a transformed version $G_i'$, using Topological Data Analysis (TDA). The concatenation of the features from $G_i$ and $G_i'$ serves as the graph-level representation for downstream property prediction tasks.
+
+To capture temporal dependencies across snapshots, an RNN or one of its variants (e.g., GRU or LSTM) is typically employed. These are applied either to the sequence of snapshot representations $Z_i$~\citep{t-gcn,gclstm,DBLP:conf/iclr/ShamsiPHNCA24} or directly to the evolving parameters of the GCN~\citep{DBLP:conf/aaai/ParejaDCMSKKSL20}.
+
+\subsection{CTDG methods} \label{app:CTDG}
+
+In contrast, CTDG methods operate on a continuous stream of edges and can make predictions at arbitrary timestamps. They update internal representations incrementally as new interactions arrive, incorporating fresh information into predictions. For computational efficiency, the edge stream is usually partitioned into fixed-size batches, with predictions performed sequentially per batch; once predictions are made, the corresponding edges are revealed to the model. Unlike DTDG methods, CTDG approaches do not rely on snapshots; instead, they maintain evolving node representations and sample temporal neighborhoods around nodes of interest for prediction.
+
+\textbf{Temporal Message Passing.}
+The temporal message passing framework is a neighbourhood aggregation scheme which recursively computes a latent representation by forwarding messages to temporal neighbours. Formally, if $\mathcal{N}^k(s)$ denotes the k-hop neighbourhood of node $s$ in the dynamic graph $\mathcal{G}$, then the \textit{temporal neighbourhood} $\mathcal{N}^k_t(s)$ is given by restricting neighbours to edge events chronologically before time $t$:
+\begin{align}
+    \mathcal{N}^k_t(s) = \{(s, d, t') \in \mathcal{N}^k(s) : t' \leq t \}
+\end{align}
+
+The combination of temporal and topological constraints makes efficient neighbourhood particularly challenging, requiring complex hierarchical data structures and cache-aware programming to sustain high-throughput on GPU stream multiprocessors \cite{lpma, gpma}. We bypass the insertion and deletion complexity by assuming the entire graph structure is read-only. Temporal message proceeds by creating and passing messages between such sub-neighorhoods. In particular, messages are created by concatenating embeddings, aggregating embeddings across temporal neighbourhoods, then updating the new hidden representation. Such information flow occurs concurrently for each event in a batch of data. 
+
+\textbf{Time-Encoding and Memory-Based Learning.} Time-encoding models use a shift-invariant model $\psi: T \to \mathbb{R}^{d_t}$ that maps a real-valued time stamp into a $d_t$-dimensional vector (e.g. TGAT \cite{tgat} use time-encoders like Time2Vec \cite{time2vec}). This encoding is then passed through modified self-attention blocks or feedforward layers. \textit{Memory-based} models, such as TGN \cite{tgn}, utilize a fixed-bandwidth memory module that compresses relevant information for each node and updates it over time. EdgeBank \cite{edgebank} is a non-parametric, memory-based method that memorizes and predicts new links at test time based on their occurrence in the training data.
+
+% Given that our paper proposes a new framework, the focus is orthogonal to new learning methods and architectures. Therefore, we only give a brief overview of the literature. Interested readers are encouraged to find more information in surveys like \cite{tgl_survey, tgl_survey_old, tgl_survey_gen}.
+
+
+
+\section{Dataset Details} \label{app:data}
+
+In this work, we conduct experiments on Wikipedia (obtained from the TGB~\cite{huang2023temporal}, where the dataset can be downloaded along with the package from \href{https://tgb.complexdatalab.com/}{TGB website}), Reddit, LastFM, datasets, obtained from~\cite{poursafaei2022towards}; these can be downloaded from \url{https://zenodo.org/records/7213796#.Y8QicOzMJB2}. 
+These datasets span a variety of real-world domains, providing a broad testbed for evaluating temporal graph models.
+Detailed information about these datasets are as follows.
+
+\begin{itemize}[leftmargin=*, noitemsep, topsep=0.2pt]
+    \item \textbf{Wikipedia} is a bipartite interaction network that captures editing activity on Wikipedia over one month. The nodes represent Wikipedia pages and their editors, and the edges indicate timestamped edits. Each edge is associated with a 172-dimensional LIWC feature vector derived from the text.  
+    \item \textbf{Reddit} models user-subreddit posting behavior over one month. Nodes are users and subreddits, and edges represent posting requests made by users to subreddits, each associated with a timestamp. Each edge is associated with a 172-dimensional LIWC feature vector based on post contents.  
+    \item \textbf{LastFM} is a bipartite user–item interaction graph where nodes represent users and songs. Edges indicate that a user listened to a particular song at a given time. The dataset includes 1000 users and the 1000 most-listened songs over a one-month period. 
+    This dataset is not attributed.
+    % \item \textbf{UCI} is an anonymized online social network from the University of California, Irvine. Nodes represent students, and edges represent timestamped private messages exchanged within an online student community. The dataset does not contain node or edge attributes.
+    % \item \textbf{Enron} is a temporal communication network that is based on email correspondence over a period of three years. Nodes represent employees of the ENRON energy company, while edges correspond to timestamped emails. The dataset does not include node or edge features.
+    \item \textbf{Trade} represents the international agriculture trading network between UN nations from 1986 to 2016. Nodes are countries and edges capture the annual sum of agriculture trade values from one country to another. The task is to predict each nation’s trade proportions in the following year.
+    \item \textbf{Genre} is a bipartite, weighted network connecting users to music genres based on listening history. Edges indicate the proportion of a song belonging to a genre that a user listens to, aggregated weekly. The task is to predict user-genre interactions in the next week, capturing evolving user preferences for music recommendation.
+\end{itemize}
+
+
+\begin{table*}[t]
+\caption{Dataset statistics. } \label{tab:data} 
+\centering
+  \resizebox{0.9\linewidth}{!}{%
+  \begin{tabular}{ l | rrrrrr}
+  \toprule
+  Dataset & \# Nodes & \# Edges
+  & \# Unique Edges & \# Unique Steps & Surprise & Duration\\ 
+  \midrule
+  \texttt{Wikipedia} &  9,227 & 157,474 & 18,257 &  152,757 & 0.108 & 1 month\\ 
+  \texttt{Reddit} & 10,984 & 672,447 & 78,516 & 669,065 & 0.069 & 1 month  \\  
+  \texttt{LastFM} & 1,980 & 1,293,103 & 154,993 & 1,283,614 &  0.35 & 1 month \\
+  % \texttt{UCI} & 1,899 & 26,628 & 20,296 & 58,911 & 0.535 & 196 days \\
+  % \texttt{Enron} & 184 & 10,472 & 3,125 & 22,632 & 0.253 & 3 years \\
+  \texttt{Trade} & 255 & 468,245 & 468,245 & 32 & 0.023 & 30 years \\
+  \texttt{Genre} & 1,505 & 17,858,395 & 17,858,395 & 133,758 & 0.005 & 1 month \\
+  
+
+  \bottomrule
+  \end{tabular}
+  }
+  \vspace{-10pt}
+\end{table*}
+
+\section{Temporal Graph Models Supported in \name}
+\name is a research-driven library providing implementations of state-of-the-art temporal graph learning models. At the time of writing, TGM includes the following models:
+
+\textbf{Persistent Forecast.} A simple baseline that predicts the future state of each node or edge by assuming it remains unchanged from the most recent observation. Despite its simplicity, it often serves as a strong baseline for dynamic node property prediction.
+
+\textbf{EdgeBank.} \cite{edgebank} Maintains a memory bank of historical edges and uses them to make predictions. By storing and sampling past interactions, EdgeBank leverages temporal patterns without explicit node embedding updates, providing a lightweight but effective approach for dynamic link prediction.
+
+
+\textbf{TGAT.} \cite{tgat} proposed to model dynamics node representations with TGAT layer, which is a combination of the graph attention mechanism with a time encoding function based on Bochner’s theorem, which provides a continuous functional mapping from time to a vector space. This allows TGAT to efficiently learn from temporal neighbourhood features with the aid of a self-attention mechanism and temporal dependencies encoded by the time encoding function.
+
+\textbf{TGN.} \cite{tgn} proposed an event-based model that is a combination of a memory module, message aggregator, message updater and embedding module. In particular, the memory module maintains evolving memory for each node and updates this memory when the node is observed to be involved in an interaction, which is achieved by a message function, message aggregator, and message updater. Finally, the embedding model is used to compute the representation of nodes.
+
+\textbf{GCN.}\citep{gcn} Standard Graph Convolutional Network applied on static snapshots to encode structural information. Node features are aggregated from neighbors and combined with self-features to produce updated embeddings at each snapshot. When used in temporal settings, GCNs process sequences of snapshots independently or in combination with temporal modules.
+
+\textbf{GCLSTM.} To learn over a sequence of graph snapshots,~\cite{gclstm} proposed an end-to-end model named Graph Convolutional Long Short-Term Memory (GCLSTM) for dynamic link prediction. The LSTM serves as the backbone to capture temporal dependencies across graph snapshots, while a GCN is applied to each snapshot to encode structural dependencies between nodes. Specifically, two GCNs are used to update the hidden state and the cell state of the LSTM, and a multilayer perceptron (MLP) decoder maps the features at the current time step back to the graph space. This design enables GCLSTM to effectively handle both link additions and deletions.
+
+\textbf{T-GCN.} \cite{t-gcn} integrates GCNs with gated recurrent units to learn node embeddings over sequences of graph snapshots, capturing temporal and structural information jointly.
+
+
+\textbf{GraphMixer.} \citep{graphmixer} A graph adaptation of MLP-Mixer architectures. It alternates between node-wise and feature-wise mixing layers to capture structural correlations across nodes and temporal correlations across features. By stacking multiple mixer layers, GraphMixer can model complex dependencies in dynamic graphs while remaining simple and parameter-efficient.
+
+\textbf{DyGFormer.} \cite{dygfomer} proposed a Transformer-based architecture for modeling dynamic graphs. DyGFormer consists of two key components: the Neighbour Co-occurrence Encoder and a Transformer. The Neighbour Co-occurrence Encoder leverages the recent first-hop neighbours of the source and destination nodes of an edge to capture correlations and compute relative embeddings. To enhance representation learning, \cite{dygfomer} further introduced a patching technique that splits the source and destination node features, edge features, time embeddings (computed following TGAT~\citep{tgat}), and relative embeddings into multiple patches. These patches are then fed into the Transformer to generate node representations with respect to an edge.
+
+\textbf{TPNet.} TPNet is composed of two main modules: Node Representation Maintenance and Link Likelihood Computation. \cite{tpnet} unifies existing relative encoding methods by introducing temporal walk matrices with an integrated time-decay function. These matrices establish a principled connection between relative encodings and temporal walks, offering a clearer framework for analyzing and designing temporal encodings. The time-decay effect further allows joint modelling of temporal and structural information. Since computing temporal walk matrices directly is computationally and memory intensive, TPNet employs a theoretically grounded random feature propagation mechanism to implicitly approximate and maintain them efficiently.
+
+The \name team is actively expanding the library to incorporate additional cutting-edge models, including TNCN~\citep{tncn}, DyGMamba~\citep{dygmamba}, NAT~\citep{nat}, and TGNv2~\citep{tgnv2}.
+
+\section{Compute Resources and Experiment Details}
+\label{app:details}
+
+\textbf{Compute}: Experiments were run on Ubuntu 20.04 with 64 GB RAM, 4 isolated AMD EPYC 7502 CPU cores, and a single 80 GB A100 GPU. Jobs were managed with SLURM to ensure isolated environments and no concurrent interference.
+
+\textbf{Experiment Details}: We use the default TGB splits~\citep{huang2023temporal, tgb2}, with hyperparameters listed in Table~\ref{tab:hyperparams}. For efficiency benchmarks, TGAT and TGN adopt the TGLite configuration~\citep{10.1145/3620665.3640414} for fairness. Other libraries were modified only minimally to measure latency, and TGLite/TGL times are taken directly from Fig. 6 of~\citep{10.1145/3620665.3640414}. All DTDG methods discretized the \texttt{Trade} dataset to yearly snapshots, and the \texttt{Genre} dataset to weekly snapshots.
+
+          
+\begin{table*}[h!]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\caption{Hyperparameters used for each model}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+\textbf{Parameter} & \textbf{Edgebank} & \textbf{TGAT} & \textbf{TGN} & \textbf{GCN} & \textbf{GCLSTM} & \textbf{TGCN} & \textbf{GraphMixer} & \textbf{DyGFormer} & \textbf{TPNet} \\
+\midrule
+Batch Size             & 200 & 200 & 200 & 200 & 200 & – & 200 & 200 & 200 \\
+Epochs                 & –   & 10  & 30  & 30  & 30  & – & 10  & 5   & 10 \\
+Learning Rate          & –   & 1e-4& 1e-4& 1e-3& 1e-3& 1e-3 & 2e-4& 1e-4& 1e-4 \\
+Dropout                & –   & 0.1 & 0.1 & 0.1 & –   & 0.1 & 0.1 & 0.1 & 0.1 \\
+\# Heads               & –   & 2   & 2   & –   & –   & –   & –   & 2   & – \\
+\# Neighbors           & –   & 20  & 10  & –   & –   & –   & 20  & 32  & 32 \\
+\# Layers              & –   & 2   & 2   & 2   & 2   & 2   & 2   & 2   & 2 \\
+Embedding Dim.         & –   & 100 & 100 & 128 & 256 & 128 & 128 & 172 & 172 \\
+Time Dim.              & –   & 100 & 100 & –   & –   & –   & 100 & 100 & 100 \\
+Memory Dim.            & –   & –   & 100 & –   & –   & –   & –   & –   & – \\
+Node Dim.              & –   & –   & –   & 256 & 256 & 256 & 100 & 128 & 128 \\
+Sampling               & –   & Recency & Recency & – & – & – & Recency & Recency & Recency \\
+Memory Mode            & Unlimited & – & – & – & – & – & – & – & – \\
+Time Gap               & –   & –   & –   & –   & –   & –   & 2000 & – & – \\
+Token Dim. Factor      & –   & –   & –   & –   & –   & –   & 0.5 & – & – \\
+Channel Dim. Factor    & –   & –   & –   & –   & –   & –   & 4.0 & – & – \\
+Channel Dim.           & –   & –   & –   & –   & –   & –   & –   & 50  & – \\
+Patch Size             & –   & –   & –   & –   & –   & –   & –   & 1   & – \\
+\# Channels            & –   & –   & –   & –   & –   & –   & –   & 4   & – \\
+\# RP Layers           & –   & –   & –   & –   & –   & –   & –   & –   & 2 \\
+RP Time Decay          & –   & –   & –   & –   & –   & –   & –   & –   & 1e-6 \\
+RP Dim                 & –   & –   & –   & –   & –   & –   & –   & –   & $\log(|2 * E|)$ \\
+\bottomrule
+\end{tabular}
+\label{tab:hyperparams}
+\end{table*}
+

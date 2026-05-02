@@ -1,0 +1,326 @@
+\begin{thebibliography}{51}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arik and Pfister(2019)]{arik2019TabNet}
+Sercan~O Arik and Tomas Pfister.
+\newblock Tabnet: Attentive interpretable tabular learning.
+\newblock \emph{arXiv preprint arXiv:1908.07442}, 2019.
+
+\bibitem[Ba et~al.(2016)Ba, Kiros, and Hinton]{ba2016layer}
+Jimmy~Lei Ba, Jamie~Ryan Kiros, and Geoffrey~E Hinton.
+\newblock Layer normalization.
+\newblock \emph{arXiv preprint arXiv:1607.06450}, 2016.
+
+\bibitem[Chen et~al.(2019)Chen, Jim{\'e}nez-Ruiz, Horrocks, and
+  Sutton]{chen2019learning}
+Jiaoyan Chen, Ernesto Jim{\'e}nez-Ruiz, Ian Horrocks, and Charles Sutton.
+\newblock Learning semantic annotations for tabular data.
+\newblock \emph{arXiv preprint arXiv:1906.00781}, 2019.
+
+\bibitem[Chen and Guestrin(2016)]{chen2016xgboost}
+Tianqi Chen and Carlos Guestrin.
+\newblock Xgboost: A scalable tree boosting system.
+\newblock In \emph{Proceedings of the 22nd acm sigkdd international conference
+  on knowledge discovery and data mining}, pages 785--794, 2016.
+
+\bibitem[Chen et~al.(2020)Chen, Kornblith, Norouzi, and Hinton]{chen2020simple}
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton.
+\newblock A simple framework for contrastive learning of visual
+  representations.
+\newblock In \emph{International conference on machine learning}, pages
+  1597--1607. PMLR, 2020.
+
+\bibitem[Chen and He(2020)]{chen2020exploring}
+Xinlei Chen and Kaiming He.
+\newblock Exploring simple siamese representation learning.
+\newblock \emph{arXiv preprint arXiv:2011.10566}, 2020.
+
+\bibitem[Child et~al.(2019)Child, Gray, Radford, and
+  Sutskever]{child2019generating}
+Rewon Child, Scott Gray, Alec Radford, and Ilya Sutskever.
+\newblock Generating long sequences with sparse transformers.
+\newblock \emph{arXiv preprint arXiv:1904.10509}, 2019.
+
+\bibitem[Clark et~al.(2020)Clark, Luong, Le, and Manning]{clark2020electra}
+Kevin Clark, Minh-Thang Luong, Quoc~V Le, and Christopher~D Manning.
+\newblock Electra: Pre-training text encoders as discriminators rather than
+  generators.
+\newblock \emph{arXiv preprint arXiv:2003.10555}, 2020.
+
+\bibitem[Devlin et~al.(2018)Devlin, Chang, Lee, and Toutanova]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova.
+\newblock Bert: Pre-training of deep bidirectional transformers for language
+  understanding.
+\newblock \emph{arXiv preprint arXiv:1810.04805}, 2018.
+
+\bibitem[Dorogush et~al.(2018)Dorogush, Ershov, and
+  Gulin]{dorogush2018catboost}
+Anna~Veronika Dorogush, Vasily Ershov, and Andrey Gulin.
+\newblock Catboost: gradient boosting with categorical features support.
+\newblock \emph{arXiv preprint arXiv:1810.11363}, 2018.
+
+\bibitem[Dua and Graff(2017)]{Dua:2019}
+Dheeru Dua and Casey Graff.
+\newblock {UCI} machine learning repository, 2017.
+\newblock URL \url{http://archive.ics.uci.edu/ml}.
+
+\bibitem[Grill et~al.(2020)Grill, Strub, Altch{\'e}, Tallec, Richemond,
+  Buchatskaya, Doersch, Pires, Guo, Azar, et~al.]{grill2020bootstrap}
+Jean-Bastien Grill, Florian Strub, Florent Altch{\'e}, Corentin Tallec,
+  Pierre~H Richemond, Elena Buchatskaya, Carl Doersch, Bernardo~Avila Pires,
+  Zhaohan~Daniel Guo, Mohammad~Gheshlaghi Azar, et~al.
+\newblock Bootstrap your own latent: A new approach to self-supervised
+  learning.
+\newblock \emph{arXiv preprint arXiv:2006.07733}, 2020.
+
+\bibitem[Guyon et~al.(2004)Guyon, Gunn, Ben-Hur, and Dror]{guyon2004result}
+Isabelle Guyon, Steve~R Gunn, Asa Ben-Hur, and Gideon Dror.
+\newblock Result analysis of the nips 2003 feature selection challenge.
+\newblock In \emph{NIPS}, volume~4, pages 545--552, 2004.
+
+\bibitem[He et~al.(2016)He, Zhang, Ren, and Sun]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 770--778, 2016.
+
+\bibitem[He et~al.(2020)He, Fan, Wu, Xie, and Girshick]{he2020momentum}
+Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross Girshick.
+\newblock Momentum contrast for unsupervised visual representation learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, pages 9729--9738, 2020.
+
+\bibitem[Hendrycks and Gimpel(2016)]{hendrycks2016gaussian}
+Dan Hendrycks and Kevin Gimpel.
+\newblock Gaussian error linear units (gelus).
+\newblock \emph{arXiv preprint arXiv:1606.08415}, 2016.
+
+\bibitem[Ho et~al.(2019)Ho, Kalchbrenner, Weissenborn, and
+  Salimans]{ho2019axial}
+Jonathan Ho, Nal Kalchbrenner, Dirk Weissenborn, and Tim Salimans.
+\newblock Axial attention in multidimensional transformers.
+\newblock \emph{arXiv preprint arXiv:1912.12180}, 2019.
+
+\bibitem[Huang et~al.(2020)Huang, Khetan, Cvitkovic, and
+  Karnin]{huang2020tabtransformer}
+Xin Huang, Ashish Khetan, Milan Cvitkovic, and Zohar Karnin.
+\newblock Tabtransformer: Tabular data modeling using contextual embeddings.
+\newblock \emph{arXiv preprint arXiv:2012.06678}, 2020.
+
+\bibitem[IBM(2019)]{ibm_blastchar}
+IBM.
+\newblock Telco customer churn (11.1.3+), 2019.
+\newblock URL
+  \url{https://community.ibm.com/community/user/businessanalytics/blogs/steven-macko/2019/07/11/telco-customer-churn-1113}.
+
+\bibitem[Iida et~al.(2021)Iida, Thai, Manjunatha, and Iyyer]{iida2021tabbie}
+Hiroshi Iida, Dung Thai, Varun Manjunatha, and Mohit Iyyer.
+\newblock Tabbie: Pretrained representations of tabular data.
+\newblock \emph{arXiv preprint arXiv:2105.02584}, 2021.
+
+\bibitem[Katzir et~al.()Katzir, Elidan, and El-Yaniv]{katzir2021netdnf}
+Liran Katzir, Gal Elidan, and Ran El-Yaniv.
+\newblock Net-dnf: Effective deep modeling of tabular data.
+
+\bibitem[Ke et~al.(2017)Ke, Meng, Finley, Wang, Chen, Ma, Ye, and
+  Liu]{ke2017lightgbm}
+Guolin Ke, Qi~Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei
+  Ye, and Tie-Yan Liu.
+\newblock Lightgbm: A highly efficient gradient boosting decision tree.
+\newblock \emph{Advances in neural information processing systems},
+  30:\penalty0 3146--3154, 2017.
+
+\bibitem[Keller et~al.(2012)Keller, Muller, and Bohm]{keller2012hics}
+Fabian Keller, Emmanuel Muller, and Klemens Bohm.
+\newblock Hics: High contrast subspaces for density-based outlier ranking.
+\newblock In \emph{2012 IEEE 28th international conference on data
+  engineering}, pages 1037--1048. IEEE, 2012.
+
+\bibitem[LeCun et~al.(1998)LeCun, Bottou, Bengio, and
+  Haffner]{lecun1998gradient}
+Yann LeCun, L{\'e}on Bottou, Yoshua Bengio, and Patrick Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock \emph{Proceedings of the IEEE}, 86\penalty0 (11):\penalty0
+  2278--2324, 1998.
+
+\bibitem[Liu et~al.(2008)Liu, Ting, and Zhou]{liu2008isolation}
+Fei~Tony Liu, Kai~Ming Ting, and Zhi-Hua Zhou.
+\newblock Isolation forest.
+\newblock In \emph{2008 eighth ieee international conference on data mining},
+  pages 413--422. IEEE, 2008.
+
+\bibitem[Lyon et~al.(2016)Lyon, Stappers, Cooper, Brooke, and
+  Knowles]{lyon2016fifty}
+Robert~J Lyon, BW~Stappers, Sally Cooper, John~Martin Brooke, and Joshua~D
+  Knowles.
+\newblock Fifty years of pulsar candidate selection: from simple filters to a
+  new principled real-time classification approach.
+\newblock \emph{Monthly Notices of the Royal Astronomical Society},
+  459\penalty0 (1):\penalty0 1104--1123, 2016.
+
+\bibitem[Mansouri et~al.(2013)Mansouri, Ringsted, Ballabio, Todeschini, and
+  Consonni]{mansouri2013quantitative}
+Kamel Mansouri, Tine Ringsted, Davide Ballabio, Roberto Todeschini, and Viviana
+  Consonni.
+\newblock Quantitative structure--activity relationship models for ready
+  biodegradability of chemicals.
+\newblock \emph{Journal of chemical information and modeling}, 53\penalty0
+  (4):\penalty0 867--878, 2013.
+
+\bibitem[McCulloch and Neuhaus(2005)]{mcculloch2005generalized}
+Charles~E McCulloch and John~M Neuhaus.
+\newblock Generalized linear mixed models.
+\newblock \emph{Encyclopedia of biostatistics}, 4, 2005.
+
+\bibitem[Moro et~al.(2014)Moro, Cortez, and Rita]{moro2014data}
+S{\'e}rgio Moro, Paulo Cortez, and Paulo Rita.
+\newblock A data-driven approach to predict the success of bank telemarketing.
+\newblock \emph{Decision Support Systems}, 62:\penalty0 22--31, 2014.
+
+\bibitem[Oord et~al.(2018)Oord, Li, and Vinyals]{oord2018representation}
+Aaron van~den Oord, Yazhe Li, and Oriol Vinyals.
+\newblock Representation learning with contrastive predictive coding.
+\newblock \emph{arXiv preprint arXiv:1807.03748}, 2018.
+
+\bibitem[Padhi et~al.(2021)Padhi, Schiff, Melnyk, Rigotti, Mroueh, Dognin,
+  Ross, Nair, and Altman]{padhi2021tabular}
+Inkit Padhi, Yair Schiff, Igor Melnyk, Mattia Rigotti, Youssef Mroueh, Pierre
+  Dognin, Jerret Ross, Ravi Nair, and Erik Altman.
+\newblock Tabular transformers for modeling multivariate time series.
+\newblock In \emph{ICASSP 2021-2021 IEEE International Conference on Acoustics,
+  Speech and Signal Processing (ICASSP)}, pages 3565--3569. IEEE, 2021.
+
+\bibitem[Pathak et~al.(2016)Pathak, Krahenbuhl, Donahue, Darrell, and
+  Efros]{pathak2016context}
+Deepak Pathak, Philipp Krahenbuhl, Jeff Donahue, Trevor Darrell, and Alexei~A
+  Efros.
+\newblock Context encoders: Feature learning by inpainting.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 2536--2544, 2016.
+
+\bibitem[Rao et~al.(2021)Rao, Liu, Verkuil, Meier, Canny, Abbeel, Sercu, and
+  Rives]{rao2021msa}
+Roshan Rao, Jason Liu, Robert Verkuil, Joshua Meier, John~F Canny, Pieter
+  Abbeel, Tom Sercu, and Alexander Rives.
+\newblock Msa transformer.
+\newblock \emph{bioRxiv}, 2021.
+
+\bibitem[Sakar et~al.(2019)Sakar, Polat, Katircioglu, and
+  Kastro]{sakar2019real}
+C~Okan Sakar, S~Olcay Polat, Mete Katircioglu, and Yomi Kastro.
+\newblock Real-time prediction of online shoppers’ purchasing intention using
+  multilayer perceptron and lstm recurrent neural networks.
+\newblock \emph{Neural Computing and Applications}, 31\penalty0 (10):\penalty0
+  6893--6908, 2019.
+
+\bibitem[Shavitt and Segal(2018)]{shavitt2018regularization}
+Ira Shavitt and Eran Segal.
+\newblock Regularization learning networks: deep learning for tabular datasets.
+\newblock \emph{arXiv preprint arXiv:1805.06440}, 2018.
+
+\bibitem[Sohn(2016)]{sohn2016improved}
+Kihyuk Sohn.
+\newblock Improved deep metric learning with multi-class n-pair loss objective.
+\newblock In \emph{Proceedings of the 30th International Conference on Neural
+  Information Processing Systems}, pages 1857--1865, 2016.
+
+\bibitem[Starkweather and Moske(2011)]{starkweather2011multinomial}
+Jon Starkweather and Amanda~Kay Moske.
+\newblock Multinomial logistic regression, 2011.
+
+\bibitem[Stolfo et~al.(2000)Stolfo, Fan, Lee, Prodromidis, and
+  Chan]{stolfo2000cost}
+J~Stolfo, Wei Fan, Wenke Lee, Andreas Prodromidis, and Philip~K Chan.
+\newblock Cost-based modeling and evaluation for data mining with application
+  to fraud and intrusion detection.
+\newblock \emph{Results from the JAM Project by Salvatore}, pages 1--15, 2000.
+
+\bibitem[Ting et~al.(2009)Ting, Tan, and Liu]{ting2009mass}
+KM~Ting, SC~Tan, and FT~Liu.
+\newblock Mass: A new ranking measure for anomaly detection.
+\newblock \emph{Gippsland School of Information Technology, Monash University},
+  2009.
+
+\bibitem[Van~der Maaten and Hinton(2008)]{van2008visualizing}
+Laurens Van~der Maaten and Geoffrey Hinton.
+\newblock Visualizing data using t-sne.
+\newblock \emph{Journal of machine learning research}, 9\penalty0 (11), 2008.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez,
+  Kaiser, and Polosukhin]{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock \emph{arXiv preprint arXiv:1706.03762}, 2017.
+
+\bibitem[Veli{\v{c}}kovi{\'c} et~al.(2017)Veli{\v{c}}kovi{\'c}, Cucurull,
+  Casanova, Romero, Lio, and Bengio]{velivckovic2017graph}
+Petar Veli{\v{c}}kovi{\'c}, Guillem Cucurull, Arantxa Casanova, Adriana Romero,
+  Pietro Lio, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock \emph{arXiv preprint arXiv:1710.10903}, 2017.
+
+\bibitem[Vincent et~al.(2008)Vincent, Larochelle, Bengio, and
+  Manzagol]{vincent2008extracting}
+Pascal Vincent, Hugo Larochelle, Yoshua Bengio, and Pierre-Antoine Manzagol.
+\newblock Extracting and composing robust features with denoising autoencoders.
+\newblock In \emph{Proceedings of the 25th international conference on Machine
+  learning}, pages 1096--1103, 2008.
+
+\bibitem[Weisberg(2005)]{weisberg2005applied}
+Sanford Weisberg.
+\newblock \emph{Applied linear regression}, volume 528.
+\newblock John Wiley \& Sons, 2005.
+
+\bibitem[Wright(1995)]{wright1995logistic}
+Raymond~E Wright.
+\newblock Logistic regression.
+\newblock 1995.
+
+\bibitem[Wu et~al.(2018)Wu, Xiong, Yu, and Lin]{wu2018unsupervised}
+Zhirong Wu, Yuanjun Xiong, Stella~X Yu, and Dahua Lin.
+\newblock Unsupervised feature learning via non-parametric instance
+  discrimination.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 3733--3742, 2018.
+
+\bibitem[Yang et~al.(2016)Yang, Yang, Dyer, He, Smola, and
+  Hovy]{yang2016hierarchical}
+Zichao Yang, Diyi Yang, Chris Dyer, Xiaodong He, Alex Smola, and Eduard Hovy.
+\newblock Hierarchical attention networks for document classification.
+\newblock In \emph{Proceedings of the 2016 conference of the North American
+  chapter of the association for computational linguistics: human language
+  technologies}, pages 1480--1489, 2016.
+
+\bibitem[Yin et~al.(2020)Yin, Neubig, Yih, and Riedel]{yin2020tabert}
+Pengcheng Yin, Graham Neubig, Wen-tau Yih, and Sebastian Riedel.
+\newblock Tabert: Pretraining for joint understanding of textual and tabular
+  data.
+\newblock \emph{arXiv preprint arXiv:2005.08314}, 2020.
+
+\bibitem[Yoon et~al.(2020)Yoon, Zhang, Jordon, and van~der
+  Schaar]{yoon2020vime}
+Jinsung Yoon, Yao Zhang, James Jordon, and Mihaela van~der Schaar.
+\newblock Vime: Extending the success of self-and semi-supervised learning to
+  tabular domain.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33, 2020.
+
+\bibitem[Yun et~al.(2019)Yun, Han, Oh, Chun, Choe, and Yoo]{yun2019cutmix}
+Sangdoo Yun, Dongyoon Han, Seong~Joon Oh, Sanghyuk Chun, Junsuk Choe, and
+  Youngjoon Yoo.
+\newblock Cutmix: Regularization strategy to train strong classifiers with
+  localizable features.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, pages 6023--6032, 2019.
+
+\bibitem[Zhang et~al.(2017)Zhang, Cisse, Dauphin, and
+  Lopez-Paz]{zhang2017mixup}
+Hongyi Zhang, Moustapha Cisse, Yann~N Dauphin, and David Lopez-Paz.
+\newblock mixup: Beyond empirical risk minimization.
+\newblock \emph{arXiv preprint arXiv:1710.09412}, 2017.
+
+\end{thebibliography}

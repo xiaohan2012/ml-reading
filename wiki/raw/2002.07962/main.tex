@@ -1,0 +1,706 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2020_conference,times}
+
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
+\input{math_commands.tex}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{subcaption} 
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{wrapfig,lipsum}
+\usepackage[linesnumbered,ruled,vlined,onelanguage]{algorithm2e}
+\newcommand{\zbf}{\mathbf{z}}
+\newcommand{\Zbf}{\mathbf{Z}}
+\newcommand{\ebf}{\mathbf{e}}
+\newcommand{\Qbf}{\mathbf{Q}}
+\newcommand{\qbf}{\mathbf{q}}
+\newcommand{\Kbf}{\mathbf{K}}
+\newcommand{\Vbf}{\mathbf{V}}
+\newcommand{\Wbf}{\mathbf{W}}
+\newcommand{\Cbf}{\mathbf{C}}
+\newcommand{\Xbf}{\mathbf{X}}
+\newcommand{\Dbf}{\mathbf{D}}
+\newcommand{\Gbf}{\mathbf{G}}
+\newcommand{\Mbf}{\mathbf{M}}
+\newcommand{\Hbf}{\mathbf{H}}
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\tbf}{\mathbf{t}}
+\newcommand{\hbf}{\mathbf{h}}
+\newcommand{\bbf}{\mathbf{b}}
+\newcommand{\xbf}{\mathbf{x}}
+
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Kcal}{\mathcal{K}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\Vcal}{\mathcal{V}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}{Claim}
+\newtheorem{prop}{Proposition}
+\newtheorem{corollary}{Corollary}[theorem]
+
+\newcommand{\inv}{^{\raisebox{.2ex}{$\scriptscriptstyle-1$}}}
+\usepackage{array}
+\usepackage{subcaption}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\title{Inductive representation learning on \\ temporal graphs}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the \iclrfinalcopy macro remains commented out below.
+% Non-anonymous submissions will be rejected without review.
+
+\author{Da Xu\thanks{Both authors contributed equally to this research.} , Chuanwei Ruan\footnotemark[1] , Evren Korpeoglu , Sushant Kumar , Kannan Achan \\
+Walmart Labs \\
+Sunnyvale, CA 94086, USA \\
+\texttt{\{Da.Xu,Chuanwei.Ruan,EKorpeoglu,SKumar4,KAchan\}@walmartlabs.com}
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+Inductive representation learning on temporal graphs is an important step toward salable machine learning on real-world dynamic networks. The evolving nature of temporal dynamic graphs requires handling new nodes as well as capturing temporal patterns. The node embeddings, which are now functions of time, should represent both the static node features and the evolving topological structures. Moreover, node and topological features can be temporal as well, whose patterns the node embeddings should also capture. We propose the temporal graph attention (TGAT) layer to efficiently aggregate temporal-topological neighborhood features as well as to learn the time-feature interactions. For TGAT, we use the self-attention mechanism as building block and develop a novel functional time encoding technique based on the classical Bochner's theorem from harmonic alaysis. By stacking TGAT layers, the network recognizes the node embeddings as functions of time and is able to \emph{inductively} infer embeddings for both new and observed nodes as the graph evolves. The proposed approach handles both node classification and link prediction task, and can be naturally extended to include the temporal edge features. We evaluate our method with \emph{transductive} and \emph{inductive} tasks under temporal settings with two benchmark and one industrial dataset. Our TGAT model compares favorably to state-of-the-art baselines as well as the previous temporal graph embedding approaches.
+\end{abstract}
+
+
+\section{Introduction}
+\label{sec:introduction}
+The technique of learning lower-dimensional vector embeddings on graphs have been widely applied to graph analysis tasks \citep{perozzi2014deepwalk,tang2015line,wang2016structural} and deployed in industrial systems \citep{ying2018graph,wang2018billion}. Most of the graph representation learning approaches only accept static or non-temporal graphs as input, despite the fact that many graph-structured data are time-dependent.
+% For the domains where graph representation learning have shown promising outcomes, such as social network, citation network, question answering forum and user-item interaction system, graphs are created as temporal interactions between nodes. 
+In social network, citation network, question answering forum and user-item interaction system, graphs are created as temporal interactions between nodes. 
+Using the final state as a static portrait of the graph is reasonable in some cases, such as the protein-protein interaction network, as long as node interactions are timeless in nature. Otherwise, ignoring the temporal information can severely diminish the modelling efforts and even causing questionable inference. For instance, models may mistakenly utilize future information for predicting past interactions during training and testing if the temporal constraints are disregarded. More importantly, the dynamic and evolving nature of many graph-related problems demand an explicitly modelling of the timeliness whenever nodes and edges are added, deleted or changed over time.
+
+Learning representations on temporal graphs is extremely challenging, and it is not until recently that several solutions are proposed \citep{nguyen2018continuous,li2018deep,goyal2018dyngem,trivedi2018representation}. We conclude the challenges in three folds. \textbf{Firstly}, to model the temporal dynamics, node embeddings should not be only the projections of topological structures and node features but also functions of the continuous time. Therefore, in addition to the usual vector space, temporal representation learning should be operated in some functional space as well. \textbf{Secondly}, graph topological structures are no longer static since the nodes and edges are evolving over time, which poses temporal constraints on neighborhood aggregation methods. \textbf{Thirdly}, node features and topological structures can exhibit temporal patterns.
+For example, node interactions that took place long ago may have less impact on the current topological structure and thus the node embeddings. Also, some nodes may possess features that allows them having more regular or recurrent interactions with others. We provide sketched plots for visual illustration in Figure \ref{fig:illustration}.
+
+% Temporal graph representation learning should be able to generate time-aware embeddings that deal with the above challenges. 
+
+Similar to its non-temporal counterparts, in the real-world applications, models for representation learning on temporal graphs should be able to quickly generate embeddings whenever required, in an \emph{inductive} fashion. \textsl{GraphSAGE} \citep{hamilton2017inductive} and \textsl{graph attention network} (\textsl{GAT}) \citep{velivckovic2017graph} are capable of inductively generating embeddings for unseen nodes based on their features, however, they do not consider the temporal factors. Most of the temporal graph embedding methods can only handle \textsl{transductive} tasks, since they require re-training or the computationally-expensive gradient calculations to infer embeddings for unseen nodes or node embeddings for a new timepoint. In this work, we aim at developing an architecture to inductively learn representations for temporal graphs such that the time-aware embeddings (for unseen and observed nodes) can be obtained via a single network forward pass. The key to our approach is the combination of the self-attention mechanism \citep{vaswani2017attention} and a novel functional time encoding technique derived from the \textsl{Bochner's} theorem from classical harmonic analysis \citep{loomis2013introduction}. 
+
+% The critical assumption for adapting self-attention to inductive representation learning on temporal graphs is that neighborhood information has different relevance depending to their features (contextual or topological) and interaction time. 
+The motivation for adapting self-attention to inductive representation learning on temporal graphs is to identify and capture relevant pieces of the temporal neighborhood information. Both graph convolutional network (\textsl{GCN}) \citep{kipf2016semi} and \textsl{GAT} are implicitly or explicitly assigning different weights to neighboring nodes \citep{velivckovic2017graph} when aggregating node features.
+% The idea is in line with spectral-based methods such as \textsl{GCN} \citep{kipf2016semi}, where the convolutional layer can be viewed as a global aggregation with neighbourhood relevance weights implicitly given by the normalized adjacency matrix. Also, by adaptively assigned different attention weights to neighborhood nodes, \textsl{GAT} shows superior performances over \textsl{GraphSAGE}. 
+The self-attention mechanism was initially designed to recognize the relevant parts of input sequence in natural language processing. 
+% Neural machine translation models based on the self-attention mechanism has achieved state-of-the-art performances in domains that were dominated by the recurrent neural network (RNN) \citep{vaswani2017attention}. 
+As a discrete-event sequence learning method, self-attention outputs a vector representation of the input sequence as a weighted sum of individual entry embeddings. Self-attention enjoys several advantages such as parallelized computation and interpretability \citep{vaswani2017attention}. 
+% Without relying on RNN architecture, self-attention enjoys computation advantages since it processes sequential learning in parallel. Also, the weights may reflect relative importance and help explain how the model is capturing sequential information. 
+% The self-attention mechanism captures sequential information via the positional encoding, i.e. a unique vector embedding for each position shared across sequences, which impedes extending self-attention to process temporal sequences. 
+Since it captures sequential information only through the positional encoding, temporal features can not be handled.
+Therefore, we are motivated to replace positional encoding with some vector representation of time. Since time is a continuous variable, the mapping from the time domain to vector space has to be functional. We gain insights from harmonic analysis and propose a theoretical-grounded functional time encoding approach that is compatible with the self-attention mechanism. The temporal signals are then modelled by the interactions between the functional time encoding and nodes features as well as the graph topological structures. 
+
+% We evaluate our approach on both transductive task and inductive task with two benchmark (Reddit and Wikipedia) and one industrial dataset. We examine both temporal graph construction (future link prediction) and dynamic node label classification. Our proposed \textsl{TGAT} outperforms \textsl{GAT} and \textsl{GraphSAGE} in inductive learning tasks, and outrun spectral and non-spectral static graph representation learning methods in transductive learning tasks. \textsl{TGAT} also compares favorably to other temporal graph embedding methods in both settings. Extensive ablation studies show the effectiveness of the proposed functional time encoding, and to improve computational performances, we come up with the \textsl{temporal subgraph batching} technique to support temporal graph sampling.
+
+To evaluate our approach, we consider future link prediction on the observed nodes as \emph{transductive} learning task, and on the unseen nodes as \emph{inductive} learning task. We also examine the dynamic node classification task using node embeddings (temporal versus non-temporal) as features to demonstrate the usefulness of our functional time encoding. We carry out extensive ablation studies and sensitivity analysis to show the effectiveness of the proposed functional time encoding and \textsl{TGAT}-layer. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{tep-graph.png}
+    \caption{Visual illustration for several complications from the temporal graphs. (A). The generation process of a temporal graph and its snapshots. It is obvious that the static graphs in the snapshots only reflect partial temporal information. (B). The final state of the temporal graph when projected to the time-independent 2-D plane. Other than the missing temporal information, the multi-edge situation arises as well. (C). When predicting the link between node A and C at time $t_3$, the message-passing paths should be subject to temporal contraints. The solid lines give the appropriate directions, and the dashed lines violates the temporal constraints. }
+    \label{fig:illustration}
+\end{figure}
+
+
+\section{Related Work}
+\label{sec:related-work}
+\textbf{Graph representation learning}. Spectral graph embedding models operate on the graph spectral domain by approximating, projecting or expanding the graph Laplacian \citep{kipf2016semi,henaff2015deep,defferrard2016convolutional}. Since their training and inference are conditioned on the specific graph spectrum, they are not directly extendable to temporal graphs. Non-spectral approaches, such as \textsl{GAT}, \textsl{GraphSAGE} and \textsl{MoNET}, \citep{monti2017geometric} rely on the localized neighbourhood aggregations and thus are not restricted to the training graph. \textsl{GraphSAGE} and \textsl{GAT} also have the flexibility to handle evolving graphs inductively. To extend classical graph representation learning approaches to the temporal domain, several attempts have been done by cropping the temporal graph into a sequence of graph snapshots \citep{li2018deep,goyal2018dyngem,rahman2018dylink2vec,xu2019generative}, and some others work with temporally persistent node (edges) \citep{trivedi2018representation,ma2019streaming}. \cite{nguyen2018continuous} proposes a node embedding method based on temporal random walk and reported state-of-the-art performances. However, their approach only generates embeddings for the final state of temporal graph and can not directly apply to the inductive setting.
+
+\textbf{Self-attention mechanism.} Self-attention mechanisms often have two components: the embedding layer and the attention layer. The embedding layer takes an ordered entity sequence as input. Self-attention uses the positional encoding, i.e. each position $k$ is equipped with a vector $\mathbf{p}_k$ (fixed or learnt) which is shared for all sequences. For the entity sequence $\ebf=(e_1, \ldots, e_l)$, the embedding layer takes the sum or concatenation of entity embeddings (or features) ($\zbf \in \mathbb{R}^d$) and their positional encodings as input:
+\begin{equation}
+\label{eqn:attn-emb}
+\mathbf{Z}_{\ebf} = \big[\zbf_{e_1} + \mathbf{p}_1, \ldots, \zbf_{e_1} + \mathbf{p}_l\big]^{\intercal} \in \mathbb{R}^{l \times d}, \, \text{or} \quad \mathbf{Z}_{\ebf} = \big[\zbf_{e_1} || \mathbf{p}_1, \ldots, \zbf_{e_1} || \mathbf{p}_l \big]^{\intercal} \in \mathbb{R}^{l \times (d+d_{\text{pos}})}.
+\end{equation}
+where $||$ denotes concatenation operation and $d_{\text{pos}}$ is the dimension for positional encoding.
+Self-attention layers can be constructed using the scaled dot-product attention, which is defined as:
+\begin{equation}
+\label{eqn:attn-layer}
+    \text{Attn}\big(\Qbf, \Kbf, \Vbf \big) = \text{softmax}\Big(\frac{\Qbf \Kbf^{\intercal}}{\sqrt{d}} \Big)\Vbf,
+\end{equation}
+where $\Qbf$ denotes the 'queries', $\Kbf$ the 'keys' and $\Vbf$ the 'values'. In \cite{vaswani2017attention}, they are treated as projections of the output $\mathbf{Z}_{\ebf}$:
+$
+\Qbf = \mathbf{Z}_{\ebf} \Wbf_{Q}, \quad \Kbf = \mathbf{Z}_{\ebf} \Wbf_{K}, \quad \Vbf = \mathbf{Z}_{\ebf} \Wbf_{V},
+$
+where $\Wbf_{Q}$, $\Wbf_{K}$ and $\Wbf_{V}$ are the projection matrices.
+Since each row of $\Qbf$, $\Kbf$ and $\Vbf$ represents an entity, the dot-product attention takes a weighted sum of the entity 'values' in $\Vbf$ where the weights are given by the interactions of entity 'query-key' pairs. The hidden representation for the entity sequence under the dot-product attention is then given by $h_{\ebf}=\text{Attn}(\Qbf, \Kbf, \Vbf)$.
+
+
+
+
+
+\section{Temporal Graph Attention Network Architecture}
+\label{sec:architect}
+We first derive the mapping from time domain to the continuous differentiable functional domain as the functional time encoding such that resulting formulation is compatible with self-attention mechanism as well as the backpropagation-based optimization frameworks. The same idea was explored in a concurrent work \citep{xu2019self}. We then present the temporal graph attention layer and show how it can be naturally extended to incorporate the edge features.
+
+\subsection{Functional time encoding}
+\label{sec:functional}
+Recall that our starting point is to obtain a continuous functional mapping $\Phi: T \to \Rbb^{d_T}$ from time domain to the $d_T$-dimensional vector space to replace the positional encoding in (\ref{eqn:attn-emb}). 
+% \textcolor{red}{Specifically, for the $k^{th}$ entity in the sequence which is now paired with a time feature $t_k \in T$, we wish to replace the $\mathbf{p}_k$ in (\ref{eqn:attn-emb}) with the vector $\Phi(t_k)$. Under the previous notations, we have $d_T=d$ for summation and $d_T=d_{\text{pos}}$ for concatenation.} 
+Without loss of generality, we assume that the time domain can be represented by the interval starting from origin: $T = [0, t_{\max}]$, where $t_{\max}$ is determined by the observed data. For the inner-product
+self-attention in (\ref{eqn:attn-layer}), often the 'key' and 'query' matrices ($\Kbf$, $\Qbf$) are given by identity or linear projection of $\Zbf_{\ebf}$ defined in (\ref{eqn:attn-emb}), leading to terms that only involve inner-products between positional (time) encodings. Consider two time points $t_1, t_2$ and inner product between their functional encodings $\big\langle \Phi (t_1), \Phi (t_2) \big\rangle$. Usually, the relative timespan, rather than the absolute value of time, reveals critical temporal information. Therefore, we are more interested in learning patterns related to the timespan of $|t_2 - t_1|$, which should be ideally expressed by $\big\langle \Phi (t_1), \Phi (t_2) \big\rangle$ to be compatible with self-attention.
+
+
+Formally, we define the temporal kernel $\Kcal: T \times T \to \Rbb$ with $\Kcal(t_1,t_2):= \big\langle \Phi (t_1), \Phi (t_2) \big\rangle$ and $\Kcal(t_1, t_2) = \psi(t_1-t_2)$, $\forall t_1,t_2 \in T$ for some $\psi: [-t_{\max}, t_{\max}] \to \Rbb$. The temporal kernel is then translation-invariant, since $\Kcal(t_1+c,t_2+c) = \psi(t_1-t_2) = \Kcal(t_1,t_2)$ for any constant $c$. Generally speaking, functional learning is extremely complicated since it operates on infinite-dimensional spaces, but now we have transformed the problem into learning the temporal kernel $\Kcal$ expressed by $\Phi$. Nonetheless, we still need to figure out an explicit parameterization for $\Phi$ in order to conduct efficient gradient-based optimization. Classical harmonic analysis theory, i.e. the Bochner's theorem, motivates our final solution. We point out that the temporal kernel $\Kcal$ is positive-semidefinite (PSD) and continuous, since it is defined via Gram matrix and the mapping $\Phi$ is continuous. Therefore, the kernel $\Kcal$ defined above satisfy the assumptions of the Bochner's theorem, which we state below.
+
+\begin{theorem}[Bochner's Theorem]
+A continuous, translation-invariant kernel $\mathcal{K}(\mathbf{x},\mathbf{y})=\psi(\mathbf{x}-\mathbf{y})$ on $\mathbb{R}^d$ is positive definite if and only if there exists a non-negative measure on $\mathbb{R}$ such that $\psi$ is the Fourier transform of the measure.
+\end{theorem}
+Consequently, when scaled properly, our temporal kernel $\Kcal$ have the alternate expression:
+\begin{equation}
+\label{eqn:bochner}
+    \mathcal{K}(t_1, t_2) = \psi(t_1, t_2) = \int_{\mathbb{R}}e^{i\omega(t_1 - t_2)}p(\omega)d\omega = \E_{\omega}[\xi_{\omega}(t_1) \xi_{\omega}(t_2)^*],
+\end{equation}
+where $\xi_{\omega}(t) = e^{i\omega t}$. Since the kernel $\mathcal{K}$ and the probability measure $p(\omega)$ are real, we extract the real part of (\ref{eqn:bochner}) and obtain:
+\begin{equation}
+\label{eqn:bochner-mapping}
+    \mathcal{K}(t_1,t_2) = \E_{\omega}\big[\cos(\omega (t_1 - t_2))\big]=\E_{\omega}\big[\cos(\omega t_1)\cos(\omega t_2) + \sin(\omega t_1)\sin(\omega t_2) \big].
+\end{equation}
+
+The above formulation suggests approximating the expectation by the Monte Carlo integral \citep{rahimi2008random}, i.e. $\mathcal{K}(t_1,t_2) \approx \frac{1}{d}\sum_{i=1}^d\cos(\omega_i t_1)\cos(\omega_i t_2) + \sin(\omega_i t_1)\sin(\omega_i t_2)$, with $\omega_1,\ldots,\omega_d \stackrel{\text{i.i.d}}{\sim} p(\omega)$.
+% \[
+% \mathcal{K}(t_1,t_2) \approx \frac{1}{d}\sum_{i=1}^d\cos(\omega_i t_1)\cos(\omega_i t_2) + \sin(\omega_i t_1)\sin(\omega_i t_2), \, \text{with } \; \omega_1,\ldots,\omega_d \stackrel{\text{i.i.d}}{\sim} p(\omega).
+% \]
+Therefore, we propose the finite dimensional functional mapping to $\mathbb{R}^d$ as: 
+\begin{equation}
+t \mapsto \Phi_d(t) := \sqrt{\frac{1}{d}}\big[\cos(\omega_1 t),\sin(\omega_1 t),\ldots,\cos(\omega_d t), \sin(\omega_d t)\big],
+\end{equation} 
+and it is easy to show that $\big\langle \Phi_d(t_1), \Phi_d(t_2) \big\rangle \approx \Kcal (t_1,t_2)$. As a matter of fact, we prove the stochastic uniform convergence of $\big\langle \Phi_d(t_1), \Phi_d(t_2) \big\rangle$ to the underlying $\Kcal (t_1,t_2)$ and shows that it takes only a reasonable amount of samples to achieve proper estimation, which is stated in Claim 1.
+\begin{claim}
+Let $p(\omega)$ be the corresponding probability measure stated in Bochner's Theorem for kernel function $\mathcal{K}$. Suppose the feature map $\Phi$ is constructed as described above using samples $\{\omega_i\}_{i=1}^d$, then we only need $d=\Omega \big(\frac{1}{\epsilon^2} \log \frac{\sigma_p^2 t_{\max}}{\epsilon}\big)$ samples to have
+\begin{equation*}
+    \sup_{t_1,t_2 \in T}\big|\Phi_d(t_1)^{'} \Phi_d(t_2) - \mathcal{K}(t_1,t_2)\big| < \epsilon \, \text{with any probability for }\forall \epsilon > 0,
+\end{equation*}
+where $\sigma_p^2$ is the second momentum with respect to $p(\omega)$.
+\end{claim}
+The proof is provided in supplement material. 
+
+By applying Bochner's theorem, we convert the problem of kernel learning to distribution learning, i.e. estimating the $p(\omega)$ in Theorem 1. A straightforward solution is to apply the \textsl{reparameterization} trick by using auxiliary random variables with a known marginal distribution as in variational autoencoders \citep{kingma2013auto}. However, the \textsl{reparameterization} trick is often limited to certain distributions such as the 'local-scale' family, which may not be rich enough for our purpose. For instance, when $p(\omega)$ is multimodal it is difficult to reconstruct the underlying distribution via direct reparameterizations. An alternate approach is to use the inverse cumulative distribution function (CDF) transformation. \cite{rezende2015variational} propose using parameterized \textsl{normalizing flow}, i.e. a sequence of invertible transformation functions, to approximate arbitrarily complicated CDF and efficiently sample from it. \cite{dinh2016density} further considers stacking bijective transformations, known as affine coupling layer, to achieve more effective CDF estimation. The above methods learns the inverse CDF function $F^{-1}_{\theta}(.)$ parameterized by flow-based networks and draw samples from the corresponding distribution. 
+% For notation purpose, we use $\Phi_d^{\theta}(t)$ to denote the functional time encoding obtained by estimating $F^{-1}_{\theta}(.)$. 
+On the other hand, if we consider an non-parameterized approach for estimating distribution, then learning $F^{-1}(.)$ and obtain $d$ samples from it is equivalent to directly optimizing the $\{\omega_1,\ldots,\omega_d\}$ in (\ref{eqn:bochner-mapping}) as free model parameters. 
+% We refer to the resulting functional time encoding as $\Phi_d^{\omega}(t)$. 
+In practice, we find these two approaches to have highly comparable performances (see supplement material). Therefore we focus on the non-parametric approach, since it is more parameter-efficient and has faster training speed (as no sampling during training is required). 
+
+The above functional time encoding is fully compatible with self-attention, thus they can replace the positional encodings in (\ref{eqn:attn-emb}) and their parameters are jointly optimized as part of the whole model. 
+
+
+\subsection{Temporal graph attention layer}
+\label{sec:layer}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.36]{tgat.png}
+    \caption{The architecture of the $l^{th}$ \textsl{TGAT} layer with $k=3$ attention heads for node $v_0$ at time $t$.}
+    \label{fig:tgat}
+\end{figure}
+
+
+We use $v_i$ and $\xbf_{i} \in \Rbb^{d_0}$ to denote node $i$ and its raw node features.
+The proposed TGAT architecture depends solely on the temporal graph attention layer (\textsl{TGAT} layer). In analogy to \textsl{GraphSAGE} and \textsl{GAT}, the  \textsl{TGAT} layer can be thought of as a local aggregation operator that takes the temporal neighborhood with their hidden representations (or features) as well as timestamps as input, and the output is the time-aware representation for target node at any time point $t$. We denote the hidden representation output for node $i$ at time $t$ from the $l^{th}$ layer as $\tilde{\hbf}^{(l)}_{i}(t)$.
+
+Similar to \textsl{GAT}, we perform the \textsl{masked self-attention} to take account of the structural information \citep{velivckovic2017graph}. For node $v_0$ at time $t$, we consider its neighborhood $\mathcal{N}(v_0;t) = \{v_1, \ldots, v_N\}$ such that the interaction between $v_0$ and $v_i \in \mathcal{N}(v_0;t)$, which takes place at time $t_i$, is prior to $t$\footnote{Node $v_i$ may have multiple interactions with $v_0$ at different time points. For the sake of presentation clarity, we do not explicitly differentiate such recurring interactions in our notations.}. The input of \textsl{TGAT} layer is the neighborhood information $\Zbf = \big\{ \tilde{\hbf}^{(l-1)}_{1}(t_1), \ldots, \tilde{\hbf}^{(l-1)}_{N}(t_N) \big\}$ and the target node information with some time point $\big(\tilde{\hbf}^{(l-1)}_{0}(t),t\big)$. When $l=1$, i.e. for the first layer, the inputs are just raw node features. The layer produces the time-aware representation of target node $v_0$ at time $t$, denoted by $\tilde{\hbf}^{(l)}_{0}(t)$, as its output. Due to the translation-invariant assumption for the temporal kernel, we can alternatively use $\{t - t_1, \ldots, t - t_N\}$ as interaction times, since $|t_i - t_j|=\big|(t-t_i) - (t-t_j)\big|$ and we only care for the timespan.
+
+In line with original self-attention mechanism, we first obtain the entity-temporal feature matrix as
+\begin{equation}
+\label{eqn:Z}
+\Zbf(t) = \Big[\tilde{\hbf}^{(l-1)}_{0}(t) || \Phi_{d_T}(0), \tilde{\hbf}^{(l-1)}_{1}(t_1) || \Phi_{d_T}(t-t_1), \ldots, \tilde{\hbf}^{(l-1)}_{N}(t_N) || \Phi_{d_T}(t-t_N)\Big]^{\intercal} \, \text{(or use sum)}
+\end{equation}
+and forward it to three different linear projections to obtain the 'query', 'key' and 'value': 
+\[
+\qbf(t) = \big[\Zbf(t)
+\big]_0\Wbf_Q, \, \Kbf(t) = \big[\Zbf(t)\big]_{1:N}\Wbf_K , \, \Vbf(t) = \big[\Zbf(t)\big]_{1:N}\Wbf_V ,
+\]
+where $\Wbf_Q, \Wbf_K, \Wbf_V \in \Rbb^{(d+d_T)\times d_h}$ are the weight matrices that are employed to capture the interactions between time encoding and node features. For notation simplicity, in the following discussion we treat the dependence of the intermediate outputs on target time $t$ as implicit. The attention weights $\{\alpha_{i}\}_{i=1}^N$ of the softmax function output in (\ref{eqn:attn-layer}) is given by: $\alpha_{i}=\exp \big(\qbf ^{\intercal} \Kbf_i\big) / \Big(\sum_q \exp \big(\qbf^{\intercal} \Kbf_q\big) \Big)$. 
+The attention weight $\alpha_{i}$ reveals how node $i$ attends to the features of node $v_0$ within the topological structure defined as $\mathcal{N}(v_0;t)$ after accounting for their interaction time with $v_0$. The self-attention therefore captures the temporal interactions with both node features and topological features and defines a local temporal aggregation operator on graph. The hidden representation for any node $v_i \in \mathcal{N}(v_0;t)$ is given by: $\alpha_{i}\Vbf_i$. The mechanism can be effectively shared across all nodes for any time point.
+% The $\alpha_{ij}$ reveals the relative importance of node $q$ to node $i$ in terms of their features and the local neighbourhood under their interaction time with the target node relative to $t$, i.e. $|t-t_i|$ and $|t - t_j|$. The set of attention coefficients is then used to compute the hidden node representation as linear combination of the local features $\Vbf(t)$, such that each node attends over the values of all other nodes. 
+% The same mechanism and network parameters are shared across all neighborhoods during training.
+We then take the row-wise sum from the above dot-product self-attention output as the hidden \textsl{neighborhood representations}, i.e. 
+\[
+\hbf(t) = \text{Attn}\big(\qbf(t), \Kbf(t), \Vbf(t)\big) \in \Rbb^{d_h}.
+\]
+To combine neighbourhood representation with the target node features, we adopt the same practice from \textsl{GraphSAGE} and concatenate the neighbourhood representation with the target node's feature vector $\zbf_{0}$. We then pass it to a feed-forward neural network to capture non-linear interactions between the features as in \citep{vaswani2017attention}:
+\begin{equation*} 
+\begin{split}
+& \tilde{\hbf}^{(l)}_{0}(t) = \text{FFN}\Big(\hbf(t) || \xbf_{0} \Big) \equiv \text{ReLU}\Big([\hbf(t) || \xbf_{0}]\Wbf^{(l)}_0 + \bbf^{(l)}_0\Big)\Wbf^{(l)}_1 + \bbf^{(l)}_1, \\ 
+& \Wbf^{(l)}_0 \in \Rbb^{(d_h+d_0) \times d_{f}}, \Wbf^{(l)}_1 \in \Rbb^{d_{f}\times d}, \bbf^{(l)}_0 \in \Rbb^{d_f}, \bbf^{(l)}_1 \in \Rbb^d,
+\end{split}
+\end{equation*}
+where $\tilde{\hbf}^{(l)}_0(t) \in \Rbb^d$ is the final output representing the time-aware node embedding at time $t$ for the target node. Therefore, the \textsl{TGAT} layer can be implemented for node classification task using the semi-supervised learning framework proposed in \cite{kipf2016semi} as well as the link prediction task with the encoder-decoder framework summarized by \cite{hamilton2017representation}.
+
+\cite{velivckovic2017graph} suggests that using \textsl{multi-head} attention improves performances and stabilizes training for \textsl{GAT}. For generalization purposes, we also show that the proposed TGAT layer can be easily extended to the \textsl{multi-head} setting. Consider the dot-product self-attention outputs from a total of $k$ different heads, i.e. $\hbf^{(i)} \equiv \text{Attn}^{(i)}\big(\qbf(t), \Kbf(t), \Vbf(t)\big)$, $i=1,\ldots,k$. We first concatenate the $k$ neighborhood representations into a combined vector and then carry out the same procedure:
+\[
+\tilde{\hbf}^{(l)}_{0}(t) = \text{FFN}\Big(\hbf^{(1)}(t) || \ldots || \hbf^{(k)}(t) || \xbf_{0} \Big).
+\]
+Just like \textsl{GraphSAGE}, a single \textsl{TGAT} layer aggregates the localized one-hop neighborhood, and by stacking $L$ \textsl{TGAT} layers the aggregation extends to $L$ hops. Similar to \textsl{GAT}, out approach does not restrict the size of neighborhood. We provide a graphical illustration of our \textsl{TGAT} layer in Figure \ref{fig:tgat}.
+
+\subsection{Extension to incorporate Edge Features}
+\label{sec:edge-feat}
+
+We show that the \textsl{TGAT} layer can be naturally extended to handle edge features in a \emph{message-passing} fashion. \cite{simonovsky2017dynamic} and \cite{wang2018dynamic} modify classical spectral-based graph convolutional networks to incorporate edge features. \cite{battaglia2018relational} propose general graph neural network frameworks where edges features can be processed. For temporal graphs, we consider the general setting where each dynamic edge is associated with a feature vector, i.e. the interaction between $v_i$ and $v_j$ at time $t$ induces the feature vector $\xbf_{i,j}(t)$. To propagate edge features during the \textsl{TGAT} aggregation, we simply extend the $\Zbf(t)$ in (\ref{eqn:Z}) to:
+\begin{equation}
+    \Zbf(t) = \Big[\ldots, \tilde{\hbf}^{(l-1)}_{i}(t_i) || \xbf_{0,i}(t_i) || \Phi_{d_T}(t-t_i) , \ldots  \Big] \, \text{ (or use summation),}
+\end{equation}
+such that the edge information is propagated to the target node's hidden representation, and then passed on to the next layer (if exists). The remaining structures stay the same as in Section \ref{sec:layer}.
+
+
+\subsection{Temporal sub-graph batching}
+\label{sec:batching}
+
+% In implementation, a major difference between temporal and non-temporal graphs is concerned with neighborhood sampling and therefore the batching process during training. 
+Stacking $L$ \textsl{TGAT} layers is equivalent to aggregate over the $L$-hop neighborhood. For each $L$-hop sub-graph that is constructed during the batch-wise training, all message passing directions must be aligned with the observed chronological orders. Unlike the non-temporal setting where each edge appears only once, in temporal graphs two node can have multiple interactions at different time points. Whether or not to allow loops that involve the target node should be judged case-by-case. Sampling from neighborhood, or known as \emph{neighborhood dropout}, may speed up and stabilize model training. For temporal graphs, neighborhood dropout can be carried uniformly or weighted by the inverse timespan such that more recent interactions has higher probability of being sampled. 
+% To avoid violating the temporal constraints, when constructing sub-graphs with dropout, the process should be carried out in a breadth-first-search manner. 
+
+% To learn the large scale graph efficiently, we adopt the sub-graph sampling technique which enables the batch-wise training on graph for message-passing based networks. However unlike other methods for non-temporal graphs, we require the message passing direction follows the chronological order in our model.
+
+% As mentioned in Section \ref{sec:layer}, the time-aware representation $\tilde\hbf_{0}^{(l)}(t)$ of node $v_0$ at time $t$ aggregates the representations only from its neighbors with which $v_0$ interacts before $t$.  Therefore not only the temporal embedding $\Phi_{d_T}$ but also the underlying graph structure changes as a function of time. The similar temporal constraint applies to the neighbor nodes sampling process for the $(l-1)$th layer too. Specifically suppose there is an edge between node $v_0$ and $v_1$ at time $t_{1}$ where $t_1 < t$, to compute $\tilde\hbf_{1}^{(l-1)}(t_1)$ we will only sample the edges which has linked to $v_1$ before time $t1$. Figure ??? demonstrates how the neighborhood topology evolves over time.
+
+
+
+
+\subsection{Comparisons to related work}
+\label{sec:connection}
+
+The functional time encoding technique and \textsl{TGAT} layer introduced in Section \ref{sec:functional} and \ref{sec:layer} solves several critical challenges, and the \textsl{TGAT} network intrinsically connects to several prior methods.
+
+\begin{itemize}
+
+\item Instead of cropping temporal graphs into a sequence of snapshots or constructing time-constraint random walks, which inspired most of the current temporal graph embedding methods, we directly learn the functional representation of time. The proposed approach is motivated by and thus fully compatible with the well-established self-attention mechanism. Also, to the best of our knowledge, no previous work has discussed the temporal-feature interactions for temporal graphs, which is also considered in our approach.
+   
+\item The \textsl{TGAT} layer is computationally efficient compared with RNN-based models, since the masked self-attention operation is parallelizable, as suggested by \cite{vaswani2017attention}. The per-batch time complexity of the \textsl{TGAT} layer with $k$ heads and $l$ layers can be expressed as $O\big( (k\tilde{N})^l  \big)$ where $\tilde{N}$ is the average neighborhood size, which is comparable to \textsl{GAT}. When using \textsl{multi-head} attention, the computation for each head can be parallelized as well.
+    
+\item The inference with \textsl{TGAT} is entirely \textsl{inductive}. With an explicit functional expression $\tilde{h}(t)$ for each node, the time-aware node embeddings can be easily inferred for any timestamp via a single network forward pass. Similarity, whenever the graph is updated, the embeddings for both unseen and observed nodes can be quickly inferred in an inductive fashion similar to that of \textsl{GraphSAGE}, and the computations can be parallelized across all nodes.
+    
+\item \textsl{GraphSAGE} with mean pooling \citep{hamilton2017inductive} can be interpreted as a special case of the proposed method, where the temporal neighborhood is aggregated with equal attention coefficients. \textsl{GAT} is like the time-agnostic version of our approach but with a different formulation for self-attention, as they refer to the work of \cite{bahdanau2014neural}. We discuss the differences in detail in the Appendix. It is also straightforward to show our connections with the menory networks \citep{sukhbaatar2015end} by thinking of the temporal neighborhoods as memory. The techniques developed in our work may also help adapting \textsl{GAT} and \textsl{GraphSAGE} to temporal settings as we show in our experiments.
+\end{itemize}
+
+
+\section{Experiment and Results}
+\label{sec:experiment}
+We test the performance of the proposed method against a variety of strong baselines (adapted for temporal settings when possible) and competing approaches, for both the \textsl{inductive} and \textsl{transductive} tasks on two benchmark and one large-scale industrial dataset. 
+% Our \textsl{TGAT} network achieves state-of-the-art performances on all tasks across the three datasets.
+
+\subsection{Datasets}
+\label{sec:dataset}
+Real-world temporal graphs consist of time-sensitive node interactions, evolving node labels as well as new nodes and edges. We choose the following datasets which contain all scenarios.
+
+\textbf{Reddit dataset}.\footnote{http://snap.stanford.edu/jodie/reddit.csv} We use the data from active users and their posts under subreddits, leading to a temporal graph with 11,000 nodes,  $\sim$700,000 temporal edges and dynamic labels indicating whether a user is banned from posting. The user posts are transformed into edge feature vectors.
+
+\textbf{Wikipedia dataset}.\footnote{http://snap.stanford.edu/jodie/wikipedia.csv} We use the data from top edited pages and active users, yielding a temporal graph $\sim$9,300 nodes and around 160,000 temporal edges. Dynamic labels indicate if users are temporarily banned from editing. The user edits are also treated as edge features.
+
+\textbf{Industrial dataset}. We choose 70,000 popular products and 100,000 active customers as nodes from the online grocery shopping website\footnote{https://grocery.walmart.com/} and use the customer-product purchase as temporal edges ($\sim$2 million). The customers are tagged with labels indicating if they have a recent interest in dietary products. Product features are given by the pre-trained product embeddings \citep{xu2020product}.
+
+We do the chronological train-validation-test split with 70\%-15\%-15\% according to node interaction timestamps. The dataset and preprocessing details are provided in the supplement material.
+
+\subsection{Transductive and inductive learning tasks}
+
+Since the majority of temporal information is reflected via the timely interactions among nodes, we choose to use a more revealing link prediction setup for training. Node classification is then treated as the downstream task using the obtained time-aware node embeddings as input.
+
+\textbf{Transductive task} examines embeddings of the nodes that have been observed in training, via the future link prediction task and the node classification. To avoid violating temporal constraints, we predict the links that strictly take place posterior to all observations in the training data. 
+
+\textbf{Inductive task} examines the \emph{inductive} learning capability using the inferred representations of unseen nodes, by predicting the future links between unseen nodes and classify them based on their inferred embedding dynamically. We point out that it suffices to only consider the future sub-graph for unseen nodes since they are equivalent to new graphs under the non-temporal setting.
+
+As for the evaluation \textbf{metrics}, in the link prediction tasks, we first sample an equal amount of negative node pairs to the positive links and then compute the \emph{average precision} (\emph{AP}) and classification \emph{accuracy}. In the downstream node classification tasks, due to the label imbalance in the datasets, we employ the \emph{area under the ROC curve} (\emph{AUC}). 
+
+
+% Since the edges contains more temporal information than nodes and are more useful for revealing the underlying dynamics and evolvement, we train the models for link predict tasks with the encoder-decoder framework with the inner-product decoder described in \cite{hamilton2017representation}.
+
+
+\begin{table}[]
+\small
+    \centering
+    \begin{tabular}{c|c c| c c| c c }
+    \hline
+    \hline
+         \textbf{Dataset} & \multicolumn{2}{c}{\textbf{Reddit}} & \multicolumn{2}{c}{\textbf{Wikipedia}} & \multicolumn{2}{c}{\textbf{Industrial}} \\ 
+        
+        \textbf{Metric} & \textbf{Accuracy} & \textbf{AP} &  \textbf{Accuracy} & \textbf{AP} &  \textbf{Accuracy} & \textbf{AP}\\
+        
+        \hline
+        GAE & 74.31 (0.5) & 93.23 (0.3) & 72.85 (0.7) & 91.44 (0.1) & 68.92 (0.3) & 81.15 (0.2)  \\ 
+        VAGE & 74.19 (0.4) & 92.92 (0.2) & 78.01 (0.3) & 91.34 (0.3) & 67.81 (0.4) & 80.87 (0.3) \\ 
+        DeepWalk & 71.43 (0.6) & 83.10 (0.5) & 76.67 (0.5) & 90.71 (0.6) & 65.87 (0.3) & 80.93 (0.2)\\ 
+        Node2vec & 72.53 (0.4) & 84.58 (0.5)  & 78.09 (0.4) & 91.48 (0.3) & 66.64 (0.3) & 81.39 (0.3) \\ 
+        CTDNE & 73.76 (0.5) & 91.41 (0.3) & 79.42 (0.4) & 92.17 (0.5) & 67.81 (0.3) & 80.95 (0.5) \\ 
+        GAT & 92.14 (0.2) & 97.33 (0.2) & 87.34 (0.3) & 94.73 (0.2) & 69.58 (0.4) & 81.51 (0.2) \\ 
+        {GAT+T} & 92.47 (0.2)   & 97.62 (0.2)  & \underline{87.57} (0.2)  & \underline{95.14} (0.4)  & 70.15 (0.3)  & 82.66 (0.4)  \\
+        GraphSAGE & 92.31(0.2) & 97.65 (0.2) & 85.93 (0.3) & 93.56 (0.3) & 70.19 (0.2) & 83.27 (0.3) \\ 
+        {GraphSAGE+T} &   \underline{92.58} (0.2) &  \underline{97.89} (0.3) & {86.31} (0.3)  & {93.72} (0.3)  & \underline{71.84} (0.3)  &  \underline{84.95} (0.) \\ \hline
+        Const-TGAT & 91.39 (0.2) & 97.86 (0.2) & 86.03 (0.4) & 93.50 (0.3) & 68.52 (0.2) & 81.91 (0.3) \\ 
+        TGAT & \textbf{92.92} (0.3) & \textbf{98.12} (0.2) & \textbf{88.14} (0.2) & \textbf{95.34} (0.1) & \textbf{73.28} (0.2) & \textbf{86.32} (0.1) \\ 
+        % \hline
+        % Min \% lif of TGAT& 2.3\% & 1.6\% & 0.3\% & 0.5 \% & 4.4\% & 3.3 \% \\
+        \hline
+        \hline
+    \end{tabular}
+    \caption{Transductive learning task results for predicting future edges of nodes that have been observed in training data. All results are converted to percentage by multiplying by 100, and the standard deviations computed over ten runs (in parenthesis). The best and second-best results in each column are highlighted in \textbf{bold} font and \underline{underlined}. \textsl{GraphSAGE} is short for \textsl{GraphSAGE}-LSTM.}
+    \label{tab:seen_node_edge_pred}
+\end{table}
+
+
+\begin{table}[]
+\footnotesize
+    \centering
+    \begin{tabular}{c|c c |c c |c c }
+    \hline
+    \hline
+         \textbf{Dataset} & \multicolumn{2}{c}{\textbf{Reddit}} & \multicolumn{2}{c}{\textbf{Wikipedia}} & \multicolumn{2}{c}{\textbf{Industrial}} \\ 
+        
+        \textbf{Metric} & \textbf{Accuracy} & \textbf{AP} &  \textbf{Accuracy} & \textbf{AP} &  \textbf{Accuracy} & \textbf{AP} \\
+        
+        \hline
+        GAT & {89.86} (0.2) & {95.37} (0.3) & 82.36 (0.3) & 91.27 (0.4) & {68.28} (0.2) & {79.93} (0.3) \\ 
+        {GAT+T} &  \underline{90.44} (0.3)   & \underline{96.31} (0.3)  &  \underline {84.82} (0.3) &  \underline{93.57} (0.3) & \underline{69.51} (0.3)  & \underline{81.68 (0.3)}  \\
+        GraphSAGE & 89.43 (0.1) & 96.27 (0.2) & {82.43} (0.3) & {91.09} (0.3) & 67.49 (0.2) & 80.54 (0.3) \\ 
+        {GraphSAGE+T} & 90.07 (0.2)   & 95.83 (0.2)  & {84.03} (0.4) & {92.37} (0.5)  & 69.66 (0.3)  & 82.74 (0.3)  \\\hline
+        Const-TGAT & 88.28 (0.3) & 94.12 (0.2) & 83.60 (0.4) & 91.93 (0.3) & 65.87 (0.3) & 77.03 (0.4) \\
+        TGAT & \textbf{90.73} (0.2) & \textbf{96.62} (0.3) & \textbf{85.35} (0.2) & \textbf{93.99} (0.3) & \textbf{72.08} (0.3) & \textbf{84.99} (0.2) \\ 
+        \hline
+        % Min \% lif of TGAT& 4.7\% & 3.4\% & 7.9\% & 11.8\% & 4.1\% & 3.6\% \\
+        \hline
+    \end{tabular}
+    \caption{Inductive learning task results for predicting future edges of unseen nodes.}
+    \label{tab:new_node_edge_pred}
+\end{table}
+
+
+
+\subsection{Baselines}
+\label{sec:baseline}
+\textbf{Transductive task}: for link prediction of observed nodes, we choose the compare our approach with the state-of-the-art graph embedding methods: \textsl{GAE} and \textsl{VGAE} \citep{kipf2016variational}. For complete comparisons, we also include the skip-gram-based \textsl{node2vec} \citep{grover2016node2vec} as well as the spectral-based \textsl{DeepWalk} model \citep{perozzi2014deepwalk}, using the same inner-product decoder as \textsl{GAE} for link prediction. The \textsl{CDTNE} model based on the temporal random walk has been reported with superior performance on transductive learning tasks \citep{nguyen2018continuous}, so we include \textsl{CDTNE} as the representative for temporal graph embedding approaches.
+
+\textbf{Inductive task}: few approaches are capable of managing inductive learning on graphs even in the non-temporal setting. As a consequence, we choose \textsl{GraphSAGE} and \textsl{GAT} as baselines after adapting them to the temporal setting. In particular, we equip them with the same \emph{temporal sub-graph batching} describe in Section \ref{sec:batching} to maximize their usage on temporal information. Also, we implement the extended version for the baselines to include edge features in the same way as ours (in Section \ref{sec:edge-feat}). We experiment on different aggregation functions for \textsl{GraphSAGE}, i.e. \textsl{GraphSAGE}-mean, \textsl{GraphSAGE}-pool and \textsl{GraphSAGE}-LSTM. 
+In accordance with the original work of \cite{hamilton2017inductive}, \textsl{GraphSAGE}-LSTM gives the best validation performance among the three approaches, which is reasonable under temporal setting since LSTM aggregation takes account of the sequential information. Therefore we report the results of \textsl{GraphSAGE}-LSTM.
+
+In addition to the above baselines, we implement a version of \textsl{TGAT} with all temporal attention weights set to equal value (\textsl{Const-TGAT}). Finally, to show that the superiority of our approach owes to both the time encoding and the network architecture, we experiment with the enhanced \textsl{GAT} and \textsl{GraphSAGE}-mean by concatenating the proposed time encoding to the original features during temporal aggregations (\textsl{GAT+T} and \textsl{GraphSAGE+T}).
+
+\begin{minipage}{\textwidth}
+  \begin{minipage}[b]{0.39\textwidth}
+    \centering
+    \includegraphics[scale=0.2]{ablation.png}
+    \captionof{figure}{Results of node classification task in the \textbf{ablation study}.}
+    \label{fig:ablation_node}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.60\textwidth}
+    \centering
+    \footnotesize
+    \begin{tabular}{c | c c c}\hline
+    \hline
+      \textbf{Dataset} & \textbf{Reddit} & \textbf{Wikipedia} & \textbf{Industrial} \\ \hline
+        GAE & 58.39 (0.5) & 74.85 (0.6) & 76.59 (0.3) \\
+        VGAE & 57.98 (0.6) & 73.67 (0.8) & 75.38 (0.4) \\
+        CTDNE & 59.43 (0.6) & 75.89 (0.5) & 78.36 (0.5) \\
+        GAT & {64.52} (0.5) & {82.34} (0.8) & 87.43 (0.4) \\
+        {GAT+T} &  \underline{64.76} (0.6)   & {82.95} (0.7)  & 88.24 (0.5)  \\
+        GraphSAGE & 61.24 (0.6) & 82.42 (0.7) & 88.28 (0.3) \\ 
+        {GraphSAGE+T} & 62.31 (0.7)  & \underline{82.87} (0.6)  & \underline{89.81} (0.3)  \\\hline
+        Const-TGAT &  60.97 (0.5) & 75.18 (0.7) & 82.59 (0.6) \\
+        TGAT & \textbf{65.56} (0.7) &  \textbf{83.69} (0.7) & \textbf{92.31} (0.3) \\
+        \hline
+        %  Min \% lif of TGAT &  1.3\% & 1.2\%  & 3.4\% \\
+     \hline
+      \end{tabular}
+      \captionof{table}{Dynamic node classification task results, where the reported metric is the \emph{AUC}.}
+    
+    \label{tab:state_change}
+    % \vspace{.40cm}
+    \end{minipage}
+  \end{minipage}
+
+% table 1: edge class on seen nodes
+% 
+\subsection{Experiment setup}
+\label{sec:setup}
+We use the time-sensitive link prediction loss function for training the $l$-layer \textsl{TGAT} network:
+\begin{equation}
+\label{eqn:loss}
+\ell = \sum_{(v_i,v_j,t_{ij}) \in \mathcal{E}} -\log \Big( \sigma \big(- \tilde{\hbf}_i^{l}(t_{ij})^{\intercal} \tilde{\hbf}_j^{l}(t_{ij}) \big) \Big) - Q.\E_{v_q \sim P_n(v)} \log \Big( \sigma \big( \tilde{\hbf}_i^{l}(t_{ij})^{\intercal} \tilde{\hbf}_q^{l}(t_{ij}) \big) \Big),
+\end{equation}
+where the summation is over the observed edges on $v_i$ and $v_j$ that interact at time $t_{ij}$, and $\sigma(.)$ is the sigmoid function, $Q$ is the number of negative samples and $P_n(v)$ is the negative sampling distribution over the node space. As for tuning hyper-parameters, we fix the node embedding dimension and the time encoding dimension to be the original feature dimension for simplicity, and then select the number of \textsl{TGAT} layers from \{1,2,3\}, the number of attention heads from \{1,2,3,4,5\}, according to the link prediction \emph{AP} score in the validation dataset. Although our method does not put restriction on the neighborhood size during aggregations, to speed up training, specially when using the multi-hop aggregations, we use neighborhood dropout (selected among $p=$\{0.1, 0.3, 0.5\}) with the uniform sampling. During training, we use $0.0001$ as learning rate for Reddit and Wikipedia dataset and $0.001$ for the industrial dataset, with Glorot initialization and the Adam SGD optimizer. We do not experiment on applying regularization since our approach is parameter-efficient and only requires $\Omega\big( (d+d_T)d_h + (d_h+d_0)d_f + d_f d \big)$ parameters for each attention head, which is independent of the graph and neighborhood size. Using two \textsl{TGAT} layers and two attention heads with dropout rate as 0.1 give the best validation performance.
+For inference, we \emph{inductively} compute the embeddings for both the unseen and observed nodes at each time point that the graph evolves, or when the node labels are updated. We then use these embeddings as features for the future link prediction and dynamic node classifications with multilayer perceptron. 
+% Since the number of negative instances far exceed positive cases, we conduct negative sampling when training the classifier for computation efficiency.
+
+We further conduct \textbf{ablation study} to demonstrate the effectiveness of the proposed functional time encoding approach. We experiment on abandoning time encoding or replacing it with the original positional encoding (both fixed and learnt). We also compare the uniform neighborhood dropout to sampling with inverse timespan (where the recent edges are more likely to be sampled), which is provided in supplement material along with other implementation details and setups for baselines.
+% After the network is trained and node embeddings inferred, we conduct the downstream node classification task. When node labels change at time $t$, e.g. user is banned from editting a wikipedia page, we compute the user node embedding and wiki page embedding at time $t$ and treat it as a positive observation. We randomly sample same amount of node pairs as negative samples, and conduct binary classfication under the cross-entropy loss with softmax function. We experiemnted on: 1. adding the two node embeddings and forward to a three-layer MLP; 2. concatenating the two node embeddings and forward to a three-layer MLP; 3. using bi-linear transformation of the two embeddings with the weight matrix as free parameters. We find the second approach giving best validation performance. More details and the setup for baselines are provided in supplement material.
+
+\subsection{Results}
+\label{sec:results}
+
+The results in Table \ref{tab:seen_node_edge_pred} and Table \ref{tab:new_node_edge_pred} demonstrates the state-of-the-art performances of our approach on both \emph{transductive} and \emph{inductive} learning tasks. In the \emph{inductive} learning task, our \textsl{TGAT} network significantly improves upon the the upgraded \textsl{GraphSAGE}-LSTM and \textsl{GAT} in \emph{accuracy} and \emph{average precision} by at least 5 \% for both metrics, and in the \emph{transductive} learning task \textsl{TGAT} consistently outperforms all baselines across datasets. While \textsl{GAT+T} and \textsl{GraphSAGE+T} slightly outperform or tie with \textsl{GAT} and \textsl{GraphSAGE}-LSTM, they are nevertheless outperformed by our approach. On one hand, the results suggest that the time encoding have potential to extend non-temporal graph representation learning methods to temporal settings. On the other, we note that the time encoding still works the best with our network architecture which is designed for temporal graphs. Overall, the results demonstrate the superiority of our approach in learning representations on temporal graphs over prior models. We also see the benefits from assigning temporal attention weights to neighboring nodes, where \textsl{GAT} significantly outperforms the \textsl{Const-TGAT} in all three tasks. The dynamic node classification outcome (in Table \ref{tab:state_change}) further suggests the \emph{usefulness} of our time-aware node embeddings for downstream tasks as they surpass all the baselines. The \textbf{ablation study} results of Figure \ref{fig:ablation_node} successfully reveals the effectiveness of the proposed functional time encoding approach in capturing temporal signals as it outperforms the positional encoding counterparts.  
+
+
+\subsection{Attention Analysis}
+\label{sec:analysis}
+
+To shed some insights into the temporal signals captured by the proposed \textsl{TGAT}, we analyze the pattern of the attention weights $\{\alpha_{ij}(t)\}$ as functions of both time $t$ and node pairs $(i,j)$ in the inference stage. \textbf{Firstly}, we analyze how the attention weights change with respect to the timespans of previous interactions, by plotting the attention weights $\big\{\alpha_{jq}(t_{ij}) | q \in \mathcal{N}(v_j;t_{ij})\big\} \cup \big\{\alpha_{ik}(t_{ij}) | k \in \mathcal{N}(v_i;t_{ij})\big\}$ against the timespans $\{t_{ij}-t_{jq}\} \cup \{t_{ij}-t_{ik}\}$ when predicting the link for $(v_i,v_j,t_{ij}) \in \mathcal{E}$ (Figure \ref{fig:attn-analysis}a). This gives us an empirical estimation on the $\alpha(\Delta t)$, where a smaller $\Delta t$ means a more recent interaction. \textbf{Secondly}, we analyze how the topological structures affect the attention weights as time elapses. Specifically, we focus on the topological structure of the \emph{recurring neighbours}, by finding out what attention weights the model put on the neighbouring nodes with different number of \emph{reoccurrences}. Since the functional forms of all $\{\alpha_{ij}(.)\}$ are fixed after training, we are able to feed in different target time $t$ and then record their value on neighbouring nodes with different number of occurrences (Figure \ref{fig:attn-analysis}b). From Figure \ref{fig:attn-analysis}a we observe that \textsl{TGAT} captures the pattern of having less attention on more distant interactions in all three datasets. In Figure \ref{fig:attn-analysis}b, it is obvious that when predicting a more future interaction, \textsl{TGAT} will consider neighbouring nodes who have a higher number of occurrences of more importance. The patterns of the attention weights are meaningful, since the more recent and repeated actions often have larger influence on users' future interests.
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=12cm]{attn-analysis.png}
+    \caption{Attention weight analysis. We apply the \emph{Loess smoothing} method for visualization.}
+    \label{fig:attn-analysis}
+\end{figure}
+
+
+\section{Conclusion and future work}
+\label{sec:conclusion}
+We introduce a novel time-aware graph attention network for inductive representation learning on temporal graphs. We adapt the self-attention mechanism to handle the continuous time by proposing a theoretically-grounded functional time encoding. Theoretical and experimental analysis demonstrate the effectiveness of our approach for capturing temporal-feature signals in terms of both node and topological features on temporal graphs. Self-attention mechanism often provides useful model interpretations \citep{vaswani2017attention}, which is an important direction of our future work. Developing tools to visualize the evolving graph dynamics and temporal representations efficiently is another important direction for both research and application. Also, the functional time encoding technique has huge potential for adapting other deep learning methods to the temporal graph domain. 
+
+\newpage
+
+\bibliography{iclr2020_conference}
+\bibliographystyle{iclr2020_conference}
+
+
+\newpage
+\appendix
+\section{Appendix}
+\label{sec:appendix}
+\subsection{proof for claim 1}
+\begin{proof}
+The proof is also shown in our concurrent work \cite{xu2019self}. We also provide it here for completeness. To prove the results in Claim 1, we alternatively show that under the same condition,
+\begin{equation}
+\label{eqn:appn0}
+    \text{Pr}\big(\sup_{t_1,t_2 \in T}|\Phi^{\mathcal{B}}_d(t_1)^{'} \Phi^{\mathcal{B}}_d(t_2) - \mathcal{K}(t_1,t_2)| \geq \epsilon \big) \leq 4\sigma_p \sqrt{\frac{t_{\max}}{\epsilon}}exp\big(\frac{-d\epsilon^2}{32} \big).
+\end{equation}
+Define the score $S(t_1,t_2)=\Phi^{\mathcal{B}}_d(t_1)^{'}\Phi^{\mathcal{B}}_d(t_2)$. The goal is to derive a uniform upper bound for $s(t_1,t_2) - \mathcal{K}(t_1,t_2)$. By assumption $S(t_1,t_2)$ is an unbiased estimator for $\mathcal{K}(t_1,t_2)$, i.e. $E[S(t_1,t_2)] = \mathcal{K}(t_1,t_2)$. Due to the translation-invariant property of $S$ and $\mathcal{K}$, we let $\Delta(t) \equiv s(t_1,t_2) - \mathcal{K}(t_1,t_2)$, where $t \equiv t_1 - t_2$ for all $t_1,t_2 \in [0,t_{\max}]$. Also we define $s(t_1 - t_2 ):=S(t_1,t_2)$. Therefore $t \in [-t_{\max}, t_{\max}]$, and we use $t \in \tilde{T}$ as the shorthand notation. The LHS in (1) now becomes $\text{Pr}\big(\sup_{t \in \tilde{T}}|\Delta(t)| \geq \epsilon \big)$.
+
+Note that $\tilde{T} \subseteq \cup_{i=0}^{N-1} T_i$ with $T_i = [-t_{\max} + \frac{2it_{\max}}{N}, -t_{\max} + \frac{2(i+1)t_{\max}}{N}]$ for $i=1,\ldots,N$. So $\cup_{i=0}^{N-1} T_i$ is a finite cover of $\tilde{T}$. Define $t_i = -t_{\max} + \frac{(2i+1)t_{\max}}{N}$, then for any $t \in T_i$, $ i=1,\ldots,N$ we have 
+\begin{equation}
+\label{eqn:appn2}
+    \begin{split}
+        |\Delta(t)| &= |\Delta(t) - \Delta(t_i) + \Delta(t_i)| \\
+        & \leq |\Delta(t) - \Delta(t_i)| + |\Delta(t_i)| \\
+        & \leq L_{\Delta}|t - t_i| + |\Delta(t_i)| \\
+        & \leq L_{\Delta}\frac{2t_{\max}}{N} + |\Delta(t_i)|,
+    \end{split}
+\end{equation}
+where $L_{\Delta} = \max_{t \in \tilde{T}} \|\nabla \Delta(t)\|$ (since $\Delta$ is differentiable) with the maximum achieved at $t^{*}$. So we may bound the two events separately. 
+
+For $|\Delta(t_i)|$ we simply notice that trigeometric functions are bounded between $[-1,1]$, and therefore $-1 \leq \Phi^{\mathcal{B}}_d(t_1)^{'}\Phi^{\mathcal{B}}_d(t_2) \leq 1$. The Hoeffding's inequality for bounded random variables immediately gives us:
+\begin{equation*}
+    \text{Pr}\big(|\Delta(t_i)| > \frac{\epsilon}{2} \big) \leq 2exp(-\frac{d\epsilon^2}{16}).
+\end{equation*}
+So applying the Hoeffding-type union bound to the finite cover gives
+\begin{equation}
+\label{eqn:appn3}
+    \text{Pr}(\cup_{i=0}^{N-1}|\Delta(t_i)| \geq \frac{\epsilon}{2}) \leq 2N\exp(-\frac{d\epsilon^2}{16})
+\end{equation}
+
+For the other event we first apply Markov inequality and obtain:
+\begin{equation}
+\label{eqn:appn4}
+\text{Pr}\big(L_{\Delta}\frac{2t_{\max}}{N} \geq \frac{\epsilon}{2} \big) = \text{Pr}\big(L_{\Delta} \geq \frac{\epsilon N}{4t_{\max}} \big) \leq \frac{4t_{\max}E[L_{\Delta}^2]}{\epsilon N}.
+\end{equation}
+Also, since $E[s(t_1-t_2)] = \psi(t_1 - t_2)$, we have
+\begin{equation}
+\label{eqn:appn5}
+E[L_{\Delta}^2] = E\|\nabla s(t^*) - \nabla \psi(t^*)\|^2 = E\|\nabla s(t^*)\|^2 - E\|\nabla \psi(t^*)\|^2 \leq E\|\nabla s(t^*)\|^2 = \sigma_p^2,
+\end{equation}
+where $\sigma_p^2$ is the second momentum with respect to $p(\omega)$.
+
+Combining (\ref{eqn:appn3}), (\ref{eqn:appn4}) and (\ref{eqn:appn3}) gives us:
+\begin{equation}
+\label{eqn:appn6}
+    \text{Pr}\big(\sup_{t \in \tilde{T}}|\Delta(t)| \geq \epsilon \big) \leq 2N\exp(-\frac{d\epsilon^2}{16}) + \frac{4t_{\max}\sigma_p^2}{\epsilon N}.
+\end{equation}
+It is straightforward to examine that the RHS of (\ref{eqn:appn6}) is a convex function of $N$ and is minimized by $N^* = \sigma_p \sqrt{\frac{2t_{\max}}{\epsilon}} exp(\frac{d \epsilon^2}{32})$. Plug $N^*$ back to (\ref{eqn:appn6}) and we obtain (\ref{eqn:appn0}). We then solve for $d$ according to (\ref{eqn:appn0}) and obtain the results in Claim 1.
+
+\end{proof}
+
+
+% \subsection{Pseudocode for \textsl{TGAT} layer forward passing}
+
+% \begin{algorithm}[H]
+% \SetAlgoLined
+% \SetKwInOut{Input}{Input}
+% \SetKwInOut{Output}{Output}
+% \Input{Target node $v_0$ at any time $t$; \newline
+% Temporal graph $\mathcal{G} = \{\mathcal{V}, \mathcal{E}, \mathcal{T}\}$ where $t_{ij} \in \mathcal{T}$ gives the interaction time for edge pair $(i,j) \in \mathcal{E}$; \newline 
+% Node features $\{\xbf_i, i \in \mathcal{V}\}$; \newline 
+% Edge features $\{\xbf_{ij}, (i,j) \in \mathcal{E} \}$; \newline 
+% Number of layers $L$; \newline 
+% Number of attention heads $K$; \newline
+% Temporal neighborhood function $\mathcal{N}(v,t)$ for $v \in \mathcal{V}, t \in T$ (Section \ref{sec:batching}); \newline 
+% Neighborhood dropout function $\text{DropOut}(.)$; \newline 
+% Feed forward neural network $\text{FFN}(.)$;}
+
+% \Output{Temporal node embedding $\zbf_0(t)$ for node $v_0$.}
+%  $\Vcal^{L+1} \leftarrow v_0$\;
+%  $\Vcal^L \leftarrow \text{DropOut}(\mathcal{N}(v_0,t))$\;
+%  \For{$l = L, \ldots,1$}{
+% %   $\Vcal_0^{l-1} \leftarrow \Vcal_0^l$\;
+%  \For{$v_j \in \Vcal^{l+1}$}{
+%   \For{$v_i \in \Vcal^l$}{
+%   $\Vcal^{l-1} \leftarrow \Vcal^{l-1} \cup \text{DropOut}(\mathcal{N}(v_i,t_{ij}))$\;
+%   }
+%  }
+%  }
+%  $\tilde{h}^{(0)}_0(t) \leftarrow \xbf_0$\;
+%  \For{$l=1,\ldots,L$}{
+%   Construct temporal neighborhood feature matrix $\Zbf(t)$ for $\Vcal_0^l$ by (\ref{eqn:Z})\;
+%   \For{$k=1,\ldots,K$}{
+%   $h^{(k)}_0(t) \leftarrow \text{Self-Attn}(\Zbf(t))$\;
+%   }
+%   h
+%  }
+%  \caption{Pseudocode for the minibatch forward passing}
+% \end{algorithm}
+
+\subsection{Comparisons between the attention mechanism of \textsl{TGAT} and \textsl{GAT}}
+
+In this part, we provide detailed comparisons between the attention mechanism employed by our proposed \textsl{TGAT} and the \textsl{GAT} proposed by \cite{velivckovic2017graph}. Other than the obvious fact that \textsl{GAT} does not handle temporal information, the main difference lies in the formulation of attention weights. While \textsl{GAT} depends on the attention mechanism proposed by \cite{bahdanau2014neural}, our architecture refers to the self-attention mechanism of \cite{vaswani2017attention}. Firstly, the attention mechanism used by \textsl{GAT} does not involve the notions of 'query', 'key' and 'value' nor the dot-product formulation introduced in (\ref{eqn:attn-layer}). As a consequence, the attention weight between node $v_i$ and its neighbor $v_j$ is computed via
+\[
+\alpha_{ij} = \frac{\exp \Big(\text{LeakyReLU}\big(\mathbf{a}^{\intercal} [\Wbf \mathbf{h}_i || \Wbf \mathbf{h}_j]\big)  \Big)}{\sum_{k \in \mathcal{N}(v_i)} \exp \Big(\text{LeakyReLU}\big(\mathbf{a}^{\intercal} [\Wbf \mathbf{h}_i || \Wbf \mathbf{h}_k]\big)  \Big)},
+\]
+where $\mathbf{a}$ is a weight vector, $\Wbf$ is a weight matrix, $\mathcal{N}(v_i)$ is the neighorhood set for node $v_i$ and $\mathbf{h}_i$ is the hidden representation of node $v_i$. It is then obvious that their computation of $\alpha_{ij}$ is very different from our approach. In \textsl{TGAT}, after expanding the expressions in Section \ref{sec:architect}, the attention weight is computed by:
+\[
+\alpha_{ij}(t) = \frac{\exp \Big( \big( [\tilde{\hbf}_i(t_i)||\Phi_{d_T}(t-t_i)]\Wbf_Q \big)^{\intercal} \big( [\tilde{\hbf}_j(t_j)||\Phi_{d_T}(t-t_j)]\Wbf_K \big) \Big)}{\sum_{k \in \mathcal{N}(v_i;t)} \exp \Big( \big( [\tilde{\hbf}_i(t_i)||\Phi_{d_T}(t-t_i)]\Wbf_Q \big)^{\intercal} \big( [\tilde{\hbf}_k(t_k)||\Phi_{d_T}(t-t_k)]\Wbf_K \big) \Big)}.
+\]
+Intuitively speaking, the attention mechanism of \textsl{GAT} relies on the parameter vector $\mathbf{a}$ and the $\text{LeakyReLU(.)}$ to capture the hidden factor interactions between entities in the sequence, while we use the linear transformation followed by the dot-product to capture pair-wise interactions of the hidden factors between entities and the time embeddings. The dot-product formulation is important for our approach. From the theoretical perspective, the time encoding functional form is derived according to the notion of temporal kernel $\mathcal{K}$ and its inner-product decomposition (Section \ref{sec:architect}). As for the practical performances, we see from Table \ref{tab:seen_node_edge_pred}, \ref{tab:new_node_edge_pred} and \ref{tab:state_change} that even after we equip \textsl{GAT} with the same time encoding, the performance is still inferior to our \textsl{TGAT}.
+
+
+
+\subsection{Details on datasets and preprocessing}
+
+\textbf{Reddit dataset}: this benchmark dataset contains users interacting with subreddits by posting under the subreddits. The timestamps tell us when the user makes the posts. The dataset uses the posts made in a one-month span, and selects the most active users and subreddits as nodes, giving a total of 11,000 nodes and around 700,000 temporal edges. The user posts have textual features that are transformed into a 172-dimensional vector representing under the \emph{linguistic inquiry and word count} (LIWC) categories \citep{pennebaker2001linguistic}. The dynamic binary labels indicate if a user is banned from posting under a subreddit. Since node features are not provided in the original dataset, we use the all-zero vector instead.
+
+\textbf{Wikipedia dataset}: the dataset also collects one-month of interactions induced by users' editing the Wikipedia pages. The the top edited pages and active users are considered, leading to $\sim$9,300 nodes and around 160,000 temporal edges. Similar to the Reddit dataset, we also have the ground-truth dynamic labels on whether a user is banned from editing a Wikipedia page. User edits consist of the textual features and are also converted into 172-dimensional LIWC feature vectors. Node features are also not provided, so we also use the all-zero vector as well.
+
+\textbf{Industrial dataset}: we obtain the large-scale customer-product interaction graph from the online grocery shopping platform \texttt{grocery.walmart.com}. We select $\sim$70,000 most popular products and 100,000 active customers as nodes and use the customer-product purchase interactions over a one-month period as temporal edges ($\sim$2 million). Each purchase interaction is timestamped, which we use to construct the temporal graph. The customers are labelled with business tags, indicating if they are interested in dietary products according to their most recent purchase records. Each product node possesses contextual features containing their name, brand, categories and short description. The previous LIWC categories no longer apply since the product contextual features are not natural sentences. We use product embedding approach \citep{xu2020product} to embed each product's contextual features into a 100-dimensional vector space as preprocessing. The user nodes and edges do not possess features.
+
+We then split the temporal graphs chronologically into 70\%-15\%-15\% for training, validation and testing according to the time epochs of edges, as illustrated in Figure \ref{fig:reddit-split} with the Reddit dataset. Since all three datasets have a relatively stationary edge count distribution over time, using the 70 and 85 percentile time points to split the dataset results in approximately 70\%-15\%-15\% of total edges, as suggested by Figure \ref{fig:reddit-split}. 
+
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[scale=0.4]{reddit-split.png}
+    \caption{The distribution of temporal edge count for the Reddit dataset, and the illustration on the train-validation-test splitting.}
+    \label{fig:reddit-split}
+\end{figure}
+
+To ensure that an appropriate amount of future edges among the unseen nodes will show up during validation and testing, for each dataset, we randomly sample 10\% of nodes, mask them during training and treat them as unseen nodes by only considering their interactions in validation and testing period. This manipulation is necessary since the new nodes that show up during validation and testing period may not have much interaction among themselves. The statistics for the three datasets are summarized in Table \ref{tab:stat}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{L{3.7cm}L{2.7cm}L{2.7cm}L{2.7cm}}
+    \hline
+         & \textbf{Reddit} & \textbf{Wikipedia} & \textbf{Industrial} \\ \hline
+        \textbf{\# Nodes} & 11,000 & 9,227 & 170,243 \\ 
+        \textbf{\# Edges} & 672,447 & 157,474 & 2,135,762 \\ 
+        \textbf{\# Feature dimension} & 172 & 172 & 100 \\
+        \textbf{\# Feature type} & LIWC category vector & LIWC category vector & document embeddings \\
+        \textbf{\# Timespan} & 30 days & 30 days & 30 days \\
+        \% \textbf{Training nodes} & 90\% & 90\% & 90\% \\ 
+        \% \textbf{Unseen nodes} & 10\% & 10\% & 10\% \\
+        \% \textbf{Training edges} & $\sim$67\% & $\sim$65\% & $\sim$64\% \\
+        \% \textbf{Future edges between observed nodes} & $\sim$27\% & $\sim$28\% & $\sim$29\% \\
+        \% \textbf{Future edges between unseen nodes} & $\sim$6\% &$\sim$7\% & $\sim$7\%\\
+        \textbf{\# Nodes with dynamic labels} & 366 & 217 & 5,236\\
+        \textbf{Label type} & binary & binary & binary \\
+        \textbf{Positive label meaning} & banned from posting & banned from editting & interested in dietary products \\
+    \hline
+    \end{tabular}
+    \caption{Data statistics for the three datasets. Since we sample a proportion of unseen nodes, the percentage of the edge statistics reported here are approximations.}
+    \label{tab:stat}
+\end{table}
+
+\textbf{Preprocessing.} 
+
+For the \textsl{Node2vec} and \textsl{DeepWalk} baselines who only take static graphs as input, the graph is constructed using all edges in training data regardless of temporal information. For \textsl{DeepWalk}, we treat the recurrent edges as appearing only once, so the graph is unweighted. Although our approach handles both directed and undirected graphs, for the sake of training stability of the baselines, we treat the graphs as \emph{undirected}. For \textsl{Node2vec}, we use the count of recurrent edges as their weights and construct the weighted graph. For all three datasets, the obtained graphs in both cases are \emph{undirected} and do not have isolated nodes. Since we choose from active users and popular items, the graphs are all \emph{connected}.  
+
+For the graph convolutional network baselines, i.e. \textsl{GAE} and \textsl{VGAE}, we construct the same undirected weighted graph as for \textsl{Node2vec}. Since \textsl{GAE} and \textsl{VGAE} do not take edge features as input, we use the posts/edits as user node features. For each user in Reddit and Wikipedia dataset, we take the average of their post/edit feature vectors as the node feature. For the industrial dataset where user features are not available, we use the all-zero feature vector instead.
+
+As for the downstream dynamic node classification task, we use the same training, validation and testing dataset as above. Since we aim at predicting the dynamic node labels, for Reddit and Wikipedia dataset we predict if the user node is banned and for the industrial dataset we predict the customers' business labels, at different time points. Due to the label imbalance, in each of the batch when training for the node label classifier, we conduct stratified sampling such that the label distributions are similar across batches.
+
+
+\subsection{Experiment Setup for Baselines}
+For all baselines, we set the node embedding dimension to $d=100$ to keep in accordance with our approach.
+
+\textbf{Transductive baselines.}
+
+Since \textsl{Node2vec} and \textsl{DeepWalk} do not provide room for task-specific manipulation or hacking, we do not modify their default loss function and input format. For both approaches, we select the \emph{number of walks} among \{60,80,100\} and the \textsl{walk-length} among \{20,30,40\} according to the validation \emph{AP}. Setting \emph{number of walks}=80 and \textsl{walk-length}=30 give slightly better validation performance compared to others for both approaches. Notice that both \textsl{Node2vec} and \textsl{DeepWalk} use the sigmoid function with embedding inner-products as the decoder to predict neighborhood probabilities. So when predicting whether $v_i$ and $v_j$ will interact in the future, we use $\sigma(-\zbf_i ^{\intercal}\zbf_j)$ as the score, where $\zbf_i$ and $\zbf_j$ are the node embeddings. Notice that \textsl{Node2vec} has the extra hyper-parameter $p$ and $q$ which controls the likelihood of immediately revisiting a node in the walk and interpolation between breadth-first strategy and depth-first strategy. After selecting the optimal \emph{number of walks} and \textsl{walk-length} under $p=1$ and $q=1$, we further tune the different values of $p$ in \{0.2,0.4,0.6,0.8,1.0\} while fixing $q=1$. According to validation, $p=0.6$ and $0.8$ give comparable optimal performance. 
+
+For the \textsl{GAE} and \textsl{VGAE} baselines, we experiment on using one, two and three graph convolutional layers as the encoder \citep{kipf2016semi} and use the $\text{ReLU}(.)$ as the activation function. By referencing the official implementation, we also set the dimension of hidden layers to 200. Similar to previous findings, using two layers gives significant performances to using only one layer. Adding the third layer, on the other hand, shows almost identical results for both models. Therefore the results reported are based on two-layer \textsl{GCN} as the encoder. For \textsl{GAE}, we use the standard inner-product decoder as our approach and optimize over the reconstruction loss, and for \textsl{VGAE}, we restrict the Gaussian latent factor space \citep{kipf2016variational}. Since we have eliminated the temporal information when constructing the input, we find that the optimal hyper-parameters selected according to the tuning have similar patterns as in the previous non-temporal settings.
+
+For the temporal network embedding model \textsl{CTDNE}, the \emph{walk length} for the temporal random walk is also selected among \{60,80,100\}, where setting \emph{walk length} to 80 gives slightly better validation outcome. The original paper considers several temporal edge selection (sampling) methods (uniform, linear and exponential) and finds uniform sampling with best performances \citep{nguyen2018continuous}. Since our setting is similar to theirs, we adopt the uniform sampling approach. 
+
+\textbf{Inductive baselines.}
+
+For the \textsl{GraphSAGE} and \textsl{GAT} baselines, as mentioned before, we train the models in an identical way as our approach with the \emph{temporal subgraph batching}, despite several slight differences. Firstly, the aggregation layers in \textsl{GraphSAGE} usually considers a fixed neighborhood size via sampling, whereas our approach can take an arbitrary neighborhood as input. Therefore, we only consider the most recent $d_{\text{sample}}$ edges during each aggregation for all layers, and we find $d_{\text{sample}}=20$ gives the best performance among \{10,15,20,25\}. Secondly, \textsl{GAT} implements a uniform neighborhood dropout. We also experiment with the inverse timespan sampling for neighborhood dropout, and find that it gives slightly better performances but at the cost of computational efficiency, especially for large graphs. We consider aggregating over one, two and three-hop neighborhood for both \textsl{GAT} and \textsl{GraphSAGE}. When working with three hops, we only experiment on \textsl{GraphSAGE} with the mean pooling aggregation. In general, using two hops gives comparable performance to using three hops. Notice that computations with three-hop are costly, since the number of edges during aggregation increase exponentially to the number of hops. Thus we stick to using two hops for \textsl{GraphSAGE}, \textsl{GAT} and our approach. It is worth mentioning that when implementing \textsl{GraphSAGE}-LSTM, the input neighborhood sequences of LSTM are also ordered by their interaction time.
+
+\textbf{Node classification with baselines.}
+
+The dynamic node classification with \textsl{GraphSAGE} and \textsl{GAT} can be conducted similarity to our approach, where we inductively compute the most up-to-date node embeddings and then input them as features to an MLP classifier. For the transductive baselines, it is not reasonable to predict the dynamic node labels with only the fixed node embeddings. Instead, we combine the node embedding with the other node embedding it is interacting with when the label changes, e.g. combine the user embedding with the Wikipedia page embedding that the user attempts on editing when the system bans the user. To combine the pair of node embeddings, we experimented on summation, concatenation and bi-linear transformation. Under summation and concatenation, the combined embeddings are then used as input to an MLP classifier, where the bi-linear transformation directly outputs scores for classification. The validation outcomes suggest that using concatenation with MLP yields the best performance. 
+
+\subsection{Implementation details}
+
+\textbf{Training.}
+We implement \textsl{Node2vec} using the official C code\footnote{https://github.com/snap-stanford/snap/tree/master/examples/node2vec} on a 16-core Linux server with 500 Gb memory. \textsl{DeepWalk} is implemented with the official python code\footnote{https://github.com/phanein/deepwalk}. We refer to the PyTorch geometric library for implementing the \textsl{GAE} and \textsl{VGAE} baselines \citep{Fey/Lenssen/2019}. To accommodate the temporal setting and incorporate edges features, we develop off-the-shelf implementation for \textsl{GraphSAGE} and \textsl{GAT} in PyTorch by referencing their original implementations\footnote{https://github.com/williamleif/GraphSAGE}  \footnote{https://github.com/PetarV-/GAT }. We also implement our model using PyTorch. All the deep learning models are trained on a machine with one Tesla V100 GPU. We use the Glorot initialization and the Adam SGD optimizer for all models, and apply the early-stopping strategy during training where we terminate the training process if the validation \emph{AP} score does not improve for 10 epochs.
+
+\textbf{Downstream node classification.}
+As we discussed before, we use the three-layer MLP as classifier and the (combined) node embeddings as input features from all the experimented approaches, for all three datasets. The MLP is trained with the Glorot initialization and the Adam SGD optimizer in PyTorch as well. The $\ell_2$ regularization parameter $\lambda$ is selected in \{0.001, 0.01, 0.05, 0.1, 0.2\} case-by-case during training. The early-stopping strategy is also employed.
+
+\subsection{Sensitivity analysis and extra ablation study}
+
+\begin{figure}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{ablation_sample.png}
+    \caption{Comparison between uniform and inverse timespan weighted sampling on the link prediction task}
+    \label{fig:ablation_sample}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{ablation_cdf.png}
+    \caption{Comparison between three different ways of learning the functional time encoding, on link prediction task.}
+    \label{fig:ablation_cdf}
+  \end{subfigure}
+  \caption{Extra ablation study.}
+\end{figure}
+
+
+
+Firstly, we focus on the output node embedding dimension as well as the functional time encoding dimension in this sensitivity analysis. The reported results are averaged over five runs. We experiment on $d \in \{60,80,100,120,140\}$ and $d_T \in \{60,80,100, 120,140\}$, and the results are reported in Figure \ref{fig:sens_node} and \ref{fig:sens_time}. The remaining model setups reported in Section \ref{sec:setup} are untouched when varying $d$ or $d_T$. We observe slightly better outcome when increasing either $d$ or $d_T$ on the industrial dataset. The patterns on Reddit and Wikipedia dataset are almost identical.
+
+\begin{figure}[htb]
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{sens_node.png}
+    \caption{Sensitivity analysis on node embeddings dimension.}
+    \label{fig:sens_node}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{sens_time.png}
+    \caption{Sensitivity analysis on time embeddings dimension.}
+    \label{fig:sens_time}
+  \end{subfigure}
+  \centering
+  \begin{subfigure}[b]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{sens-head.png}
+    \caption{Sensitivity analysis on number of attention heads and layers (hops) with $d=100$ and $d_T=100$.}
+    \label{fig:sens_time}
+  \end{subfigure}
+  \caption{Sensitivity analysis on the Industrial dataset.}
+\end{figure}
+
+Secondly, we compare between the two methods of learning functional encoding, i.e. using flow-based model or using the non-parametric method introduced in Section \ref{sec:functional}. We experiment on two flow-based state-of-the-art CDF learning method: \emph{normalizing flow} \citep{rezende2015variational} and \emph{RealNVP} \citep{dinh2016density}. We use the default model setups and hyper-parameters in their reference implementations\footnote{https://github.com/ex4sperans/variational-inference-with-normalizing-flows} \footnote{https://github.com/chrischute/real-nvp}. We provide the results in Figure \ref{fig:ablation_cdf}. As we mentioned before, using flow-based models leads to highly comparable outcomes as the non-parametric approach, but they require longer training time since they implement sampling during each training batch. However, it is possible that carefully-tuned flow-based models can lead to nontrivial improvements, which we leave to the future work.
+
+Finally, we provide sensitivity analysis on the number of attention heads and layers for \textsl{TGAT}. Recall that by stacking two layers in \textsl{TGAT} we are aggregating information from the two-hop neighbourhood. For both \emph{accuracy} and \emph{AP}, using three-head attention and two-layers gives the best outcome. In general, the results are relatively stable to the number of heads, and stacking two layers leads to significant improvements compared with using only a single layer.
+
+The ablation study for comparing between uniform neighborhood dropout and sampling with inverse timespan is given in Figure \ref{fig:ablation_sample}. The two experiments are carried out under the same setting which we reported in Section \ref{sec:setup}. We see that using the inverse timespan sampling gives slightly worse performances. This is within expectation since uniform sampling has advantage in capturing the recurrent patterns, which can be important for predicting user actions. On the other hand, the results also suggest the effectiveness of the proposed time encoding for capturing such temporal patterns. Moreover, we point out that using the inverse timespan sampling slows down training, particularly for large graphs where a weighted sampling is conducted within a large number of nodes for each training batch construction. Nonetheless, inverse timespan sampling can help capturing the more recent interactions which may be more useful for certain tasks. Therefore, we suggest to choose the neighborhood dropout method according to the specific use cases.
+
+\end{document}

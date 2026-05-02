@@ -1,0 +1,123 @@
+
+\noindent\textbf{Dataset.}
+We conduct experiments on five real-world datasets, including the \textit{Reddit}, \textit{Wiki}, \textit{MOOC}, \textit{LastFM} datasets that are used in~\cite{kumar2019predicting} and the \textit{GDELT} dataset\footnote{The \textit{GDELT} dataset used in our paper is a sub-sampled version because the original dataset is too big to fit into memory for single-machine training. In practice, we keep $1$ temporal link per $100$ continuous temporal link.} which is introduced in~\cite{zhou2022tgl}.
+Besides, since \textit{GDELT} is the only dataset with both node and link features, we create its two variants to understand the effect of training data on model performance: \textit{GDELT-e} removes the link feature from \textit{GDELT} and keep the node feature and link timestamps, \textit{GDELT-ne} removes both the link and edge features from \textit{GDELT} and only keep the link timestamps.
+For each dataset, we use the same $70\%/15\%/15\%$ chronological splits for the train/validation/test sets as existing works.
+The detailed dataset statistics are summarized in Appendix~\ref{section:dataset}. 
+
+\noindent\textbf{Baselines.}
+We compare baselines that are introduced in Section~\ref{section:related_works}. 
+% For a fair comparison, we implement \our and compare with baselines under the temporal graph learning framework~\cite{zhou2022tgl}. 
+Besides, we create two variants to better understand how node- and link-information contribute to our results, where \oure-L is only using link-encoder and \oure-N is only using node-encoder.
+We conduct experiments under the transductive learning setting and use average precision for evaluation.
+The detailed model configuration, training and evaluation process are summarized in Appendix~\ref{section:model_config_train_eval_process}.
+Due to the space limit, more experiment results on using \emph{Recall@K, MRR, and AUC} as the evaluation metrics, comparison on \emph{wall-clock time} and \emph{number of parameters} are deferred to Appendix~\ref{section:more_experiment_results}
+
+\noindent\textbf{Outline.} We first compare \our with baselines in Section~\ref{section:empirical_results} then highlight the three key factors that contribute to the success of \our in Section~\ref{section:time_encoder}, Section~\ref{section:expressive_power}, and Section~\ref{section:data_alignment}.
+
+\input{section/table/avg_precision_score}
+
+\subsection{Main empirical results.} \label{section:empirical_results}
+
+
+\noindent\textbf{\our achieves outstanding performance.}
+We compare the average precision score with baselines in Table~\ref{table:average_precision}. We have the following observations: 
+\circled{1} \our outperforms all baselines on all datasets. 
+% In particular, \our attains more than $1\%$ gain over all baselines on the \textit{LastFM}, \textit{GDELT-ne}, and \textit{GDELT-e} datasets, attains around $2\%$ gain over non-RNN methods \textit{DySAT} and \textit{TGAT} on the \textit{Wiki} dataset, and attains more than $11\%$ gain over non-RNN methods \textit{DySAT} and \textit{TGAT} on the \textit{GDELT-ne} dataset. 
+The experiment results provide sufficient support on our argument that neither RNN nor SAM is necessary for temporal graph link prediction.
+\circled{2} According to the performance of \oure-L on datasets only have link timestamp information (\textit{MOOC}, \textit{LastFM}, and \textit{GDELT-ne}), we know that our time-encoding function could successfully pre-process each timestamp into a meaningful vector. In fact,  we will show later in Section~\ref{section:time_encoder} that our time-encoding function is more preferred than baselines' trainable version.
+    % \item Datasets with greater temporal links per node, e.g., \textit{LastFM} and \textit{GDELT}, are more challenging to learn.  
+\circled{3} By comparing the performance \oure-N and \our on \textit{Wiki}, \textit{MOOC}, and \textit{LastFM} datasets, we know that node-encoder alone is not enough to achieve a good performance. However, it provides useful information that could benefit the link-encoder.
+\circled{4} By comparing the performance of \oure-N on \textit{GDELT} and \textit{GDELT-ne}, we observe that using one-hot encoding outperforms using node features. This also shows the importance of node identity information because one-hot encoding only captures such information.
+\circled{5} More complicated methods (e.g., CAWs, TGSRec, and DDGCL) do not perform well when using the default hyper-parameters\footnote{In fact, we tried different hyper-parameters based on their default values, but the results are similar.}, which is understandable because these methods have more components with an excessive amount of hyper-parameters to tune.
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm,height=3.5cm]{figures/train_extra/wiki_train_extra.pdf}
+    \vspace{-6.5mm}
+    % \caption{Evaluation average precision}
+    % \label{fig:first}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm,height=3.5cm]{figures/train_extra/lastfm_train_extra.pdf}
+    \vspace{-6.5mm}
+    % \caption{Train average precision}
+    % \label{fig:second}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm,height=3.5cm]{figures/train_extra/gdelt_ne_train_extra.pdf}
+    \vspace{-6.5mm}
+    % \caption{Generalization gap}
+\end{subfigure}
+\vspace{-1mm}
+\caption{Comparison on the training set average precision and generalization gap for the first $100$ training epochs. Results on other datasets can be found in Figure~\ref{fig:train_extra_reddit_mooc_gdelt_e}.}
+\label{fig:train_extra_wiki_lastfm_gdelt_ne}
+\vspace{-2mm}
+\end{figure}
+
+\noindent\textbf{\our enjoys better convergence and generalization ability.}
+To better understand the model performance, we take a closer look at the dynamic of training accuracy and the generalization gap (the absolute difference between training and evaluation score).
+The results are reported in Figure~\ref{fig:train_extra_wiki_lastfm_gdelt_ne} and Figure~\ref{fig:train_extra_reddit_mooc_gdelt_e}:
+\circled{1} The slope of training curves reflects the expressive power and convergence speed of an algorithm. From the first row figures, we can observe that \our always converge to a high average precision score in just a few epochs, and the training curve is very smooth when compared to baselines. Interestingly, we can observe that the baseline methods cannot always fit the training data, and their training curves fluctuate a lot throughout the training process. 
+% Please also refer to Appendix~\ref{section:wall_clock_time} for wall-clock time.
+% \footnote{Later in this section, we will study the training instability issue of baseline methods by comparing their optimization landscape with ours, and point out in Section~\ref{section:time_encoder} that one of the main factor causes this is due to their trainable time-encoding function.}
+\circled{2} The generalization gap reflects how well the model could generalize and how stable the model could perform on unseen data (the smaller the better).
+    % Please notice that generalization is an extension of generalization, where we assume training and evaluation have the same distribution in generalization analysis, but we assume the distribution might be different in generalization analysis.
+    % In the temporal graphs, we consider generalization because the dynamic of the graph structure might change over time, and the evaluation set usually has more data to inference on than the training set because evaluation set interactions happen after the training set.
+    From the second row figures, the generalization gap curve of \our is lesser and smoother than baselines, which indicates the generalization power of \oure.
+    % Later we will show in Section~\ref{section:data_alignment} that selecting good input data is important to achieve a better evaluation performance, especially  when the training and evaluation distribution are not identical (e.g., the data distribution might evolve through time in temporal graph).
+
+
+
+\begin{figure}[t]
+\centering
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm]{figures/3d_landscape_wiki_tgat_tgn_mixer/wiki_landscape_mixer_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6.5mm}
+    \caption{GraphMixer on Wiki}\label{fig:landscape_3d_wiki_tgat_tgn_our_a}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm]{figures/3d_landscape_wiki_tgat_tgn_mixer/wiki_landscape_wiki_tgat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6.5mm}
+    \caption{TGAT on Wiki}\label{fig:landscape_3d_wiki_tgat_tgn_our_b}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm]{figures/3d_landscape_wiki_tgat_tgn_mixer/wiki_landscape_wiki_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6.5mm}
+    \caption{TGN on Wiki}\label{fig:landscape_3d_wiki_tgat_tgn_our_c}
+\end{subfigure}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm]{figures/3d_landscape_wiki_tgat_tgn_mixer/gdelt_lite_node_landscape_mixer_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6.5mm}
+    \caption{GraphMixer on GDELT-e}\label{fig:landscape_3d_wiki_tgat_tgn_our_d}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm]{figures/3d_landscape_wiki_tgat_tgn_mixer/gdelt_lite_node_landscape_gdelt_lite_node_tgat_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6.5mm}
+    \caption{TGAT on GDELT-e}\label{fig:landscape_3d_wiki_tgat_tgn_our_e}
+\end{subfigure}
+\hspace{0cm}
+\begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\textwidth,height=2.5cm]{figures/3d_landscape_wiki_tgat_tgn_mixer/gdelt_lite_node_landscape_gdelt_lite_node_tgn_surf_file.h5_train_loss_3dsurface.pdf}
+    \vspace{-6.5mm}
+    \caption{TGN on GDELT-e}\label{fig:landscape_3d_wiki_tgat_tgn_our_f}
+\end{subfigure}
+\vspace{-3mm}
+\caption{Comparison on the training loss landscape. Results on other datasets and other baselines can be found in Appendix~\ref{section:loss_landscape_appendix}. }
+\label{fig:landscape_3d_wiki_tgat_tgn_our}
+\vspace{-3mm}
+\end{figure}
+
+\noindent\textbf{\our enjoys a smoother loss landscape.}
+To understand why \emph{``\our converges faster and generalizes better, while baselines suffer training unstable issue and generalize poorly''}, we explore the loss landscape by using the visualization tools introduced in~\cite{visualloss}.
+We illustrate the loss landscape in Figure~\ref{fig:landscape_3d_wiki_tgat_tgn_our} by calculating and visualizing the loss surface along two random directions near the pre-trained optimal parameters. The x- and y-axis indicate how much the optimal solution is stretched along the two random directions, and the optimal point is when x- and y-axis are zero.
+\circled{1} From Figure~\ref{fig:landscape_3d_wiki_tgat_tgn_our_a},~\ref{fig:landscape_3d_wiki_tgat_tgn_our_d}, we know \our enjoys a smoother landscape with a flatter surface at the optimal point, the slope becomes steeper when stretching along the two random directions. The steeper slope on the periphery explains why \our could converge fast, the flatter surface at the optimal point explains why it could generalize well.
+\circled{2} Surprisingly, we find that baselines have a non-smooth landscape with many spikes on its surface from Figure~\ref{fig:landscape_3d_wiki_tgat_tgn_our_b},~\ref{fig:landscape_3d_wiki_tgat_tgn_our_c},~\ref{fig:landscape_3d_wiki_tgat_tgn_our_e},~\ref{fig:landscape_3d_wiki_tgat_tgn_our_f}. This observation provides sufficient explanation on the training instability and poor generalization issue of baselines as shown in Figure~\ref{fig:train_extra_wiki_lastfm_gdelt_ne},~\ref{fig:train_extra_reddit_mooc_gdelt_e}. Interestingly, as we will show later in Section~\ref{section:time_encoder}, the trainable time-encoding function in baselines is the key to this non-smooth landscape issue. Replacing it with our fixed time-encoding function could flatten the landscape and boost their model performance.
+
+

@@ -1,0 +1,106 @@
+\def\year{2018}\relax
+\documentclass[letterpaper]{article} %DO NOT CHANGE THIS
+\usepackage{aaai18}  %Required
+\usepackage{times}  %Required
+\usepackage{helvet}  %Required
+\usepackage{courier}  %Required
+\usepackage{url}  %Required
+\usepackage{graphicx}  %Required
+\frenchspacing  %Required
+
+% Custom
+\usepackage{subcaption}
+\usepackage{tikz}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.14}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+
+\newcommand{\citet}[1]{\citeauthor{#1}~\shortcite{#1}}
+\newcommand{\citep}{\cite}
+
+\setlength{\pdfpagewidth}{8.5in}  %Required
+\setlength{\pdfpageheight}{11in}  %Required
+
+\nocopyright
+
+\pdfinfo{
+/Title (Modeling Relational Data with Graph Convolutional Networks)
+/Author (Michael Schlichtkrull, Thomas N.~Kipf, Peter Bloem, Rianne van den Berg, Ivan Titov, Max Welling)}
+\setcounter{secnumdepth}{2}
+\begin{document}
+
+\title{Modeling Relational Data with Graph Convolutional Networks}
+
+\author{
+  Michael Schlichtkrull$^*$\\
+  University of Amsterdam\\
+  \texttt{m.s.schlichtkrull@uva.nl}\\\And
+  Thomas N.~Kipf\thanks{Equal contribution.}\\
+  University of Amsterdam\\
+  \texttt{t.n.kipf@uva.nl}\\ \And
+   Peter Bloem\\
+  VU Amsterdam\\
+  \texttt{p.bloem@vu.nl}\\ \AND
+  Rianne van den Berg\\
+  University of Amsterdam\\
+  \texttt{r.vandenberg@uva.nl}\\\And
+  Ivan Titov\\
+  University of Amsterdam\\
+  \texttt{titov@uva.nl}\\ \And
+  Max Welling\\
+  University of Amsterdam, CIFAR\thanks{Canadian Institute for Advanced Research}\\
+  \texttt{m.welling@uva.nl}\\
+}
+
+\maketitle
+
+\begin{abstract}
+
+Knowledge graphs enable a wide variety of applications, including question answering and information retrieval. Despite the great effort invested in their creation and maintenance, even the largest (e.g., Yago, DBPedia or Wikidata) remain incomplete. We introduce Relational Graph Convolutional Networks (R-GCNs) and apply them to two standard knowledge base completion tasks: Link prediction (recovery of missing facts, i.e.~subject-predicate-object triples) and entity classification (recovery of missing entity attributes). R-GCNs are related to a recent class of neural networks operating on graphs, and are developed specifically to deal with the highly multi-relational data characteristic of realistic knowledge bases. We demonstrate the effectiveness of R-GCNs as a stand-alone model for entity classification. We further show that factorization models for link prediction such as DistMult can be significantly improved by enriching them with an encoder model to accumulate evidence over multiple inference steps in the relational graph, demonstrating a large improvement of 29.8\% on FB15k-237 over a decoder-only baseline.
+
+\end{abstract}
+
+\section{Introduction}
+\input{sections/introduction}
+
+\section{Neural relational modeling}
+\input{sections/relational_gcn}
+
+\section{Entity classification}
+\input{sections/entity_classification}
+
+\section{Link prediction}\label{section:link_prediction}
+\input{sections/link_prediction}
+
+\section{Empirical evaluation}
+
+\subsection{Entity classification experiments}\label{sec:ent_exp}
+\input{sections/experiments_entity_classification}
+
+\subsection{Link prediction experiments}
+\input{sections/experiments_link_prediction}
+
+\section{Related Work}
+\input{sections/related_work}
+
+\section{Conclusions}
+\input{sections/conclusions}
+
+\subsection*{Acknowledgements}
+We would like to thank Diego Marcheggiani, Ethan Fetaya, and Christos Louizos for helpful discussions and comments.
+This project is supported by the European Research Council (ERC StG BroadSem 678254), the SAP Innovation
+Center Network
+and the Dutch National Science Foundation (NWO VIDI 639.022.518).
+
+\bibliographystyle{aaai}
+\bibliography{bibliography}
+
+\newpage
+\onecolumn
+\setlength{\parskip}{0.5em}
+\appendix
+\input{sections/appendix.tex}
+
+\end{document}

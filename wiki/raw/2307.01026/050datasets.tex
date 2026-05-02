@@ -1,0 +1,339 @@
+\section{Datasets} \label{sec:dataset}
+\vspace{-8pt}
+
+% \begin{table*}[t] %\vspace{-12pt}
+% \caption{Dataset Statistics.} %\vspace{-5pt}
+% \label{tab:stats}
+%   \resizebox{\textwidth}{!}{%
+  
+%   \begin{tabular}{l l | l l l l l l l}
+%   \toprule
+%   \toprule
+%   Task & Dataset &  Scale & Domain & \# Nodes & \# Edges &  \# Steps & Duration & Time Scale \\ % & \# Edge Features  \\
+%   %& Time Granularity
+%   \midrule
+%   \multirow{5}{*}{\rotatebox[origin=c]{90}{\textbf{Link}}} & \wikipedia & small & interaction & 9,227 & 157,474 & 152,757 & 1 month & UNIX\\
+%    & \review                         & small & rating & 352,637 & 4,873,540 & 6865 & 21 years & UNIX\\
+%    & \coin                           & medium & transaction & 638,486 & 22,809,486 & 1,295,720 & 6 months & UNIX\\
+%    & \reddit                         & large & social & 994,790 & 44,314,507 & 30,998,030 & 5 years & UNIX\\
+%    & \sky                            & large & traffic & 18143 & 67,169,570 & 1385 & 46 months & Daily \\ % & 172 \\
+  
+%   \midrule
+%   \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Node}}} & \trade     & small & trade & 255 nations & 507,497 & 32 & 32 years & Annually\\ % & 4 \\
+%   & \fm                              & medium & interaction  & 992 users & 17,858,395 & 133,758 & 52 months & UNIX\\
+%   & \subreddit                       & large & social & 11,068 users & 27,174,118 & 21,889,537 & 3 years & UNIX\\
+%   \bottomrule
+%   \bottomrule
+%   \end{tabular}
+  
+%   }
+% %\vspace{-10pt}
+% \end{table*}
+
+
+
+% \begin{table*}[t] %\vspace{-12pt}
+% \caption{Dataset Properties.} %\vspace{-5pt}
+% \label{tab:prop}  
+%   \begin{tabular}{l l | l l l l l }
+%   \toprule
+%   \toprule
+%   Task & Dataset                        &  surprise  & reocurrence & Weighted & Directed & Edge Feat. \\ % & \# Edge Features  \\
+%   %& Time Granularity
+%   \midrule
+%   \multirow{5}{*}{Link} & \wikipedia    & 0.108   & 0.0153 & \xmark   & \xmark   & \xmark \\
+%                         & \review       & 0.987   & 0.0002 & \cmark   & \cmark   & \xmark \\
+%                         & \coin         & 0.120   & 0.0251 & \cmark   & \cmark   & \xmark \\
+%                         & \reddit       & 0.823   & 0.0061 & \cmark   & \cmark   & \cmark \\
+%                         & \sky          & 0.024   & 0.0092 & \cmark   & \cmark   & \cmark \\ % & 172 \\
+
+  
+%   \midrule
+%   \multirow{3}{*}{Node} & \trade        & 0.023   & 0.0521   & \cmark   & \cmark & \xmark \\ % & 4 \\
+%                         & \fm           & 0.005   & 0.0031   & \xmark   & \cmark & \xmark \\
+%                         & \subreddit    & 0.0128   & 0.0091   & \cmark   & \cmark & \cmark \\
+%   \bottomrule
+%   \bottomrule
+%   \end{tabular}
+% %\vspace{-10pt}
+% \end{table*}
+
+\setlength\tabcolsep{2.2pt}
+\begin{table*}[t] %\vspace{-12pt}
+\caption{Dataset Statistics. Dataset names are colored based on their scale as \textcolor[HTML]{e7298a}{small}, \textcolor{blue}{medium}, and \textcolor[HTML]{1b9e77}{large}.
+% \textit{$*$}: The time granularity of the datasets are noted in parentheses with \textit{U-ts}, \textit{D}, and \textit{Y} denoting UNIX timestamps, day, and year, respectively.
+\textit{$^\P$}: Edges can be \textit{\textbf{W}eighted}, \textit{\textbf{Di}rected}, or  \textit{\textbf{A}ttributed}.} %\vspace{-5pt}
+\label{tab:stats-summarized}
+  \resizebox{\textwidth}{!}{%
+  
+  \begin{tabu}{l l | l l l l l l}
+  \toprule
+  \toprule
+   & Dataset & Domain & \# Nodes & \# Edges &  \# Steps  & Surprise & Edge Properties\textit{$^\P$}\\ % & \# Edge Features  \\
+  %& Time Granularity
+  \midrule
+  \multirow{5}{*}{\rotatebox[origin=c]{90}{\textbf{Link}}} & \textcolor[HTML]{e7298a}{\wikipedia} & interact. & 9,227 & 157,474 & 152,757 & 0.108 & W: \xmark, Di: \cmark, A: \cmark\\
+   & \textcolor[HTML]{e7298a}{\review}                          & rating & 352,637 & 4,873,540 & 6,865 & 0.987 & W: \cmark, Di: \cmark, A: \xmark\\
+   & \textcolor{blue}{\coin}                            & transact. & 638,486 & 22,809,486 & 1,295,720 & 0.120 & W: \cmark, Di: \cmark, A: \xmark\\
+   & \textcolor[HTML]{1b9e77}{\reddit}                          & social & 994,790 & 44,314,507 & 30,998,030 & 0.823 & W: \cmark, Di: \cmark, A: \cmark\\
+   & \textcolor[HTML]{1b9e77}{\sky}                            & traffic & 18143 & 67,169,570 & 1,385 & 0.024 & W: \xmark, Di: \cmark, A: \cmark \\ % & 172 \\
+  
+  \midrule
+  \multirow{3}{*}{\rotatebox[origin=c]{90}{\textbf{Node}}} & \textcolor[HTML]{e7298a}{\trade}     & trade & 255 & \changed{468,245} & 32 & 0.023 & W: \cmark, Di: \cmark, A: \xmark\\ % & 4 \\
+  & \textcolor{blue}{\fm}                              & interact.  & \changed{1,505} & 17,858,395 & 133,758 & 0.005 & W: \cmark, Di: \cmark, A: \xmark\\
+  & \textcolor[HTML]{1b9e77}{\subreddit}                        & social & \changed{11,766} & 27,174,118 & 21,889,537 & 0.013 & W: \cmark, Di: \cmark, \changed{A: \xmark}\\   %A: \cmark
+  \rowfont{\color{revised}}
+  & \textcolor[HTML]{1b9e77}{\token}                        & transact. & 61,756 & 72,936,998 & 2,036,524 &  0.014 & W: \cmark, Di: \cmark, A: \cmark\\
+  \bottomrule
+  \bottomrule
+  \end{tabu}
+  }
+\vspace{-8pt}
+\end{table*}
+
+
+
+%statistics of datasets
+% There are 8 datasets in \name and 6 of which are original datasets
+\name offers \changed{nine} temporal graph datasets, \changed{seven} of which are collected and curated for this work. 
+All datasets are split chronologically into the training, validation, and test sets, respectively containing $70\%, 15\%$, and $15\%$ of all edges, in line with similar studies such as~\cite{xu2020inductive,rossi2020temporal,wang2021tcl,jin2022neural,souza2022provably,luoneighborhood}. 
+The dataset licenses and download links are presented in Appendix~\ref{app:license}, and the datasets will be permanently maintained via Digital Research Alliance of Canada funded by the Government of Canada. 
+We consider datasets with more than 5 million edges as medium-size and those with more than 25 million edges as large-size datasets. 
+
+%\changed{We discuss more details about the task on each dataset in Appendix~\ref{app:task}.}
+
+%Table~\ref{tab:prop} shows the properties of \name datasets. 
+% The datasets also can have different edge properties namely being weighted, directed, or attributed. 
+
+
+Table~\ref{tab:stats-summarized} shows the statistics and properties of the temporal graph datasets provided by \name. 
+Datasets such as \sky, \reddit, \coin, and \subreddit are orders of magnitude larger than existing TG benchmark datasets~\cite{rossi2020temporal,poursafaeitowards,kumar2019predicting}, while their number of nodes and edges span a wide spectrum, ranging from thousands to millions.   
+In addition, \name dataset domains are highly diverse, coming from five distinct domains including social networks, interaction networks, rating networks, traffic networks, and trade networks. 
+Moreover, the duration of the datasets varies from months to years, and the number of timestamps in \name datasets ranges from 32 to more than 30 million with diverse ranges of time granularity from UNIX timestamps to annually. 
+The datasets can be weighted, directed, or having edge attributes. 
+We also report the \emph{surprise index} (i.e., \textit{$\frac{| E_\text{test}\setminus E_\text{train}|} {|E_\text{test}|}$}) as defined in~\cite{poursafaeitowards} which computes the ratio of test edges that are not seen during training. 
+Low surprise index implies that memorization-based methods (such as EdgeBank~\cite{poursafaeitowards}) can potentially achieve good performance on dynamic link property prediction task.
+% \ah{can add more intuition here if needed.} \wh{Give motivation why you define this index. Otherwise, it is a surprise to the reader :)}
+We can observe that the surprise index also varies notably across \name datasets, further contributing to datasets diversity. \changed{We present more dataset statistics in Appendix~\ref{app:stats}.}
+We discuss the details of \name datasets next.
+
+% We can observe that the surprise and reoccurence index varies significantly among \name datasets, further contributing to datasets diversity.
+% We discuss the details of \name datasets next.
+
+% and \emph{reoccurence index} (i.e., \textit{$\frac{|E_\text{train} \cap {E_\text{test}}|} {|E_\text{train}|}$})\todo{ER: Can we give a quick intuition of what they measure in words} as defined in~\cite{poursafaeitowards}.
+% \begin{align*} 
+% {reocurrence} = 
+% \frac{|E_\text{train} \cap {E_\text{test}}|} {|E_\text{train}|}\; , \quad {surprise} = \frac{| E_\text{test}\setminus E_\text{train}|} {|E_\text{test}|}
+% \end{align*}
+% We can observe that both surprise and reoccurence index varies significantly among \name datasets, further contributing to datasets diversity.
+% We discuss the details of \name datasets next.
+
+
+% \wh{The dataset title color can be darker.}
+\underline{\textbf{\wikipedia.}} This dataset stores the co-editing network on Wikipedia pages over one month. The network is a bipartite interaction network where editors and wiki pages are nodes, while one edge represents a given user edits a page at a specific timestamp. Each edge has text features from the page edits.  
+The task for this dataset is to predict with which wiki page a user will interact at a given time. 
+
+
+\underline{\textbf{\review.}} This dataset is an Amazon product review network from 1997 to 2018 where users rate different products in the electronics category from a scale from one to five. Therefore, the network is a bipartite weighted network where both users and products are nodes and each edge represents a particular review from a user to a product at a given time. Only users with a minimum of 10 reviews within the aforementioned time interval are kept in the network. The considered task for this dataset is to predict which product a user will review at a given time. 
+
+\underline{\textbf{\coin.}} This is a cryptocurrency transaction dataset based on the Stablecoin ERC20 transactions dataset~\cite{chartalistNeurips2022}. Each node is an address and each edge represents the transfer of funds from one address to another at a time. The network starts from April 1st, 2022, and ends on November 1st, 2022, and contains transaction data of 5 stablecoins and 1 wrapped token. This duration includes the Terra Luna crash where the token lost its fixed price of 1 USD.  The considered task for this dataset is to predict with which destination a given address will interact at a given time.
+% \wh{I rewrite the link prediction task like a ranking problem. We can do the same for the following tasks as well}
+%\href{https://www.chartalist.org/eth/StablecoinAnalysis.html}{Stablecoin ERC20 transactions} dataset 
+
+
+\underline{\textbf{\reddit.}} This dataset is a directed reply network of Reddit where users reply to each other's threads. Each node is a user and each interaction is a reply from one user to another. 
+The network starts from 2005 and ends at 2010. The considered task for this dataset is to predict if a given user will reply to another one at a given time.
+
+
+\underline{\textbf{\sky.}}  This dataset is a crowd sourced international flight network from 2019 to 2022. The airports are modeled as nodes, while the edges are flights between airports at a given day. The node features include the type of the airport, the continent where the airport is located, the ISO region code of the airport as well as its longitude and latitude. 
+The edge feature is the associated flight number. 
+\changed{In this dataset, our task is to predict whether a flight will happen between two specific airport on a future date.
+This is useful for foreseeing potential flight disruptions such as cancellation and delays.
+For instance, during the COVID-19 pandemic, many flight routes were cancelled to combat the spread of COVID-19. 
+In addition, the prediction of global flight network is also important for studying and forecasting the spread of disease such as COVID-19 to new regions, as shown in~\cite{bogoch2020potential,ding2021incorporating}.
+}
+
+% The considered task for this dataset is to predict if a given flight will exist between a source and destination airport at a specified day. 
+
+
+\underline{\textbf{\trade.}} This is the international agriculture trading network between nations of the United Nations~(UN) from 1986 to 2016. Each node is a nation and an edge represents the sum trade value of all agriculture products from one nation to another one. As the data is reported annually, the time granularity of the dataset is yearly. 
+The considered task for this dataset is to predict the proportion of agriculture trade values from one nation to other nations during the next year. 
+
+
+\underline{\textbf{\fm.}} This is a bipartite and weighted interaction network between users and the music genres of songs they listen to. Both users and music genres are represented as nodes while an interaction specifies a user listens to a music genre at a given time. The edge weights denote the percentage of which a song belongs to a certain genre. 
+The dataset is constructed by cross referencing the songs in the \href{http://snap.stanford.edu/jodie/#datasets}{\textit{LastFM-song-listens}} dataset~\cite{kumar2019predicting,hidasi2012fast} with that of music genres in the \href{http://millionsongdataset.com/}{\textit{million-song}} dataset~\cite{bertin2011million}. 
+The \textit{LastFM-song-listens} dataset has one month of who-listens-to-which-song information for 1000 users and the \textit{million-song} dataset provides genre weights for all songs in the \textit{LastFM-song-listens} dataset. 
+We only retain genres with at least 10\% weights for each song that are repeated at least a thousand times in the dataset. \changed{Genre names are cleaned to remove typos. Here, the task is to predict how frequently each user will interact with music genres over the next week. This is applicable to many music recommendation systems where providing personalized recommendation is important and user preference shifts over time.}
+% In addition, the genre names are further cross references to remove genre names with typos. 
+% The considered task for this dataset is to rank with which set of music genres a user will interact the most over the course of the next week.
+
+
+\underline{\textbf{\subreddit.}} This is a users and subreddits interaction network. Both users and subreddits are nodes and each edge indicates that a user posted on a subreddit at a given time. The dataset spans from 2005 to 2019. \changed{The task considered for this dataset is to learn the interaction frequency towards the subreddits of a user over the next week.}
+
+\changed{\underline{\textbf{\token.}} This is a user and cryptocurrency token transaction network. Both users and tokens are nodes and each edge indicates the transaction from a user to a token. The edge weights indicate the amount of token transferred and considering the disparity between weights, we normalized the edge weights using logarithm. 
+The goal here is to predict how frequently a user will interact with various types of tokens over the next week. The dataset is extracted and curated from \href{https://chartalist.org/eth/TaskMultilayer.html}{this source}~\cite{chartalistNeurips2022}.}
+
+
+
+
+% %overview of dataset details
+% Datasets:
+% \begin{itemize}
+%     \item \href{https://www.fao.org/faostat/en/#data/TM}{\trade}
+%     \item \href{https://www.chartalist.org/eth/StablecoinAnalysis.html}{\coin}
+%     \item \href{https://zenodo.org/record/7323875#.ZEmhTnZKguU}{\sky}
+%     \item \href{https://surfdrive.surf.nl/files/index.php/s/M09RDerAMZrQy8q}{\reddit}
+%     \item \href{https://nijianmo.github.io/amazon/index.html}{\review}
+% \end{itemize}
+
+
+
+
+
+
+% \textit{Do we want to include other stats? such as temporal degree or recurrence for example?! We can also have another table to include additional information about the datasets.}
+
+
+% \begin{table*}[ht] %\vspace{-12pt}
+% \caption{Dataset statistics.} %\vspace{-5pt}
+% \label{tab:stats}
+%   \resizebox{\linewidth}{!}{%
+%   \begin{tabular}{l | l l l l l l l l l}
+%   \toprule
+%   \toprule
+%   Dataset & Domain & \# Nodes & Total Edges
+%   & Unique Edges & Unique Steps & Time Granularity & Duration & Edge Attr & Node Attr \\ % & \# Edge Features  \\
+%   %& Time Granularity
+%   \midrule
+%   \multicolumn{10}{c}{Dynamic Link Prediction}\\
+%   \midrule
+%   \wikipedia & social & 9,227 & 157,474 & 18,257 & 152,757 & Unix timestamp & 1 month & \cmark & \xmark \\
+%   \review & rating & 352,637 & 4,873,540 & 4,730,223 & 6865 & unix timestamp & 21 years & \cmark & \xmark \\
+%   \sky & transportation & 18143 & 67,169,570 & 2,309,707 & 1385 & Daily & 46 months & \cmark & \cmark \\ % & 172 \\
+%   \coin & transaction & 638,486 & 22,809,486 & 3,862,031 & 1,295,720 & Unix timestamp & 6 months & \cmark & \xmark\\
+%   \reddit & social & 994,790 & 44,314,507 & 35,531,704 & 30,998,030 & Unix timestamp & 5 years & \cmark & \xmark\\
+%   %\review & rating & 9,838,676 & 20,994,352 & 20,553,480 & 7,015 & unix timestamp & 21 years & \cmark & \cmark \\
+%   % \rowcolor{red}
+%   % \maghist & co-authorship & xxx & 2.8 million & xxx & xxx & annually & 181 years & \xmark & \xmark \\
+  
+%   %\rowcolor{red}
+%   %\contact & proximity & 694 & 2,426,280 & 79,531 & 8,065 & 5 minutes & 1 month \\
+%   %\coin & transaction & 6,715,034 & 36,723,654 & 15,124,451 & 1,318,124 & Unix timestamp & 6 months \\
+%    % & 172 \\
+%   %\midrule
+
+  
+%   % \multicolumn{8}{c}{Dynamic Edge Regression}\\
+%   % \midrule
+%   \midrule
+%   \multicolumn{10}{c}{Dynamic Node Property Prediction}\\
+%   \midrule
+%   \trade & economics & 255 nations & 507,497 & 36,182 & 32 & Annually & 32 years & \cmark & \xmark \\ % & 4 \\
+%   \fm     & music  & 992 users & 17,858,395 & 133,758 & 4,187,241 & Unix timestamp & 52 months & \cmark & \xmark \\
+%   \subreddit & social & 11,554 users & 28,808,896 & 575,057 & 23,330,896 & Unix timestamp & 5 years & \cmark & \xmark\\
+%   % \rowcolor{red}
+%   % \maglarge & citation & xxx & 140,000,000 & xxx & xxx & annually & 20 years & \checkmark & \checkmark \\
+%   % \rowcolor{red}
+%   % \review & rating & xxx & 233,100,000 & xxx & xxx & daily & 269 months & \checkmark & \checkmark \\
+%   % \rowcolor{red}
+%   % \reddit & social & 1,185,432 & 77,449,901 & xxx & xxx & Unix timestamp & 5 years \\
+%   \bottomrule
+%   \bottomrule
+%   \end{tabular}
+%   }
+% %\vspace{-10pt}
+% \end{table*}
+
+
+
+
+
+
+
+
+
+
+
+% Table~\ref{tab:stats} shows the statistics of the datasets included in our benchmark. 
+
+% \begin{table*}[ht] %\vspace{-12pt}
+% \caption{Dataset statistics.} %\vspace{-5pt}
+% \label{tab:stats}
+%   \resizebox{\linewidth}{!}{%
+%   \begin{tabular}{l | l l l l l l l}
+%   \toprule
+%   \toprule
+%   Dataset & Domain & \# Nodes & Total Edges
+%   & Unique Edges & Unique Steps & Time Granularity & Duration \\ % & \# Edge Features  \\
+%   %& Time Granularity
+%   \midrule
+%   \multicolumn{8}{c}{Dynamic Link Prediction}\\
+%   \midrule
+%   \wikipedia & social & 9,227 & 157,474 & 18,257 & 152,757 & Unix timestamp & 1 month \\
+%   \contact & proximity & 694 & 2,426,280 & 79,531 & 8,065 & 5 minutes & 1 month \\
+%   %\sky & transportation & 13,169 & 65,398,513 & xxx & xxx & Unix timestamp & 46 months \\ % & 172 \\
+%   \sky & transportation & xxx & 67,169,616 & xxx & xxx & Daily & 46 months \\ % & 172 \\
+%   \coin & transaction & 6,715,034 & 36,723,654 & 15,124,451 & 1,318,124 & Unix timestamp & 6 months \\
+%   \magcs & co-authorship & xxx & 140,000,000 & xxx & xxx & annually & 20 years \\ % & 172 \\
+%   %\midrule
+
+  
+%   % \multicolumn{8}{c}{Dynamic Edge Regression}\\
+%   % \midrule
+%   % \trade & economics & 255 & 507,497 & 36,182 & 32 & Annually & 32 years \\ % & 4 \\
+%   \midrule
+%   \multicolumn{8}{c}{Dynamic Node Classification}\\
+%   \midrule
+%   \fm     & music  & 992 + 513 & 17,858,396  & xxx & xxx & Unix timestamp & 52 months \\
+%   \review & rating & xxx & 233,100,000 & xxx & xxx & daily & 269 months \\
+%   \magcs & co-authorship & xxx & 140,000,000 & xxx & xxx & annually & 20 years \\
+%   \reddit & social & xxx & 6,700,000,000 & xxx & xxx & Unix timestamp & xxx \\
+%   %\review & rating & xxx & xxx & xxx & xxx & Unix timestamp & xxx \\
+  
+%   % & 0 \\
+  
+%   \bottomrule
+%   \bottomrule
+%   \end{tabular}
+%   }
+% %\vspace{-10pt}
+% \end{table*}
+
+
+% \begin{table*}[ht] %\vspace{-12pt}
+% \caption{Dataset statistics.} %\vspace{-5pt}
+% \label{tab:stats}
+%   \resizebox{\linewidth}{!}{%
+%   \begin{tabular}{l | l l l l l l l}
+%   \toprule
+%   \toprule
+%   Dataset & Domain & \# Nodes & Total Edges
+%   & Unique Edges & Unique Steps & Time Granularity & Duration \\ % & \# Edge Features  \\
+%   %& Time Granularity
+%   \midrule
+%   \multicolumn{8}{c}{Dynamic Link Prediction}\\
+%   \midrule
+%   \contact & proximity & 694 & 2,426,280 & 79,531 & 8,065 & 5 minutes & 1 month \\
+%   \sky & transportation & 13,169 & 65,398,513 & xxx & xxx & Unix timestamp & 46 months \\ % & 172 \\
+%   \magcs & co-authorship & xxx & 140,000,000 & xxx & xxx & daily & 20 years \\ % & 172 \\
+%   \midrule
+%   \multicolumn{8}{c}{Dynamic Edge Regression}\\
+%   \midrule
+%   \trade & economics & 255 & 507,497 & 36,182 & 32 & Annually & 32 years \\ % & 4 \\
+%   \coin & transaction & 6,715,034 & 36,723,654 & 15,124,451 & 1,318,124 & Unix timestamp & 6 months \\
+%   \review & rating & xxx & 233,100,000 & xxx & xxx & daily & 269 months \\
+%   \midrule
+%   \multicolumn{8}{c}{Dynamic Node Classification}\\
+%   \midrule
+%   \fm     & music  & 1000 & 20 million*  & xxx & xxx & Unix timestamp & 52 months \\
+%   \reddit & social & xxx & 6,700,000,000 & xxx & xxx & Unix timestamp & xxx \\
+%   %\review & rating & xxx & xxx & xxx & xxx & Unix timestamp & xxx \\
+  
+%   % & 0 \\
+  
+%   \bottomrule
+%   \bottomrule
+%   \end{tabular}
+%   }
+% %\vspace{-10pt}
+% \end{table*}

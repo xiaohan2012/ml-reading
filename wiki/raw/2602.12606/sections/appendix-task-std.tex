@@ -1,0 +1,437 @@
+
+\subsection{Results with standard deviations}
+
+Tables \ref{tab:autocomplete_classification_appendix} - \ref{tab:recommendation_appendix} show mean and standard deviations over 5 runs for the autocomplete classification, autocomplete regression, entity classification, entity regression and link prediction results for all new tasks introduced in \relbench v2. For regression tasks, MAE metrics are reported below (the main paper reports $R^2$ metrics).
+
+%% AUTOCOMPLETE CLASSIFICATION RESULTS MAIN %%
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Autocomplete binary classification results on \relbench.} Binary classification uses the AUROC metric (higher is better). Standard baselines of random choice and majority class both correspond to AUROC values of approximately 50.00, so we exclude them below. Best values are in bold.}
+  \label{tab:autocomplete_classification_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  \resizebox{\textwidth}{!}{
+    \input{tables/results/autocomplete_classification_appendix}
+  }
+  \vspace{-10pt}
+\end{table}
+
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Autocomplete multiclass classification results on \relbench.} Multiclass classification uses the accuracy metric (higher is better). Best values are in bold.}
+  \label{tab:autocomplete_multiclass_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+  % \resizebox{\textwidth}{!}{
+    \input{tables/results/autocomplete_multiclass_appendix}
+  % }
+  \vspace{-10pt}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Autocomplete regression $R^2$ results on \relbench.} Regression uses the $R^2$ metric (higher is better). Best values are in bold.}
+  \label{tab:autocomplete_regression_r2_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/autocomplete_regression_r2_appendix}
+    }
+  \vspace{10pt}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Autocomplete regression results on \relbench.} Regression uses the MAE metric (lower is better). Best values are in bold.}
+  \label{tab:autocomplete_regression_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/autocomplete_regression_appendix}
+    }
+  \vspace{10pt}
+\end{table}
+
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Entity binary classification results on \relbench.} Binary classification uses the AUROC metric (higher is better). Standard baselines of random choice and majority class both correspond to AUROC values of approximately 50.00, so we exclude them below. Best values are in bold.}
+  \label{tab:entity_classification_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    % \resizebox{\textwidth}{!}{
+    \input{tables/results/entity_classification_appendix}
+    % } 
+  \vspace{10pt}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Entity multiclass classification results on \relbench.} Multiclass classification uses the accuracy metric (higher is better). Best values are in bold.}
+  \label{tab:entity_multiclass_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    % \resizebox{\textwidth}{!}{
+    \input{tables/results/entity_multiclass_appendix}
+    % } 
+  \vspace{10pt}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Entity regression $R^2$ results on \relbench.} Regression uses the $R^2$ metric (higher is better). Best values are in bold.}
+  \label{tab:entity_regression_r2_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/entity_regression_r2_appendix}
+    }
+  \vspace{10pt}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Entity regression results on \relbench.} Regression uses the MAE metric (lower is better). Best values are in bold.}
+  \label{tab:entity_regression_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/entity_regression_appendix}
+    }
+  \vspace{10pt}
+\end{table}
+
+
+
+\begin{table}[!ht]
+  \centering
+  \caption{{\bf Recommendation results on \relbench.} Recommendation uses the MAP metric (higher is better). Best values are in bold.}
+  \label{tab:recommendation_appendix}
+  \renewcommand{\arraystretch}{1.1}
+  \scriptsize
+    \resizebox{\textwidth}{!}{
+    \input{tables/results/recommendation_appendix}
+    }
+  \vspace{10pt}
+\end{table}
+
+
+\subsection{Additional regression metrics}
+
+For regression tasks, the main paper reports $R^2$ to measure each method's predictive power, while MAE is reported in Tables \ref{tab:autocomplete_regression_appendix} and \ref{tab:entity_regression_appendix} above.
+
+\newpage
+
+\subsection{Recommendation task ablations}
+
+\textbf{The benefit of node position}. ID-GNN, which strongly utilizes node position, excels in entity-specific tasks. For example, we focus on the \ratebeer dataset whose recommendation tasks strongly highlight user-specific preferences. We observed that ID-GNN significantly outperforms plain GraphSAGE while also being substantially faster to train. This advantage stems from the fact that recommendation tasks are inherently multi-hop link prediction problems, where node position and context are crucial, as nodes tend to connect with others in their community. ID-GNN is better at capturing such node-specific patterns than vanilla GraphSAGE, leading to its superior performance.
+
+\textbf{Multi-hop recommendation}. Recommendation tasks naturally involve multi-hop reasoning, where predicting a user–item link often requires traversing intermediate tables in the relational schema. Increasing the number of GNN layers expands the receptive field, allowing the model to aggregate information from progressively richer neighborhoods. This is particularly beneficial when intermediate tables contain strong preference signals. In the \texttt{user-beer-liked} task, the Beer Ratings table includes explicit ratings, subscores, and review text, enabling deeper GNNs to capture collaborative filtering effects by traversing paths such as User → Ratings → Beer → Ratings → Beer. In such cases, increasing the number of layers yields substantial performance gains. In contrast, tasks with feature-sparse intermediate tables (e.g., Favorites, which contains the implicit link between users and beers with timestamps) tend to benefit less from additional hops, as deeper neighborhoods introduce weaker or noisier signals.
+
+\subsection{Experiment hyperparameters}
+
+All experiments for \relbench v2 were conducted with minimal parameter tuning. The default
+hyperparameters are specified in Table~\ref{tab:hparams}. The consistency of these defaults across
+task types highlights the robustness of RDL models, which perform well without extensive
+hyperparameter optimization.
+
+For the \texttt{rel-ratebeer} recommendation tasks, we adjusted the batch size to 64 when training
+two-layer GraphSAGE, two-layer ID-GNN, and four-layer ID-GNN models to accommodate GPU memory
+constraints. While four-layer GraphSAGE remains prohibitively memory-intensive under this setting,
+all other models were trained successfully with the adjusted configuration.
+
+\begin{table}[t]
+  \centering
+  \caption{{Task-specific RDL default hyperparameters.}}
+  \label{tab:hparams}
+  \renewcommand{\arraystretch}{1.1}
+  \setlength{\tabcolsep}{3pt}
+  \scriptsize
+  \begin{tabular}{lrrrr}
+    \toprule
+      \mr{2}{\textbf{Hyperparameter}} & \mc{4}{c}{\textbf{Task type}} \\
+      & Autocomplete & Entity classification & Entity regression & Recommendation \\
+    \midrule
+      Learning rate & 0.005 & 0.005 & 0.005 & 0.001 \\
+      Maximum epochs & 10 & 10 & 10 & 20 \\
+      Batch size & 512 & 512 & 512 & 512 \\
+      Hidden feature size & 128 & 128 & 128 & 128 \\
+      Aggregation & summation & summation & summation & summation \\
+      Number of layers & 2 & 2 & 2 & 2 \\
+      Number of neighbors & 128 & 128 & 128 & 128 \\
+      Temporal sampling strategy & uniform & uniform & uniform & uniform \\
+   \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Bridging Temporal Graph Benchmark (TGB) and \relbench} \label{sec:tgb_relbench}
+
+% In addition to the new relational databases and tasks introduced in \relbench v2, we also extend \relbench with a suite of large-scale \emph{temporal interaction} datasets sourced from the Temporal Graph Benchmark (TGB).\citep{rossi2020temporal}
+% TGB is a benchmark centered on learning from time-stamped event streams (temporal edges), with evaluation protocols that enforce strict chronological generalization. By translating TGB datasets into the \relbench database and task abstraction, we enable direct comparisons between (i) \emph{temporal GNN} baselines that operate on event streams and (ii) \emph{relational deep learning} baselines that operate on normalized multi-table schemas with explicit primary/foreign key structure. We focus on TGB datasets that aren't knowledge graphs and naturally map the remaining datasets to relational event logs targeting the following downstream tasks:
+% (i) Dynamic Link Property Prediction (\texttt{tgbl-*}),
+% (ii) Dynamic Node Property Prediction (\texttt{tgbn-*}), and
+% (iii) Temporal Heterogeneous Graph Link Prediction (\texttt{thgl-*}).
+
+% % We intentionally exclude temporal knowledge graph tasks (\texttt{tkgl-*}) in this technical report, as they require additional schema elements (relation vocabularies, static triples) and evaluation conventions that are orthogonal to the main \relbench task families.
+
+% \subsection{Converted TGB datasets} \label{sec:tgb_datasets}
+
+% The converted datasets cover diverse domains and scales, from small bipartite interaction graphs to multi-relational, multi-entity temporal databases with tens of millions of events. The key outcome of the conversion is that each dataset becomes a \relbench \texttt{Database} (parquet tables plus schema metadata) together with temporal cutoffs and tasks, enabling training and evaluation under the same leakage-safe conventions used elsewhere in \relbench.
+
+\paragraph{Dataset descriptions.}
+\texttt{tgbl-wiki-v2} captures Wikipedia co-edit interactions over a short horizon and is naturally bipartite; \texttt{tgbl-review-v2} is a long-range e-commerce interaction graph derived from Amazon review activity; \texttt{tgbl-coin} consists of cryptocurrency transactions; \texttt{tgbl-comment} models a large-scale Reddit comment interaction stream; and \texttt{tgbl-flight} is a decades-long flight network event log.
+For node property prediction, \texttt{tgbn-trade} models annual UN trade interactions, \texttt{tgbn-genre} is a LastFM user--genre interaction stream, \texttt{tgbn-reddit} is a temporal Reddit hyperlink network, and \texttt{tgbn-token} represents blockchain user--token interactions.
+Finally, the heterogeneous family \texttt{thgl-*} includes GitHub interaction streams (\texttt{thgl-software}, \texttt{thgl-github}), a Reddit interaction stream (\texttt{thgl-forum}), and an app-market interaction stream (\texttt{thgl-myket}), each with explicit node/edge type constraints.
+
+% --- Table: stats_tgb_datasets (no resizebox; scriptsize only) ---                                                                                                                                                                                        
+% \begin{table}[!ht]                                                                                                                                                                                                                                         
+%     \centering                                                                                                                                                                                                                                               
+%     \caption{{\bf Statistics of TGB datasets translated into \relbench.}                                                                                                                                                                                     
+%     We report the relational size of each translated dataset as stored in parquet:                                                                                                                                                                           
+%     number of tables, total number of rows (summed across all tables, up to the test-time cutoff), and total number of columns (summed across all tables).                                                                                                   
+%     }                                                                                                                                                                                                                                                        
+%     \label{tab:stats_tgb_datasets}                                                                                                                                                                                                                           
+%     \begingroup                                                                                                                                                                                                                                              
+%     \scriptsize  
+%     \vspace{-5pt}
+%     \setlength{\tabcolsep}{3pt}                                                                                                                                                                                                                              
+%     \renewcommand{\arraystretch}{1.1}                                                                                                                                                                                                                        
+%     \begin{tabular}{llrrr}                                                                                                                                                                                                                                   
+%       \toprule                                                                                                                                                                                                                                               
+%       Task family & Dataset & \#Tables & \#Rows & \#Cols \\                                                                                                                                                                                                  
+%       \midrule                                                                                                                                                                                                                                               
+%       \mr{5}{\texttt{tgbl-*} (link)} &                                                                                                                                                                                                                       
+%         \texttt{tgbl-wiki-v2}   & 3  & 166,701    & 7  \\                                                                                                                                                                                                    
+%       & \texttt{tgbl-review-v2} & 2  & 5,226,177  & 6  \\                                                                                                                                                                                                    
+%       & \texttt{tgbl-coin}      & 2  & 23,447,972 & 6  \\                                                                                                                                                                                                    
+%       & \texttt{tgbl-comment}   & 2  & 45,309,297 & 6  \\                                                                                                                                                                                                    
+%       & \texttt{tgbl-flight}    & 2  & 67,187,713 & 6  \\                                                                                                                                                                                                    
+%       \midrule                                                                                                                                                                                                                                               
+%       \mr{4}{\texttt{tgbn-*} (node)} &                                                                                                                                                                                                                       
+%         \texttt{tgbn-trade}  & 5 & 934,072     & 14 \\                                                                                                                                                                                                       
+%       & \texttt{tgbn-genre}  & 5 & 20,858,841  & 14 \\                                                                                                                                                                                                       
+%       & \texttt{tgbn-reddit} & 5 & 43,669,153  & 14 \\                                                                                                                                                                                                       
+%       & \texttt{tgbn-token}  & 5 & 81,663,534  & 14 \\                                                                                                                                                                                                       
+%       \midrule                                                                                                                                                                                                                                               
+%       \mr{4}{\texttt{thgl-*} (hetero link)} &                                                                                                                                                                                                                
+%         \texttt{thgl-software} & 18 & 2,171,733   & 74 \\                                                                                                                                                                                                    
+%       & \texttt{thgl-forum}    & 4  & 23,910,523  & 12 \\                                                                                                                                                                                                    
+%       & \texttt{thgl-github}   & 18 & 23,356,342  & 74 \\                                                                                                                                                                                                    
+%       & \texttt{thgl-myket}    & 4  & 55,163,623  & 12 \\                                                                                                                                                                                                    
+%       \bottomrule                                                                                                                                                                                                                                            
+%     \end{tabular}                                                                                                                                                                                                                                       
+%     \endgroup                                                                                                                                                                                                                            
+%     \vspace{-5pt}                                                                                                                                                                                                                                           
+% \end{table}                                                                                                                                                                                                                                                
+                
+
+\subsection{Translation: temporal event streams to relational schemas} \label{sec:tgb_translation}
+
+Each TGB dataset is provided as a chronological stream of interactions. Our translation materializes a \relbench-style normalized schema in which \emph{entities} become tables with primary keys and \emph{events} become tables whose rows reference entities via foreign keys and include a time column. Across all translated datasets, we (i) include an explicit timestamp column (\texttt{event\_ts}) on time-varying tables; (ii) avoid storing train/validation/test split columns, and instead store dataset-level cutoffs (\valtimestamp, \testtimestamp) as metadata so splits can be derived from timestamps at load/evaluation time; and (iii) keep only low-dimensional attributes as relational columns (e.g., scalar \texttt{weight}), while omitting high-dimensional edge message vectors that would otherwise expand into hundreds of sparse columns.
+
+For dynamic link prediction datasets (\texttt{tgbl-*}), we represent the interaction stream as a single event table referencing a node table:
+\begin{quote}
+  \small
+  \texttt{nodes(node\_id)}\\
+  \texttt{events(event\_id, src\_id, dst\_id, event\_ts, weight)}
+\end{quote}
+\noindent For bipartite datasets (e.g., \texttt{tgbl-wiki-v2}), we use separate entity tables \texttt{src\_nodes(src\_id)} and \texttt{dst\_nodes(dst\_id)} to preserve type constraints and enable type-correct negative sampling.
+
+For temporal heterogeneous datasets (\texttt{thgl-*}), we materialize one entity table per node type and one event table per edge type:
+\begin{quote}
+  \small
+  \texttt{nodes\_type\_t(node\_type\_t\_id)} for each node type \(t\).\\
+  \texttt{events\_edge\_type\_e(event\_id, src\_id, dst\_id,}\\
+  \texttt{event\_ts, weight)} for each edge type \(e\).
+\end{quote}
+\noindent This schema-first representation preserves the semantics of typed relations and makes relation-conditioned tasks and evaluation natural in \relbench.
+
+For dynamic node property prediction datasets (\texttt{tgbn-*}), targets are time-varying and often sparse. To avoid storing dense label vectors, we represent supervision as normalized label events:
+\begin{quote}
+  \small
+  \texttt{labels(label\_id)}\\
+  \texttt{label\_events(label\_event\_id, src\_id, label\_ts)}\\
+  \texttt{label\_event\_items(item\_id, label\_event\_id, label\_id,}\\
+  \texttt{label\_weight)}
+\end{quote}
+\noindent This preserves the full supervision signal while keeping storage proportional to the number of non-zeros.
+
+\subsection{Efficient storage and loading: parquet + disk-backed CSR} \label{sec:tgb_parquet_csr}
+
+  A central engineering challenge in translating TGB to \relbench is scale: several datasets contain on the order of \(\mathcal{O}(10^7\text{--}10^8)\) temporal events. Na\"ively materializing the full event log as an in-memory edge list (e.g., a global
+  \texttt{edge\_index}) is prohibitive on commodity CPU machines, so we rely on columnar storage (parquet) together with disk-backed sparse graph caches. We store each table as a separate parquet file in the standard \relbench \texttt{Database.save()} layout. This provides columnar storage for fast projection to only the columns required by a given model, and row-group metadata that supports efficient
+  sequential scans without loading entire tables into memory. For \texttt{thgl-*} datasets with many edge types, we additionally export each \texttt{events\_edge\_type\_*} table using a streaming/chunked parquet writer. This avoids materializing massive
+  intermediate dataframes per relation and keeps the conversion pipeline memory-bounded even when the total number of events is large.
+
+  To train sampled GNN baselines at scale, we build and cache CSR (compressed sparse row) adjacency representations directly from parquet scans. Concretely, we store \texttt{indptr} and \texttt{indices} arrays (and, when needed, aligned per-event arrays
+  such as timestamps and weights) as memory-mappable \texttt{.npy} artifacts. With CSR, neighbor sampling reduces to lightweight slicing operations over these arrays, enabling mini-batch training without ever holding the full graph in system memory. For relational baselines, we use an ``event-as-node'' message passing graph: each event row becomes a node connected (via PK/FK edges) to its incident entity rows. We build node$\rightarrow$event CSR adjacencies per entity table and unify per-event arrays. This makes relational message passing scalable while remaining faithful to the normalized schema.
+
+\begin{algorithm}[t]
+\caption{Streaming CSR construction from parquet event logs (sketch).}
+\label{alg:csr_from_parquet}
+\begin{algorithmic}[1]
+\Require Parquet event table with columns \texttt{src\_id}, \texttt{dst\_id}, \texttt{event\_ts}; cutoff time $\tau$.
+\Ensure CSR adjacency arrays \texttt{indptr}, \texttt{indices} for events with \texttt{event\_ts} $\le \tau$.
+\State \textbf{Pass 1:} Scan parquet in large row batches; filter rows by \texttt{event\_ts} $\le \tau$; accumulate per-node degree counts.
+\State Build \texttt{indptr} by prefix-summing degrees.
+\State \textbf{Pass 2:} Re-scan parquet in batches; filter by \texttt{event\_ts} $\le \tau$; write neighbors into \texttt{indices} using \texttt{indptr} offsets.
+\State Optionally: symmetrize for undirected message passing; cache per-event arrays (\texttt{event\_ts}, \texttt{weight}) aligned with \texttt{indices}.
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Baselines and evaluation protocol} \label{sec:tgb_baselines}
+
+  We benchmark three complementary model families on the translated TGB datasets, spanning graph-native GNNs, relational (PK/FK) GNNs, and temporal sequence models.
+
+  \textbf{GraphSAGE (projected-edge graph; TGB-style).}
+  We treat each interaction event as an edge from \texttt{src} to \texttt{dst} and train a sampled two-layer GraphSAGE encoder using disk-backed CSR adjacency built from parquet scans. This baseline is graph-native in the sense that the event log is
+  directly interpreted as a temporal edge stream over a single (or bipartite) node set.
+
+  \textbf{GraphSAGE (event-as-node relational graph; RDL-style).}
+  We represent each event row as its own node and perform message passing over the induced PK/FK graph that connects entity rows to event rows (``RelEventSAGE''). This baseline is schema-faithful: neighborhoods and aggregation follow the relational
+  structure rather than collapsing the database into a single projected graph.
+
+  \textbf{TGN + attention (temporal baseline).}
+  We train a temporal graph network with a lightweight attention-based embedding module that consumes the chronological event stream (or equivalently, the exported parquet event tables) under controlled compute budgets. This baseline captures temporal
+  dynamics via memory and time encoding, and is directly comparable to the GNN baselines under the same split and leakage constraints.
+
+  \textbf{Metrics.}
+  For \texttt{tgbl-*} and \texttt{thgl-*} we report sampled-negative MRR@100 (higher is better) to keep a single, consistent ranking metric across model families and schema variants. For \texttt{tgbn-*} we report the official NDCG@10 (higher is better),
+  and additionally report sampled-negative MRR for consistency across task families. For existing \relbench recommendation tasks we report the official MAP@10 used in the \relbench evaluation code.
+
+  \textbf{Leakage control.}
+  All splits are derived from dataset-level \valtimestamp and \testtimestamp cutoffs, and we do not store split membership as a database column. When comparing baselines, we ensure that message passing and neighborhood construction only use historical
+  events up to the validation cutoff (i.e., \texttt{adj=val}) unless explicitly stated otherwise, preventing test evaluation from incorporating post-cutoff interactions.
+
+
+\subsection{Results} \label{sec:tgb_results}
+
+Tables \ref{tab:tgbn_nodeprop_results}, \ref{tab:tgbl_linkpred_results}, and \ref{tab:thgl_linkpred_results} summarize baseline performance on the translated TGB datasets. Table \ref{tab:relbench_reco_smoke} reports a small reference point on existing \relbench recommendation tasks using GraphSAGE and the attention-based TGN baseline.
+
+ % --- Table: tgbn_nodeprop_results (no resizebox; scriptsize only) ---                                                                                                                                                                                     
+  \begin{table}[!ht]                                                                                                                                                                                                                                         
+    \centering                                                                                                                                                                                                                                               
+    \caption{{\bf Dynamic node property prediction (\texttt{tgbn-*}) on translated TGB datasets.}                                                                                                                                                            
+    We report validation and test performance for GraphSAGE and a sampled neighbor-attention variant (``Attn''), using NDCG@10 (official) and sampled-negative MRR.                                                                                          
+    }                                                                                                                                                                                                                                                        
+    \label{tab:tgbn_nodeprop_results}                                                                                                                                                                                                                        
+    \begingroup                                                                                                                                                                                                                                              
+    \scriptsize                                                                                                                                                                                                                                              
+    \setlength{\tabcolsep}{2.5pt}                                                                                                                                                                                                                            
+    \renewcommand{\arraystretch}{1.1}                                                                                                                                                                                                                        
+    \begin{tabular}{lrrrrrrrr}                                                                                                                                                                                                                               
+      \toprule                                                                                                                                                                                                                                               
+        & \mc{4}{c}{GraphSAGE} & \mc{4}{c}{Attn (sampled neighbor attention)} \\                                                                                                                                                                             
+        \cmidrule(lr){2-5} \cmidrule(lr){6-9}                                                                                                                                                                                                                
+      Dataset                                                                                                                                                                                                                                                
+        & Val MRR & Val NDCG@10 & Test MRR & Test NDCG@10                                                                                                                                                                                                    
+        & Val MRR & Val NDCG@10 & Test MRR & Test NDCG@10 \\                                                                                                                                                                                                 
+      \midrule                                                                                                                                                                                                                                               
+      \texttt{tgbn-trade}                                                                                                                                                                                                                                    
+        & 0.9522 & \textbf{0.3769} & 0.9393 & \textbf{0.3765}                                                                                                                                                                                                
+        & 0.9102 & 0.3849 & 0.8635 & 0.3401 \\                                                                                                                                                                                                               
+      \texttt{tgbn-genre}                                                                                                                                                                                                                                    
+        & \textbf{0.8682} & \textbf{0.6169} & \textbf{0.8591} & \textbf{0.6054}                                                                                                                                                                              
+        & 0.6664 & 0.4263 & 0.6552 & 0.4139 \\                                                                                                                                                                                                               
+      \texttt{tgbn-reddit}                                                                                                                                                                                                                                   
+        & \textbf{0.7804} & \textbf{0.6474} & \textbf{0.7555} & \textbf{0.6146}                                                                                                                                                                              
+        & 0.4326 & 0.3413 & 0.4067 & 0.3098 \\                                                                                                                                                                                                               
+      \texttt{tgbn-token}                                                                                                                                                                                                                                    
+        & \textbf{0.4043} & \textbf{0.3763} & \textbf{0.3405} & \textbf{0.3098}                                                                                                                                                                              
+        & 0.2451 & 0.2303 & 0.2101 & 0.1935 \\                                                                                                                                                                                                               
+      \bottomrule                                                                                                                                                                                                                                            
+    \end{tabular}
+    \endgroup
+    \vspace{-5pt}
+  \end{table}
+
+% --- Table: tgbl_linkpred_results (no resizebox; scriptsize only) ---
+  \begin{table}[!ht]
+    \centering
+    \caption{{\bf Dynamic link prediction (\texttt{tgbl-*}) on translated TGB datasets (sampled-negative MRR@100).}
+    We compare (i) a graph-native projected-edge GraphSAGE baseline, (ii) an event-as-node relational GraphSAGE baseline (RelEventSAGE), and (iii) a TGN + attention baseline trained from exported parquet under bounded budgets.
+    Best test results per dataset are in bold.
+    }
+    \label{tab:tgbl_linkpred_results}
+    \begingroup
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{lrrrrrr}
+      \toprule
+        & \mc{2}{c}{GraphSAGE (projected edges)} & \mc{2}{c}{GraphSAGE (event-as-node)} & \mc{2}{c}{TGN+Attn} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+      Dataset & Val & Test & Val & Test & Val & Test \\
+      \midrule
+      \texttt{tgbl-wiki-v2}   & \textbf{0.4203} & \textbf{0.3782} & 0.2757 & 0.2517 & 0.3998 & 0.3384 \\
+      \texttt{tgbl-review-v2} & 0.0932 & 0.0852 & 0.2596 & 0.2317 & \textbf{0.2528} & \textbf{0.2457} \\
+      \texttt{tgbl-coin}      & 0.4541 & 0.3932 & \textbf{0.6064} & \textbf{0.5554} & 0.5604 & 0.5067 \\
+      \texttt{tgbl-comment}   & 0.2089 & 0.1536 & \textbf{0.2896} & \textbf{0.2305} & 0.2960 & 0.2098 \\
+      \texttt{tgbl-flight}    & \textbf{0.7082} & \textbf{0.6737} & 0.6357 & 0.5915 & 0.4838 & 0.4566 \\
+      \bottomrule
+    \end{tabular}
+    \endgroup
+    \vspace{-5pt}
+  \end{table}
+
+% --- Table: thgl_linkpred_results (no resizebox; scriptsize only) ---
+  \begin{table}[!ht]
+    \centering
+    \caption{{\bf Temporal heterogeneous link prediction (\texttt{thgl-*}) on translated TGB datasets (sampled-negative MRR@100).}
+    We compare event-as-node relational GraphSAGE (RelEventSAGE) against TGN + attention.
+    Best test results per dataset are in bold.
+    }
+    \label{tab:thgl_linkpred_results}
+    \begingroup
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{lrrrr}
+      \toprule
+        & \mc{2}{c}{GraphSAGE (event-as-node)} & \mc{2}{c}{TGN+Attn} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+      Dataset & Val & Test & Val & Test \\
+      \midrule
+      \texttt{thgl-software} & 0.1388 & 0.1206 & 0.1367 & \textbf{0.1290} \\
+      \texttt{thgl-forum}    & \textbf{0.4635} & \textbf{0.4401} & 0.3452 & 0.3527 \\
+      \texttt{thgl-myket}    & \textbf{0.7264} & \textbf{0.7084} & 0.6614 & 0.6648 \\
+      \texttt{thgl-github}   & 0.0725 & 0.0666 & \textbf{0.0782} & \textbf{0.0767} \\
+      \bottomrule
+    \end{tabular}
+    \endgroup
+    \vspace{-5pt}
+  \end{table}
+
+
+% --- Table: relbench_reco_smoke (no resizebox; scriptsize only) ---
+  \begin{table}[!ht]
+    \centering
+    \caption{{\bf Reference recommendation results on existing \relbench datasets (smoke runs).}
+    We report validation MAP@10 for GraphSAGE and TGN+Attn on three \relbench recommendation tasks.
+    }
+    \label{tab:relbench_reco_smoke}
+    \begingroup
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{lllrr}
+      \toprule
+      Dataset & Task & Metric & GraphSAGE & TGN+Attn \\
+      \midrule
+      \fone  & \texttt{driver-race-compete} & val MAP@10 & 0.06048 & \textbf{0.27821} \\
+      \texttt{rel-hm} & \texttt{user-item-purchase} & val MAP@10 & 0.0006649 & \textbf{0.0009053} \\
+      \stack & \texttt{post-post-related} & val MAP@10 & \textbf{0.0024797} & 0.00017857 \\
+      \bottomrule
+    \end{tabular}
+    \endgroup
+    \vspace{-5pt}
+  \end{table}
+
+
+\paragraph{Discussion.}
+Across \texttt{tgbl-*}, the comparison between projected-edge GraphSAGE and event-as-node relational GraphSAGE highlights when the relationalization of events is beneficial: datasets with informative event records (e.g., heavy-tailed \texttt{weight} and rich event semantics) tend to favor the event-as-node representation (\texttt{tgbl-coin}, \texttt{tgbl-comment}), while datasets that are closer to ``pure'' structural proximity under our compact schema (and without high-dimensional message features) can favor the projected-edge baseline (\texttt{tgbl-wiki-v2}, \texttt{tgbl-flight}).
+On \texttt{thgl-*}, the attention-based temporal baseline is competitive and sometimes best (\texttt{thgl-software}, \texttt{thgl-github}), while relational GraphSAGE remains strong on datasets where type-correct relational neighborhoods provide a high-signal inductive bias (\texttt{thgl-forum}, \texttt{thgl-myket}).
+Finally, Table~\ref{tab:relbench_reco_smoke} provides a small anchor on existing \relbench recommendation tasks: even with minimal tuning, the attention-based temporal baseline can substantially improve MAP on some datasets (\fone), but does not uniformly dominate across domains (\stack).
+
