@@ -57,6 +57,7 @@
 - [positional-encoding](pages/positional-encoding.md) — PE/SE taxonomy (local/global/relative); RWSE vs LapPE tradeoffs; RDL adaptations _(ingested 2026-04-29)_
 
 ### Analyses
+- [isotropic-anisotropic-gnn](pages/isotropic-anisotropic-gnn.md) — Isotropic vs. anisotropic GNNs: fixed degree weights (GCN/GIN) vs. learned feature weights (GAT/HGT); over-squashing and expressiveness implications _(query 2026-05-04)_
 - [rfm-vs-llm](pages/rfm-vs-llm.md) — RFMs vs. LLMs: inputs/outputs, key differences, architectural split across RT/KumoRFM/Griffin _(query 2026-04-29)_
 - [rdl-software](pages/rdl-software.md) — Open-source RDL software: RelBench, TGM, PyTorch Frame, PyG, KumoRFM SDK _(query 2026-04-29)_
 - [rdl-bioinformatics](pages/rdl-bioinformatics.md) — RDL applied to bioinformatics/transcriptomics: relational schemas for scRNA-seq, spatial, perturbation, multi-omics, EHR _(query 2026-04-29)_
