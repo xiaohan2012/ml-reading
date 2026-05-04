@@ -1,7 +1,7 @@
 ---
 title: "SignNet / BasisNet: Sign and Basis Invariant Networks for Spectral Graph Representation Learning"
 tags: [source, positional-encoding, graph-transformer, expressiveness]
-sources: [limsign]
+sources: [lim2022sign]
 updated: 2026-05-04
 ---
 
@@ -43,4 +43,4 @@ SignNet is the recommended choice for graph PE: it solves the sign-flip problem 
 - [dwivedi2020benchmarking](dwivedi2020benchmarking.md): directly addresses the sign ambiguity problem identified in Benchmarking-GNNs' LapPE proposal.
 - [graphgps](graphgps.md): GraphGPS uses SignNet as the PE in its best configurations; the GPS ablation explicitly validates SignNet > vanilla LapPE.
 - [san](san.md): SAN acknowledged sign ambiguity as a limitation; SignNet solves it rigorously.
-- [huangstability](huangstability.md): SPE (stability paper) builds on SignNet's sign invariance and additionally addresses stability to graph perturbations.
+- [huang2024stability](huang2024stability.md): SPE (stability paper) builds on SignNet's sign invariance and additionally addresses stability to graph perturbations.

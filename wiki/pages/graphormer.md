@@ -41,6 +41,6 @@ Graphormer provably subsumes GCN, GIN, and GraphSAGE as special cases and can di
 ## Relation to Other Wiki Pages
 
 - vs. [graphgps](graphgps.md): GPS uses MPNN ∥ GlobalAttn with separate PE injection; Graphormer bakes structure directly into attention biases. Both achieve global receptive field but by different mechanisms.
-- vs. [generalization-transformer-graphs](generalization-transformer-graphs.md): Dwivedi & Bresson's GT uses LapPE; Graphormer uses SPD-based spatial encoding — more structurally informative and no sign ambiguity.
+- vs. [dwivedi2021graph](dwivedi2021graph.md): Dwivedi & Bresson's GT uses LapPE; Graphormer uses SPD-based spatial encoding — more structurally informative and no sign ambiguity.
 - vs. [san](san.md): SAN uses full Laplacian spectrum as LPE; Graphormer uses shortest-path distance. SAN focuses on theoretical expressiveness; Graphormer focuses on practical SOTA performance.
 - vs. [gin](gin.md): GIN's sum aggregation achieves 1-WL; Graphormer exceeds 1-WL via spatial attention across all node pairs.

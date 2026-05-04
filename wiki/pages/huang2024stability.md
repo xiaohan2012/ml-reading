@@ -1,7 +1,7 @@
 ---
 title: "SPE: On the Stability of Expressive Positional Encodings for Graphs"
 tags: [source, positional-encoding, graph-transformer, expressiveness]
-sources: [huangstability]
+sources: [huang2024stability]
 updated: 2026-05-04
 ---
 
@@ -38,6 +38,6 @@ The solution is **SPE (Stable and Expressive Positional Encoding)**: an architec
 ## Relation to Other Wiki Pages
 
 - [positional-encoding](positional-encoding.md): SPE is the most theoretically complete eigenvector-based PE; resolves both non-uniqueness and instability.
-- [limsign](limsign.md): SPE extends SignNet/BasisNet by additionally guaranteeing stability; SignNet solved symmetry but not stability.
+- [lim2022sign](lim2022sign.md): SPE extends SignNet/BasisNet by additionally guaranteeing stability; SignNet solved symmetry but not stability.
 - [dwivedi2020benchmarking](dwivedi2020benchmarking.md): the original LapPE had both problems; this paper closes the theoretical gap.
 - [kanatsoulis2025learning](kanatsoulis2025learning.md): PEARL (Kanatsoulis et al.) also targets stability and efficiency; provides a GNN-based alternative to eigenvector processing.

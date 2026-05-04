@@ -59,7 +59,7 @@ Pages written: hgt
 Pages updated: heterogeneous-graph-transformer, index, log
 
 ## [2026-04-29] ingest | A Generalization of Transformer Networks to Graphs (AAAI 2021)
-Pages written: generalization-transformer-graphs
+Pages written: dwivedi2021graph
 Pages updated: graph-transformer, positional-encoding (via backlink), index, log
 
 ## [2026-04-29] ingest | GCN: Semi-Supervised Classification with Graph Convolutional Networks (ICLR 2017)
@@ -191,7 +191,7 @@ Pages written: attention-graphs-gt-interpretability
 Pages updated: graph-transformer, index, log
 ## [2026-05-04] ingest | Benchmarking Graph Neural Networks (Dwivedi et al. 2020)
 Pages written: dwivedi2020benchmarking
-Pages updated: positional-encoding, graph-transformer, san, generalization-transformer-graphs, subgraph-gnn-pe, index
+Pages updated: positional-encoding, graph-transformer, san, dwivedi2021graph, subgraph-gnn-pe, index
 
 ## [2026-05-04] ingest | GraphiT: Encoding Graph Structure in Transformers (Mialon et al. 2021)
 Pages written: mialon2021graphit
@@ -210,11 +210,11 @@ Pages written: dwivedi2022graph
 Pages updated: positional-encoding, index
 
 ## [2026-05-04] ingest | SignNet/BasisNet: Sign and Basis Invariant Networks for Spectral Graph Representation Learning (Lim et al. ICLR 2022)
-Pages written: limsign
+Pages written: lim2022sign
 Pages updated: positional-encoding, index
 
 ## [2026-05-04] ingest | SPE: On the Stability of Expressive Positional Encodings for Graphs (Huang et al. ICLR 2024)
-Pages written: huangstability
+Pages written: huang2024stability
 Pages updated: positional-encoding, index
 
 ## [2026-05-04] ingest | PEARL: Learning Efficient Positional Encodings with GNNs (Kanatsoulis et al. ICLR 2025)

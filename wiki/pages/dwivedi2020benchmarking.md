@@ -40,5 +40,5 @@ The paper's most consequential contribution is the introduction of **Laplacian e
 - [graphgps](graphgps.md): GraphGPS benchmarks against this framework's datasets and extends PE to the RWSE/SignNet era.
 - [san](san.md): SAN (Kreuzer 2021) builds on LapPE, using the full Laplacian spectrum to address sign ambiguity.
 - [graphormer](graphormer.md): Graphormer proposes SPD-based spatial encoding as an alternative to LapPE.
-- [generalization-transformer-graphs](generalization-transformer-graphs.md): Dwivedi & Bresson (AAAI 2021) formalizes GTs using LapPE from this benchmark.
+- [dwivedi2021graph](dwivedi2021graph.md): Dwivedi & Bresson (AAAI 2021) formalizes GTs using LapPE from this benchmark.
 - [relational-graph-transformer](relational-graph-transformer.md): RelGT explicitly benchmarks Laplacian PE on REGs (finds it expensive and underperforms subgraph GNN PE).

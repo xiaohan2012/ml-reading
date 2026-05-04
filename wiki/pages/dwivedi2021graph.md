@@ -1,7 +1,7 @@
 ---
 title: "A Generalization of Transformer Networks to Graphs"
 tags: [source, graph-transformer, positional-encoding, gnn]
-sources: [generalization-transformer-graphs]
+sources: [dwivedi2021graph]
 updated: 2026-04-29
 ---
 

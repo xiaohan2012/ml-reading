@@ -1,7 +1,7 @@
 ---
 title: "Reading Plan: Graph Transformers & RelGT"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [alon2020bottleneck, generalization-transformer-graphs, dwivedi2020benchmarking, limsign, kanatsoulis2025learning, graphgps, zhao2021gophormer, chen2022nagphormer, hgt, relational-graph-transformer, muller2023attending, graphormer, san]
+sources: [alon2020bottleneck, dwivedi2021graph, dwivedi2020benchmarking, lim2022sign, kanatsoulis2025learning, graphgps, zhao2021gophormer, chen2022nagphormer, hgt, relational-graph-transformer, muller2023attending, graphormer, san]
 updated: 2026-05-04
 ---
 
@@ -14,14 +14,14 @@ Sequenced reading path from GNN limitations to RelGT, ~10–12 papers. Each stag
 ## Stage 1: Why Graph Transformers Exist (2 papers)
 
 1. **[alon2020bottleneck](alon2020bottleneck.md)** — Over-squashing: exponential receptive field compressed to fixed-size vector; the core GNN failure mode that motivates global attention. Short, crisp argument.
-2. **[generalization-transformer-graphs](generalization-transformer-graphs.md)** — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge-gated attention. Sets the vocabulary for everything that follows.
+2. **[dwivedi2021graph](dwivedi2021graph.md)** — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge-gated attention. Sets the vocabulary for everything that follows.
 
 ---
 
 ## Stage 2: The PE Research Arc (pick 2 of 3)
 
 3. **[dwivedi2020benchmarking](dwivedi2020benchmarking.md)** — Origin of LapPE; systematic benchmark methodology; catalyzed all subsequent PE research. Read if you want the historical foundation.
-4. **[limsign](limsign.md)** — SignNet: ρ(φ(v)+φ(−v)) sign-invariant aggregation; universally expressive; the best single PE paper conceptually.
+4. **[lim2022sign](lim2022sign.md)** — SignNet: ρ(φ(v)+φ(−v)) sign-invariant aggregation; universally expressive; the best single PE paper conceptually.
 5. **[kanatsoulis2025learning](kanatsoulis2025learning.md)** — PEARL: GNN-based PE with linear complexity; random init + statistical pooling; direct ancestor of RelGT's subgraph GNN PE. Read this one if skipping the others.
 
 ---

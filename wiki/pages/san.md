@@ -43,5 +43,5 @@ SAN uses **full graph attention** (all nodes attend to all nodes), which elimina
 
 - Directly informs [graphgps](graphgps.md): GPS's PE taxonomy explicitly cites SAN-style full-spectrum LapPE as the most expressive global PE; sign invariance issue (noted by SAN) is addressed by later work (Lim et al., ICLR 2022)
 - vs. [graphormer](graphormer.md): Graphormer uses SPD-based spatial encoding; SAN uses spectral encoding. Both are fully-connected but encode graph structure differently.
-- vs. [generalization-transformer-graphs](generalization-transformer-graphs.md): Dwivedi's GT uses k lowest eigenvectors as LapPE — SAN shows this loses structural information by not considering the full spectrum and eigenvalue ordering.
+- vs. [dwivedi2021graph](dwivedi2021graph.md): Dwivedi's GT uses k lowest eigenvectors as LapPE — SAN shows this loses structural information by not considering the full spectrum and eigenvalue ordering.
 - [positional-encoding](positional-encoding.md): SAN is the key reference for the argument that full Laplacian spectrum > partial LapPE; GPS cites it when motivating RWSE over simple LapPE.
