@@ -33,7 +33,7 @@ Dwivedi and Bresson (NTU) propose the Graph Transformer (GT), a generalization o
 - **LapPE is the canonical graph PE**: eigenvectors of the normalized graph Laplacian are the natural generalization of sinusoidal PE; they capture global positions (close nodes → similar PE) and are more informative than Graph-BERT's WL-PE.
 - **BatchNorm > LayerNorm**: consistent empirical finding; best GT results used BatchNorm across all three datasets.
 - **Edge features should multiply attention scores**: injecting `e_{ij}` into the raw attention score (before softmax) is more effective than using it only in the value stream; especially important for molecular graphs with bond-type features.
-- **Historical significance**: this paper (along with Benchmarking-GNNs) established LapPE as the standard graph PE, which GraphGPS later categorized as "global PE" and compared to SignNet, RWSE, etc.
+- **Historical significance**: this paper (along with [dwivedi2020benchmarking](dwivedi2020benchmarking.md)) established LapPE as the standard graph PE, which GraphGPS later categorized as "global PE" and compared to SignNet, RWSE, etc.
 
 ## Entities & Concepts
 

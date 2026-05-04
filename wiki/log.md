@@ -5,6 +5,12 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-04] query | Reading plan: Graph Transformers & RelGT
+Filed as: [relgt-reading-plan](pages/relgt-reading-plan.md)
+
+## [2026-05-04] query | RelGT intellectual lineage
+Filed as: [relgt-lineage](pages/relgt-lineage.md)
+
 ## [2026-04-28] init | ML reading and research (GNN & Interpretability)
 
 ## [2026-04-28] ingest | Relational Graph Transformer
@@ -183,3 +189,79 @@ Filed as: rdl-bioinformatics
 ## [2026-04-30] ingest | Towards Mechanistic Interpretability of Graph Transformers via Attention Graphs
 Pages written: attention-graphs-gt-interpretability
 Pages updated: graph-transformer, index, log
+## [2026-05-04] ingest | Benchmarking Graph Neural Networks (Dwivedi et al. 2020)
+Pages written: dwivedi2020benchmarking
+Pages updated: positional-encoding, graph-transformer, san, generalization-transformer-graphs, subgraph-gnn-pe, index
+
+## [2026-05-04] ingest | GraphiT: Encoding Graph Structure in Transformers (Mialon et al. 2021)
+Pages written: mialon2021graphit
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | TokenGT: Pure Transformers are Powerful Graph Learners (Kim et al. NeurIPS 2022)
+Pages written: kim2022pure
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | On the Bottleneck of GNNs (Alon & Yahav, ICLR 2021)
+Pages written: alon2020bottleneck
+Pages updated: graph-neural-network, index
+
+## [2026-05-04] ingest | LSPE: GNNs with Learnable Structural and Positional Representations (Dwivedi et al. ICLR 2022)
+Pages written: dwivedi2022graph
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | SignNet/BasisNet: Sign and Basis Invariant Networks for Spectral Graph Representation Learning (Lim et al. ICLR 2022)
+Pages written: limsign
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | SPE: On the Stability of Expressive Positional Encodings for Graphs (Huang et al. ICLR 2024)
+Pages written: huangstability
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | PEARL: Learning Efficient Positional Encodings with GNNs (Kanatsoulis et al. ICLR 2025)
+Pages written: kanatsoulis2025learning
+Pages updated: positional-encoding, subgraph-gnn-pe, index
+
+## [2026-05-04] ingest | Exphormer: Sparse Transformers for Graphs (Shirzad et al. ICML 2023)
+Pages written: shirzad2023exphormer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Hierarchical Graph Transformer with Adaptive Node Sampling (Zhang et al. NeurIPS 2022)
+Pages written: zhang2022hierarchical
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Hierarchical Transformer for Scalable Graph Learning (Zhu et al. 2023)
+Pages written: zhu2023hierarchical
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Gophormer: Ego-Graph Transformer for Node Classification (Zhao et al. 2021)
+Pages written: zhao2021gophormer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | NAGphormer: Tokenized Graph Transformer for Large Graphs (Chen et al. ICLR 2023)
+Pages written: chen2022nagphormer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Graph Transformers for Large Graphs (Dwivedi et al. 2023)
+Pages written: dwivedi2023graph
+Pages updated: index
+
+## [2026-05-04] ingest | SGFormer: Simplifying and Empowering Transformers for Large Graphs (Wu et al. NeurIPS 2023)
+Pages written: wu2023sgformer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | HINormer: Representation Learning on HINs with GT (Mao et al. WWW 2023)
+Pages written: mao2023hinormer
+Pages updated: index
+
+## [2026-05-04] ingest | HHGT: Hierarchical Heterogeneous Graph Transformer (Zhu et al. CIKM 2024)
+Pages written: zhu2025hhgt
+Pages updated: index
+
+## [2026-05-04] ingest | Attending to Graph Transformers: survey + taxonomy (Müller et al. 2023)
+Pages written: muller2023attending
+Pages updated: index
+
+## [2026-05-04] ingest | GPSE: Graph Positional and Structural Encoder (Cantürk et al. 2023)
+Pages written: canturk2023graph
+Pages updated: positional-encoding, index
+

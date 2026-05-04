@@ -36,7 +36,7 @@ SAN uses **full graph attention** (all nodes attend to all nodes), which elimina
 ## Entities & Concepts
 
 - [graph-transformer](graph-transformer.md) — SAN is a key GT with spectral PE
-- [positional-encoding](positional-encoding.md) — SAN's LPE extends LapPE to full spectrum with a learned processing module
+- [positional-encoding](positional-encoding.md) — SAN's LPE extends LapPE (introduced in [dwivedi2020benchmarking](dwivedi2020benchmarking.md)) to full spectrum with a learned processing module
 - [graph-neural-network](graph-neural-network.md) — SAN exceeds 1-WL expressiveness
 
 ## Relation to Other Wiki Pages

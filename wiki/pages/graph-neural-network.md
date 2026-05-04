@@ -45,6 +45,11 @@ where $f$ is the **aggregation function** (mean, sum, max, attention-weighted su
 - [rgcn](rgcn.md) — Schlichtkrull et al. (ESWC 2018): relation-specific weight matrices for multi-relational/knowledge graphs; basis decomposition for parameter efficiency
 - [k-gnn](k-gnn.md) — Morris et al. (AAAI 2019): proves 1-GNNs ≡ 1-WL; k-GNNs operate on k-tuples to exceed 1-WL; 54% MAE reduction on QM9
 
+## Limitations
+
+- **Over-squashing** ([alon2020bottleneck](alon2020bottleneck.md)): information from exponentially-growing receptive fields is compressed into fixed-size vectors; long-range signals fail to propagate; GCN/GIN more susceptible than GAT/GGNN. Motivates global attention in Graph Transformers.
+- **Expressiveness ceiling** ([gin](gin.md)): no MPNN exceeds 1-WL; [k-gnn](k-gnn.md) and [kim2022pure](kim2022pure.md) break this ceiling via higher-order methods.
+
 ## Related Concepts
 
 - [graph-transformer](graph-transformer.md) — extends GNNs with global self-attention; overcomes GNNs' local neighborhood limitation

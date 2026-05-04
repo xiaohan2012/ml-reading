@@ -36,6 +36,25 @@
 - [kumorfm-1](pages/kumorfm-1.md) — KumoRFM v1: first RFM; table-invariant encoder + RelGT + ICL module; PQL interface; explainability; 76.71 ICL / 81.14 fine-tuned AUROC on RelBench v1 _(ingested 2026-04-29)_
 - [kumorfm-2](pages/kumorfm-2.md) — KumoRFM-2: task-conditioned ICL + hierarchical 4-scale attention; first few-shot RFM to beat supervised SOTA on RelBench; scales to 500B+ rows _(ingested 2026-04-29)_
 - [attention-graphs-gt-interpretability](pages/attention-graphs-gt-interpretability.md) — Attention Graphs: aggregate attention across heads/layers to reveal GT information routing; DL models <4% structure recovery; same accuracy, divergent strategies _(ingested 2026-04-30)_
+- [dwivedi2020benchmarking](pages/dwivedi2020benchmarking.md) — Benchmarking GNNs: 12 medium-scale datasets + fixed param budgets; introduced LapPE; origin of the graph PE research direction _(ingested 2026-05-04)_
+- [mialon2021graphit](pages/mialon2021graphit.md) — GraphiT: relative PE via graph kernel modulation of attention + GCKN substructure encoding; avoids LapPE sign/transferability issues _(ingested 2026-05-04)_
+- [kim2022pure](pages/kim2022pure.md) — TokenGT: pure Transformer with orthonormal node IDs + type IDs; provably ≥ 2-IGN; no graph-specific modifications; NeurIPS 2022 _(ingested 2026-05-04)_
+- [alon2020bottleneck](pages/alon2020bottleneck.md) — Over-squashing in GNNs: exponential receptive field → fixed-size vector bottleneck; FA layer fix; motivates global attention in GTs; ICLR 2021 _(ingested 2026-05-04)_
+- [dwivedi2022graph](pages/dwivedi2022graph.md) — LSPE: decoupled learnable structural + positional streams; up to 64% improvement on molecular tasks; ICLR 2022 _(ingested 2026-05-04)_
+- [limsign](pages/limsign.md) — SignNet/BasisNet: sign+basis invariant networks for spectral PE; universally expressive; fixes LapPE sign ambiguity; ICLR 2022 _(ingested 2026-05-04)_
+- [huangstability](pages/huangstability.md) — SPE: first provably stable+expressive PE; eigenvalue soft-partitioning; addresses instability gap left by SignNet; ICLR 2024 _(ingested 2026-05-04)_
+- [kanatsoulis2025learning](pages/kanatsoulis2025learning.md) — PEARL: GNN-based PE with linear complexity; random init + pooling; stable+expressive; theoretical basis for RelGT subgraph GNN PE; ICLR 2025 _(ingested 2026-05-04)_
+- [shirzad2023exphormer](pages/shirzad2023exphormer.md) — Exphormer: sparse GT via virtual global nodes + expander graph attention; O(N+E); drop-in for GraphGPS; ICML 2023 _(ingested 2026-05-04)_
+- [zhang2022hierarchical](pages/zhang2022hierarchical.md) — Hierarchical GT with adaptive node sampling: training-aware sampling + hierarchical long-range; NeurIPS 2022 _(ingested 2026-05-04)_
+- [zhu2023hierarchical](pages/zhu2023hierarchical.md) — Hierarchical Transformer for scalable graph learning: clustering-based coarsening for hetero+large graphs _(ingested 2026-05-04)_
+- [zhao2021gophormer](pages/zhao2021gophormer.md) — Gophormer: ego-graph GT for node classification; mini-batch via subgraph sampling; ancestor of RelGT's local attention _(ingested 2026-05-04)_
+- [chen2022nagphormer](pages/chen2022nagphormer.md) — NAGphormer: Hop2Token tokenization; per-node hop-sequence; mini-batch training on large graphs; ICLR 2023 _(ingested 2026-05-04)_
+- [dwivedi2023graph](pages/dwivedi2023graph.md) — Graph Transformers for Large Graphs: benchmark + taxonomy of scalability strategies (sparse/hierarchical/sampling/linear); arXiv 2023 _(ingested 2026-05-04)_
+- [wu2023sgformer](pages/wu2023sgformer.md) — SGFormer: single global attention layer + one GNN layer; 141× faster; scales to 111M nodes; NeurIPS 2023 _(ingested 2026-05-04)_
+- [mao2023hinormer](pages/mao2023hinormer.md) — HINormer: local HIN encoder + global Transformer for heterogeneous information networks; WWW 2023 _(ingested 2026-05-04)_
+- [zhu2025hhgt](pages/zhu2025hhgt.md) — HHGT: Type-level + Ring-level Transformer hierarchy for heterogeneous graphs; CIKM 2024 _(ingested 2026-05-04)_
+- [muller2023attending](pages/muller2023attending.md) — Attending to Graph Transformers: survey + taxonomy; PE choice dominates; global ≠ always better; arXiv 2023 _(ingested 2026-05-04)_
+- [canturk2023graph](pages/canturk2023graph.md) — GPSE: pre-trained universal PSE encoder combining multiple PE types; plug-in for any GT; arXiv 2023 _(ingested 2026-05-04)_
 
 ### Entities
 - [relbench](pages/relbench.md) — Benchmark for Relational Deep Learning (v1: 7 datasets/30 tasks; v2: 11 datasets + autocomplete) _(ingested 2026-04-28)_
@@ -57,6 +76,8 @@
 - [positional-encoding](pages/positional-encoding.md) — PE/SE taxonomy (local/global/relative); RWSE vs LapPE tradeoffs; RDL adaptations _(ingested 2026-04-29)_
 
 ### Analyses
+- [relgt-lineage](pages/relgt-lineage.md) — RelGT intellectual lineage: 9 threads tracing each design decision to predecessors _(query 2026-05-04)_
+- [relgt-reading-plan](pages/relgt-reading-plan.md) — Sequenced 8-paper reading plan from GNN limitations to RelGT (~12–17 hrs) _(query 2026-05-04)_
 - [rfm-vs-llm](pages/rfm-vs-llm.md) — RFMs vs. LLMs: inputs/outputs, key differences, architectural split across RT/KumoRFM/Griffin _(query 2026-04-29)_
 - [rdl-software](pages/rdl-software.md) — Open-source RDL software: RelBench, TGM, PyTorch Frame, PyG, KumoRFM SDK _(query 2026-04-29)_
 - [rdl-bioinformatics](pages/rdl-bioinformatics.md) — RDL applied to bioinformatics/transcriptomics: relational schemas for scRNA-seq, spatial, perturbation, multi-omics, EHR _(query 2026-04-29)_

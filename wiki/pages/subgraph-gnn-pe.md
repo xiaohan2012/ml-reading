@@ -17,7 +17,7 @@ where $A_{\text{local}} \in \mathbb{R}^{K \times K}$ is the subgraph adjacency a
 
 **Why random initialization works**: Fixed random initialization would break permutation equivariance. Resampling at every step approximates equivariance in expectation while retaining the expressivity gains from randomness (breaking structural symmetries between topology and node attributes). This is a relaxed version of the learnable PE approach in Kanatsoulis & Leskovec (2025).
 
-**Why it beats Laplacian PE on REGs**:
+**Why it beats Laplacian PE on REGs** (LapPE originally from [dwivedi2020benchmarking](dwivedi2020benchmarking.md)):
 - Laplacian PE requires separate computation per node type (heterogeneous graphs don't have a single Laplacian)
 - Adds 1.02×–3.38× runtime overhead
 - Consistently underperforms random initialization across tested tasks

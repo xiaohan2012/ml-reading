@@ -14,7 +14,7 @@ Graph Transformers extend the self-attention mechanism from sequence models to g
 Key design axes in the literature:
 - **Local vs. global attention**: early GTs restricted attention to local neighborhoods (acting like attention-based GNNs); later models (Graphormer, GraphGPS) use full global attention or hybrid local+global designs
 - **Positional encodings**: Laplacian eigenvectors, random-walk PEs, node2vec — inject topology but are expensive to precompute and don't generalize to heterogeneous/temporal/large graphs
-- **Scalability strategies**: hierarchical clustering, sparse attention, neighborhood sampling
+- **Scalability strategies**: hierarchical clustering ([zhang2022hierarchical](zhang2022hierarchical.md), [zhu2023hierarchical](zhu2023hierarchical.md)), sparse attention ([shirzad2023exphormer](shirzad2023exphormer.md)), neighborhood sampling ([zhao2021gophormer](zhao2021gophormer.md), [chen2022nagphormer](chen2022nagphormer.md)), single-layer global ([wu2023sgformer](wu2023sgformer.md))
 - **Tokenization granularity**: row-level (most GTs, including RelGT) vs. cell-level ([Relational Transformer](relational-transformer.md))
 
 **Limitations on relational data**: most GT designs assume static, homogeneous, small-scale graphs. Applying them to [Relational Entity Graphs](relational-entity-graph.md) fails because: (i) PEs don't generalize to heterogeneous/temporal graphs, (ii) precomputation is prohibitive at scale, (iii) temporal dynamics and schema constraints are ignored.
@@ -24,7 +24,8 @@ Key design axes in the literature:
 - [Relational Transformer (RT)](relational-transformer.md): cell-level tokens, no positional encodings, schema-agnostic, enables zero-shot transfer. RT's neighbor attention is equivalent to GNN message passing.
 
 Notable GT models:
-- **[Graph Transformer](generalization-transformer-graphs.md)** (Dwivedi & Bresson, AAAI 2021): foundational formalization; sparse neighborhood attention + LapPE + BatchNorm; establishes LapPE as canonical graph PE
+- **[TokenGT](kim2022pure.md)** (Kim et al., NeurIPS 2022): pure Transformer — nodes+edges as tokens with orthonormal node identifiers + type identifiers; provably ≥ 2-IGN (> all MPNNs); compatible with linear attention
+- **[Graph Transformer](generalization-transformer-graphs.md)** (Dwivedi & Bresson, AAAI 2021): foundational formalization; sparse neighborhood attention + LapPE + BatchNorm; establishes LapPE as canonical graph PE (LapPE itself introduced by [dwivedi2020benchmarking](dwivedi2020benchmarking.md))
 - **[GraphGPS](graphgps.md)** (Rampášek et al., NeurIPS 2022): hybrid local-global recipe; GPS layer = MPNN ∥ GlobalAttn; O(N+E) with Performer/BigBird; SOTA on 11/16 benchmarks; foundational PE/SE taxonomy
 - **HGT** (Hu et al.): designed for heterogeneous graphs but underperforms HeteroGNN on RelBench; high overhead with Laplacian PE
 - **[Graphormer](graphormer.md)** (Ying et al., NeurIPS 2021): full global attention with SPD-based spatial encoding + centrality + edge encoding; SOTA on OGB-LSC; subsumes GCN/GIN/GraphSAGE as special cases
