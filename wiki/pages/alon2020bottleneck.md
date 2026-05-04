@@ -34,6 +34,8 @@ The paper demonstrates that GCN and GIN (uniform aggregation of neighbors) are m
 
 - [graph-neural-network](graph-neural-network.md)
 - [graph-transformer](graph-transformer.md)
+- [over-squashing](over-squashing.md)
+- [over-smoothing](over-smoothing.md)
 
 ## Relation to Other Wiki Pages
 

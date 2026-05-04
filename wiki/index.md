@@ -74,6 +74,8 @@
 - [relational-attention](pages/relational-attention.md) — RT's four-type attention (column/feature/neighbor/global) over cell tokens _(ingested 2026-04-28)_
 - [autocomplete-tasks](pages/autocomplete-tasks.md) — Predict missing attribute values in existing relational columns; new RelBench v2 task type _(ingested 2026-04-28)_
 - [positional-encoding](pages/positional-encoding.md) — PE/SE taxonomy (local/global/relative); RWSE vs LapPE tradeoffs; RDL adaptations _(ingested 2026-04-29)_
+- [over-squashing](pages/over-squashing.md) — GNN bottleneck: exponential receptive field → fixed-size vector; long-range signals lost; motivates global attention _(ingested 2026-05-04)_
+- [over-smoothing](pages/over-smoothing.md) — GNN depth failure: repeated low-pass filtering collapses node representations; distinct from over-squashing _(ingested 2026-05-04)_
 
 ### Analyses
 - [relgt-lineage](pages/relgt-lineage.md) — RelGT intellectual lineage: 9 threads tracing each design decision to predecessors _(query 2026-05-04)_
