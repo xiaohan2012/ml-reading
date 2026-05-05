@@ -36,5 +36,5 @@ The local encoder handles the structural heterogeneity (different node/edge type
 
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md): HINormer is an alternative GT for heterogeneous graphs; HGT uses meta-relation parameterization; HINormer uses local+global encoder split.
 - [graph-transformer](graph-transformer.md): represents the heterogeneous GT design space.
-- [graphgps](graphgps.md): same local+global architecture philosophy applied to heterogeneous graphs.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): same local+global architecture philosophy applied to heterogeneous graphs.
 - [relational-graph-transformer](relational-graph-transformer.md): RelGT subsumes heterogeneous GT design but additionally handles temporality and schema constraints that HINormer ignores.

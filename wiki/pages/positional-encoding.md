@@ -1,7 +1,7 @@
 ---
 title: Positional and Structural Encodings (PE/SE)
 tags: [concept, positional-encoding, graph-transformer]
-sources: [graphgps, relational-graph-transformer, san, graphormer, dwivedi2020benchmarking]
+sources: [rampavsek2022graphgps, relational-graph-transformer, san, graphormer, dwivedi2020benchmarking]
 updated: 2026-05-04
 ---
 
@@ -37,7 +37,7 @@ Positional encodings (PE) and structural encodings (SE) are additional node/edge
 - [huang2024stability](huang2024stability.md) — **SPE**: first provably stable AND expressive PE; eigenvalue soft-partitioning near degeneracies; addresses instability that SignNet ignores; ICLR 2024
 - [kanatsoulis2025learning](kanatsoulis2025learning.md) — **PEARL**: GNNs as eigenvector mappings; random/basis init + statistical pooling; linear complexity; 1–2 OOM cheaper than LapPE; theoretical basis for RelGT's subgraph GNN PE; ICLR 2025
 - [canturk2023graph](canturk2023graph.md) — **GPSE**: pre-trained universal PSE encoder combining RWSE/LapPE/SignNet; plug-in PE for any model; from GPS team
-- [graphgps](graphgps.md) — introduces the local/global/relative PE/SE taxonomy; ablation shows RWSE > LapPE for molecular tasks; MPNN is essential alongside PE/SE
+- [rampavsek2022graphgps](rampavsek2022graphgps.md) — introduces the local/global/relative PE/SE taxonomy; ablation shows RWSE > LapPE for molecular tasks; MPNN is essential alongside PE/SE
 - [relational-graph-transformer](relational-graph-transformer.md) — 5-element tokenization adapts PE/SE concepts to the RDL setting; [subgraph GNN PE](subgraph-gnn-pe.md) is the RDL analog of RWSE
 - [san](san.md) — Kreuzer et al. (NeurIPS 2021): full Laplacian spectrum as LPE; eigenvectors as graph-domain sine functions; addresses eigenvalue multiplicity and variable eigenvector count; motivates GPS's choice to move to RWSE over LapPE
 - [graphormer](graphormer.md) — Ying et al. (NeurIPS 2021): spatial encoding via shortest-path distance (SPD-indexed learnable bias in attention) + centrality encoding (degree-indexed learnable vectors); relative PE in attention directly

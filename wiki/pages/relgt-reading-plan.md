@@ -1,7 +1,7 @@
 ---
 title: "Reading Plan: Graph Transformers & RelGT"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [alon2020bottleneck, dwivedi2021graph, dwivedi2020benchmarking, lim2022sign, kanatsoulis2025learning, graphgps, zhao2021gophormer, chen2022nagphormer, hgt, relational-graph-transformer, muller2023attending, graphormer, san]
+sources: [alon2020bottleneck, dwivedi2021graph, dwivedi2020benchmarking, lim2022sign, kanatsoulis2025learning, rampavsek2022graphgps, zhao2021gophormer, chen2022nagphormer, hgt, relational-graph-transformer, muller2023attending, graphormer, san]
 updated: 2026-05-04
 ---
 
@@ -28,7 +28,7 @@ Sequenced reading path from GNN limitations to RelGT, ~10–12 papers. Each stag
 
 ## Stage 3: Scalable GT Architectures (2 papers)
 
-6. **[graphgps](graphgps.md)** — The hybrid recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E). Most influential modern GT; directly adopted by RelGT as its backbone.
+6. **[rampavsek2022graphgps](rampavsek2022graphgps.md)** — The hybrid recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E). Most influential modern GT; directly adopted by RelGT as its backbone.
 7. **[zhao2021gophormer](zhao2021gophormer.md)** or **[chen2022nagphormer](chen2022nagphormer.md)** — Subgraph ego-graph sampling (Gophormer) or hop tokenization (NAGphormer). Either covers the subgraph-sampling intuition behind RelGT's local K=300 attention.
 
 ---

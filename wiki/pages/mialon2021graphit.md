@@ -44,5 +44,5 @@ GraphiT supports both local (neighborhood) and global (all-pair) attention and i
 
 - [positional-encoding](positional-encoding.md): introduces kernel-based relative PE as an alternative to LapPE; pre-dates RWSE/SignNet but shares the motivation of avoiding eigenvector instability.
 - [dwivedi2020benchmarking](dwivedi2020benchmarking.md): GraphiT directly builds on and critiques LapPE from Benchmarking-GNNs; relative PE is motivated by LapPE's sign and transferability issues.
-- [graphgps](graphgps.md): GraphGPS later generalizes this kind of relative PE into its PE/SE taxonomy; RWSE is the practical successor to kernel-based approaches.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS later generalizes this kind of relative PE into its PE/SE taxonomy; RWSE is the practical successor to kernel-based approaches.
 - [san](san.md): SAN (same year, NeurIPS 2021) addresses LapPE issues via full Laplacian spectrum; GraphiT takes the complementary route via kernel modulation of attention.

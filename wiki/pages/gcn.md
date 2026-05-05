@@ -47,5 +47,5 @@ where $\hat{A} = \tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}$ is precomputed once.
 ## Relation to Other Wiki Pages
 
 - [graph-neural-network](graph-neural-network.md): GCN is the foundational spectral GNN; the field's starting point for node classification.
-- [graphgps](graphgps.md): GraphGPS reports GCN on all benchmarks as the standard GNN baseline.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS reports GCN on all benchmarks as the standard GNN baseline.
 - [relational-graph-transformer](relational-graph-transformer.md): RelGT's RDL baseline is HeteroGraphSAGE (a heterogeneous extension of GraphSAGE/GCN ideas) — GCN itself is not applicable to heterogeneous graphs.

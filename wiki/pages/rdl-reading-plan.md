@@ -1,7 +1,7 @@
 ---
 title: "RDL Reading Plan"
 tags: [query, analysis, relational-deep-learning, reading-plan]
-sources: [relational-deep-learning-position, relbench-v1, relgnn, relational-graph-transformer, relational-transformer, kumorfm-1, kumorfm-2, gcn, graphsage, gat, gin, hgt, graphgps, tgn, dygformer]
+sources: [relational-deep-learning-position, relbench-v1, relgnn, relational-graph-transformer, relational-transformer, kumorfm-1, kumorfm-2, gcn, graphsage, gat, gin, hgt, rampavsek2022graphgps, tgn, dygformer]
 updated: 2026-04-29
 ---
 
@@ -44,7 +44,7 @@ updated: 2026-04-29
 - **[gcn](gcn.md)** — ICLR 2017. Spectral GNN; renormalization trick. Foundational but transductive.
 - **[gat](gat.md)** — ICLR 2018. Learned attention weights per neighbor; multi-head; inductive.
 - **[hgt](hgt.md)** — WWW 2020. Heterogeneous graph transformer; the standard baseline RDL papers compare against.
-- **[graphgps](graphgps.md)** — NeurIPS 2022. GPS recipe (MPNN ∥ GlobalAttn per layer); parent design to RelGT.
+- **[rampavsek2022graphgps](rampavsek2022graphgps.md)** — NeurIPS 2022. GPS recipe (MPNN ∥ GlobalAttn per layer); parent design to RelGT.
 
 ## Temporal Graph Background (read if focusing on temporal RDL)
 

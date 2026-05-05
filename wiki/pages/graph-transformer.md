@@ -1,7 +1,7 @@
 ---
 title: Graph Transformer (GT)
 tags: [concept, graph-transformer, gnn, attention]
-sources: [relational-graph-transformer, relational-transformer, graphgps, dwivedi2021graph, graphormer, san, attention-graphs-gt-interpretability]
+sources: [relational-graph-transformer, relational-transformer, rampavsek2022graphgps, dwivedi2021graph, graphormer, san, attention-graphs-gt-interpretability]
 updated: 2026-04-30
 ---
 
@@ -26,7 +26,7 @@ Key design axes in the literature:
 Notable GT models:
 - **[TokenGT](kim2022pure.md)** (Kim et al., NeurIPS 2022): pure Transformer — nodes+edges as tokens with orthonormal node identifiers + type identifiers; provably ≥ 2-IGN (> all MPNNs); compatible with linear attention
 - **[Graph Transformer](dwivedi2021graph.md)** (Dwivedi & Bresson, AAAI 2021): foundational formalization; sparse neighborhood attention + LapPE + BatchNorm; establishes LapPE as canonical graph PE (LapPE itself introduced by [dwivedi2020benchmarking](dwivedi2020benchmarking.md))
-- **[GraphGPS](graphgps.md)** (Rampášek et al., NeurIPS 2022): hybrid local-global recipe; GPS layer = MPNN ∥ GlobalAttn; O(N+E) with Performer/BigBird; SOTA on 11/16 benchmarks; foundational PE/SE taxonomy
+- **[GraphGPS](rampavsek2022graphgps.md)** (Rampášek et al., NeurIPS 2022): hybrid local-global recipe; GPS layer = MPNN ∥ GlobalAttn; O(N+E) with Performer/BigBird; SOTA on 11/16 benchmarks; foundational PE/SE taxonomy
 - **HGT** (Hu et al.): designed for heterogeneous graphs but underperforms HeteroGNN on RelBench; high overhead with Laplacian PE
 - **[Graphormer](graphormer.md)** (Ying et al., NeurIPS 2021): full global attention with SPD-based spatial encoding + centrality + edge encoding; SOTA on OGB-LSC; subsumes GCN/GIN/GraphSAGE as special cases
 - **[SAN](san.md)** (Kreuzer et al., NeurIPS 2021): full Laplacian spectrum as LPE; provably exceeds 1-WL; first fully-connected model competitive on graph benchmarks
@@ -35,7 +35,7 @@ Notable GT models:
 
 - [relational-graph-transformer](relational-graph-transformer.md) — surveys GT limitations for REGs; RelGT adapts row-level GT design to the RDL setting
 - [relational-transformer](relational-transformer.md) — RT contrasts with row-level GTs; cell-level tokenization as an alternative for foundation model pretraining
-- [graphgps](graphgps.md) — foundational GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E) with linear attention; SOTA on 11/16 benchmarks
+- [rampavsek2022graphgps](rampavsek2022graphgps.md) — foundational GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E) with linear attention; SOTA on 11/16 benchmarks
 - [dwivedi2021graph](dwivedi2021graph.md) — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse neighborhood attention + LapPE + BatchNorm; edge features × attention scores
 - [graphormer](graphormer.md) — Ying et al. (NeurIPS 2021): full attention with 3 structural encodings (centrality, spatial SPD, edge path); SOTA on OGB-LSC; covers GCN/GIN/GraphSAGE as special cases
 - [san](san.md) — Kreuzer et al. (NeurIPS 2021): full Laplacian spectrum as LPE; fully-connected attention; first to exceed 1-WL provably

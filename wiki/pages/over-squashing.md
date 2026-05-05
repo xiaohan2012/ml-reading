@@ -19,7 +19,7 @@ Over-squashing is a fundamental limitation of message-passing GNNs on tasks that
 
 **Proposed fixes:**
 - *FA layer* ([alon2020bottleneck](alon2020bottleneck.md)): add a single fully-adjacent layer enabling all-pairs communication; breaks the bottleneck; ↓42% error on QM9.
-- *Global attention* (Graph Transformers): bypass aggregation entirely; all nodes interact directly. Used in [san](san.md), [graphormer](graphormer.md), [graphgps](graphgps.md), [shirzad2023exphormer](shirzad2023exphormer.md), [wu2023sgformer](wu2023sgformer.md), [mao2023hinormer](mao2023hinormer.md).
+- *Global attention* (Graph Transformers): bypass aggregation entirely; all nodes interact directly. Used in [san](san.md), [graphormer](graphormer.md), [rampavsek2022graphgps](rampavsek2022graphgps.md), [shirzad2023exphormer](shirzad2023exphormer.md), [wu2023sgformer](wu2023sgformer.md), [mao2023hinormer](mao2023hinormer.md).
 - *Graph rewiring*: add long-range edges (e.g., expander graph) to shorten paths; used in [shirzad2023exphormer](shirzad2023exphormer.md).
 - *Hierarchical aggregation*: coarsen the graph to reduce effective diameter; used in [zhang2022hierarchical](zhang2022hierarchical.md).
 

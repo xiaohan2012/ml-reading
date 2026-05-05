@@ -1,7 +1,7 @@
 ---
 title: Overview
 tags: [overview, synthesis]
-sources: [relational-deep-learning-position, relbench-v1, relational-graph-transformer, tgm-temporal-graph-modelling, relational-transformer, relbench-v2, relgnn, griffin, graphgps, gcn, hamilton2017inductive, gat, gin, tgat, tgn, dygformer, tabpfnv2, tabicl, carte, graphormer, san, mpnn, rgcn, k-gnn, tgb, tabpfnv1, saint, cvitkovic2020, dyrep, graphmixer]
+sources: [relational-deep-learning-position, relbench-v1, relational-graph-transformer, tgm-temporal-graph-modelling, relational-transformer, relbench-v2, relgnn, griffin, rampavsek2022graphgps, gcn, hamilton2017inductive, gat, gin, tgat, tgn, dygformer, tabpfnv2, tabicl, carte, graphormer, san, mpnn, rgcn, k-gnn, tgb, tabpfnv1, saint, cvitkovic2020, dyrep, graphmixer]
 updated: 2026-04-29
 ---
 
@@ -54,7 +54,7 @@ RDL consistently outperforms single-table baselines (LightGBM) across all task t
 - [Tabular Learning](pages/tabular-learning.md) — ICL/PFN paradigm; TabPFNv1→v2/TabICL/CARTE/SAINT; GBDT vs. deep learning competition
 - [Temporal Graph](pages/temporal-graph.md) — CTDG/DTDG; TGAT/TGN/DyGFormer; TGB benchmark calibration
 - [Graph Neural Network](pages/graph-neural-network.md) — GCN/GraphSAGE/GAT/GIN/MPNN/R-GCN/k-GNN; message-passing family; WL expressiveness hierarchy
-- [GraphGPS](pages/graphgps.md) — foundational GT recipe: MPNN ∥ GlobalAttn; PE/SE taxonomy; O(N+E) complexity
+- [GraphGPS](pages/rampavsek2022graphgps.md) — foundational GT recipe: MPNN ∥ GlobalAttn; PE/SE taxonomy; O(N+E) complexity
 - [Relational Deep Learning](pages/relational-deep-learning.md) — the paradigm; from GNNs to GTs to foundation models
 - [Training Table](pages/training-table.md) — (EntityID, seed\_time, label); task specification + temporal leakage prevention in one abstraction
 - [Relational Entity Graph](pages/relational-entity-graph.md) — the graph abstraction of a relational database

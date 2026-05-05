@@ -51,7 +51,7 @@ Pages written: griffin
 Pages updated: relational-deep-learning, relational-entity-graph, relbench, relational-foundation-model, index, overview, log
 
 ## [2026-04-29] ingest | GraphGPS: Recipe for a General, Powerful, Scalable Graph Transformer (NeurIPS 2022)
-Pages written: graphgps, positional-encoding
+Pages written: rampavsek2022graphgps, positional-encoding
 Pages updated: graph-transformer, index, overview, log
 
 ## [2026-04-29] ingest | Heterogeneous Graph Transformer (WWW 2020)

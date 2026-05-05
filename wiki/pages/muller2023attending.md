@@ -39,5 +39,5 @@ The survey serves as a reference guide for the GT landscape and is cited extensi
 
 - [graph-transformer](graph-transformer.md): this is the primary survey of the GT landscape; provides the taxonomy used implicitly in the GT page.
 - [positional-encoding](positional-encoding.md): the survey's PE analysis informs which PE choices are most impactful.
-- [graphgps](graphgps.md): GPS is cited as a key hybrid local+global architecture; this survey contextualizes it within the broader landscape.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS is cited as a key hybrid local+global architecture; this survey contextualizes it within the broader landscape.
 - [relational-graph-transformer](relational-graph-transformer.md): RelGT cites this survey to motivate that existing GTs fail on REGs — none of the surveyed architectures handles heterogeneity + temporality + scale simultaneously.

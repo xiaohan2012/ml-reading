@@ -1,7 +1,7 @@
 ---
 title: Over-Smoothing
 tags: [concept, graph-neural-network, expressiveness]
-sources: [alon2020bottleneck, graphormer, graphgps, carte, mao2023hinormer]
+sources: [alon2020bottleneck, graphormer, rampavsek2022graphgps, carte, mao2023hinormer]
 updated: 2026-05-04
 ---
 
@@ -32,7 +32,7 @@ Over-smoothing is a depth-related limitation of message-passing GNNs: as the num
 
 - [alon2020bottleneck](alon2020bottleneck.md) — contrasts over-smoothing with over-squashing; clarifies these are distinct failure modes
 - [graphormer](graphormer.md) — cites over-smoothing as a motivation for avoiding deep GNN stacks; uses shallow architecture + global attention instead
-- [graphgps](graphgps.md) — MPNN component kept shallow (typically 1 layer per GPS block) precisely to avoid over-smoothing
+- [rampavsek2022graphgps](rampavsek2022graphgps.md) — MPNN component kept shallow (typically 1 layer per GPS block) precisely to avoid over-smoothing
 - [carte](carte.md) — mentions over-smoothing as a known GNN limitation when motivating graph-per-row architecture
 - [mao2023hinormer](mao2023hinormer.md) — cites over-smoothing in heterogeneous GNNs as motivation for decoupling local and global processing
 

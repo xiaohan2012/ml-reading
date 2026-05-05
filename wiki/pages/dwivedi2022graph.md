@@ -40,5 +40,5 @@ Applied to both sparse GNNs (GatedGCN, PNA) and fully-connected Transformers (Tr
 
 - [positional-encoding](positional-encoding.md): LSPE introduces learnable (rather than fixed) PE that evolves through layers; extends the PE concept beyond static precomputation.
 - [dwivedi2020benchmarking](dwivedi2020benchmarking.md): same lead author as Benchmarking-GNNs; LSPE builds directly on LapPE introduced there.
-- [graphgps](graphgps.md): GraphGPS incorporates the decoupled PE philosophy; LSPE's findings on PE separation are validated in GPS experiments.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS incorporates the decoupled PE philosophy; LSPE's findings on PE separation are validated in GPS experiments.
 - [san](san.md): LSPE applied to SAN's GT backbone shows the decoupled PE stream improves even spectral-based Transformers.

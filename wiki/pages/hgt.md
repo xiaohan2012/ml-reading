@@ -52,5 +52,5 @@ $$ATT\text{-}head^i(s,e,t) = \Big(K^i_{\tau(s)}(s)\ W^{ATT}_{\phi(e)}\ Q^i_{\tau
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md): this is the source page for the HGT entity page.
 - [relgnn](relgnn.md): RelGNN's bridge/hub analysis specifically explains *why* HGT underperforms on RDL — meta-relation semantics don't hold for PK-FK links; HGT's type-specific attention assumptions cause redundant and imbalanced information flow.
 - [relational-graph-transformer](relational-graph-transformer.md): RelGT uses HGT as the primary GT baseline and shows it underperforms HeteroGNN on 19/21 RelBench tasks even with +PE.
-- [graphgps](graphgps.md): GPS is the homogeneous counterpart — hybrid MPNN+GlobalAttn; HGT is the heterogeneous-graph-specific GT.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS is the homogeneous counterpart — hybrid MPNN+GlobalAttn; HGT is the heterogeneous-graph-specific GT.
 - [temporal-graph](temporal-graph.md): HGT's RTE is one approach to dynamic graph learning; contrasts with CTDG/DTDG paradigms in [TGM](tgm-temporal-graph-modelling.md).

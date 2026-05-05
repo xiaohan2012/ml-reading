@@ -24,7 +24,7 @@
 - [graphmixer](pages/graphmixer.md) — GraphMixer: MLP link-encoder + mean-pooling node-encoder; no RNN/attention; matches TGAT/TGN/DyGFormer; ICLR 2023 _(ingested 2026-04-29)_
 - [relational-deep-learning-position](pages/relational-deep-learning-position.md) — RDL blueprint: REG + Training Table + temporal neighbor sampling; GNN=SQL JOIN+AGG _(ingested 2026-04-29)_
 - [relbench-v1](pages/relbench-v1.md) — RelBench v1: 7 databases, 30 tasks; RDL beats data-scientist baseline with 96% fewer human hours _(ingested 2026-04-29)_
-- [graphgps](pages/graphgps.md) — GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E); SOTA on 11/16 diverse benchmarks _(ingested 2026-04-29)_
+- [rampavsek2022graphgps](pages/rampavsek2022graphgps.md) — GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E); SOTA on 11/16 diverse benchmarks _(ingested 2026-04-29)_
 - [hgt](pages/hgt.md) — HGT: meta-relation triplet parameterization + RTE; WWW 2020; foundation for heterogeneous graph Transformers _(ingested 2026-04-29)_
 - [dwivedi2021graph](pages/dwivedi2021graph.md) — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge×attention _(ingested 2026-04-29)_
 - [relgnn](pages/relgnn.md) — Bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks _(ingested 2026-04-29)_

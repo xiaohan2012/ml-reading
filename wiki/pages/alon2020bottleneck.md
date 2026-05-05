@@ -43,4 +43,4 @@ The paper demonstrates that GCN and GIN (uniform aggregation of neighbors) are m
 - [graph-transformer](graph-transformer.md): global attention in GTs (Graphormer, SAN, GraphGPS) is directly motivated by the over-squashing bottleneck identified here — all-to-all attention eliminates the path-length constraint.
 - [graphormer](graphormer.md): Graphormer's full global attention is one solution to over-squashing.
 - [san](san.md): SAN's fully-connected attention also eliminates over-squashing.
-- [graphgps](graphgps.md): GPS explicitly cites over-squashing as motivation for including global attention alongside local MPNN.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS explicitly cites over-squashing as motivation for including global attention alongside local MPNN.

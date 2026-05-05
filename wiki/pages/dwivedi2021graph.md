@@ -47,6 +47,6 @@ Dwivedi and Bresson (NTU) propose the Graph Transformer (GT), a generalization o
 ## Relation to Other Wiki Pages
 
 - [graph-transformer](graph-transformer.md): this paper formalizes the basic GT layer used as the "Transformer+LapPE" baseline in GraphGPS and SAN.
-- [graphgps](graphgps.md): GPS builds directly on this architecture; GraphGPS categorizes LapPE as "global PE" in its taxonomy, uses RWSE as a better practical alternative for molecular tasks, and shows that LapPE+SignNet outperforms LapPE alone.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS builds directly on this architecture; GraphGPS categorizes LapPE as "global PE" in its taxonomy, uses RWSE as a better practical alternative for molecular tasks, and shows that LapPE+SignNet outperforms LapPE alone.
 - [positional-encoding](positional-encoding.md): LapPE introduced in Dwivedi & Bresson is the canonical global PE, later improved by SignNet and replaced by RWSE for structural tasks.
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md): HGT references GT as its homogeneous counterpart — extends the meta-relation triplet idea to handle heterogeneous node/edge types that GT doesn't address.

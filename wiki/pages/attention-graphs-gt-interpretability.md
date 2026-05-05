@@ -41,5 +41,5 @@ Experiments on node classification tasks reveal that identical accuracy can be a
 
 - vs. [graphormer](graphormer.md): Graphormer's SPD bias (graph structural bias) causes DLB-type behavior — high structure recovery, locality decay. Attention Graphs give a new lens on *why* this bias matters mechanistically.
 - vs. [san](san.md): SAN and Graphormer both enable full global attention; Attention Graphs distinguish their information routing strategies despite similar benchmark performance.
-- vs. [graphgps](graphgps.md): GPS hybrid (MPNN ∥ GlobalAttn) would be interesting to analyze via Attention Graphs — local vs. global component contributions not yet studied.
+- vs. [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS hybrid (MPNN ∥ GlobalAttn) would be interesting to analyze via Attention Graphs — local vs. global component contributions not yet studied.
 - **Gap**: No wiki page yet on GNN-specific explainability methods (GNNExplainer, PGExplainer, SubgraphX). This paper is complementary — it analyzes emergent attention routing rather than perturbing inputs.

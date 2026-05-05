@@ -1,7 +1,7 @@
 ---
 title: "GraphGPS: Recipe for a General, Powerful, Scalable Graph Transformer"
 tags: [source, graph-transformer, positional-encoding, gnn]
-sources: [graphgps]
+sources: [rampavsek2022graphgps]
 updated: 2026-04-29
 ---
 
@@ -17,7 +17,7 @@ updated: 2026-04-29
 
 ## Summary
 
-Rampášek, Galkin, Dwivedi, Luu, Wolf, and Beaini (Mila / NTU) introduce GraphGPS — a modular recipe for building general, powerful, and scalable (GPS) graph Transformers. The core insight: existing Graph Transformers lack a common framework for positional and structural encodings, and suffer from O(N²) complexity that limits them to small graphs. GraphGPS addresses both with a principled 3-ingredient recipe.
+The paper introduces GraphGPS — a modular recipe for building general, powerful, and scalable (GPS) graph Transformers. The core insight: existing Graph Transformers lack a common framework for positional and structural encodings, and suffer from O(N²) complexity that limits them to small graphs. GraphGPS addresses both with a principled 3-ingredient recipe.
 
 **GPS Layer.** Each GPS layer combines a local message-passing module and a global attention module in parallel, summing their outputs before an MLP:
 

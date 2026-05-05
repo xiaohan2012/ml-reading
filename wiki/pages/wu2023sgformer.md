@@ -39,4 +39,4 @@ The main theoretical argument is that graph structure imposes strong relational 
 - [graph-transformer](graph-transformer.md): extreme simplification end of the scalability spectrum — minimum architecture, maximum scale.
 - [alon2020bottleneck](alon2020bottleneck.md): the single global attention layer directly addresses over-squashing with minimal architectural overhead.
 - [shirzad2023exphormer](shirzad2023exphormer.md): Exphormer uses structured sparsity; SGFormer uses a single dense global layer — two complementary approaches to O(N) GT attention.
-- [graphgps](graphgps.md): GPS uses MPNN + full global attention per layer (multiple layers); SGFormer suggests one layer is enough.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS uses MPNN + full global attention per layer (multiple layers); SGFormer suggests one layer is enough.

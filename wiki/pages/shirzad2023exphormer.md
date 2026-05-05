@@ -35,6 +35,6 @@ Exphormer serves as a drop-in replacement for the global attention module in Gra
 
 ## Relation to Other Wiki Pages
 
-- [graphgps](graphgps.md): Exphormer replaces the global attention in GraphGPS, demonstrating that its Performer/BigBird approximation can be bettered with expander-based sparsity.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): Exphormer replaces the global attention in GraphGPS, demonstrating that its Performer/BigBird approximation can be bettered with expander-based sparsity.
 - [graph-transformer](graph-transformer.md): Exphormer is one of several scalability strategies (sparse attention approach, complementing hierarchical and sampling approaches).
 - [alon2020bottleneck](alon2020bottleneck.md): Exphormer's global nodes directly address over-squashing by providing a shortcut for long-range signals.

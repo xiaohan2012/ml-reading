@@ -1,7 +1,7 @@
 ---
 title: "RelGT Intellectual Lineage"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [relational-graph-transformer, graphgps, graphormer, san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022sign, huang2024stability, kanatsoulis2025learning, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hgt, rgcn, tgat, relational-deep-learning-position, relbench-v1]
+sources: [relational-graph-transformer, rampavsek2022graphgps, graphormer, san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022sign, huang2024stability, kanatsoulis2025learning, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hgt, rgcn, tgat, relational-deep-learning-position, relbench-v1]
 updated: 2026-05-04
 ---
 
@@ -61,7 +61,7 @@ Ying et al. 2021 [graphormer](graphormer.md)   Kreuzer et al. 2021 [san](san.md)
   │                                             │
   └──────────────┬──────────────────────────────┘
                  ↓
-    Rampášek et al. 2022 [graphgps](graphgps.md)
+    Rampášek et al. 2022 [rampavsek2022graphgps](rampavsek2022graphgps.md)
     (hybrid: local MPNN + global Transformer in parallel;
      PE/SE taxonomy: LapPE, RWSE, SignNet; O(N+E))
                  ↓
@@ -190,7 +190,7 @@ RelGT MultiModalEncoder:
 
 | RelGT Design Choice | Key Predecessors |
 |---|---|
-| Hybrid local+global attention | [graphgps](graphgps.md) |
+| Hybrid local+global attention | [rampavsek2022graphgps](rampavsek2022graphgps.md) |
 | Local ego-graph attention | [zhao2021gophormer](zhao2021gophormer.md), [chen2022nagphormer](chen2022nagphormer.md) |
 | EMA centroid global tokens | GOAT → [dwivedi2023graph](dwivedi2023graph.md) |
 | Subgraph GNN PE | [kanatsoulis2025learning](kanatsoulis2025learning.md) / PEARL |
