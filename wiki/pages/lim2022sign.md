@@ -16,13 +16,13 @@ updated: 2026-05-04
 
 ## Summary
 
-LapPE has two fundamental symmetry problems: **(1) sign flips** — if $v$ is a Laplacian eigenvector, so is $-v$, so any eigenvector can be arbitrarily negated; and **(2) basis symmetries** — in eigenspaces of dimension $>1$ (degenerate eigenvalues), there are infinitely many valid eigenvector bases. Previous work handled sign flips via random sign-flipping during training (Dwivedi & Bresson 2021), which is a hacky workaround that doesn't generalize, and didn't address basis symmetries at all.
+LapPE has two fundamental symmetry problems: **(1) sign flips** — if $v$ is a Laplacian eigenvector with eigenvalue $\lambda$, so is $-v$; numerical solvers pick a sign arbitrarily, so the same graph can produce $v$ or $-v$ depending on the run. With $k$ eigenvectors there are $2^k$ valid sign combinations. Previous work applied random sign-flipping as data augmentation during training, but this fails in practice — on some base models (PNA, GINE), LapPE with random flipping doesn't improve over no PE at all. **(2) Basis symmetries** — when an eigenvalue has multiplicity $d > 1$, there are infinitely many valid orthonormal bases for that eigenspace (related by any $Q \in O(d)$); prior work didn't address this at all.
 
 SignNet and BasisNet are neural architectures that are provably invariant to both symmetries. **SignNet** handles sign flips by applying a DeepSets-style function that is symmetric in $v$ and $-v$: $\rho\!\left(\phi(v) + \phi(-v)\right)$ for each eigenvector $v$. **BasisNet** handles the more general basis symmetry by processing the entire eigenspace simultaneously with an architecture invariant to $O(d)$ rotations of the eigenvector basis.
 
 Both networks are **universal** under their respective symmetry constraints: they can approximate any continuous function of eigenvectors that is invariant to those symmetries. They are provably more expressive than all prior spectral methods on graphs, subsuming all spectral graph convolutions, certain spectral invariants, and existing graph PEs as special cases. Experiments show significant improvements on molecular graph regression, graph representation learning, and neural fields on meshes.
 
-SignNet is the recommended choice for graph PE: it solves the sign-flip problem that limited LapPE and enables the full benefit of spectral PEs in Graph Transformers. GraphGPS cites SignNet as the best-performing PE in many of its ablations.
+**Usage pattern:** SignNet is a drop-in PE encoder — eigenvectors are precomputed once (fixed), passed through SignNet ($\phi$ + $\rho$), and the output concatenated with node features: $[X,\ \rho([\phi(v_i)+\phi(-v_i)]_{i=1}^k)]$. Same interface as raw LapPE but with a learned invariant transformation in front. Tested as a plug-in with four base models (GatedGCN, Transformer, PNA, GIN) — none require modification. GraphGPS cites SignNet as the best-performing PE in its ablations.
 
 ## Key Takeaways
 
