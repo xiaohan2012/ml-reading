@@ -300,3 +300,7 @@ Pages updated: none
 ## [2026-05-06] ingest | Batch rewrite — 8 RelGT-linked source pages to v1.1.0 template
 Pages written: ying2021graphormer, kreuzer2021san, zhao2021gophormer, chen2022nagphormer, mao2023hinormer, kanatsoulis2025pearl, ranjan2025relationaltr, rampavsek2022graphgps
 Pages updated: assets/rampavsek2022graphgps-layer.png (converted from PDF)
+
+## [2026-05-06] ingest | Batch rewrite — 10 RDL/temporal source pages to v1.1.0 template
+Pages written: chen2025relgnn, chmura2026tgm, cvitkovic2020rdb, gu2026relbench, rossi2020tgn, trivedi2019dyrep, wang2025griffin, xu2020tgat, yu2023dygformer, huang2023tgb
+Pages updated: assets/chen2025relgnn-routes.png, assets/rossi2020tgn-arch.png, assets/wang2025griffin-arch.png, assets/yu2023dygformer-arch.jpg, assets/gu2026relbench-autocomplete.png (figures converted/copied)

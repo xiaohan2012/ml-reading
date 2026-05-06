@@ -2,7 +2,7 @@
 title: "Temporal Graph Networks for Deep Learning on Dynamic Graphs (TGN)"
 tags: [source, temporal-graph, dynamic-graph, memory, ctdg]
 sources: [rossi2020tgn]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # Temporal Graph Networks for Deep Learning on Dynamic Graphs (TGN)
@@ -13,55 +13,65 @@ updated: 2026-04-29
 **Type:** paper
 **Authors:** Rossi, Chamberlain, Frasca, Eynard, Monti, Bronstein
 **Venue:** ICML 2020 Workshop on Graph Representation Learning
-**Year:** 2020
 
 ## Summary
 
-Rossi, Chamberlain, Frasca, Eynard, Monti, and Bronstein (Twitter) introduce TGN — a generic, modular framework for deep learning on continuous-time dynamic graphs (CTDGs) represented as event streams. The key contribution is combining **per-node memory** (for long-term history) with **graph-based temporal aggregation** (for up-to-date local context), resolving the staleness problem that afflicts all prior methods.
+- **What:** Prior CTDG methods either lacked long-term memory (TGAT) or required expensive multi-hop aggregation, causing a staleness–speed tradeoff.
+- **How:** A modular 5-component framework (Memory, Message Function, Message Aggregator, Memory Updater, Embedding Module) where a per-node memory vector compresses full interaction history and a graph attention embedding aggregates recent local context on top.
+- **So what:** TGN-attn is 30× faster per epoch than TGAT while outperforming it on all benchmarks; strictly generalizes TGAT, Jodie, and DyRep as special cases.
 
-**Framework modules.** TGN decomposes the encoder into five composable modules:
+## Challenges & Novelty
 
-1. **Memory** $\mathbf{s}_i(t)$: a compact vector summarizing node $i$'s full interaction history. Initialized to zero; updated each time node $i$ is involved in an event.
+TGAT (2020) showed that attention-based CTDG encoders are powerful but suffer from two problems: (1) without persistent node state, a node's embedding goes stale between interactions (must re-compute from neighbors each time), and (2) 2-layer temporal attention is needed to perform well, making inference slow. TGN resolves both with a memory module that pre-compresses history so 1-layer attention suffices.
 
-2. **Message Function**: on edge $(i,j,t)$ computes messages for both source and destination from their memories, time elapsed, and edge features:
-   $$\mathbf{m}_i(t) = \text{msg}_s(\mathbf{s}_i(t^-), \mathbf{s}_j(t^-), \Delta t, \mathbf{e}_{ij}(t))$$
+- **Memory resolves staleness at no inference cost:** a node memory $\mathbf{s}_i(t)$ is updated at every event and read at embedding time — the model accesses the full interaction history without re-running multi-hop aggregation.
+- **Modular composition exposes the design space:** by mixing and matching the 5 components, TGN recovers TGAT (no memory + attn), Jodie (GRU memory + time projection), and DyRep (GRU memory + graph attn in message function) as special cases, enabling controlled ablation.
+- **Raw Message Store prevents training leakage:** memory must be updated from *previous-batch* messages before predicting the *current batch* — otherwise the model sees current-batch events before predicting them.
 
-3. **Message Aggregator**: collapses multiple messages in the same batch for one node. Options: *most-recent* (keep last) or *mean*.
+## Relation to Prior Work
 
-4. **Memory Updater**: $\mathbf{s}_i(t) = \text{mem}(\bar{\mathbf{m}}_i(t), \mathbf{s}_i(t^-))$ — typically a GRU.
+| Model | Memory | Embedding | Speed (rel. TGAT) | Generalizes |
+|---|---|---|---|---|
+| [trivedi2019dyrep](trivedi2019dyrep.md) | GRU (implicit) | Graph attn in msg | — | — |
+| [xu2020tgat](xu2020tgat.md) | None | 2-layer temporal attn | 1× | — |
+| Jodie | GRU | Time projection | Fast | — |
+| **TGN-attn** | GRU | 1-layer temporal attn | **30×** | TGAT, Jodie, DyRep |
 
-5. **Embedding Module**: generates the temporal embedding $\mathbf{z}_i(t)$ using the memory plus a graph-based aggregation over recent temporal neighbors:
+- [xu2020tgat](xu2020tgat.md): TGAT = TGN with no memory and attn embedding; TGN-attn adds memory and outperforms TGAT with 1 instead of 2 layers.
+- [trivedi2019dyrep](trivedi2019dyrep.md): DyRep = TGN with GRU memory and graph attention embedded in the message function; TGN separates these into distinct components.
+- [yu2023dygformer](yu2023dygformer.md): DyGFormer replaces TGN's memory+GRU with long first-hop Transformer sequences, avoiding RNN gradient issues at the cost of requiring full history storage.
+
+## Technical Details
+
+**Five composable modules:**
+
+1. **Memory** $\mathbf{s}_i(t) \in \mathbb{R}^d$: per-node vector, initialized to $\mathbf{0}$; updated after each event involving node $i$.
+
+2. **Message Function**: on edge $(i, j, t)$, computes messages for both endpoints from their memories, elapsed time, and edge features:
+$$\mathbf{m}_i(t) = \text{msg}_s\!\left(\mathbf{s}_i(t^-),\, \mathbf{s}_j(t^-),\, \Delta t,\, \mathbf{e}_{ij}(t)\right)$$
+
+3. **Message Aggregator**: collapses multiple messages for one node in the same batch. Options: *most-recent* (keep last) or *mean*. Most-recent wins empirically.
+
+4. **Memory Updater**: $\mathbf{s}_i(t) = \text{mem}\!\left(\bar{\mathbf{m}}_i(t),\, \mathbf{s}_i(t^-)\right)$ — typically a GRU.
+
+5. **Embedding Module**: generates $\mathbf{z}_i(t)$ from memory plus neighbors:
    - *Identity*: $\mathbf{z}_i(t) = \mathbf{s}_i(t)$ — fastest, most stale
-   - *Time projection* (Jodie-style): $(1 + \Delta t \mathbf{w}) \circ \mathbf{s}_i(t)$
-   - *Temporal Graph Attention* (attn): multi-head attention over L-hop temporal neighborhood, each neighbor encoded as $[\mathbf{h}_j(t) \| \mathbf{e}_{ij} \| \phi(t - t_j)]$
-   - *Temporal Graph Sum* (sum): faster linear alternative to attn
+   - *Time projection* (Jodie): $(1 + \Delta t \mathbf{w}) \circ \mathbf{s}_i(t)$
+   - *Temporal Graph Attention* (TGN-attn): multi-head attention over $L$-hop temporal neighbors, each encoded as $[\mathbf{h}_j(t) \| \mathbf{e}_{ij} \| \phi(t - t_j)]$ where $\phi$ is Bochner time encoding
 
-**Best configuration: TGN-attn** = GRU memory + 1-layer temporal graph attention + most-recent message aggregator. This is 30× faster per epoch than TGAT while outperforming it on all datasets.
+![TGN architecture: Memory → Message → Aggregator → Updater → Embedding pipeline](assets/rossi2020tgn-arch.png)
 
-**Why memory beats 2-hop attention.** With memory, each node's 1-hop neighbors carry compressed history from their past interactions — so 1 layer effectively reaches deeper into history than 2 layers without memory.
+**Why 1 layer + memory > 2 layers without.** With memory, each 1-hop neighbor $j$ carries compressed long-term history $\mathbf{s}_j(t)$ in its embedding — the model effectively looks deeper into $j$'s past without needing a 2nd aggregation layer.
 
-**Training trick (Raw Message Store).** To avoid information leakage, memory is updated from *previous-batch* raw messages before predicting the *current batch*. This means gradient flows through the memory update path without the model seeing the answer during prediction.
+**Raw Message Store (training).** Memory updated from *previous-batch* raw messages $\{(i, j, t', \mathbf{e})\}$ before predicting the *current batch*. Gradient flows through the GRU update path; leakage is prevented because current-batch labels are never seen during memory update.
 
-**Unification.** TGN is a strict generalization: TGAT = TGN with no memory + attn embedding; Jodie = TGN with GRU memory + time projection embedding; DyRep = TGN with GRU memory + graph attention in message function.
+## Experiments
 
-**Results.** SOTA on future edge prediction (transductive + inductive) and dynamic node classification on Wikipedia, Reddit, and Twitter. TGN-attn: Wikipedia transductive AP 98.46% (vs. TGAT 95.34%), inductive 97.81% (vs. TGAT 93.99%).
-
-## Key Takeaways
-
-- **Memory resolves staleness**: without memory, a node embedding goes stale between interactions; memory compresses all past history into a fixed-size vector that persists across batches.
-- **1 layer + memory > 2 layers without**: adding the memory module to TGN makes the 2nd graph attention layer redundant — the memory acts as a pre-computed higher-hop summary.
-- **Most-recent neighbor sampling beats uniform**: temporal graphs favor recency; sampling the $k$ most recent edges consistently outperforms uniform sampling (Figure in Appendix).
-- **Raw Message Store is the training innovation**: memory modules need gradients but can't update with the current batch (leakage) — delay by one batch, store raw messages, apply before predicting.
-- **Batch size matters**: larger batch = more stale memory for later items in batch; batch size 200 is the best tradeoff (not too large, not too slow).
+- TGN-attn: Wikipedia transductive AP 98.46% (TGAT: 95.34%), inductive AP 97.81% (TGAT: 93.99%).
+- 30× faster per epoch than TGAT across all reported datasets.
+- Ablation: most-recent message aggregation outperforms mean; GRU memory updater outperforms LSTM.
+- Memory ablation: identity embedding + GRU memory alone outperforms TGAT (2-layer attn, no memory), confirming memory's dominant contribution.
 
 ## Entities & Concepts
 
 - [temporal-graph](temporal-graph.md)
-
-## Relation to Other Wiki Pages
-
-- [temporal-graph](temporal-graph.md): TGN is the canonical CTDG learning framework; the memory + graph attention combination defines the state-of-the-art approach.
-- [xu2020tgat](xu2020tgat.md): TGAT = TGN without memory; TGN paper shows memory alone adds ~4% AP, motivating the full TGN framework.
-- [chmura2026tgm](chmura2026tgm.md): TGM library implements TGN as one of its models; the library's hook system mirrors TGN's modular design.
-- [velickovic2018gat](velickovic2018gat.md): TGN's temporal graph attention embedding extends GAT attention to include time encodings φ(t−t_j) alongside neighbor features.
-- [hamilton2017graphsage](hamilton2017graphsage.md): TGN's neighborhood sampling follows GraphSAGE's fixed-size sampling; but samples most-recent rather than uniform.

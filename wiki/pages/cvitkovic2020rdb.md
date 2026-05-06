@@ -2,7 +2,7 @@
 title: "Supervised Learning on Relational Databases with Graph Neural Networks"
 tags: [source, relational-deep-learning, gnn, database]
 sources: [cvitkovic2020rdb]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # Supervised Learning on Relational Databases with Graph Neural Networks
@@ -12,46 +12,66 @@ updated: 2026-04-29
 **Date ingested:** 2026-04-29
 **Type:** paper
 **Authors:** Cvitkovic
-**Venue:** arxiv 2020
-**Year:** 2020
+**Venue:** arXiv 2020
 
 ## Summary
 
-Cvitkovic (Amazon AWS, 2020) is the first paper to explicitly frame supervised learning on relational databases as a GNN problem, formalizing the RDB-as-graph interpretation that the RDL blueprint (Fey et al., 2024) would later build on. The core contribution is the observation that the correspondence between RDB concepts and graph concepts is direct and natural:
+- **What:** No principled, general method existed for supervised learning directly on relational databases — practitioners relied on manual feature engineering or flat-table AutoML.
+- **How:** Maps an RDB to a heterogeneous directed graph (rows = nodes, FK references = directed edges) and trains a GNN via subgraph batching with the RDBToGraph algorithm.
+- **So what:** First explicit RDB-as-GNN formulation; beats Deep Feature Synthesis on 2/3 datasets; directly precedes the RDL framework of Fey et al. (2024).
+
+## Challenges & Novelty
+
+Before this work, supervised learning on relational databases required either manual feature engineering (expensive, domain-specific) or automated feature synthesis tools like DFS (featuretools), which operate on flat tables and discard the relational graph structure. No prior work had framed the problem as node classification on a heterogeneous graph.
+
+- **RDB structure is naturally a heterogeneous graph:** rows are nodes typed by their table; foreign key references are typed directed edges — the correspondence is 1:1 and loses no structural information.
+- **Subgraph batching via RDBToGraph:** for each prediction target (row $i$ in table $k$), the algorithm traverses FK chains outward (ancestors and their descendants) to collect a connected subgraph containing all relational context — no domain knowledge required.
+- **No temporal handling:** the paper ignores seed-time constraints; any future row reachable via FK chains can leak into the subgraph, a limitation later addressed by the RDL Training Table abstraction.
+
+## Relation to Prior Work
+
+| Method | Uses relational structure | No feature engineering | Temporal leakage prevention |
+|---|---|---|---|
+| Manual features + XGBoost | Partial (manual) | No | Manual |
+| DFS (featuretools) | Yes | Yes (automatic) | No |
+| **Cvitkovic (2020)** | Yes (as graph) | Yes | No |
+| [fey2024rdlposition](fey2024rdlposition.md) (RDL) | Yes | Yes | Yes (Training Table + seed time) |
+
+- [fey2024rdlposition](fey2024rdlposition.md): the RDL blueprint cites this paper as foundational; adds temporal ordering, seed-time gating, and a formal Training Table abstraction to Cvitkovic's graph interpretation.
+- [chen2025relgnn](chen2025relgnn.md): RelGNN's bridge/hub analysis builds on the PK-FK graph structure first characterized here; adds structural awareness Cvitkovic's homogeneous GNN lacked.
+
+## Technical Details
+
+**RDB → Graph mapping:**
 
 | Relational Database | Graph |
 |---|---|
 | Row | Node |
 | Table | Node type |
-| Foreign key column | Edge type |
+| FK column | Edge type |
 | Non-FK column | Node feature |
-| FK reference A→B | Directed edge A→B |
+| FK reference $A \to B$ | Directed edge $A \to B$ |
 | Target column value | Node label |
 
-Supervised learning on an RDB then reduces to **node classification on a heterogeneous directed graph**.
+Supervised learning on an RDB reduces to **node classification on a heterogeneous directed graph**.
 
-The **RDBToGraph algorithm** deterministically constructs a per-prediction subgraph: starting from the target row, it selects all ancestor rows (rows referenced via FK chains) and all descendants of those ancestors. This produces a connected subgraph containing all relational context relevant to a prediction. A GNN `g_theta(RDBToGraph(D, i, k))` is then trained by SGD on the resulting node classification problem.
+**RDBToGraph algorithm.** Given database $D$, target table $k$, and target row $i$:
+1. Start from row $i$ (the prediction target node)
+2. Traverse all FK chains outward — add ancestor rows (rows that $i$ references transitively) and descendants of those ancestors
+3. Return the induced connected subgraph
 
-The method outperforms Deep Feature Synthesis (DFS, automatic feature engineering) on 2 out of 3 datasets. Key limitations: no temporal awareness (ignores seed_time), naive subgraph selection (ancestors only), fixed heuristic rather than learned neighbor sampling.
+This produces a subgraph containing all relational context reachable from the target row. Complexity: $O(|V_\text{sub}| + |E_\text{sub}|)$.
 
-## Key Takeaways
+**Model.** A standard GNN $g_\theta$ is applied to `RDBToGraph(D, i, k)`, outputting a node embedding for row $i$ used for prediction. Trained by SGD on labeled rows.
 
-- First explicit formulation: RDB supervised learning = node classification on heterogeneous graph
-- RDB → Graph mapping: rows=nodes, tables=node types, FK columns=edge types, non-FK columns=features
-- RDBToGraph: deterministic subgraph selection via ancestor + descendant traversal; O(|V|+|E|)
-- GNN `g_theta(RDBToGraph(D, i, k))` trained by SGD; no feature engineering required
-- Beats Deep Feature Synthesis on 2/3 datasets
-- Limitations: no temporal handling, no learned neighbor sampling, naive topology
+## Experiments
+
+- Outperforms Deep Feature Synthesis (featuretools + XGBoost) on 2 out of 3 datasets.
+- Performance gap is largest on tasks where relational context spans multiple hops — confirming that graph structure carries signal not captured by flat aggregation.
 
 ## Entities & Concepts
 
-- [relational-deep-learning](relational-deep-learning.md) — this paper establishes the conceptual foundation
-- [relational-entity-graph](relational-entity-graph.md) — REG is a temporal, directed extension of Cvitkovic's RDB-as-graph
-- [graph-neural-network](graph-neural-network.md) — GNNs applied to heterogeneous graphs from RDBs
-
-## Relation to Other Wiki Pages
-
-- [fey2024rdlposition](fey2024rdlposition.md): The RDL blueprint (Fey et al., 2024) cites this paper as foundational; REG formalizes and extends Cvitkovic's graph interpretation with temporal edges, heterogeneous node/edge features, and a principled training table abstraction
-- [relational-entity-graph](relational-entity-graph.md): REG adds temporal ordering and formal event-stream semantics; Cvitkovic's graph is the static, non-temporal precursor
-- [training-table](training-table.md): Cvitkovic's formulation ignores temporal leakage — the Training Table abstraction in the RDL blueprint directly addresses this gap
-- [chen2025relgnn](chen2025relgnn.md): RelGNN's bridge/hub topology analysis is informed by the PK-FK structure Cvitkovic first characterized as a graph; RelGNN can be seen as a principled successor with temporal + structural awareness
+- [relational-deep-learning](relational-deep-learning.md)
+- [relational-entity-graph](relational-entity-graph.md)
+- [graph-neural-network](graph-neural-network.md)
+- [training-table](training-table.md)

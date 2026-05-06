@@ -2,7 +2,7 @@
 title: "DyGFormer: Towards Better Dynamic Graph Learning"
 tags: [source, temporal-graph, transformer, dynamic-graph, ctdg, patching]
 sources: [yu2023dygformer]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # DyGFormer: Towards Better Dynamic Graph Learning
@@ -13,49 +13,61 @@ updated: 2026-04-29
 **Type:** paper
 **Authors:** Yu, Cao, Petzold
 **Venue:** NeurIPS 2023
-**Year:** 2023
 
 ## Summary
 
-Yu et al. make two contributions: (1) **DyGFormer**, a Transformer-based CTDG architecture that addresses two failures of prior work — inability to model source/destination node correlations and inability to handle long interaction histories without truncation; and (2) **DyGLib**, a unified library for reproducible CTDG evaluation.
+- **What:** Prior CTDGs (TGAT, TGN) compute source and destination embeddings independently, missing structural correlations, and truncate long histories via fixed-size sampling or lossy RNN compression.
+- **How:** Extract full first-hop interaction histories for both nodes, apply temporal patching to handle variable sequence lengths, then encode both sequences jointly in a single Transformer with an explicit neighbor co-occurrence feature.
+- **So what:** NeurIPS 2023 SOTA across all negative sampling strategies; first to show first-hop-only Transformer outperforms multi-hop GNNs on CTDGs.
 
-**Problem with prior methods.** TGAT and TGN compute node representations independently for source $u$ and destination $v$, combining them only at the decoder. This ignores structural correlations (shared neighborhoods). Also, for nodes with long histories, fixed-size sampling truncates useful context; RNN-based memory (TGN) suffers from vanishing/exploding gradients.
+## Challenges & Novelty
 
-**DyGFormer architecture.** Given an interaction $(u, v, t)$:
+TGAT and TGN sample a fixed number of temporal neighbors per node, truncating long histories. TGN's memory module compresses history into a fixed-size vector via GRU — lossy and prone to gradient issues. Neither model explicitly captures the correlation between source and destination nodes' neighborhoods, which is a strong signal for link prediction.
 
-1. **Extract first-hop histories**: $\mathcal{S}_u^t$ and $\mathcal{S}_v^t$ — all prior interactions of $u$ and $v$ before time $t$ (first-hop only, no multi-hop).
+- **Neighbor co-occurrence captures link propensity directly:** if source $u$ and destination $v$ share many historical neighbors, they are more likely to interact. DyGFormer encodes per-neighbor co-occurrence frequencies (how often each neighbor appears in $\mathcal{S}_u^t$ vs. $\mathcal{S}_v^t$) as a 2D feature — a direct structural similarity signal.
+- **Patching solves the variable-length bottleneck:** instead of fixed-size sampling or RNN memory, patching divides each node's history into non-overlapping windows of $P$ events; the Transformer sees $\lceil |\mathcal{S}|/P \rceil$ patch tokens regardless of history length, keeping computation constant.
+- **Joint Transformer over concatenated $u$-$v$ sequences:** attention flows both within each node's history and across the two nodes' histories — effectively computing a joint $(u, v)$ embedding in a single forward pass.
 
-2. **Four encodings per interaction**:
-   - Neighbor features $\mathbf{X}_{*,N}^t$ — node features of encountered neighbors
-   - Edge features $\mathbf{X}_{*,E}^t$ — features on the interaction edge
-   - Time interval encoding $\mathbf{X}_{*,T}^t$ — Bochner cosine/sine encoding of $\Delta t = t - t'$ (same as TGAT)
-   - **Neighbor co-occurrence** $\mathbf{X}_{*,C}^t$ — a 2D vector per neighbor counting its frequency in $\mathcal{S}_u^t$ and $\mathcal{S}_v^t$ respectively; captures shared-neighborhood signal between $u$ and $v$
+## Relation to Prior Work
 
-3. **Patching**: divide each sequence into non-overlapping patches of size $P$ (adaptive: larger $P$ for longer sequences, keeping patch count constant). Each patch flattens $P$ consecutive interactions → reduces sequence length from $|\mathcal{S}|$ to $\lceil |\mathcal{S}|/P \rceil$.
+| Model | Long history | $u$-$v$ correlation | Memory | First-hop only |
+|---|---|---|---|---|
+| [xu2020tgat](xu2020tgat.md) | Truncated (fixed-size) | No | No | No (2-hop) |
+| [rossi2020tgn](rossi2020tgn.md) | GRU memory (lossy) | No | Yes | No |
+| [trivedi2019dyrep](trivedi2019dyrep.md) | RNN (lossy) | No | Implicit | No |
+| **DyGFormer** | Patching (lossless) | Yes (co-occurrence) | No | Yes |
 
-4. **Joint Transformer**: encode the *concatenated* patch sequences of both $u$ and $v$ together — $\mathbf{Z}^t = [\mathbf{Z}_u^t; \mathbf{Z}_v^t]$ — so attention flows both within and across the two nodes' histories. Standard pre-LN Transformer (ViT-style: GELU, LN before each block).
+- [xu2020tgat](xu2020tgat.md): DyGFormer reuses TGAT's Bochner time encoding but replaces 2-hop graph attention with a long first-hop Transformer sequence.
+- [rossi2020tgn](rossi2020tgn.md): DyGFormer eliminates TGN's memory and GRU; patching handles the long-context problem that memory was designed to solve, without gradient issues.
+- [chmura2026tgm](chmura2026tgm.md): DyGLib (DyGFormer's companion library) focuses on CTDG standardization; TGM supersedes it with broader CTDG+DTDG support.
 
-5. **Readout**: average Transformer output rows belonging to $u$ (resp. $v$) through a linear output layer → $\mathbf{h}_u^t$, $\mathbf{h}_v^t$.
+## Technical Details
 
-**DyGLib.** Standardized training pipeline for CTDG: unified data format, same trainer for all methods, 13 datasets, 9 methods, three negative sampling strategies (random / historical / inductive). Identifies previously unreported bugs in prior implementations and corrects them.
+**Input:** interaction $(u, v, t)$. First-hop histories $\mathcal{S}_u^t$ and $\mathcal{S}_v^t$ — all prior interactions of $u$ (resp. $v$) before time $t$.
 
-**Results.** DyGFormer achieves SOTA on most datasets across all three negative sampling strategies and both transductive/inductive settings. Under the harder historical and inductive negative sampling (where random-NS methods saturate), performance gaps between methods become more meaningful.
+**Four encodings per interaction** (for each neighbor entry $w$ in $\mathcal{S}_*^t$):
+- Neighbor features $\mathbf{X}_{*,N}^t$: node features of encountered neighbors
+- Edge features $\mathbf{X}_{*,E}^t$: features on the interaction edge
+- Time interval encoding $\mathbf{X}_{*,T}^t$: Bochner cosine/sine encoding of $\Delta t = t - t'$ (same as TGAT)
+- **Neighbor co-occurrence** $\mathbf{X}_{*,C}^t$: 2D vector per neighbor counting its frequency in $\mathcal{S}_u^t$ and $\mathcal{S}_v^t$ respectively
 
-## Key Takeaways
+**Patching.** Each history sequence is divided into non-overlapping patches of $P$ consecutive interactions. Adaptive $P$: larger histories use larger patches to keep the number of tokens constant. Each patch is flattened (all 4 features of $P$ interactions concatenated) → linear projection → patch token.
 
-- **First-hop only is enough**: prior work assumed multi-hop aggregation is necessary; DyGFormer shows that long first-hop histories processed by Transformer outperform expensive multi-hop GNNs — sequence length > hop depth.
-- **Neighbor co-occurrence explicitly models link propensity**: if $u$ and $v$ share many historical neighbors, they're more likely to interact — encoding shared frequency gives the model a direct signal about structural similarity.
-- **Patching solves the length bottleneck**: instead of fixed-size sampling (TGAT/TGN) or RNN gradients (Jodie/DyRep), patching keeps computation constant and preserves all history via local temporal proximity within patches.
-- **Joint encoding of u+v is architecturally novel**: previous CTDGs compute $\mathbf{h}_u$ and $\mathbf{h}_v$ separately; joint Transformer lets each attend to the other's history, effectively computing a joint embedding.
-- **Evaluation methodology matters**: random negative sampling is too easy — historical and inductive NS reveal model differences that random NS masks. DyGLib's standardized eval exposes this.
+**Joint Transformer.** Concatenate patch tokens from both nodes: $\mathbf{Z}^t = [\mathbf{Z}_u^t;\, \mathbf{Z}_v^t]$. Standard pre-LN Transformer (ViT-style: GELU, LayerNorm before each block). Attention flows within and across both sequences simultaneously.
+
+**Readout.** Average Transformer output rows belonging to $u$ (resp. $v$) → linear layer → $\mathbf{h}_u^t$, $\mathbf{h}_v^t$. Predict link with dot product + sigmoid.
+
+![DyGFormer framework: patched first-hop histories of both nodes fed jointly into Transformer](assets/yu2023dygformer-arch.jpg)
+
+**DyGLib.** Standardized CTDG evaluation pipeline: unified data format, same trainer for all methods, 13 datasets, 9 methods, three negative sampling strategies (random / historical / inductive). Identifies previously unreported implementation bugs in prior baselines.
+
+## Experiments
+
+- NeurIPS 2023 SOTA on most datasets across all three negative sampling strategies (random, historical, inductive) and both transductive/inductive settings.
+- Historical and inductive negative sampling expose model differences that random-NS masks — simple baselines appear competitive under random NS but are easily distinguished under harder settings.
+- Ablation: removing co-occurrence feature degrades performance most on dense graphs where shared-neighbor signal is strongest.
+- Patching vs. fixed-size sampling: patching with full history consistently outperforms fixed-size sampling at equivalent compute budgets.
 
 ## Entities & Concepts
 
 - [temporal-graph](temporal-graph.md)
-
-## Relation to Other Wiki Pages
-
-- [temporal-graph](temporal-graph.md): DyGFormer is the current SOTA CTDG architecture; Transformer on first-hop sequences outperforms GNN multi-hop aggregation.
-- [xu2020tgat](xu2020tgat.md): DyGFormer uses the same Bochner time encoding; unlike TGAT, replaces graph attention over 2-hop neighborhoods with Transformer over long first-hop sequences.
-- [rossi2020tgn](rossi2020tgn.md): DyGFormer eliminates TGN's memory module (and its RNN gradient issues) by relying on long first-hop history + Transformer; patching handles the long-context problem memory was solving.
-- [chmura2026tgm](chmura2026tgm.md): DyGLib is a complementary standardization effort; TGM unifies CTDG+DTDG, DyGLib focuses on CTDG reproducibility and evaluation rigor.

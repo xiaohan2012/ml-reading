@@ -2,7 +2,7 @@
 title: "Griffin: Towards a Graph-Centric Relational Database Foundation Model"
 tags: [source, relational-deep-learning, foundation-model, gnn]
 sources: [wang2025griffin]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # Griffin: Towards a Graph-Centric Relational Database Foundation Model
@@ -13,28 +13,66 @@ updated: 2026-04-29
 **Type:** paper
 **Authors:** Wang, Wang, Gan, Wang, Yang, Wipf, Zhang
 **Venue:** ICML 2025
-**Year:** 2025
 
 ## Summary
 
-Wang, Wang, Gan, Wang, Yang, Wipf, and Zhang (PKU / Amazon) introduce Griffin, positioned as the first foundation model for relational databases. The core thesis: a single pretrained model can generalize across diverse RDBs with different schemas, domains, and task types — analogous to LLMs for text.
+- **What:** No pretrained foundation model existed for relational databases — all prior RDL methods required task-specific supervised training per database and task.
+- **How:** Unified text and float encoders map all column types to a shared embedding space; cross-attention within rows and hierarchical GNN across tables handle schema-agnostic feature aggregation; 3-stage pretraining on 150M+ nodes via masked cell completion.
+- **So what:** First explicitly pretrained RDB foundation model; architectural improvements alone (cross-attention + hierarchical aggregation) beat GNN baselines; pretraining most beneficial in low-data regimes.
 
-**Architecture.** Griffin converts an RDB to a heterogeneous temporal graph (rows as nodes, PK-FK links as edges) and processes it with a three-component pipeline:
-1. *Unified data encoder*: categorical and text features are encoded with a pretrained text encoder (Nomic); numerical features pass through a pretrained float encoder (MLP trained to encode/decode floats with cosine loss); RDB metadata (table names, column names, edge types) provides additional node/edge context; a task embedding (text of the target column name) distinguishes which cell to predict.
-2. *MPNN with cross-attention*: a cross-attention module uses the current node representation + task embedding as query, column names as keys, and cell features as values — attending over cells within a row before propagating. Hierarchical aggregation then averages neighbors within each relation type before taking max across relation types. This reduces information loss from mean-aggregating all columns uniformly.
-3. *Unified task decoder*: classification uses inner products with text embeddings of category labels (handles arbitrary label sets); regression uses the pretrained float decoder (denormalized per task).
+## Challenges & Novelty
 
-**Training pipeline.** Three stages: (1) masked cell completion pretraining on single-table datasets (cosine loss between predicted row embedding and true cell embedding); (2) joint supervised fine-tuning (SFT) on single-table + RDB tasks; (3) task-specific fine-tuning on downstream tasks. Pretraining covers 150M+ nodes across heterogeneous and temporal graphs. Three variants: Griffin-unpretrained, Griffin-pretrained (single-table only), Griffin-RDB-SFT.
+Relational databases have heterogeneous schemas — different table names, column names, data types, and value ranges across databases. A foundation model must encode all of these into a unified representation space without schema-specific engineering. The key challenge is that rows are internally structured (columns have meaning) but externally variable (different databases have different columns).
 
-**Results on RelBench and 4DBInfer.** Even without pretraining, Griffin's architecture outperforms GNN baselines in many cases (cross-attention + hierarchical aggregation provide architectural gains). Pretraining on single-table data adds further gains. RDB SFT is most beneficial in low-data scenarios and when pretraining and downstream tasks are similar in domain/structure. Griffin does not consistently beat individually fine-tuned task-specific models at high data regimes.
+- **Unified encoders eliminate schema-specific engineering:** a pretrained text encoder (Nomic) handles categorical and text values; a pretrained float encoder (MLP trained with cosine loss) handles numerical values. Both map to the same $d$-dimensional space regardless of value type.
+- **Cross-attention over row cells recovers column-specific signal:** mean-pooling all columns discards which cells are relevant to the prediction task. Cross-attention uses the task description (target column name) as a query and column names as keys — attending to the most task-relevant cells before aggregation.
+- **Hierarchical aggregation stabilizes variable neighbor counts:** intra-relation mean pooling followed by inter-relation max pooling avoids the bias introduced when one relation type has many more neighbors than others.
 
-## Key Takeaways
+## Relation to Prior Work
 
-- **Unified input encoders are critical for schema-agnostic generalization**: text encoder for categoricals + float encoder for numericals maps all feature types to the same embedding space, enabling transfer across databases with completely different column semantics.
-- **Cross-attention over row cells beats mean aggregation**: attending to which cells are relevant per task (keyed by column names) recovers information lost when columns are naively pooled — a general principle for row-level representation.
-- **Hierarchical aggregation (intra-relation mean → inter-relation max)**: stabilizes aggregation when neighbor counts across relation types are highly variable, a practical issue in real-world RDL graphs.
-- **Pretraining transfers but doesn't dominate at high data**: Griffin-RDB-SFT > Griffin-pretrained > Griffin-unpretrained in low-data regimes; gap narrows with more downstream data — consistent with general foundation model behavior.
-- **Masked cell completion as self-supervised RDB pretraining**: predict masked column values from the same row (single-table) or from relational context (RDB); this unifies with the [Relational Transformer](ranjan2025relationaltr.md)'s MTP objective and [RelBench v2](gu2026relbench.md)'s autocomplete tasks.
+| Model | Multi-table | Schema-agnostic | Pretraining | Task type |
+|---|---|---|---|---|
+| HeteroGraphSAGE ([fey2024rdlposition](fey2024rdlposition.md)) | Yes | No | No | Supervised |
+| [ranjan2025relationaltr](ranjan2025relationaltr.md) | Yes | Yes | Yes (MTP) | Foundation |
+| [fey2025kumorfm](fey2025kumorfm.md) | Yes | Yes | No (ICL) | Foundation |
+| [fey2025kumorfm2](fey2025kumorfm2.md) | Yes | Yes | Yes | Foundation |
+| **Griffin** | Yes | Yes | Yes (masked cell) | Foundation |
+
+- [ranjan2025relationaltr](ranjan2025relationaltr.md): both use masked/cell-level prediction as self-supervised pretraining; RT uses cell-level tokenization across tables, Griffin uses cross-attention within rows + GNN across tables.
+- [fey2025kumorfm](fey2025kumorfm.md): KumoRFM v1 achieves better zero-shot performance via ICL (no pretraining); Griffin focuses on pretraining generalization instead.
+- [gu2026relbench](gu2026relbench.md): Griffin's masked cell completion pretraining directly connects to RelBench v2's autocomplete tasks; ReDeLEx (integrated in v2) provides the pretraining corpus.
+
+## Technical Details
+
+**Architecture (3-component pipeline):**
+
+1. *Unified data encoder.* Per-cell encoding:
+   - Text/categorical: Nomic text encoder → $\mathbb{R}^d$
+   - Numerical: pretrained float encoder (MLP with cosine loss: predict float from embedding and vice versa) → $\mathbb{R}^d$
+   - Metadata: table names, column names, edge types provide additional context embeddings
+   - Task embedding: text of the target column name distinguishes which cell to predict
+
+2. *MPNN with cross-attention.* Within each row, cross-attention uses the task embedding + current node representation as query, column names as keys, and cell features as values — selects the most task-relevant cells. Then hierarchical aggregation: mean over neighbors of the same relation type, then max over relation types.
+
+3. *Unified task decoder.*
+   - Classification: inner products with text embeddings of category labels → handles arbitrary label sets without fixed classifier heads
+   - Regression: pretrained float decoder (denormalized per task)
+
+![Griffin architecture: unified encoders → cross-attention rows → hierarchical GNN → decoder](assets/wang2025griffin-arch.png)
+
+**3-stage pretraining:**
+1. *Masked cell completion* on single-table datasets: predict masked column embedding from other cells (cosine loss)
+2. *Joint supervised fine-tuning (SFT)*: single-table + RDB tasks simultaneously
+3. *Task-specific fine-tuning*: downstream task adaptation
+
+Pretraining covers 150M+ nodes across heterogeneous and temporal graphs.
+
+## Experiments
+
+- Griffin-unpretrained (architecture only) outperforms HeteroGraphSAGE on many RelBench tasks — cross-attention + hierarchical aggregation provide architectural gains independent of pretraining.
+- Griffin-pretrained > Griffin-unpretrained in low-data regimes; gap narrows with more downstream data.
+- Griffin-RDB-SFT is most beneficial when pretraining and downstream task domains overlap.
+- Does not consistently beat individually fine-tuned task-specific models at high data regimes — foundation model behavior consistent with LLM literature.
 
 ## Entities & Concepts
 
@@ -43,10 +81,3 @@ Wang, Wang, Gan, Wang, Yang, Wipf, and Zhang (PKU / Amazon) introduce Griffin, p
 - [relational-foundation-model](relational-foundation-model.md)
 - [relbench](relbench.md)
 - [autocomplete-tasks](autocomplete-tasks.md)
-
-## Relation to Other Wiki Pages
-
-- [relational-foundation-model](relational-foundation-model.md): Griffin is the first explicit attempt at a pretrained foundation model for RDBs; [Relational Transformer](ranjan2025relationaltr.md) achieves better zero-shot AUROC (93%) at smaller scale (22M params), but Griffin is the first to attempt pretraining across diverse RDB corpora.
-- [ranjan2025relationaltr](ranjan2025relationaltr.md): Both use masked/cell-level prediction as self-supervised objective; RT uses cell-level tokenization across tables, Griffin uses cross-attention within a row + GNN across tables.
-- [gu2026relbench](gu2026relbench.md): Griffin is evaluated on RelBench (v1); its masked cell completion pretraining directly connects to RelBench v2's autocomplete tasks and ReDeLEx pretraining infrastructure.
-- [chen2025relgnn](chen2025relgnn.md): RelGNN fixes the message-passing topology within the supervised RDL setting; Griffin focuses on pretraining generalization — complementary approaches.
