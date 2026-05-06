@@ -5,6 +5,9 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-06] query | Linear transformer and mathematical form
+Filed as: [linear-transformer](pages/linear-transformer.md)
+
 ## [2026-05-06] query | GraphGPS PE/SE taxonomy
 Filed as: [position-structural-embedding](pages/position-structural-embedding.md)
 

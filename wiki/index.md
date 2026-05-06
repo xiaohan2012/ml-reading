@@ -63,6 +63,7 @@
 - [heterogeneous-graph-transformer](pages/heterogeneous-graph-transformer.md) — HGT: GT baseline for heterogeneous graphs; underperforms on RelBench _(ingested 2026-04-28)_
 
 ### Concepts
+- [linear-transformer](pages/linear-transformer.md) — Linear transformer: kernel decomposition for O(N) attention; Performer (random Fourier) vs BigBird (sparse) vs SGFormer kernel; graph GT context _(ingested 2026-05-06)_
 - [relational-deep-learning](pages/relational-deep-learning.md) — End-to-end learning from multi-table relational databases via graph representations _(ingested 2026-04-28)_
 - [training-table](pages/training-table.md) — (EntityID, seed\_time, label) task specification abstraction; prevents temporal leakage _(ingested 2026-04-29)_
 - [relational-entity-graph](pages/relational-entity-graph.md) — Heterogeneous temporal graph encoding of a relational database _(ingested 2026-04-28)_
