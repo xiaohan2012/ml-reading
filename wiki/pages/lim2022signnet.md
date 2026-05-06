@@ -1,7 +1,7 @@
 ---
 title: "SignNet / BasisNet: Sign and Basis Invariant Networks for Spectral Graph Representation Learning"
 tags: [source, positional-encoding, graph-transformer, expressiveness]
-sources: [lim2022sign]
+sources: [lim2022signnet]
 updated: 2026-05-04
 ---
 

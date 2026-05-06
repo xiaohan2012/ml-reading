@@ -213,7 +213,7 @@ Pages written: dwivedi2022graph
 Pages updated: positional-encoding, index
 
 ## [2026-05-04] ingest | SignNet/BasisNet: Sign and Basis Invariant Networks for Spectral Graph Representation Learning (Lim et al. ICLR 2022)
-Pages written: lim2022sign
+Pages written: lim2022signnet
 Pages updated: positional-encoding, index
 
 ## [2026-05-04] ingest | SPE: On the Stability of Expressive Positional Encodings for Graphs (Huang et al. ICLR 2024)

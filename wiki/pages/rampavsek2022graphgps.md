@@ -19,7 +19,12 @@ updated: 2026-04-29
 
 The paper introduces GraphGPS — a modular recipe for building general, powerful, and scalable (GPS) graph Transformers. The core insight: existing Graph Transformers lack a common framework for positional and structural encodings, and suffer from O(N²) complexity that limits them to small graphs. GraphGPS addresses both with a principled 3-ingredient recipe.
 
-**GPS Layer.** Each GPS layer combines a local message-passing module and a global attention module in parallel, summing their outputs before an MLP:
+![[Pasted image 20260506141717.png]]
+
+- The the green block depicts the GPS layer (explained below)
+- There are two streams of features for nodes and edges, respectively (the orange and gray blocks). They form the input to GPS layers
+
+**GPS Layer.**  Each GPS layer combines a local message-passing module and a global attention module in parallel, summing their outputs before an MLP:
 
 $$\mathbf{X}^{\ell+1}_M, \mathbf{E}^{\ell+1} = \texttt{MPNN}(\mathbf{X}^\ell, \mathbf{E}^\ell, \mathbf{A})$$
 $$\mathbf{X}^{\ell+1}_T = \texttt{GlobalAttn}(\mathbf{X}^\ell)$$

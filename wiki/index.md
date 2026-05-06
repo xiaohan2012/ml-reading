@@ -41,7 +41,7 @@
 - [kim2022pure](pages/kim2022pure.md) — TokenGT: pure Transformer with orthonormal node IDs + type IDs; provably ≥ 2-IGN; no graph-specific modifications; NeurIPS 2022 _(ingested 2026-05-04)_
 - [alon2020bottleneck](pages/alon2020bottleneck.md) — Over-squashing in GNNs: exponential receptive field → fixed-size vector bottleneck; FA layer fix; motivates global attention in GTs; ICLR 2021 _(ingested 2026-05-04)_
 - [dwivedi2022graph](pages/dwivedi2022graph.md) — LSPE: decoupled learnable structural + positional streams; up to 64% improvement on molecular tasks; ICLR 2022 _(ingested 2026-05-04)_
-- [lim2022sign](pages/lim2022sign.md) — SignNet/BasisNet: sign+basis invariant networks for spectral PE; universally expressive; fixes LapPE sign ambiguity; ICLR 2022 _(ingested 2026-05-04)_
+- [lim2022signnet](pages/lim2022signnet.md) — SignNet/BasisNet: sign+basis invariant networks for spectral PE; universally expressive; fixes LapPE sign ambiguity; ICLR 2022 _(ingested 2026-05-04)_
 - [huang2024stability](pages/huang2024stability.md) — SPE: first provably stable+expressive PE; eigenvalue soft-partitioning; addresses instability gap left by SignNet; ICLR 2024 _(ingested 2026-05-04)_
 - [kanatsoulis2025learning](pages/kanatsoulis2025learning.md) — PEARL: GNN-based PE with linear complexity; random init + pooling; stable+expressive; theoretical basis for RelGT subgraph GNN PE; ICLR 2025 _(ingested 2026-05-04)_
 - [shirzad2023exphormer](pages/shirzad2023exphormer.md) — Exphormer: sparse GT via virtual global nodes + expander graph attention; O(N+E); drop-in for GraphGPS; ICML 2023 _(ingested 2026-05-04)_

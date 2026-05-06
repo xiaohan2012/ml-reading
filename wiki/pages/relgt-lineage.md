@@ -1,7 +1,7 @@
 ---
 title: "RelGT Intellectual Lineage"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [relational-graph-transformer, rampavsek2022graphgps, graphormer, san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022sign, huang2024stability, kanatsoulis2025learning, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hgt, rgcn, tgat, relational-deep-learning-position, relbench-v1]
+sources: [relational-graph-transformer, rampavsek2022graphgps, graphormer, san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022signnet, huang2024stability, kanatsoulis2025learning, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hgt, rgcn, tgat, relational-deep-learning-position, relbench-v1]
 updated: 2026-05-04
 ---
 
@@ -80,7 +80,7 @@ Dwivedi et al. 2020 [dwivedi2020benchmarking](dwivedi2020benchmarking.md)
 Dwivedi et al. 2022 [dwivedi2022graph](dwivedi2022graph.md) / LSPE
 (decoupled structural+positional streams; learnable PE through layers)
     ↓
-Lim et al. 2022 [lim2022sign](lim2022sign.md) / SignNet
+Lim et al. 2022 [lim2022signnet](lim2022signnet.md) / SignNet
 (ρ(φ(v)+φ(−v)): sign-invariant aggregation; universally expressive)
     ↓
 Huang et al. 2024 [huang2024stability](huang2024stability.md) / SPE

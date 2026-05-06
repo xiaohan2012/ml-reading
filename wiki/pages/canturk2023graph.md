@@ -37,5 +37,5 @@ GPSE is trained self-supervised on a large collection of molecular and social gr
 
 - [positional-encoding](positional-encoding.md): GPSE is the most comprehensive PE approach — a pre-trained multi-signal encoder rather than a single hand-crafted PE.
 - [rampavsek2022graphgps](rampavsek2022graphgps.md): same team; GPSE extends GPS's PE taxonomy to a pre-trained universal encoder.
-- [lim2022sign](lim2022sign.md): SignNet is one of the PSE types encoded by GPSE.
+- [lim2022signnet](lim2022signnet.md): SignNet is one of the PSE types encoded by GPSE.
 - [dwivedi2022graph](dwivedi2022graph.md): LSPE showed PE can be learned per-model; GPSE pre-trains PE independently and transfers.
