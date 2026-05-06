@@ -1,7 +1,13 @@
 ---
 title: Heterogeneous Graph Transformer (HGT)
-tags: [entity, graph-transformer, heterogeneous-graph]
-sources: [hu2020hgt, dwivedi2025relgt, chen2025relgnn]
+tags:
+  - entity
+  - graph-transformer
+  - heterogeneous-graph
+sources:
+  - hu2020hgt
+  - dwivedi2025relgt
+  - chen2025relgnn
 updated: 2026-04-29
 ---
 

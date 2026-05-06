@@ -35,7 +35,7 @@ Positional encodings (PE) and structural encodings (SE) are additional node/edge
 - [dwivedi2022graph](dwivedi2022graph.md) — **LSPE**: decoupled structural + positional streams updated separately through layers; learnable PE; ICLR 2022; up to 64% improvement on molecular benchmarks
 - [lim2022signnet](lim2022signnet.md) — **SignNet/BasisNet**: invariant to sign flips ($\rho(\phi(v)+\phi(-v))$) and basis symmetries; universally expressive; strictly more expressive than all prior spectral methods; ICLR 2022
 - [huang2024stability](huang2024stability.md) — **SPE**: first provably stable AND expressive PE; eigenvalue soft-partitioning near degeneracies; addresses instability that SignNet ignores; ICLR 2024
-- [kanatsoulis2025learning](kanatsoulis2025learning.md) — **PEARL**: GNNs as eigenvector mappings; random/basis init + statistical pooling; linear complexity; 1–2 OOM cheaper than LapPE; theoretical basis for RelGT's subgraph GNN PE; ICLR 2025
+- [kanatsoulis2025pearl](kanatsoulis2025pearl.md) — **PEARL**: GNNs as eigenvector mappings; random/basis init + statistical pooling; linear complexity; 1–2 OOM cheaper than LapPE; theoretical basis for RelGT's subgraph GNN PE; ICLR 2025
 - [canturk2023graph](canturk2023graph.md) — **GPSE**: pre-trained universal PSE encoder combining RWSE/LapPE/SignNet; plug-in PE for any model; from GPS team
 - [rampavsek2022graphgps](rampavsek2022graphgps.md) — introduces the local/global/relative PE/SE taxonomy; ablation shows RWSE > LapPE for molecular tasks; MPNN is essential alongside PE/SE
 - [dwivedi2025relgt](dwivedi2025relgt.md) — 5-element tokenization adapts PE/SE concepts to the RDL setting; [subgraph GNN PE](subgraph-gnn-pe.md) is the RDL analog of RWSE

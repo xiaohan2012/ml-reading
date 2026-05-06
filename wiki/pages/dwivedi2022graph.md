@@ -4,7 +4,6 @@ tags: [source, positional-encoding, graph-transformer, graph-neural-network]
 sources: [dwivedi2022graph]
 updated: 2026-05-04
 ---
-
 # LSPE: Graph Neural Networks with Learnable Structural and Positional Representations
 
 **Source:** https://arxiv.org/abs/2110.07875

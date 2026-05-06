@@ -227,7 +227,7 @@ Pages written: huang2024stability
 Pages updated: positional-encoding, index
 
 ## [2026-05-04] ingest | PEARL: Learning Efficient Positional Encodings with GNNs (Kanatsoulis et al. ICLR 2025)
-Pages written: kanatsoulis2025learning
+Pages written: kanatsoulis2025pearl
 Pages updated: positional-encoding, subgraph-gnn-pe, index
 
 ## [2026-05-04] ingest | Exphormer: Sparse Transformers for Graphs (Shirzad et al. ICML 2023)
@@ -274,3 +274,7 @@ Pages updated: index
 Pages written: canturk2023graph
 Pages updated: positional-encoding, index
 
+
+## [2026-05-06] ingest | Relational Graph Transformer (re-ingest with v1.1.0 template)
+Pages written: dwivedi2025relgt (rewritten)
+Pages updated: assets/dwivedi2025relgt-model.pdf, assets/dwivedi2025relgt-tokenization.pdf

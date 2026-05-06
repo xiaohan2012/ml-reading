@@ -40,4 +40,4 @@ The solution is **SPE (Stable and Expressive Positional Encoding)**: an architec
 - [positional-encoding](positional-encoding.md): SPE is the most theoretically complete eigenvector-based PE; resolves both non-uniqueness and instability.
 - [lim2022signnet](lim2022signnet.md): SPE extends SignNet/BasisNet by additionally guaranteeing stability; SignNet solved symmetry but not stability.
 - [dwivedi2020benchmarking](dwivedi2020benchmarking.md): the original LapPE had both problems; this paper closes the theoretical gap.
-- [kanatsoulis2025learning](kanatsoulis2025learning.md): PEARL (Kanatsoulis et al.) also targets stability and efficiency; provides a GNN-based alternative to eigenvector processing.
+- [kanatsoulis2025pearl](kanatsoulis2025pearl.md): PEARL (Kanatsoulis et al.) also targets stability and efficiency; provides a GNN-based alternative to eigenvector processing.

@@ -1,7 +1,7 @@
 ---
 title: "RelGT Intellectual Lineage"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [dwivedi2025relgt, rampavsek2022graphgps, ying2021graphormer, kreuzer2021san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022signnet, huang2024stability, kanatsoulis2025learning, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hu2020hgt, schlichtkrull2018rgcn, xu2020tgat, fey2024rdlposition, robinson2024relbench]
+sources: [dwivedi2025relgt, rampavsek2022graphgps, ying2021graphormer, kreuzer2021san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022signnet, huang2024stability, kanatsoulis2025pearl, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hu2020hgt, schlichtkrull2018rgcn, xu2020tgat, fey2024rdlposition, robinson2024relbench]
 updated: 2026-05-06
 ---
 
@@ -65,7 +65,7 @@ The three challenges RelGT must solve — schema-defined, temporal, multi-type h
 > ↓
 > [huang2024stability](huang2024stability.md) / SPE (Huang et al. 2024) — first provably stable AND expressive PE; eigenvalue soft-partitioning
 > ↓
-> [kanatsoulis2025learning](kanatsoulis2025learning.md) / PEARL (Kanatsoulis et al. 2025) — GNNs as eigenvector mappings; random init + pooling; O(N) complexity
+> [kanatsoulis2025pearl](kanatsoulis2025pearl.md) / PEARL (Kanatsoulis et al. 2025) — GNNs as eigenvector mappings; random init + pooling; O(N) complexity
 > ↓
 > **RelGT Subgraph GNN PE** — PEARL applied locally; Z_random resampled each training step; no global eigendecomposition
 
@@ -140,7 +140,7 @@ Side branch: [canturk2023graph](canturk2023graph.md) / GPSE — pre-trained mult
 | Hybrid local+global attention | [rampavsek2022graphgps](rampavsek2022graphgps.md) |
 | Local ego-graph attention | [zhao2021gophormer](zhao2021gophormer.md), [chen2022nagphormer](chen2022nagphormer.md) |
 | EMA centroid global tokens | GOAT → [dwivedi2023graph](dwivedi2023graph.md) |
-| Subgraph GNN PE | [kanatsoulis2025learning](kanatsoulis2025learning.md) / PEARL |
+| Subgraph GNN PE | [kanatsoulis2025pearl](kanatsoulis2025pearl.md) / PEARL |
 | Node type encoding | [hu2020hgt](hu2020hgt.md) |
 | Temporal Δt encoding | [xu2020tgat](xu2020tgat.md), [rossi2020tgn](rossi2020tgn.md), [yu2023dygformer](yu2023dygformer.md) |
 | Closest prior heterogeneous+temporal GT | HTGformer (Wang 2025) — lacks PE, separate modules |

@@ -1,7 +1,7 @@
 ---
 title: "PEARL: Learning Efficient Positional Encodings with Graph Neural Networks"
 tags: [source, positional-encoding, graph-transformer, graph-neural-network]
-sources: [kanatsoulis2025learning]
+sources: [kanatsoulis2025pearl]
 updated: 2026-05-04
 ---
 

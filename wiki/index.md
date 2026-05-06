@@ -43,7 +43,7 @@
 - [dwivedi2022graph](pages/dwivedi2022graph.md) — LSPE: decoupled learnable structural + positional streams; up to 64% improvement on molecular tasks; ICLR 2022 _(ingested 2026-05-04)_
 - [lim2022signnet](pages/lim2022signnet.md) — SignNet/BasisNet: sign+basis invariant networks for spectral PE; universally expressive; fixes LapPE sign ambiguity; ICLR 2022 _(ingested 2026-05-04)_
 - [huang2024stability](pages/huang2024stability.md) — SPE: first provably stable+expressive PE; eigenvalue soft-partitioning; addresses instability gap left by SignNet; ICLR 2024 _(ingested 2026-05-04)_
-- [kanatsoulis2025learning](pages/kanatsoulis2025learning.md) — PEARL: GNN-based PE with linear complexity; random init + pooling; stable+expressive; theoretical basis for RelGT subgraph GNN PE; ICLR 2025 _(ingested 2026-05-04)_
+- [kanatsoulis2025pearl](pages/kanatsoulis2025pearl.md) — PEARL: GNN-based PE with linear complexity; random init + pooling; stable+expressive; theoretical basis for RelGT subgraph GNN PE; ICLR 2025 _(ingested 2026-05-04)_
 - [shirzad2023exphormer](pages/shirzad2023exphormer.md) — Exphormer: sparse GT via virtual global nodes + expander graph attention; O(N+E); drop-in for GraphGPS; ICML 2023 _(ingested 2026-05-04)_
 - [zhang2022hierarchical](pages/zhang2022hierarchical.md) — Hierarchical GT with adaptive node sampling: training-aware sampling + hierarchical long-range; NeurIPS 2022 _(ingested 2026-05-04)_
 - [zhu2023hierarchical](pages/zhu2023hierarchical.md) — Hierarchical Transformer for scalable graph learning: clustering-based coarsening for hetero+large graphs _(ingested 2026-05-04)_
