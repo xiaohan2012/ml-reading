@@ -5,6 +5,10 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-06] ingest | Predictive Query Language (PQL)
+Pages written: kocijan2026pql
+Pages updated: training-table, index
+
 ## [2026-05-06] ingest | Batch rewrite: 6 KumoRFM-2 reading plan predecessors
 Pages updated: fey2024rdlposition, robinson2024relbench, hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, fey2025kumorfm
 

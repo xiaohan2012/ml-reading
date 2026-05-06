@@ -35,6 +35,7 @@
 - [gu2026relbench](pages/gu2026relbench.md) — RelBench expansion: 7→11 datasets, autocomplete tasks, TGB/ReDeLEx/4DBInfer integrations _(ingested 2026-04-28)_
 - [fey2025kumorfm](pages/fey2025kumorfm.md) — KumoRFM v1: first RFM; table-invariant encoder + RelGT + ICL module; PQL interface; explainability; 76.71 ICL / 81.14 fine-tuned AUROC on RelBench v1 _(ingested 2026-04-29)_
 - [fey2025kumorfm2](pages/fey2025kumorfm2.md) — KumoRFM-2: task-conditioned ICL + hierarchical 4-scale attention; first few-shot RFM to beat supervised SOTA on RelBench; scales to 500B+ rows _(ingested 2026-04-29)_
+- [kocijan2026pql](pages/kocijan2026pql.md) — PQL: declarative DSL for auto-generating RDL training tables; PREDICT/FOR EACH/ASSUMING; 40× faster than SQL; powers KumoRFM ICL context generation _(ingested 2026-05-06)_
 - [el2025attentiongraph](pages/el2025attentiongraph.md) — Attention Graphs: aggregate attention across heads/layers to reveal GT information routing; DL models <4% structure recovery; same accuracy, divergent strategies _(ingested 2026-04-30)_
 - [dwivedi2020benchmarking](pages/dwivedi2020benchmarking.md) — Benchmarking GNNs: 12 medium-scale datasets + fixed param budgets; introduced LapPE; origin of the graph PE research direction _(ingested 2026-05-04)_
 - [mialon2021graphit](pages/mialon2021graphit.md) — GraphiT: relative PE via graph kernel modulation of attention + GCKN substructure encoding; avoids LapPE sign/transferability issues _(ingested 2026-05-04)_

@@ -7,7 +7,8 @@
       "Bash(tar -xzf \"/Users/hanxiao/docs/ml-reading/wiki/raw/*\")",
       "Bash(tar -xzf /Users/hanxiao/docs/ml-reading/wiki/raw/*)",
       "Bash(grep -E * \"/Users/hanxiao/docs/ml-reading/wiki/raw/*\")",
-      "Bash(ls /Users/hanxiao/docs/ml-reading/wiki/raw/* | grep *)"
+      "Bash(ls /Users/hanxiao/docs/ml-reading/wiki/raw/* | grep *)",
+      "Bash(magick *)"
     ]
   },
   "enabledPlugins": {
