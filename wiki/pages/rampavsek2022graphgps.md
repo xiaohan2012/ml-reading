@@ -19,7 +19,7 @@ updated: 2026-04-29
 
 The paper introduces GraphGPS — a modular recipe for building general, powerful, and scalable (GPS) graph Transformers. The core insight: existing Graph Transformers lack a common framework for positional and structural encodings, and suffer from O(N²) complexity that limits them to small graphs. GraphGPS addresses both with a principled 3-ingredient recipe.
 
-![[assets/Pasted image 20260506141717.png]]
+![[wiki/pages/assets/Pasted image 20260506141717.png]]
 
 - The the green block depicts the GPS layer (explained below)
 - There are two streams of features for nodes and edges, respectively (the orange and gray blocks). They form the input to GPS layers
@@ -30,7 +30,7 @@ $$\mathbf{X}^{\ell+1}_M, \mathbf{E}^{\ell+1} = \texttt{MPNN}(\mathbf{X}^\ell, \m
 $$\mathbf{X}^{\ell+1}_T = \texttt{GlobalAttn}(\mathbf{X}^\ell)$$
 $$\mathbf{X}^{\ell+1} = \texttt{MLP}(\mathbf{X}^{\ell+1}_M + \mathbf{X}^{\ell+1}_T)$$
 
-![[assets/Pasted image 20260506143307.png]]
+![[wiki/pages/assets/Pasted image 20260506143307.png]]
 Edge features go only to the MPNN (not to global attention), which allows using linear-complexity Transformers (Performer, BigBird) for the global stream — yielding overall O(N+E) complexity. The MPNN implicitly encodes edge information into node representations so global attention can exploit it indirectly.
 
 **PE/SE Taxonomy.** GraphGPS provides the first systematic categorization of positional encodings (PE) and structural encodings (SE) into local/global/relative levels. PE captures position in the graph (close nodes → similar PE); SE captures structural similarity (similar subgraphs → similar SE). They are complementary:

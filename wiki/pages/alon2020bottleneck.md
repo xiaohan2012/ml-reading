@@ -18,6 +18,8 @@ updated: 2026-05-04
 
 This paper introduces and formalizes **over-squashing** — a fundamental limitation of message-passing GNNs on long-range tasks, distinct from the previously identified *over-smoothing* problem. The core argument: to capture interactions at radius $r$, a GNN needs $K \geq r$ layers, but the receptive field of each node grows exponentially with $K$ (as $\mathcal{O}(\exp(K))$). This means an exponentially-growing amount of information must be compressed into a fixed-size node vector at each aggregation step — the *bottleneck* — causing the GNN to squash out long-range signals and learn only short-range patterns from data.
 
+![[Pasted image 20260506144004.png]]
+
 Over-squashing is contrasted with over-smoothing: over-smoothing is a problem on short-range tasks (representations become indistinguishable with many layers), while over-squashing is the bottleneck on long-range tasks. Both phenomena explain why deeper GNNs don't improve with more layers, but for different reasons.
 
 The paper demonstrates that GCN and GIN (uniform aggregation of neighbors) are more susceptible to over-squashing than GAT and GGNN (which can gate or weight incoming messages). A simple fix — adding a single **fully adjacent (FA) layer** that enables direct all-pairs communication — breaks the bottleneck and improves SOTA on QM9 (−42% error), ENZYMES (−12%), and VarMisuse without any additional hyperparameter tuning.
