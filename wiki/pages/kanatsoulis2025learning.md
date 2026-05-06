@@ -52,4 +52,4 @@ PEARL identifies four properties that graph PEs should satisfy: **(1) stability*
 - [subgraph-gnn-pe](subgraph-gnn-pe.md): RelGT's subgraph GNN PE with random resampled initialization is a direct application of PEARL's principle on local subgraphs.
 - [lim2022signnet](lim2022signnet.md): SignNet achieves expressiveness but at high cost; PEARL achieves comparable expressiveness with linear complexity.
 - [huang2024stability](huang2024stability.md): SPE achieves stability but at eigenvector-computation cost; PEARL achieves both stability and linear complexity via GNN.
-- [relational-graph-transformer](relational-graph-transformer.md): RelGT cites PEARL as the learnable PE approach that motivates their random-resampled subgraph GNN PE design.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT cites PEARL as the learnable PE approach that motivates their random-resampled subgraph GNN PE design.

@@ -5,6 +5,9 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-06] query | How GraphGPS, Gophormer, NAGphormer relate
+Filed as: [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md)
+
 ## [2026-05-06] query | Linear transformer and mathematical form
 Filed as: [linear-transformer](pages/linear-transformer.md)
 
@@ -31,7 +34,7 @@ Entity/concept pages created: temporal-graph
 
 ## [2026-04-28] ingest | Relational Transformer: Toward Zero-Shot Foundation Models for Relational Data
 Pages written: relational-transformer
-Pages updated: graph-transformer, relational-deep-learning, relational-entity-graph, relational-graph-transformer, relbench, index, overview, log
+Pages updated: graph-transformer, relational-deep-learning, relational-entity-graph, dwivedi2025relgt, relbench, index, overview, log
 Entity/concept pages created: relational-attention, relational-foundation-model
 
 ## [2026-04-28] ingest | RelBench v2: A Large-Scale Benchmark and Repository for Relational Data
@@ -197,7 +200,7 @@ Pages written: attention-graphs-gt-interpretability
 Pages updated: graph-transformer, index, log
 ## [2026-05-04] ingest | Benchmarking Graph Neural Networks (Dwivedi et al. 2020)
 Pages written: dwivedi2020benchmarking
-Pages updated: positional-encoding, graph-transformer, san, dwivedi2021graph, subgraph-gnn-pe, index
+Pages updated: positional-encoding, graph-transformer, kreuzer2021san, dwivedi2021graph, subgraph-gnn-pe, index
 
 ## [2026-05-04] ingest | GraphiT: Encoding Graph Structure in Transformers (Mialon et al. 2021)
 Pages written: mialon2021graphit

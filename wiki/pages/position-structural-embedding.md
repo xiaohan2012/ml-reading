@@ -1,7 +1,7 @@
 ---
 title: "GraphGPS PE/SE Taxonomy"
 tags: [query, analysis, concept, positional-encoding, graph-transformer]
-sources: [rampavsek2022graphgps, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025learning, huang2024stability, dwivedi2022graph, mialon2021graphit, graphormer]
+sources: [rampavsek2022graphgps, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025learning, huang2024stability, dwivedi2022graph, mialon2021graphit, ying2021graphormer]
 updated: 2026-05-06
 ---
 
@@ -29,14 +29,14 @@ They are **complementary** — one can sometimes approximate the other (nearby n
 |---|---|---|---|
 | **Local PE** | node features | Position within a local cluster. Within a cluster, closer nodes → more similar PE. | Sum of non-diagonal columns of $m$-step RW matrix; distance to cluster centroid |
 | **Global PE** | node features | Position within the whole graph. Closer nodes in the graph → more similar PE. | LapPE (Laplacian eigenvectors) [dwivedi2020benchmarking](dwivedi2020benchmarking.md); SignNet [lim2022signnet](lim2022signnet.md); PEARL [kanatsoulis2025learning](kanatsoulis2025learning.md); distance-matrix eigenvectors; unique component ID |
-| **Relative PE** | edge features | Pairwise distance or directional relationship between two nodes. | Shortest-path distances (Graphormer [graphormer](graphormer.md)); heat kernel distances; random-walk pairwise distances [mialon2021graphit](mialon2021graphit.md); eigenvector gradient; PEG layer |
+| **Relative PE** | edge features | Pairwise distance or directional relationship between two nodes. | Shortest-path distances (Graphormer [ying2021graphormer](ying2021graphormer.md)); heat kernel distances; random-walk pairwise distances [mialon2021graphit](mialon2021graphit.md); eigenvector gradient; PEG layer |
 
 ### Structural Encodings (SE) — node/edge/graph features representing *structure*
 
 | Scope | Feature type | Description | Examples |
 |---|---|---|---|
 | **Local SE** | node features | Subgraph membership around a node. Nodes in similar $m$-hop subgraphs → similar SE. | Diagonal of $m$-step RW matrix (RWSE) [dwivedi2022graph](dwivedi2022graph.md) — for odd $m$, indicates membership in $m$-long cycle; node degree; triangle/ring counts; Ricci curvature |
-| **Global SE** | graph features | Global structure of the entire graph. Similar graphs → similar SE. | Eigenvalues of Laplacian/adjacency [san](san.md); graph diameter, girth, #components, #nodes/#edges |
+| **Global SE** | graph features | Global structure of the entire graph. Similar graphs → similar SE. | Eigenvalues of Laplacian/adjacency [kreuzer2021san](kreuzer2021san.md); graph diameter, girth, #components, #nodes/#edges |
 | **Relative SE** | edge features | Structural difference between two nodes. | Pairwise gradient of any local SE; boolean: do two nodes share a sub-structure? |
 
 ---
@@ -75,7 +75,7 @@ This motivates using PE/SE at **multiple levels simultaneously** — no single l
 - **Edge features** ← Relative PE + Relative SE (used only by the MPNN stream, not global attention)
 - **Graph features** ← Global SE (pooled into graph-level representation)
 
-The modular design means any cell of the taxonomy can be swapped independently — PEARL [kanatsoulis2025learning](kanatsoulis2025learning.md) replaces LapPE/SignNet in the Global PE cell with a GNN-based linear-complexity alternative. RelGT [relational-graph-transformer](relational-graph-transformer.md) replaces the entire PE/SE framework with schema-aware encodings (node type, hop distance, temporal distance, subgraph GNN PE) suited to heterogeneous temporal REGs.
+The modular design means any cell of the taxonomy can be swapped independently — PEARL [kanatsoulis2025learning](kanatsoulis2025learning.md) replaces LapPE/SignNet in the Global PE cell with a GNN-based linear-complexity alternative. RelGT [dwivedi2025relgt](dwivedi2025relgt.md) replaces the entire PE/SE framework with schema-aware encodings (node type, hop distance, temporal distance, subgraph GNN PE) suited to heterogeneous temporal REGs.
 
 ---
 

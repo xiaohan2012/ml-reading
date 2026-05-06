@@ -1,19 +1,19 @@
 ---
 title: "RDL Benchmark Scales"
 tags: [query, analysis, relational-deep-learning, benchmark]
-sources: [relbench-v1, relbench-v2, tgb, griffin, tabpfnv2, tabicl]
+sources: [robinson2024relbench, gu2026relbench, huang2023tgb, wang2025griffin, hollmann2025tabpfnv2, qu2025tabicl]
 updated: 2026-04-29
 ---
 
 # RDL Benchmark Scales
 
-## RelBench v1 ([relbench-v1](relbench-v1.md))
+## RelBench v1 ([robinson2024relbench](robinson2024relbench.md))
 
 - **7 databases, 30 tasks** across entity classification, regression, and recommendation
 - Databases include Amazon (books/products), Stack Exchange, and others
 - The wiki page focuses on task count and comparison with data scientists rather than row counts — exact row/node counts per database not captured during ingestion
 
-## RelBench v2 ([relbench-v2](relbench-v2.md))
+## RelBench v2 ([gu2026relbench](gu2026relbench.md))
 
 - **11 databases**, 22M+ rows across 29 tables (from 4 new datasets alone)
 - **23 autocomplete tasks** (plus v1 forecasting tasks)
@@ -23,7 +23,7 @@ updated: 2026-04-29
   - **rel-ratebeer**: 20+ years of beer reviews
   - **rel-mimic**: MIMIC-IV ICU EHR — one of the largest public clinical datasets
 
-## Temporal Graph Benchmark ([tgb](tgb.md))
+## Temporal Graph Benchmark ([huang2023tgb](huang2023tgb.md))
 
 - **4M – 67M edges** per dataset — largest temporal graph benchmarks in the field
 - Multiple domains: Wikipedia edits, Reddit posts, financial transactions, transport networks
@@ -31,14 +31,14 @@ updated: 2026-04-29
 
 ## Foundation Model Pretraining Scale
 
-- **Griffin** ([griffin](griffin.md)): pretrained on **150M+ nodes** across heterogeneous and temporal graphs
+- **Griffin** ([wang2025griffin](wang2025griffin.md)): pretrained on **150M+ nodes** across heterogeneous and temporal graphs
 
 ## Tabular Baselines for Context
 
 | Model | Max scale |
 |---|---|
-| TabPFN v2 ([tabpfnv2](tabpfnv2.md)) | ~10K rows |
-| TabICL ([tabicl](tabicl.md)) | 500K rows |
+| TabPFN v2 ([hollmann2025tabpfnv2](hollmann2025tabpfnv2.md)) | ~10K rows |
+| TabICL ([qu2025tabicl](qu2025tabicl.md)) | 500K rows |
 
 ## Summary Table
 

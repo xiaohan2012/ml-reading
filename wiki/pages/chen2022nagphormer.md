@@ -36,4 +36,4 @@ This is fundamentally different from ego-graph approaches (Gophormer): NAGphorme
 
 - [graph-transformer](graph-transformer.md): NAGphormer exemplifies the hop-tokenization approach — alternative to ego-graph sampling and global attention.
 - [zhao2021gophormer](zhao2021gophormer.md): Gophormer samples an ego-graph and attends over nodes; NAGphormer pre-aggregates hops and attends over hop levels — complementary designs.
-- [relational-graph-transformer](relational-graph-transformer.md): RelGT's multi-hop neighborhood sampling is closer to Gophormer; NAGphormer's hop-token idea is a possible future direction for REGs.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT's multi-hop neighborhood sampling is closer to Gophormer; NAGphormer's hop-token idea is a possible future direction for REGs.

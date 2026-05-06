@@ -1,7 +1,7 @@
 ---
 title: Tabular Learning
 tags: [concept, tabular, foundation-model, in-context-learning]
-sources: [tabpfnv2, tabicl, carte, tabpfnv1, saint]
+sources: [hollmann2025tabpfnv2, qu2025tabicl, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint]
 updated: 2026-04-29
 ---
 
@@ -31,11 +31,11 @@ Tabular learning refers to machine learning on structured data organized in rows
 
 ## Appearances in Sources
 
-- [tabpfnv1](tabpfnv1.md) — establishes the PFN paradigm; SCM+BNN prior; N≤1000 in-context classification; ICLR 2023
-- [tabpfnv2](tabpfnv2.md) — extends v1 with 130M synthetic datasets, row/col attention, N≤10K; SOTA small tables; Nature 2025
-- [tabicl](tabicl.md) — extends ICL to 500K samples via distribution-aware column embedding + patching analogy; outperforms TabPFNv2 on large tables; ICML 2025
-- [carte](carte.md) — graph-based representation for cross-table pretraining without schema matching; YAGO knowledge pretraining; handles string-heavy tables; ICML 2024
-- [saint](saint.md) — two-attention (column + intersample/row) Transformer + contrastive pretraining; outperforms boosted trees; 2021
+- [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) — establishes the PFN paradigm; SCM+BNN prior; N≤1000 in-context classification; ICLR 2023
+- [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) — extends v1 with 130M synthetic datasets, row/col attention, N≤10K; SOTA small tables; Nature 2025
+- [qu2025tabicl](qu2025tabicl.md) — extends ICL to 500K samples via distribution-aware column embedding + patching analogy; outperforms TabPFNv2 on large tables; ICML 2025
+- [kim2024carte](kim2024carte.md) — graph-based representation for cross-table pretraining without schema matching; YAGO knowledge pretraining; handles string-heavy tables; ICML 2024
+- [somepalli2021saint](somepalli2021saint.md) — two-attention (column + intersample/row) Transformer + contrastive pretraining; outperforms boosted trees; 2021
 
 ## Related Concepts
 

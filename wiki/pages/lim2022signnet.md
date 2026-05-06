@@ -42,5 +42,5 @@ Both networks are **universal** under their respective symmetry constraints: the
 - [positional-encoding](positional-encoding.md): SignNet is the recommended fix for LapPE's sign ambiguity; noted in the wiki as the best single encoding in GPS ablations.
 - [dwivedi2020benchmarking](dwivedi2020benchmarking.md): directly addresses the sign ambiguity problem identified in Benchmarking-GNNs' LapPE proposal.
 - [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS uses SignNet as the PE in its best configurations; the GPS ablation explicitly validates SignNet > vanilla LapPE.
-- [san](san.md): SAN acknowledged sign ambiguity as a limitation; SignNet solves it rigorously.
+- [kreuzer2021san](kreuzer2021san.md): SAN acknowledged sign ambiguity as a limitation; SignNet solves it rigorously.
 - [huang2024stability](huang2024stability.md): SPE (stability paper) builds on SignNet's sign invariance and additionally addresses stability to graph perturbations.

@@ -1,7 +1,7 @@
 ---
 title: Over-Squashing
 tags: [concept, graph-neural-network, expressiveness]
-sources: [alon2020bottleneck, shirzad2023exphormer, wu2023sgformer, san, zhang2022hierarchical, mao2023hinormer]
+sources: [alon2020bottleneck, shirzad2023exphormer, wu2023sgformer, kreuzer2021san, zhang2022hierarchical, mao2023hinormer]
 updated: 2026-05-04
 ---
 
@@ -19,14 +19,14 @@ Over-squashing is a fundamental limitation of message-passing GNNs on tasks that
 
 **Proposed fixes:**
 - *FA layer* ([alon2020bottleneck](alon2020bottleneck.md)): add a single fully-adjacent layer enabling all-pairs communication; breaks the bottleneck; ↓42% error on QM9.
-- *Global attention* (Graph Transformers): bypass aggregation entirely; all nodes interact directly. Used in [san](san.md), [graphormer](graphormer.md), [rampavsek2022graphgps](rampavsek2022graphgps.md), [shirzad2023exphormer](shirzad2023exphormer.md), [wu2023sgformer](wu2023sgformer.md), [mao2023hinormer](mao2023hinormer.md).
+- *Global attention* (Graph Transformers): bypass aggregation entirely; all nodes interact directly. Used in [kreuzer2021san](kreuzer2021san.md), [ying2021graphormer](ying2021graphormer.md), [rampavsek2022graphgps](rampavsek2022graphgps.md), [shirzad2023exphormer](shirzad2023exphormer.md), [wu2023sgformer](wu2023sgformer.md), [mao2023hinormer](mao2023hinormer.md).
 - *Graph rewiring*: add long-range edges (e.g., expander graph) to shorten paths; used in [shirzad2023exphormer](shirzad2023exphormer.md).
 - *Hierarchical aggregation*: coarsen the graph to reduce effective diameter; used in [zhang2022hierarchical](zhang2022hierarchical.md).
 
 ## Appearances in Sources
 
 - [alon2020bottleneck](alon2020bottleneck.md) — **origin paper**: formalized over-squashing; FA layer fix; ICLR 2021
-- [san](san.md) — full-graph Laplacian attention bypasses over-squashing by design
+- [kreuzer2021san](kreuzer2021san.md) — full-graph Laplacian attention bypasses over-squashing by design
 - [shirzad2023exphormer](shirzad2023exphormer.md) — expander graph edges shorten paths to reduce over-squashing
 - [wu2023sgformer](wu2023sgformer.md) — single global attention layer as the minimal fix for over-squashing at scale
 - [zhang2022hierarchical](zhang2022hierarchical.md) — hierarchical coarsening reduces effective graph diameter

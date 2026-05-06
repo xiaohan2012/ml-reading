@@ -43,5 +43,5 @@ TokenGT argues against graph-specific architectural modifications to Transformer
 
 - [graph-transformer](graph-transformer.md): TokenGT is the "pure Transformer" endpoint — minimal graph-specific bias, maximum compatibility with standard Transformer engineering.
 - [positional-encoding](positional-encoding.md): node identifiers are a form of PE; LapPE-based IDs connect to [dwivedi2020benchmarking](dwivedi2020benchmarking.md); ORF-based IDs are a novel alternative.
-- [graphormer](graphormer.md): Graphormer also uses full global attention but encodes structure via attention biases (SPD, centrality); TokenGT encodes it via token embeddings.
+- [ying2021graphormer](ying2021graphormer.md): Graphormer also uses full global attention but encodes structure via attention biases (SPD, centrality); TokenGT encodes it via token embeddings.
 - [graph-neural-network](graph-neural-network.md): TokenGT proves it surpasses all MPNNs in expressiveness via 2-IGN equivalence.

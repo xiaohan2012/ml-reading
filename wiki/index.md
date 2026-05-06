@@ -1,41 +1,41 @@
 # Wiki Index — ML reading and research (GNN & Interpretability)
 
 ### Sources
-- [tabpfnv2](pages/tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
-- [tabicl](pages/tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
-- [carte](pages/carte.md) — CARTE: graph-per-row + YAGO pretraining; edge-augmented attention; no schema matching; string tables; ICML 2024 _(ingested 2026-04-29)_
-- [tgat](pages/tgat.md) — TGAT: Bochner functional time encoding + masked self-attention over temporal neighborhoods; inductive CTDG; ICLR 2020 _(ingested 2026-04-29)_
-- [tgn](pages/tgn.md) — TGN: memory module + temporal graph attention; unifies TGAT/Jodie/DyRep; 30× faster than TGAT; SOTA 2020 _(ingested 2026-04-29)_
-- [dygformer](pages/dygformer.md) — DyGFormer: first-hop Transformer + patching + neighbor co-occurrence encoding; NeurIPS 2023 SOTA _(ingested 2026-04-29)_
-- [gcn](pages/gcn.md) — GCN: spectral GNN via Chebyshev approximation; renormalization trick; transductive; O(|E|); ICLR 2017 _(ingested 2026-04-29)_
-- [graphsage](pages/graphsage.md) — GraphSAGE: inductive GNN via neighborhood sampling; Mean/LSTM/Max aggregators; HeteroGraphSAGE = RDL baseline; NeurIPS 2017 _(ingested 2026-04-29)_
-- [gat](pages/gat.md) — GAT: learned attention weights α_{ij} per neighbor; multi-head; inductive; ICLR 2018 _(ingested 2026-04-29)_
-- [gin](pages/gin.md) — GIN: sum+MLP achieves WL-level expressive power; proves GCN/GraphSAGE mean is not injective; ICLR 2019 _(ingested 2026-04-29)_
-- [graphormer](pages/graphormer.md) — Graphormer: SPD spatial encoding + centrality + edge path encoding; full Transformer; SOTA OGB-LSC; subsumes GCN/GIN; NeurIPS 2021 _(ingested 2026-04-29)_
-- [san](pages/san.md) — SAN: full Laplacian spectrum LPE; fully-connected attention; exceeds 1-WL provably; NeurIPS 2021 _(ingested 2026-04-29)_
-- [mpnn](pages/mpnn.md) — MPNN: unified message passing framework; edge features; unifies 8+ GNN models; SOTA QM9; ICML 2017 _(ingested 2026-04-29)_
-- [rgcn](pages/rgcn.md) — R-GCN: relation-specific weight matrices; basis/block decomposition; knowledge graph completion; ESWC 2018 _(ingested 2026-04-29)_
-- [k-gnn](pages/k-gnn.md) — k-GNN: 1-GNNs ≡ 1-WL; k-tuples message passing exceeds 1-WL; hierarchical 1-k-GNN; AAAI 2019 _(ingested 2026-04-29)_
-- [tgb](pages/tgb.md) — TGB: large-scale temporal benchmark (4M-67M edges); temporal negative sampling; finds simple baselines often best; NeurIPS 2023 _(ingested 2026-04-29)_
-- [tabpfnv1](pages/tabpfnv1.md) — TabPFN v1: PFN paradigm; SCM+BNN prior; N≤1000 ICL classification; 5700× faster than AutoML; ICLR 2023 _(ingested 2026-04-29)_
-- [saint](pages/saint.md) — SAINT: column + intersample attention; contrastive pretraining; beats boosted trees on average; 2021 _(ingested 2026-04-29)_
-- [cvitkovic2020](pages/cvitkovic2020.md) — First RDB-as-GNN paper; RDBToGraph algorithm; node classification = supervised learning on RDB; 2020 _(ingested 2026-04-29)_
-- [dyrep](pages/dyrep.md) — DyRep: two-process (Association/Communication) temporal point process; recurrent+structural+temporal embedding; ICLR 2019 _(ingested 2026-04-29)_
-- [graphmixer](pages/graphmixer.md) — GraphMixer: MLP link-encoder + mean-pooling node-encoder; no RNN/attention; matches TGAT/TGN/DyGFormer; ICLR 2023 _(ingested 2026-04-29)_
-- [relational-deep-learning-position](pages/relational-deep-learning-position.md) — RDL blueprint: REG + Training Table + temporal neighbor sampling; GNN=SQL JOIN+AGG _(ingested 2026-04-29)_
-- [relbench-v1](pages/relbench-v1.md) — RelBench v1: 7 databases, 30 tasks; RDL beats data-scientist baseline with 96% fewer human hours _(ingested 2026-04-29)_
+- [hollmann2025tabpfnv2](pages/hollmann2025tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
+- [qu2025tabicl](pages/qu2025tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
+- [kim2024carte](pages/kim2024carte.md) — CARTE: graph-per-row + YAGO pretraining; edge-augmented attention; no schema matching; string tables; ICML 2024 _(ingested 2026-04-29)_
+- [xu2020tgat](pages/xu2020tgat.md) — TGAT: Bochner functional time encoding + masked self-attention over temporal neighborhoods; inductive CTDG; ICLR 2020 _(ingested 2026-04-29)_
+- [rossi2020tgn](pages/rossi2020tgn.md) — TGN: memory module + temporal graph attention; unifies TGAT/Jodie/DyRep; 30× faster than TGAT; SOTA 2020 _(ingested 2026-04-29)_
+- [yu2023dygformer](pages/yu2023dygformer.md) — DyGFormer: first-hop Transformer + patching + neighbor co-occurrence encoding; NeurIPS 2023 SOTA _(ingested 2026-04-29)_
+- [kipf2017gcn](pages/kipf2017gcn.md) — GCN: spectral GNN via Chebyshev approximation; renormalization trick; transductive; O(|E|); ICLR 2017 _(ingested 2026-04-29)_
+- [hamilton2017graphsage](pages/hamilton2017graphsage.md) — GraphSAGE: inductive GNN via neighborhood sampling; Mean/LSTM/Max aggregators; HeteroGraphSAGE = RDL baseline; NeurIPS 2017 _(ingested 2026-04-29)_
+- [velickovic2018gat](pages/velickovic2018gat.md) — GAT: learned attention weights α_{ij} per neighbor; multi-head; inductive; ICLR 2018 _(ingested 2026-04-29)_
+- [xu2019gin](pages/xu2019gin.md) — GIN: sum+MLP achieves WL-level expressive power; proves GCN/GraphSAGE mean is not injective; ICLR 2019 _(ingested 2026-04-29)_
+- [ying2021graphormer](pages/ying2021graphormer.md) — Graphormer: SPD spatial encoding + centrality + edge path encoding; full Transformer; SOTA OGB-LSC; subsumes GCN/GIN; NeurIPS 2021 _(ingested 2026-04-29)_
+- [kreuzer2021san](pages/kreuzer2021san.md) — SAN: full Laplacian spectrum LPE; fully-connected attention; exceeds 1-WL provably; NeurIPS 2021 _(ingested 2026-04-29)_
+- [gilmer2017mpnn](pages/gilmer2017mpnn.md) — MPNN: unified message passing framework; edge features; unifies 8+ GNN models; SOTA QM9; ICML 2017 _(ingested 2026-04-29)_
+- [schlichtkrull2018rgcn](pages/schlichtkrull2018rgcn.md) — R-GCN: relation-specific weight matrices; basis/block decomposition; knowledge graph completion; ESWC 2018 _(ingested 2026-04-29)_
+- [morris2019kgnn](pages/morris2019kgnn.md) — k-GNN: 1-GNNs ≡ 1-WL; k-tuples message passing exceeds 1-WL; hierarchical 1-k-GNN; AAAI 2019 _(ingested 2026-04-29)_
+- [huang2023tgb](pages/huang2023tgb.md) — TGB: large-scale temporal benchmark (4M-67M edges); temporal negative sampling; finds simple baselines often best; NeurIPS 2023 _(ingested 2026-04-29)_
+- [hollmann2023tabpfnv1](pages/hollmann2023tabpfnv1.md) — TabPFN v1: PFN paradigm; SCM+BNN prior; N≤1000 ICL classification; 5700× faster than AutoML; ICLR 2023 _(ingested 2026-04-29)_
+- [somepalli2021saint](pages/somepalli2021saint.md) — SAINT: column + intersample attention; contrastive pretraining; beats boosted trees on average; 2021 _(ingested 2026-04-29)_
+- [cvitkovic2020rdb](pages/cvitkovic2020rdb.md) — First RDB-as-GNN paper; RDBToGraph algorithm; node classification = supervised learning on RDB; 2020 _(ingested 2026-04-29)_
+- [trivedi2019dyrep](pages/trivedi2019dyrep.md) — DyRep: two-process (Association/Communication) temporal point process; recurrent+structural+temporal embedding; ICLR 2019 _(ingested 2026-04-29)_
+- [cong2023graphmixer](pages/cong2023graphmixer.md) — GraphMixer: MLP link-encoder + mean-pooling node-encoder; no RNN/attention; matches TGAT/TGN/DyGFormer; ICLR 2023 _(ingested 2026-04-29)_
+- [fey2024rdlposition](pages/fey2024rdlposition.md) — RDL blueprint: REG + Training Table + temporal neighbor sampling; GNN=SQL JOIN+AGG _(ingested 2026-04-29)_
+- [robinson2024relbench](pages/robinson2024relbench.md) — RelBench v1: 7 databases, 30 tasks; RDL beats data-scientist baseline with 96% fewer human hours _(ingested 2026-04-29)_
 - [rampavsek2022graphgps](pages/rampavsek2022graphgps.md) — GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E); SOTA on 11/16 diverse benchmarks _(ingested 2026-04-29)_
-- [hgt](pages/hgt.md) — HGT: meta-relation triplet parameterization + RTE; WWW 2020; foundation for heterogeneous graph Transformers _(ingested 2026-04-29)_
+- [hu2020hgt](pages/hu2020hgt.md) — HGT: meta-relation triplet parameterization + RTE; WWW 2020; foundation for heterogeneous graph Transformers _(ingested 2026-04-29)_
 - [dwivedi2021graph](pages/dwivedi2021graph.md) — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge×attention _(ingested 2026-04-29)_
-- [relgnn](pages/relgnn.md) — Bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks _(ingested 2026-04-29)_
-- [griffin](pages/griffin.md) — First pretrained RDB foundation model; unified text+float encoders + hierarchical aggregation; 150M+ node pretraining _(ingested 2026-04-29)_
-- [relational-graph-transformer](pages/relational-graph-transformer.md) — First GT for relational databases; 5-element tokenization + hybrid local-global attention _(ingested 2026-04-28)_
-- [tgm-temporal-graph-modelling](pages/tgm-temporal-graph-modelling.md) — First unified CTDG+DTDG library; 7.8× speedup; hook-based modular system _(ingested 2026-04-28)_
-- [relational-transformer](pages/relational-transformer.md) — Cell-level zero-shot foundation model for relational data; Relational Attention; 93% supervised AUROC at 22M params _(ingested 2026-04-28)_
-- [relbench-v2](pages/relbench-v2.md) — RelBench expansion: 7→11 datasets, autocomplete tasks, TGB/ReDeLEx/4DBInfer integrations _(ingested 2026-04-28)_
-- [kumorfm-1](pages/kumorfm-1.md) — KumoRFM v1: first RFM; table-invariant encoder + RelGT + ICL module; PQL interface; explainability; 76.71 ICL / 81.14 fine-tuned AUROC on RelBench v1 _(ingested 2026-04-29)_
-- [kumorfm-2](pages/kumorfm-2.md) — KumoRFM-2: task-conditioned ICL + hierarchical 4-scale attention; first few-shot RFM to beat supervised SOTA on RelBench; scales to 500B+ rows _(ingested 2026-04-29)_
-- [attention-graphs-gt-interpretability](pages/attention-graphs-gt-interpretability.md) — Attention Graphs: aggregate attention across heads/layers to reveal GT information routing; DL models <4% structure recovery; same accuracy, divergent strategies _(ingested 2026-04-30)_
+- [chen2025relgnn](pages/chen2025relgnn.md) — Bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks _(ingested 2026-04-29)_
+- [wang2025griffin](pages/wang2025griffin.md) — First pretrained RDB foundation model; unified text+float encoders + hierarchical aggregation; 150M+ node pretraining _(ingested 2026-04-29)_
+- [dwivedi2025relgt](pages/dwivedi2025relgt.md) — First GT for relational databases; 5-element tokenization + hybrid local-global attention _(ingested 2026-04-28)_
+- [chmura2026tgm](pages/chmura2026tgm.md) — First unified CTDG+DTDG library; 7.8× speedup; hook-based modular system _(ingested 2026-04-28)_
+- [ranjan2025relationaltr](pages/ranjan2025relationaltr.md) — Cell-level zero-shot foundation model for relational data; Relational Attention; 93% supervised AUROC at 22M params _(ingested 2026-04-28)_
+- [gu2026relbench](pages/gu2026relbench.md) — RelBench expansion: 7→11 datasets, autocomplete tasks, TGB/ReDeLEx/4DBInfer integrations _(ingested 2026-04-28)_
+- [fey2025kumorfm](pages/fey2025kumorfm.md) — KumoRFM v1: first RFM; table-invariant encoder + RelGT + ICL module; PQL interface; explainability; 76.71 ICL / 81.14 fine-tuned AUROC on RelBench v1 _(ingested 2026-04-29)_
+- [fey2025kumorfm2](pages/fey2025kumorfm2.md) — KumoRFM-2: task-conditioned ICL + hierarchical 4-scale attention; first few-shot RFM to beat supervised SOTA on RelBench; scales to 500B+ rows _(ingested 2026-04-29)_
+- [el2025attentiongraph](pages/el2025attentiongraph.md) — Attention Graphs: aggregate attention across heads/layers to reveal GT information routing; DL models <4% structure recovery; same accuracy, divergent strategies _(ingested 2026-04-30)_
 - [dwivedi2020benchmarking](pages/dwivedi2020benchmarking.md) — Benchmarking GNNs: 12 medium-scale datasets + fixed param budgets; introduced LapPE; origin of the graph PE research direction _(ingested 2026-05-04)_
 - [mialon2021graphit](pages/mialon2021graphit.md) — GraphiT: relative PE via graph kernel modulation of attention + GCKN substructure encoding; avoids LapPE sign/transferability issues _(ingested 2026-05-04)_
 - [kim2022pure](pages/kim2022pure.md) — TokenGT: pure Transformer with orthonormal node IDs + type IDs; provably ≥ 2-IGN; no graph-specific modifications; NeurIPS 2022 _(ingested 2026-05-04)_
@@ -79,6 +79,7 @@
 - [over-smoothing](pages/over-smoothing.md) — GNN depth failure: repeated low-pass filtering collapses node representations; distinct from over-squashing _(ingested 2026-05-04)_
 
 ### Analyses
+- [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md) — Three scalability strategies for GTs: linear attention (GPS) vs ego-graph sampling (Gophormer) vs hop tokenization (NAGphormer) _(query 2026-05-06)_
 - [position-structural-embedding](pages/position-structural-embedding.md) — GraphGPS 6-cell PE/SE taxonomy (local/global/relative × position/structure); ablation rankings; motivating examples _(query 2026-05-06)_
 - [relgt-lineage](pages/relgt-lineage.md) — RelGT intellectual lineage: 9 threads tracing each design decision to predecessors _(query 2026-05-04)_
 - [relgt-reading-plan](pages/relgt-reading-plan.md) — Sequenced 8-paper reading plan from GNN limitations to RelGT (~12–17 hrs) _(query 2026-05-04)_

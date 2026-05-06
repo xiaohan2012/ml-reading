@@ -39,4 +39,4 @@ Results show up to 24.75% improvement in NMI and 29.25% in ARI for node clusteri
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md): HHGT is a more structured heterogeneous GT compared to HGT's meta-relation parameterization.
 - [mao2023hinormer](mao2023hinormer.md): HINormer uses local+global split; HHGT uses ring-level hierarchy — both address heterogeneous GT but with different structural decompositions.
 - [zhu2023hierarchical](zhu2023hierarchical.md): same hierarchical + heterogeneous motivation; HHGT adds explicit ring-distance semantics.
-- [relational-graph-transformer](relational-graph-transformer.md): RelGT also handles heterogeneity + temporality but in the relational database (REG) setting, not general HINs.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT also handles heterogeneity + temporality but in the relational database (REG) setting, not general HINs.

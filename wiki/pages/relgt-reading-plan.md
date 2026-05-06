@@ -1,7 +1,7 @@
 ---
 title: "Reading Plan: Graph Transformers & RelGT"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [alon2020bottleneck, dwivedi2021graph, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025learning, rampavsek2022graphgps, zhao2021gophormer, chen2022nagphormer, hgt, relational-graph-transformer, muller2023attending, graphormer, san]
+sources: [alon2020bottleneck, dwivedi2021graph, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025learning, rampavsek2022graphgps, zhao2021gophormer, chen2022nagphormer, hu2020hgt, dwivedi2025relgt, muller2023attending, ying2021graphormer, kreuzer2021san]
 updated: 2026-05-04
 ---
 
@@ -33,23 +33,26 @@ Sequenced reading path from GNN limitations to RelGT, ~10–12 papers. Each stag
 
 ---
 
-## Stage 4: Heterogeneous Graphs (1 paper)
+## Stage 4: Heterogeneous & Temporal Graphs (2 papers)
 
-8. **[hgt](hgt.md)** — HGT: meta-relation parameterization W(τ(s),φ(e),τ(t)); type-dependent attention; standard baseline for heterogeneous GTs. Understand this before RelGT's node type encoder.
+8. **[hu2020hgt](hu2020hgt.md)** — HGT: meta-relation parameterization W(τ(s),φ(e),τ(t)); type-dependent attention; standard baseline for heterogeneous GTs. Understand this before RelGT's node type encoder.
+9. **HTGformer** (Wang, SIGIR 2025) — the closest prior work to RelGT: heterogeneous + temporal GT, but handles both via separate iterative modules and lacks PE. RelGT directly positions itself against this. *Not yet ingested — worth reading before RelGT.*
 
 ---
 
 ## Stage 5: RelGT (1 paper)
 
-9. **[relational-graph-transformer](relational-graph-transformer.md)** — With Stages 1–4 complete, all five tokenization elements and both attention modules will make immediate sense. Read the lineage analysis [relgt-lineage](relgt-lineage.md) alongside.
+10. **[dwivedi2025relgt](dwivedi2025relgt.md)** — With Stages 1–4 complete, all five tokenization elements and both attention modules will make immediate sense. Read the lineage analysis [relgt-lineage](relgt-lineage.md) alongside.
 
 ---
 
 ## Optional Deepening
 
+- **[rossi2020tgn](rossi2020tgn.md)** — TGN: memory module + temporal graph attention; deeper background on continuous-time temporal graphs before RelGT's temporal encoding.
+- **[yu2023dygformer](yu2023dygformer.md)** — DyGFormer: Transformer for temporal graphs; most recent SOTA before RelGT; good contrast with RelGT's unified approach.
 - **[muller2023attending](muller2023attending.md)** — Survey + taxonomy of ~40 GTs; PE choice dominates; confirms no prior GT handles REGs. Good landscape map.
-- **[graphormer](graphormer.md)** — Full global attention via SPD bias + centrality encoding; good contrast with GPS's hybrid approach.
-- **[san](san.md)** — Full Laplacian spectrum as LPE; motivates GraphGPS's shift away from LapPE toward RWSE.
+- **[ying2021graphormer](ying2021graphormer.md)** — Full global attention via SPD bias + centrality encoding; good contrast with GPS's hybrid approach.
+- **[kreuzer2021san](kreuzer2021san.md)** — Full Laplacian spectrum as LPE; motivates GraphGPS's shift away from LapPE toward RWSE.
 - **[dwivedi2023graph](dwivedi2023graph.md)** — Survey of scalability strategies for large graphs; contextualizes RelGT's EMA centroid global module.
 
 ---
@@ -61,6 +64,6 @@ Sequenced reading path from GNN limitations to RelGT, ~10–12 papers. Each stag
 | 1: Foundations | 2 | 3–4 hrs |
 | 2: PE arc | 2 | 3–4 hrs |
 | 3: Scalable GTs | 2 | 3–4 hrs |
-| 4: Heterogeneous | 1 | 1–2 hrs |
+| 4: Heterogeneous & Temporal | 2 | 2–3 hrs |
 | 5: RelGT | 1 | 2–3 hrs |
-| **Total** | **8** | **~12–17 hrs** |
+| **Total** | **9** | **~13–18 hrs** |

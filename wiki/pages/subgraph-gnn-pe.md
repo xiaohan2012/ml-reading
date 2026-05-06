@@ -1,7 +1,7 @@
 ---
 title: Subgraph GNN PE (with Random Initialization)
 tags: [concept, positional-encoding, graph-transformer, gnn]
-sources: [relational-graph-transformer]
+sources: [dwivedi2025relgt]
 updated: 2026-04-28
 ---
 
@@ -9,7 +9,7 @@ updated: 2026-04-28
 
 ## Description
 
-Subgraph GNN PE is the positional encoding strategy used in [RelGT](relational-graph-transformer.md) as the fifth element of its [multi-element tokenization](multi-element-tokenization.md). It applies a lightweight GNN to the sampled local subgraph (K nodes) using **randomly resampled node features** as input:
+Subgraph GNN PE is the positional encoding strategy used in [RelGT](dwivedi2025relgt.md) as the fifth element of its [multi-element tokenization](multi-element-tokenization.md). It applies a lightweight GNN to the sampled local subgraph (K nodes) using **randomly resampled node features** as input:
 
 $$h_{\text{pe}}(v_j) = \text{GNN}(A_{\text{local}}, Z_{\text{random}})_j$$
 
@@ -26,7 +26,7 @@ This PE captures structural properties that other token elements miss: cycles, q
 
 ## Appearances in Sources
 
-- [relational-graph-transformer](relational-graph-transformer.md) — described in Section 3.1 and ablated in Table 2; most critical component in ablations
+- [dwivedi2025relgt](dwivedi2025relgt.md) — described in Section 3.1 and ablated in Table 2; most critical component in ablations
 
 ## Related Concepts
 

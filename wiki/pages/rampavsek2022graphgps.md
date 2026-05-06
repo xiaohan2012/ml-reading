@@ -66,6 +66,6 @@ See [position-structural-embedding](pages/position-structural-embedding.md) for 
 ## Relation to Other Wiki Pages
 
 - [graph-transformer](graph-transformer.md): GraphGPS is the foundational blueprint for hybrid MPNN+GT architectures; establishes the PE/SE taxonomy that later work (RelGT, etc.) builds on.
-- [relational-graph-transformer](relational-graph-transformer.md): RelGT explicitly builds on GraphGPS for the relational setting — its 5-element tokenization extends the GPS PE/SE framework to heterogeneous temporal graphs; however RelGT uses schema-specific encodings (hop distance, type, time) rather than graph-global Laplacian/RWSE.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT explicitly builds on GraphGPS for the relational setting — its 5-element tokenization extends the GPS PE/SE framework to heterogeneous temporal graphs; however RelGT uses schema-specific encodings (hop distance, type, time) rather than graph-global Laplacian/RWSE.
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md): HGT is a competing GT for heterogeneous graphs; GraphGPS demonstrates that hybrid MPNN+attention is generally superior to pure-attention architectures on most benchmarks.
 - [subgraph-gnn-pe](subgraph-gnn-pe.md): RelGT's subgraph GNN PE is the RDL analog of GPS's local SE (RWSE) — both capture subgraph structural information rather than global graph PEs.

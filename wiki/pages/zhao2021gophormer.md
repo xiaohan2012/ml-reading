@@ -36,5 +36,5 @@ Gophormer is directly analogous to what RelGT does for relational entity graphs:
 ## Relation to Other Wiki Pages
 
 - [graph-transformer](graph-transformer.md): Gophormer exemplifies the neighborhood sampling scalability strategy for GTs.
-- [relational-graph-transformer](relational-graph-transformer.md): RelGT's K=300 subgraph sampling design is the RDL analog of Gophormer's ego-graph approach; extended to heterogeneous temporal REGs.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT's K=300 subgraph sampling design is the RDL analog of Gophormer's ego-graph approach; extended to heterogeneous temporal REGs.
 - [chen2022nagphormer](chen2022nagphormer.md): NAGphormer takes a different approach — instead of sampling the subgraph, it aggregates hop-level features into a per-node sequence.

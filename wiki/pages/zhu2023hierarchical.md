@@ -35,4 +35,4 @@ The method is also designed for **heterogeneous graphs** (multiple node/edge typ
 
 - [graph-transformer](graph-transformer.md): hierarchical clustering scalability strategy; complements sparse attention (Exphormer) and sampling (NAGphormer, Gophormer).
 - [zhang2022hierarchical](zhang2022hierarchical.md): similar hierarchical approach; this paper additionally handles heterogeneous graphs.
-- [hgt](hgt.md): HGT handles heterogeneity but not large-scale; this paper addresses both simultaneously.
+- [hu2020hgt](hu2020hgt.md): HGT handles heterogeneity but not large-scale; this paper addresses both simultaneously.

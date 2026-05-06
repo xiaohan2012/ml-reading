@@ -1,7 +1,7 @@
 ---
 title: Graph Neural Network
 tags: [entity, concept, gnn, message-passing]
-sources: [gcn, hamilton2017inductive, gat, gin, mpnn, rgcn, k-gnn]
+sources: [kipf2017gcn, hamilton2017inductive, velickovic2018gat, xu2019gin, gilmer2017mpnn, schlichtkrull2018rgcn, morris2019kgnn]
 updated: 2026-04-29
 ---
 
@@ -37,18 +37,18 @@ where $f$ is the **aggregation function** (mean, sum, max, attention-weighted su
 
 ## Appearances in Sources
 
-- [gcn](gcn.md) — introduces spectral GNNs via Chebyshev approximation; symmetric degree normalization; transductive only
-- [graphsage](graphsage.md) — inductive GNNs via neighborhood sampling + learnable aggregation; foundation for HeteroGraphSAGE (RDL baseline)
-- [gat](gat.md) — replaces isotropic aggregation with learned attention weights; first GNN to assign different importance per neighbor without precomputed structure
-- [gin](gin.md) — proves theoretical upper bound on GNN expressive power; shows GCN/GraphSAGE mean aggregation is not injective; GIN achieves WL-level power via sum+MLP
-- [mpnn](mpnn.md) — Gilmer et al. (ICML 2017): canonical MPNN framework unifying 8+ prior models; edge features as first-class inputs; SOTA on QM9
-- [rgcn](rgcn.md) — Schlichtkrull et al. (ESWC 2018): relation-specific weight matrices for multi-relational/knowledge graphs; basis decomposition for parameter efficiency
-- [k-gnn](k-gnn.md) — Morris et al. (AAAI 2019): proves 1-GNNs ≡ 1-WL; k-GNNs operate on k-tuples to exceed 1-WL; 54% MAE reduction on QM9
+- [kipf2017gcn](kipf2017gcn.md) — introduces spectral GNNs via Chebyshev approximation; symmetric degree normalization; transductive only
+- [hamilton2017graphsage](hamilton2017graphsage.md) — inductive GNNs via neighborhood sampling + learnable aggregation; foundation for HeteroGraphSAGE (RDL baseline)
+- [velickovic2018gat](velickovic2018gat.md) — replaces isotropic aggregation with learned attention weights; first GNN to assign different importance per neighbor without precomputed structure
+- [xu2019gin](xu2019gin.md) — proves theoretical upper bound on GNN expressive power; shows GCN/GraphSAGE mean aggregation is not injective; GIN achieves WL-level power via sum+MLP
+- [gilmer2017mpnn](gilmer2017mpnn.md) — Gilmer et al. (ICML 2017): canonical MPNN framework unifying 8+ prior models; edge features as first-class inputs; SOTA on QM9
+- [schlichtkrull2018rgcn](schlichtkrull2018rgcn.md) — Schlichtkrull et al. (ESWC 2018): relation-specific weight matrices for multi-relational/knowledge graphs; basis decomposition for parameter efficiency
+- [morris2019kgnn](morris2019kgnn.md) — Morris et al. (AAAI 2019): proves 1-GNNs ≡ 1-WL; k-GNNs operate on k-tuples to exceed 1-WL; 54% MAE reduction on QM9
 
 ## Limitations
 
 - **Over-squashing** ([alon2020bottleneck](alon2020bottleneck.md)): information from exponentially-growing receptive fields is compressed into fixed-size vectors; long-range signals fail to propagate; GCN/GIN more susceptible than GAT/GGNN. Motivates global attention in Graph Transformers.
-- **Expressiveness ceiling** ([gin](gin.md)): no MPNN exceeds 1-WL; [k-gnn](k-gnn.md) and [kim2022pure](kim2022pure.md) break this ceiling via higher-order methods.
+- **Expressiveness ceiling** ([xu2019gin](xu2019gin.md)): no MPNN exceeds 1-WL; [morris2019kgnn](morris2019kgnn.md) and [kim2022pure](kim2022pure.md) break this ceiling via higher-order methods.
 
 ## Related Concepts
 
