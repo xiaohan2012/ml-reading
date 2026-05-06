@@ -5,6 +5,9 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-06] query | GraphGPS PE/SE taxonomy
+Filed as: [position-structural-embedding](pages/position-structural-embedding.md)
+
 ## [2026-05-04] query | Reading plan: Graph Transformers & RelGT
 Filed as: [relgt-reading-plan](pages/relgt-reading-plan.md)
 

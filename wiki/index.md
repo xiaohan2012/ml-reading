@@ -78,6 +78,7 @@
 - [over-smoothing](pages/over-smoothing.md) — GNN depth failure: repeated low-pass filtering collapses node representations; distinct from over-squashing _(ingested 2026-05-04)_
 
 ### Analyses
+- [position-structural-embedding](pages/position-structural-embedding.md) — GraphGPS 6-cell PE/SE taxonomy (local/global/relative × position/structure); ablation rankings; motivating examples _(query 2026-05-06)_
 - [relgt-lineage](pages/relgt-lineage.md) — RelGT intellectual lineage: 9 threads tracing each design decision to predecessors _(query 2026-05-04)_
 - [relgt-reading-plan](pages/relgt-reading-plan.md) — Sequenced 8-paper reading plan from GNN limitations to RelGT (~12–17 hrs) _(query 2026-05-04)_
 - [rfm-vs-llm](pages/rfm-vs-llm.md) — RFMs vs. LLMs: inputs/outputs, key differences, architectural split across RT/KumoRFM/Griffin _(query 2026-04-29)_
