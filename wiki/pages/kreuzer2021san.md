@@ -2,7 +2,7 @@
 title: "SAN: Rethinking Graph Transformers with Spectral Attention"
 tags: [source, graph-transformer, positional-encoding, expressiveness]
 sources: [kreuzer2021san]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # SAN: Rethinking Graph Transformers with Spectral Attention
@@ -11,37 +11,58 @@ updated: 2026-04-29
 **Title:** Rethinking Graph Transformers with Spectral Attention
 **Date ingested:** 2026-04-29
 **Type:** paper
-**Authors:** Kreuzer, Beaini, Hamilton, Létourneau, Tossou
+**Authors:** Devin Kreuzer, Dominique Beaini, Will Hamilton, Vincent Létourneau, Prudencio Tossou
 **Venue:** NeurIPS 2021
-**Year:** 2021
 
 ## Summary
 
-The Spectral Attention Network (SAN) (Kreuzer, Beaini, Hamilton et al., NeurIPS 2021) provides a theoretically principled approach to graph Transformers by using the *full Laplacian spectrum* as a learned positional encoding (LPE). The central insight is that eigenvectors of the graph Laplacian are the natural graph-domain analogue of sine/cosine functions in Euclidean space — so using all of them (not just the k lowest-frequency ones) gives a maximally expressive positional encoding.
+- **What:** Prior graph Transformers use only the k lowest Laplacian eigenvectors as PE, discarding higher-frequency structural information and ignoring eigenvalue ordering.
+- **How:** SAN uses the *full Laplacian spectrum* as a learned positional encoding (LPE), processing each (eigenvalue, eigenvector component) pair with a small Transformer before full-graph attention.
+- **So what:** SAN is provably more expressive than 1-WL GNNs and the first fully-connected GT to achieve competitive performance on standard benchmarks (ZINC, MNIST, CIFAR10, PATTERN).
 
-Eigenvectors are viewed not as columns of a matrix but as vectors positioned on the axis of eigenvalues (frequencies). The LPE module processes each eigenvector using a small Transformer that takes (eigenvalue, eigenvector_component) pairs as input, with the eigenvalue as a positional signal and the component as a feature. This produces a per-node positional embedding that is then added to node features before the main fully-connected Transformer. Crucially, the LPE is aware of eigenvalue multiplicities (degenerate eigenvalues), considers the full spectrum, and uses variable numbers of eigenvectors.
+## Challenges & Novelty
 
-SAN uses **full graph attention** (all nodes attend to all nodes), which eliminates over-squashing and enables the model to capture long-range dependencies. By leveraging the full spectrum, SAN is provably more expressive than 1-WL GNNs and the first fully-connected architecture to achieve competitive performance on standard graph benchmarks.
+Partial LapPE (k lowest eigenvectors) loses high-frequency structural information and treats all eigenvectors uniformly regardless of their eigenvalue. Graph Transformers need structural encodings that are both maximally expressive and eigenvalue-aware. SAN treats the Laplacian spectrum as a function over the frequency axis, processing it with a Transformer that uses eigenvalues as positional signals.
 
-## Key Takeaways
+- **Partial spectrum discards information:** using only k lowest eigenvectors misses substructures captured by higher frequencies (e.g., bipartiteness, triangle counts).
+- **Sign ambiguity:** eigenvectors are defined up to sign; prior work ignores this; SAN processes pairs $(+v, -v)$ symmetrically to be sign-invariant.
+- **Degenerate eigenvalues:** standard LapPE doesn't handle repeated eigenvalues (multigraphs, symmetric graphs); SAN models the full multiplicity structure.
 
-- **LPE (Learned Positional Encoding)**: small Transformer on (eigenvalue, eigenvector component) pairs → per-node PE; handles sign ambiguity via symmetric processing
-- Full Laplacian spectrum used (not just k lowest eigenvectors); eigenvalue multiplicities handled
-- Full graph attention (O(n²)) eliminates over-squashing present in GNNs
-- Provably exceeds 1-WL expressiveness; can distinguish graphs that sparse MPNN fails on
-- Property table: SAN is the only model with: local structure + global connectivity + structural PE + full spectrum + variable eigenvector count
-- Eigenvalue invariant (norm-invariant) but NOT eigenvector-sign invariant (acknowledged limitation)
-- First fully-connected graph model to match/outperform GNN baselines on ZINC, MNIST, CIFAR10, PATTERN
+## Relation to Prior Work
+
+| Model | Spectrum used | Full attention | Sign-invariant |
+|---|---|---|---|
+| [dwivedi2021graph](dwivedi2021graph.md) | k lowest eigenvectors | No (MPNN) | No |
+| **SAN** | Full spectrum | Yes | Yes |
+| [ying2021graphormer](ying2021graphormer.md) | SPD-based spatial | Yes | N/A |
+| [rampavsek2022graphgps](rampavsek2022graphgps.md) | RWSE / LapPE | Hybrid | Via SignNet |
+
+- [dwivedi2021graph](dwivedi2021graph.md): the direct predecessor — uses k-lowest LapPE; SAN shows this loses structural information by not considering the full spectrum.
+- [ying2021graphormer](ying2021graphormer.md): uses SPD-based spatial encoding instead of spectral; cheaper but less theoretically motivated than full spectrum.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS explicitly builds on SAN-style full-spectrum LapPE in its PE taxonomy, and later work (SignNet) addresses the sign-invariance issue SAN acknowledged.
+
+## Technical Details
+
+**LPE module.** Eigenvectors are viewed as vectors positioned on the eigenvalue axis. A small Transformer processes each (eigenvalue $\lambda_k$, eigenvector component $v_k^{(i)}$) pair for each node $i$:
+
+$$\text{LPE}(i) = \text{Transformer}\left(\{(\lambda_k, v_k^{(i)})\}_{k=1}^{N}\right)$$
+
+The eigenvalue acts as a positional signal (frequency); the component acts as the feature. The output is a per-node PE embedding added to node features before the main fully-connected Transformer.
+
+**Full graph attention.** All N nodes attend to all N nodes — O(N²) — eliminating over-squashing from local message passing. This gives the model full-range information flow.
+
+**Sign invariance.** SAN processes each eigenvector symmetrically with respect to sign flips, ensuring the PE is invariant to arbitrary sign choices in eigenvector computation.
+
+**Expressiveness.** SAN provably exceeds 1-WL: the full Laplacian spectrum determines the graph up to isomorphism for almost all graphs; the LPE module can learn to distinguish non-isomorphic graphs that sparse MPNNs cannot.
+
+## Experiments
+
+- First fully-connected GT to match/outperform GNN baselines on ZINC, MNIST, CIFAR10, PATTERN benchmarks.
+- Full spectrum consistently outperforms partial-k LapPE, especially on tasks requiring high-frequency structural features.
+- O(N²) attention limits SAN to small-to-medium graphs; acknowledged as an open scalability problem (addressed by GPS).
 
 ## Entities & Concepts
 
-- [graph-transformer](graph-transformer.md) — SAN is a key GT with spectral PE
-- [positional-encoding](positional-encoding.md) — SAN's LPE extends LapPE (introduced in [dwivedi2020benchmarking](dwivedi2020benchmarking.md)) to full spectrum with a learned processing module
-- [graph-neural-network](graph-neural-network.md) — SAN exceeds 1-WL expressiveness
-
-## Relation to Other Wiki Pages
-
-- Directly informs [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS's PE taxonomy explicitly cites SAN-style full-spectrum LapPE as the most expressive global PE; sign invariance issue (noted by SAN) is addressed by later work (Lim et al., ICLR 2022)
-- vs. [ying2021graphormer](ying2021graphormer.md): Graphormer uses SPD-based spatial encoding; SAN uses spectral encoding. Both are fully-connected but encode graph structure differently.
-- vs. [dwivedi2021graph](dwivedi2021graph.md): Dwivedi's GT uses k lowest eigenvectors as LapPE — SAN shows this loses structural information by not considering the full spectrum and eigenvalue ordering.
-- [positional-encoding](positional-encoding.md): SAN is the key reference for the argument that full Laplacian spectrum > partial LapPE; GPS cites it when motivating RWSE over simple LapPE.
+- [graph-transformer](graph-transformer.md)
+- [positional-encoding](positional-encoding.md)
+- [graph-neural-network](graph-neural-network.md)

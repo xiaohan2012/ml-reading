@@ -5,6 +5,16 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-06] ingest | Batch rewrite: 6 KumoRFM-2 reading plan predecessors
+Pages updated: fey2024rdlposition, robinson2024relbench, hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, fey2025kumorfm
+
+## [2026-05-06] query | KumoRFM-2 predecessor papers and reading plan
+Filed as: [kumorfm2-reading-plan](pages/kumorfm2-reading-plan.md)
+
+## [2026-05-06] ingest | KumoRFM-2: Scaling Foundation Models for Relational Learning
+Pages written: fey2025kumorfm2
+Pages updated: (index already current)
+
 ## [2026-05-06] query | How GraphGPS, Gophormer, NAGphormer relate
 Filed as: [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md)
 
@@ -278,3 +288,11 @@ Pages updated: positional-encoding, index
 ## [2026-05-06] ingest | Relational Graph Transformer (re-ingest with v1.1.0 template)
 Pages written: dwivedi2025relgt (rewritten)
 Pages updated: assets/dwivedi2025relgt-model.pdf, assets/dwivedi2025relgt-tokenization.pdf
+
+## [2026-05-06] ingest | Heterogeneous Graph Transformer (HGT) — rewrite with v1.1.0 template
+Pages written: hu2020hgt (rewritten)
+Pages updated: none
+
+## [2026-05-06] ingest | Batch rewrite — 8 RelGT-linked source pages to v1.1.0 template
+Pages written: ying2021graphormer, kreuzer2021san, zhao2021gophormer, chen2022nagphormer, mao2023hinormer, kanatsoulis2025pearl, ranjan2025relationaltr, rampavsek2022graphgps
+Pages updated: assets/rampavsek2022graphgps-layer.png (converted from PDF)

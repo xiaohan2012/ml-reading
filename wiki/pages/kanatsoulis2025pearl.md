@@ -2,7 +2,7 @@
 title: "PEARL: Learning Efficient Positional Encodings with Graph Neural Networks"
 tags: [source, positional-encoding, graph-transformer, graph-neural-network]
 sources: [kanatsoulis2025pearl]
-updated: 2026-05-04
+updated: 2026-05-06
 ---
 
 # PEARL: Learning Efficient Positional Encodings with Graph Neural Networks
@@ -16,40 +16,55 @@ updated: 2026-05-04
 
 ## Summary
 
-PEARL identifies four properties that graph PEs should satisfy: **(1) stability** (small graph perturbations → small PE changes), **(2) expressive power** (can distinguish non-isomorphic graphs), **(3) scalability** (linear complexity in graph size), and **(4) genericness** (applicable to any graph without special structure). Existing eigenvector-based methods fail on at least one: full LapPE has quadratic cost and instability; SignNet/SPE are expressive but still cubic; RWSE is cheap but less expressive.
+- **What:** Existing graph PEs fail at least one of four key criteria — stability, expressiveness, scalability, and genericness — with eigenvector-based methods being expensive and random-walk methods being insufficiently expressive.
+- **How:** PEARL shows that standard message-passing GNNs implicitly compute eigenvector mappings, and exploits this to produce PEs via GNN forward passes on randomly or basis-initialized node features — no eigendecomposition required.
+- **So what:** PEARL satisfies all four criteria simultaneously, scales linearly in graph size, and directly motivates RelGT's stochastic subgraph GNN PE design.
 
-**Core insight — GNNs as eigenvector mappings:** for any standard message-passing GNN (GCN, GIN, GraphSAGE) with MLP combination, the update for node $v$ at layer $l$ can be written $\mathbf{x}_v^{(l)} = \text{MLP}(\mathbf{V}[v,:])$, where $\mathbf{V}$ is the eigenvector matrix. The intuition: $k$ layers of message passing computes $\mathbf{S}^k\mathbf{x} = \mathbf{V}\Lambda^k\mathbf{V}^\top\mathbf{x}$ — repeated multiplication by the graph shift operator is power iteration in the eigenvector basis. An MLP on top can learn any nonlinear function of those components. PEARL makes this explicit via initialization.
+## Challenges & Novelty
 
-**Two initialization strategies:**
+Graph positional encodings must balance four competing properties: stability (robust to graph perturbations), expressiveness (distinguishes non-isomorphic graphs), scalability (linear in N), and genericness (works on any graph). No prior PE satisfies all four: LapPE is expressive but O(N³); RWSE is scalable but less expressive; SignNet/SPE are expressive but still eigenvector-dependent.
 
-- **R-PEARL (random features, large graphs):** each node gets a random identifier $\mathbf{q}^{(m)} \sim \mathcal{N}(0,I)$, independently drawn $M$ times. Random features break structural symmetries so the GNN can distinguish nodes — without them, nodes with identical neighborhoods collapse. The number of samples $M$ needed is *independent of graph size $N$*, giving $O(N)$ complexity.
+- **Eigendecomposition cost:** LapPE and SPE require O(N³) eigendecomposition — infeasible at scale.
+- **Structural symmetry collapse:** without identifiers, GNNs collapse structurally symmetric nodes to the same representation; random features break this symmetry cheaply.
+- **Permutation equivariance from random init:** a single random initialization is not permutation equivariant; statistical pooling over multiple runs restores equivariance.
 
-- **B-PEARL (standard basis vectors, small graphs):** node $m$ gets one-hot $\mathbf{e}_m$, so $M = N$ runs are needed — $O(N^2)$ complexity. Restricted to small graphs (molecular benchmarks with tens–hundreds of nodes). Approximates SPE ([huang2024stability](huang2024stability.md)) at much lower cost.
+## Relation to Prior Work
 
-**Statistical pooling for permutation equivariance:** a single random run isn't permutation equivariant — relabeling nodes changes which node gets which seed. Fix: run $M$ independent initializations, get $M$ output matrices, then take the empirical mean across runs: $\text{PE}(v) = \frac{1}{M}\sum_{m=1}^M \Phi(\mathcal{G}, \mathbf{q}^{(m)})[v]$. The distribution of $\Phi(\mathcal{G}, \mathbf{q})$ is permutation equivariant, so any statistic derived from it (mean, variance, median) is also equivariant. PEARL uses mean for simplicity and convergence guarantees.
+| PE | Stable | Expressive | O(N) | Generic |
+|---|---|---|---|---|
+| LapPE | No | Yes | No | Yes |
+| RWSE | Yes | Partial | Yes | Yes |
+| SignNet / [lim2022signnet](lim2022signnet.md) | Yes | Yes | No | Yes |
+| SPE / [huang2024stability](huang2024stability.md) | Yes | Yes | No | Yes |
+| **PEARL (R-PEARL)** | Yes | Yes | Yes | Yes |
 
-**Usage:** drop-in PE provider — same interface as LapPE/SignNet. Concatenate output with node features $[X, \text{PEARL}(\mathcal{G})]$ and feed to any downstream GNN/GT unchanged.
+- [lim2022signnet](lim2022signnet.md): SignNet achieves expressiveness via sign-invariant eigenvector processing but still requires eigenvector computation — O(N²) or O(N³); PEARL achieves comparable expressiveness with linear complexity.
+- [huang2024stability](huang2024stability.md): SPE achieves stability and expressiveness but requires eigenvectors; PEARL achieves both at O(N) via GNN.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT's subgraph GNN PE is a direct application of PEARL's principle on local subgraphs — stochastic resampling each training step instead of statistical pooling.
 
-## Key Takeaways
+## Technical Details
 
-- **4 criteria for good PE**: stability + expressiveness + scalability + genericness; PEARL satisfies all four; most prior methods fail ≥1.
-- **GNNs as eigenvector mappings**: $k$ message-passing layers = power iteration in eigenvector basis; explicit eigendecomposition unnecessary.
-- **Random init motivation**: breaks structural symmetries so GNN can distinguish nodes; $M$ samples needed is $O(1)$ in graph size → linear complexity.
-- **Standard basis init**: one-hot per node; $O(N^2)$; for small graphs only; approximates SPE deterministically.
-- **Statistical pooling**: empirical mean over $M$ runs restores permutation equivariance broken by random identifiers.
-- **Drop-in PE**: $[X, \text{PEARL}(\mathcal{G})]$ — downstream model unchanged.
-- Directly cited as theoretical foundation for RelGT's [subgraph-gnn-pe](subgraph-gnn-pe.md).
+**Core insight — GNNs as eigenvector mappings.** For any standard MPNN with MLP combination, k layers of message passing computes $\mathbf{S}^k\mathbf{x} = \mathbf{V}\Lambda^k\mathbf{V}^\top\mathbf{x}$, where $\mathbf{V}$ is the eigenvector matrix and $\mathbf{S}$ is the graph shift operator. An MLP on top can learn any nonlinear function of eigenvector components — making explicit eigendecomposition unnecessary.
+
+**R-PEARL (random features, large graphs).** Each node gets a random identifier $\mathbf{q}^{(m)} \sim \mathcal{N}(0, I)$, independently drawn $M$ times. Random features break structural symmetries so the GNN can distinguish nodes. The number of runs $M$ needed is independent of graph size N, giving O(N) total complexity.
+
+**B-PEARL (basis vectors, small graphs).** Node $m$ gets one-hot $\mathbf{e}_m$, so $M = N$ runs are needed — O(N²) complexity. Restricted to small graphs. Approximates SPE at lower cost.
+
+**Statistical pooling for permutation equivariance.** A single random run breaks permutation equivariance. Fix: run $M$ independent initializations, take the empirical mean across runs:
+$$\text{PE}(v) = \frac{1}{M}\sum_{m=1}^M \Phi(\mathcal{G}, \mathbf{q}^{(m)})[v]$$
+
+The distribution of $\Phi(\mathcal{G}, \mathbf{q})$ is permutation equivariant, so any statistic (mean, variance) is also equivariant.
+
+**Usage.** Drop-in PE: concatenate $[X, \text{PEARL}(\mathcal{G})]$ and feed to any downstream GNN/GT unchanged.
+
+## Experiments
+
+- R-PEARL matches SignNet/SPE expressiveness on graph distinguishing benchmarks at a fraction of the compute cost.
+- B-PEARL closely approximates SPE on molecular benchmarks (ZINC, ogbg-molhiv) with significantly lower runtime.
+- Linear scaling verified empirically on large graphs where LapPE is infeasible.
 
 ## Entities & Concepts
 
 - [positional-encoding](positional-encoding.md)
 - [graph-transformer](graph-transformer.md)
 - [subgraph-gnn-pe](subgraph-gnn-pe.md)
-
-## Relation to Other Wiki Pages
-
-- [positional-encoding](positional-encoding.md): PEARL provides a scalable, stable, expressive PE — the closest to satisfying all desiderata simultaneously.
-- [subgraph-gnn-pe](subgraph-gnn-pe.md): RelGT's subgraph GNN PE with random resampled initialization is a direct application of PEARL's principle on local subgraphs.
-- [lim2022signnet](lim2022signnet.md): SignNet achieves expressiveness but at high cost; PEARL achieves comparable expressiveness with linear complexity.
-- [huang2024stability](huang2024stability.md): SPE achieves stability but at eigenvector-computation cost; PEARL achieves both stability and linear complexity via GNN.
-- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT cites PEARL as the learnable PE approach that motivates their random-resampled subgraph GNN PE design.

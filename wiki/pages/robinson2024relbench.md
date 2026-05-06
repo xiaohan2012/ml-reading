@@ -2,7 +2,7 @@
 title: "RelBench: A Benchmark for Deep Learning on Relational Databases"
 tags: [source, benchmark, relational-deep-learning, gnn]
 sources: [robinson2024relbench]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # RelBench: A Benchmark for Deep Learning on Relational Databases
@@ -11,27 +11,55 @@ updated: 2026-04-29
 **Title:** RelBench: A Benchmark for Deep Learning on Relational Databases
 **Date ingested:** 2026-04-29
 **Type:** paper (benchmark / datasets)
-**Authors:** Robinson, Ranjan, Hu, Huang, Han, Dobles, Fey, Lenssen, Das, Sun, Leskovec
+**Authors:** Joshua Robinson, Rishabh Ranjan, Weihua Hu, Kexin Huang, Jiaqi Han, Alejandro Dobles, Matthias Fey, Jan E. Lenssen, Yuan Zhang, Zecheng Zhang, Xinwei He, Jure Leskovec
 **Venue:** NeurIPS 2024 (Datasets & Benchmarks Track)
-**Year:** 2024
 
 ## Summary
 
-Robinson, Ranjan, Hu, Huang, Han, Dobles, Fey, Lenssen, Yuan, Zhang, He, and Leskovec (Stanford / Kumo.AI) present the first comprehensive benchmark for Relational Deep Learning (RDL). Where the [RDL blueprint paper](fey2024rdlposition.md) introduced the framework with a 2-database beta, this paper delivers the full infrastructure: 7 real-world relational databases, 30 predictive tasks, an open-source implementation, a public leaderboard, and the first empirical validation that RDL outperforms the current gold-standard of manual feature engineering.
+- **What:** The RDL blueprint paper shipped only a 2-database beta; no comprehensive benchmark existed to evaluate and compare RDL methods on diverse realistic relational databases.
+- **How:** RelBench provides 7 real-world relational databases, 30 tasks (classification, regression, recommendation), strict temporal splits, an open-source package, and a public leaderboard — with a data scientist baseline for calibration.
+- **So what:** First empirical proof that end-to-end RDL matches or beats expert manual feature engineering across all classification and regression tasks, at 96% fewer human hours and 94% fewer lines of code.
 
-The seven databases span e-commerce (rel-amazon, rel-avito, rel-hm), social platforms (rel-event, rel-stack), sports (rel-f1), and medical (rel-trial), with entity counts ranging from 74K to 41M and time spans from 2 weeks to 55 years. Tasks cover three types: entity classification (AUROC), entity regression (MAE), and recommendation (MAP@K). All datasets use temporal splits — training on rows up to `val_timestamp`, validated up to `test_timestamp`, tested after — with future data strictly hidden at inference time.
+## Challenges & Novelty
 
-The central empirical finding comes from a **data scientist baseline**: an experienced practitioner manually engineered features and trained LightGBM on each task. RDL matches or outperforms this baseline on all classification and regression tasks while requiring **96% fewer human hours** and **94% fewer lines of code**. This is the first demonstration that end-to-end relational deep learning delivers on its core promise. The only notable weak point is recommendation tasks, where the gap between RDL and simple popularity baselines is smaller.
+A benchmark for relational ML must cover database diversity (size, domain, table count), enforce temporal consistency without leakage, support multiple task types, and provide a meaningful human baseline to calibrate progress. No such benchmark existed prior to RelBench — prior GNN benchmarks (OGB, TGB) used homogeneous or simple graph structures, not multi-table relational schemas.
 
-The open-source package is built on PyTorch Frame (multimodal tabular encoding) + PyTorch Geometric (GNN training), and provides database loading, training table construction, temporal data splitting, and standardized evaluation. The design prioritizes research flexibility: shared `val_timestamp`/`test_timestamp` across tasks in the same database explicitly enables multi-task learning and cross-task pretraining experiments.
+- **No realistic multi-table benchmark:** OGB/TGB evaluate on homogeneous or knowledge graphs; no benchmark tested end-to-end learning across PK-FK-linked heterogeneous tables.
+- **Temporal leakage risk:** standard ML practice on time-series data does not generalize to multi-hop relational joins, where a neighbor's row may have been created after the seed time.
+- **Calibrating "good enough":** without a human expert baseline, it's impossible to know whether RDL results are practically useful or just better than a weak strawman.
 
-## Key Takeaways
+## Relation to Prior Work
 
-- **RDL vs. data scientist baseline**: end-to-end RDL matches or beats a human expert who manually feature-engineered + trained LightGBM, on all 30 classification/regression tasks — with 96% fewer human hours and 94% fewer lines of code. First empirical proof of the RDL promise.
-- **7 databases, 30 tasks**: largest relational ML benchmark at publication time; databases vary by 3 orders of magnitude in size (74K–41M entities), cover 5 domains, and range from 3 to 15 tables.
-- **LightGBM single-table baseline**: RDL consistently outperforms single-table LightGBM (only entity features, no cross-table joins); gap narrows for tasks with rich single-table features (e.g., rel-trial study-outcome has 28 columns).
-- **Temporal split discipline**: all datasets use strict temporal splits; data after `test_timestamp` is hidden at inference. Temporal leakage during training is handled by the time-consistent computation graph from [Fey et al. 2024](fey2024rdlposition.md).
-- **Research flexibility by design**: shared timestamps across tasks enable future multi-task learning and pretraining research; raw tables are exposed to allow alternative graph constructions.
+| Benchmark | Graph type | Temporal | Multi-table | Human baseline |
+|---|---|---|---|---|
+| OGB | Homogeneous / KG | No | No | No |
+| TGB | Temporal homogeneous | Yes | No | No |
+| **RelBench v1** | Heterogeneous temporal | Yes | Yes | Yes (data scientist) |
+| [gu2026relbench](gu2026relbench.md) (v2) | Heterogeneous temporal | Yes | Yes | Yes |
+
+- [fey2024rdlposition](fey2024rdlposition.md): this paper is the empirical companion — implements and validates the RDL pipeline defined in the blueprint at scale.
+- [gu2026relbench](gu2026relbench.md): v2 expands to 11 datasets, adds autocomplete tasks, and integrates TGB and 4DBInfer.
+
+## Technical Details
+
+**Databases.** Seven real-world databases across 5 domains: e-commerce (rel-amazon, rel-avito, rel-hm), social (rel-event, rel-stack), sports (rel-f1), medical (rel-trial). Entity counts range from 74K (rel-f1) to 41M (rel-event). Table counts range from 3 to 15.
+
+**Task types.** Three task types, each measured by a standard metric:
+- *Entity classification* — AUROC
+- *Entity regression* — MAE (normalized)
+- *Recommendation* — MAP@K
+
+**Temporal splits.** All datasets use strict temporal splits: train on rows up to `val_timestamp`, validate up to `test_timestamp`, test on rows after. Future data is hidden at inference. The time-consistent computation graph from [fey2024rdlposition](fey2024rdlposition.md) enforces leakage-free neighbor sampling.
+
+**Shared timestamps across tasks.** Tasks within the same database share `val_timestamp`/`test_timestamp`, enabling future multi-task learning and cross-task pretraining experiments.
+
+**Data scientist baseline.** An experienced practitioner manually engineered task-specific temporal aggregations and multi-hop joins for each task, then trained LightGBM — representing the current gold standard in production.
+
+## Experiments
+
+- HeteroGraphSAGE (RDL) matches or outperforms the data scientist LightGBM baseline on all 30 classification and regression tasks with 96% fewer human hours and 94% fewer lines of code.
+- Single-table LightGBM (entity features only, no cross-table joins) is consistently weaker than RDL, gap narrows for tasks with rich single-table features (e.g., rel-trial with 28 columns).
+- Recommendation tasks show a smaller RDL advantage — simple popularity baselines remain competitive, suggesting recommendation over relational graphs is an open problem.
 
 ## Entities & Concepts
 
@@ -40,10 +68,3 @@ The open-source package is built on PyTorch Frame (multimodal tabular encoding) 
 - [relational-entity-graph](relational-entity-graph.md)
 - [training-table](training-table.md)
 - [temporal-graph](temporal-graph.md)
-
-## Relation to Other Wiki Pages
-
-- [fey2024rdlposition](fey2024rdlposition.md): this paper is the empirical companion to the blueprint; it implements and validates the RDL pipeline at scale.
-- [relbench](relbench.md): this paper defines RelBench v1 (7 datasets, 30 tasks); [gu2026relbench](gu2026relbench.md) later expands to 11 datasets + autocomplete tasks.
-- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT is evaluated on 21 tasks from this benchmark, outperforming HeteroGNN by up to 18.43%.
-- [ranjan2025relationaltr](ranjan2025relationaltr.md): RT is pretrained on 6 of the 7 v1 databases (leave-one-out); achieves 93% of supervised AUROC zero-shot.

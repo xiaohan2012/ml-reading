@@ -93,3 +93,4 @@
 - [rdl-motivation-applications](pages/rdl-motivation-applications.md) — Why RDL exists; task types and real-world domains from RelBench _(query 2026-04-29)_
 - [rdl-benchmark](pages/rdl-benchmark.md) — Scale of RDL datasets: RelBench v1/v2, TGB, Griffin pretraining, tabular baselines _(query 2026-04-29)_
 - [rdl-approaches](pages/rdl-approaches.md) — Main RDL approaches: HeteroGraphSAGE / RelGNN / RelGT / Griffin / RT and their tradeoffs _(query 2026-04-29)_
+- [kumorfm2-reading-plan](pages/kumorfm2-reading-plan.md) — 8-paper reading plan for KumoRFM-2 across 3 threads: RDL, Tabular ICL, Graph Transformers _(query 2026-05-06)_

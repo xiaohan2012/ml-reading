@@ -2,7 +2,7 @@
 title: "Graphormer: Do Transformers Really Perform Badly for Graph Representation?"
 tags: [source, graph-transformer, positional-encoding, gnn, expressiveness]
 sources: [ying2021graphormer]
-updated: 2026-04-29
+updated: 2026-05-06
 ---
 
 # Graphormer: Do Transformers Really Perform Badly for Graph Representation?
@@ -11,36 +11,64 @@ updated: 2026-04-29
 **Title:** Do Transformers Really Perform Badly for Graph Representation?
 **Date ingested:** 2026-04-29
 **Type:** paper
-**Authors:** Ying, Cai, Luo, Zheng, Ke, He, Shen, Liu
+**Authors:** Chengxuan Ying, Tianle Cai, Shengjie Luo, Shuxin Zheng, Guolin Ke, Di He, Yanming Shen, Tie-Yan Liu
 **Venue:** NeurIPS 2021
-**Year:** 2021
 
 ## Summary
 
-Graphormer (Ying et al., NeurIPS 2021) answers whether Transformers can match or surpass GNNs on graph tasks with an emphatic yes — by encoding structural information explicitly into three complementary encodings rather than relying on message passing. The paper demonstrates that the standard Transformer fails on graphs primarily because it lacks structural inductive biases, not because attention is fundamentally unsuited to graphs.
+- **What:** Standard Transformers fail on graphs not because attention is unsuitable, but because they lack structural inductive biases — graph topology is invisible to the model.
+- **How:** Graphormer injects three complementary structural encodings (centrality, spatial, edge) as soft biases into standard Transformer attention, without any architectural surgery.
+- **So what:** Graphormer subsumes GCN/GIN/GraphSAGE as special cases, exceeds 1-WL expressiveness, and achieves SOTA on OGB-LSC PCQM4M (11.5% relative MAE improvement over GIN-VN).
 
-The three structural encodings are: (1) **Centrality Encoding** — learnable in/out-degree embeddings added to node features at input; (2) **Spatial Encoding** — a learnable scalar bias `b_{phi(v_i,v_j)}` added to each attention logit, indexed by shortest-path distance `phi(v_i,v_j)` between node pairs; (3) **Edge Encoding** — a bias `c_ij = (1/N) sum_n x_{e_n} · w_n^E` averaged over edge features along the shortest path. Combined, each attention logit becomes: `A_ij = (h_i W_Q)(h_j W_K)^T / sqrt(d) + b_{phi(v_i,v_j)} + c_ij`. A special `[VNode]` is added (connected to all nodes) for graph-level readout, analogous to BERT's `[CLS]` token.
+## Challenges & Novelty
 
-Graphormer provably subsumes GCN, GIN, and GraphSAGE as special cases and can distinguish graphs that 1-WL fails on. It achieves SOTA on OGB-LSC PCQM4M-LSC (quantum chemistry, 3.8M graphs), improving on GIN-VN by 11.5% relative MAE.
+Prior Graph Transformers either required custom architectures or struggled to scale to large molecular datasets. The core problem was not attention itself but the absence of graph-structural signals that GNNs receive implicitly through message passing. Graphormer shows that encoding topology as explicit attention biases is sufficient to unlock Transformer expressiveness on graphs.
 
-## Key Takeaways
+- **No topology in attention:** Standard Transformers treat all nodes as equivalent tokens — no sense of which nodes are neighbors, far apart, or highly connected.
+- **GNNs already encode structure implicitly:** Degree signals (centrality), hop distance (spatial), and edge attributes along paths (edge encoding) are what GNNs actually exploit; Graphormer injects these explicitly.
+- **Scalability gap:** Prior spectral methods (SAN) used full Laplacian eigenvectors — expensive and graph-size-dependent; Graphormer's encodings are all O(N²) or cheaper.
 
-- Three structural encodings (centrality, spatial, edge) inject graph structure as soft biases into standard Transformer attention — no architectural surgery required
-- Full equation: `A_ij = (h_i W_Q)(h_j W_K)^T / sqrt(d) + b_{phi(v_i,v_j)} + c_ij`
-- `b_{phi}` is a shared learnable scalar indexed by SPD; if learned to decrease with distance it recovers locality of GNNs
-- Graphormer covers GCN/GIN/GraphSAGE as special cases; exceeds 1-WL expressiveness
-- OGB-LSC PCQM4M-LSC validate MAE: 0.1234 (Graphormer 47M) vs 0.1395 (GIN-VN, previous SOTA), 11.5% relative improvement
-- No over-smoothing observed — performance keeps improving with depth/width
+## Relation to Prior Work
+
+| Model | PE type | Full attention | Subsumes GNNs |
+|---|---|---|---|
+| GCN / GIN / GraphSAGE | None | No | — |
+| [kreuzer2021san](kreuzer2021san.md) | Full Laplacian spectrum | Yes | No |
+| [rampavsek2022graphgps](rampavsek2022graphgps.md) | RWSE / LapPE | Hybrid | Partially |
+| **Graphormer** | Centrality + Spatial + Edge | Yes | Yes |
+
+- [kreuzer2021san](kreuzer2021san.md): SAN uses full Laplacian spectrum for PE; Graphormer uses SPD-based spatial encoding — cheaper and more directly structural, less theoretically motivated.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS uses MPNN ∥ GlobalAttn with separate PE injection; Graphormer bakes structure directly into attention biases — both achieve global receptive field by different mechanisms.
+- [dwivedi2021graph](dwivedi2021graph.md): earlier GT using k lowest LapPE eigenvectors; Graphormer replaces with SPD-based spatial encoding, more informative and without sign ambiguity.
+
+## Technical Details
+
+Three structural encodings are added to standard Transformer attention:
+
+**1. Centrality Encoding** — learnable in/out-degree embeddings added to node features at input:
+$$h_v^{(0)} = x_v + z_{\deg^-(v)}^- + z_{\deg^+(v)}^+$$
+
+**2. Spatial Encoding** — learnable scalar bias added per attention logit, indexed by shortest-path distance $\phi(v_i, v_j)$:
+$$A_{ij} = \frac{(h_i W_Q)(h_j W_K)^\top}{\sqrt{d}} + b_{\phi(v_i,v_j)}$$
+
+**3. Edge Encoding** — bias from edge features along the shortest path between $i$ and $j$:
+$$c_{ij} = \frac{1}{N}\sum_{n=1}^N x_{e_n} \cdot w_n^E$$
+
+Combined attention logit:
+$$A_{ij} = \frac{(h_i W_Q)(h_j W_K)^\top}{\sqrt{d}} + b_{\phi(v_i,v_j)} + c_{ij}$$
+
+A special `[VNode]` (virtual node connected to all nodes) is added for graph-level readout, analogous to BERT's `[CLS]` token.
+
+If $b_\phi$ is learned to decrease with distance, the model recovers locality of GNNs. Graphormer provably subsumes GCN, GIN, and GraphSAGE as special cases and can distinguish graphs that 1-WL fails on.
+
+## Experiments
+
+- Achieves SOTA on OGB-LSC PCQM4M-LSC: validate MAE 0.1234 (Graphormer 47M params) vs 0.1395 (GIN-VN), an 11.5% relative improvement.
+- No over-smoothing observed — performance keeps improving with depth and width, unlike standard GNNs.
+- Spatial encoding ($b_\phi$) alone accounts for the largest single gain in ablations.
 
 ## Entities & Concepts
 
-- [graph-transformer](graph-transformer.md) — Graphormer is a major GT baseline alongside GraphGPS
-- [positional-encoding](positional-encoding.md) — Spatial encoding via SPD; centrality encoding via degree
-- [graph-neural-network](graph-neural-network.md) — Graphormer subsumes GCN/GIN/GraphSAGE as special cases
-
-## Relation to Other Wiki Pages
-
-- vs. [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS uses MPNN ∥ GlobalAttn with separate PE injection; Graphormer bakes structure directly into attention biases. Both achieve global receptive field but by different mechanisms.
-- vs. [dwivedi2021graph](dwivedi2021graph.md): Dwivedi & Bresson's GT uses LapPE; Graphormer uses SPD-based spatial encoding — more structurally informative and no sign ambiguity.
-- vs. [kreuzer2021san](kreuzer2021san.md): SAN uses full Laplacian spectrum as LPE; Graphormer uses shortest-path distance. SAN focuses on theoretical expressiveness; Graphormer focuses on practical SOTA performance.
-- vs. [xu2019gin](xu2019gin.md): GIN's sum aggregation achieves 1-WL; Graphormer exceeds 1-WL via spatial attention across all node pairs.
+- [graph-transformer](graph-transformer.md)
+- [positional-encoding](positional-encoding.md)
+- [graph-neural-network](graph-neural-network.md)
