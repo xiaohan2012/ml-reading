@@ -44,34 +44,40 @@ NLP Transformers use sinusoidal PE for sequence position — but graphs have no 
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md): HGT references this GT as its homogeneous counterpart; extends meta-relation triplet idea to handle multiple node/edge types.
 
 ![[Pasted image 20260507084511.png]]
+
 ## Technical Details
-**GT layer (sparse attention with edge features).**
 
-Attention scores for edge $(i, j) \in \mathcal{E}$:
+**Input embedding.** Raw node features $\alpha_i \in \mathbb{R}^{d_n}$ and edge features $\beta_{ij} \in \mathbb{R}^{d_e}$ are linearly projected to $d$-dimensional hidden vectors:
 
-$$\hat{w}_{ij} = \frac{Q_i K_j^T}{\sqrt{d_k}} \cdot E \mathbf{e}_{ij}$$
+$$\hat{h}_i^0 = A^0 \alpha_i + a^0, \qquad e_{ij}^0 = B^0 \beta_{ij} + b^0$$
 
-$$w_{ij} = \frac{\exp(\hat{w}_{ij})}{\sum_{k \in \mathcal{N}_i} \exp(\hat{w}_{ik})}$$
+Pre-computed LapPE vectors $\lambda_i \in \mathbb{R}^k$ (the $k$ smallest non-trivial eigenvectors of the normalized graph Laplacian $L = I - D^{-1/2}AD^{-1/2}$) are linearly projected and **added to node features at the input layer only**:
 
-Node update:
+$$\lambda_i^0 = C^0 \lambda_i + c^0, \qquad h_i^0 = \hat{h}_i^0 + \lambda_i^0$$
 
-$$\mathbf{h}'_i = \text{FFN}\!\left(O\!\left(\sum_{j \in \mathcal{N}_i} w_{ij} V_j\right)\right)$$
+Sign ambiguity of eigenvectors is handled by random sign-flipping during training.
 
-Edge update (residual):
+**Graph Transformer Layer (node-only).** Multi-head sparse attention restricted to 1-hop neighborhood $\mathcal{N}_i$, followed by residual connections and Norm (BatchNorm preferred over LayerNorm) + FFN:
 
-$$\mathbf{e}'_{ij} = \text{FFN}(\mathbf{e}_{ij} + w_{ij} \cdot \mathbf{1})$$
+$$\hat{h}_i^{\ell+1} = O_h^\ell \Big\|_{k=1}^{H} \!\left(\sum_{j \in \mathcal{N}_i} w_{ij}^{k,\ell}\, V^{k,\ell} h_j^\ell\right), \qquad w_{ij}^{k,\ell} = \operatorname{softmax}_j\!\left(\frac{Q^{k,\ell} h_i^\ell \cdot K^{k,\ell} h_j^\ell}{\sqrt{d_k}}\right)$$
 
-**LapPE.** Compute the $k$ smallest non-trivial eigenvectors of the normalized graph Laplacian $L_\text{sym} = I - D^{-1/2}AD^{-1/2}$:
+$$\hat{\hat{h}}_i^{\ell+1} = \operatorname{Norm}(h_i^\ell + \hat{h}_i^{\ell+1}), \qquad h_i^{\ell+1} = \operatorname{Norm}\!\left(\hat{\hat{h}}_i^{\ell+1} + W_2^\ell \operatorname{ReLU}(W_1^\ell \hat{\hat{h}}_i^{\ell+1})\right)$$
 
-$$L_\text{sym} \phi_i = \lambda_i \phi_i, \quad 0 \leq \lambda_1 \leq \cdots \leq \lambda_k$$
+Softmax logits are clamped to $[-5, +5]$ for numerical stability.
 
-LapPE of node $v$: $\text{PE}(v) = [\phi_1(v), \ldots, \phi_k(v)] \in \mathbb{R}^k$. Concatenated with node features as input. Sign ambiguity: randomly flip the sign of each eigenvector during training (augmentation) — SignNet later resolves this rigorously.
+**Graph Transformer Layer with edge features.** For each head $k$, the raw attention score is a **$d_k$-dimensional vector** formed by element-wise product of the projected query and key:
 
-**Four modifications from vanilla Transformer:**
-1. Sparse neighborhood attention (not full all-pairs)
-2. LapPE input encoding
-3. BatchNorm instead of LayerNorm (faster convergence on graph tasks)
-4. Edge features injected into attention score computation
+$$\mathbf{a}_{ij}^{k,\ell} = \frac{Q^{k,\ell} h_i^\ell \odot K^{k,\ell} h_j^\ell}{\sqrt{d_k}} \in \mathbb{R}^{d_k}$$
+
+The scalar attention weight is then the **dot product** of this vector with a projected edge embedding $E^{k,\ell} e_{ij}^\ell \in \mathbb{R}^{d_k}$:
+
+$$\hat{w}_{ij}^{k,\ell} = \mathbf{a}_{ij}^{k,\ell} \cdot E^{k,\ell} e_{ij}^\ell, \qquad w_{ij}^{k,\ell} = \operatorname{softmax}_j\!\left(\hat{w}_{ij}^{k,\ell}\right)$$
+
+Edge embeddings are **contextualized**: at $\ell = 0$ they come from raw features ($e_{ij}^0 = B^0\beta_{ij} + b^0$), but at $\ell > 0$ they are derived from the attention scalars of the previous layer — the $H$ per-head scalars $\{\hat{w}_{ij}^{k,\ell-1}\}_{k=1}^H$ are concatenated into an $H$-vector and projected:
+
+$$\hat{e}_{ij}^{\ell} = O_e^{\ell-1} \Big\|_{k=1}^{H} \hat{w}_{ij}^{k,\ell-1}$$
+
+This then passes through its own residual + Norm + FFN block, yielding updated $e_{ij}^{\ell}$ for use in the current layer's attention computation.
 
 ## Experiments
 
