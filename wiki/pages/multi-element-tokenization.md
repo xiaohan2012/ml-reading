@@ -1,7 +1,7 @@
 ---
 title: Multi-Element Tokenization
 tags: [concept, tokenization, graph-transformer, relational-deep-learning]
-sources: [relational-graph-transformer]
+sources: [dwivedi2025relgt]
 updated: 2026-04-28
 ---
 
@@ -9,7 +9,7 @@ updated: 2026-04-28
 
 ## Description
 
-Multi-element tokenization is [RelGT](relational-graph-transformer.md)'s approach to converting nodes in a [Relational Entity Graph](relational-entity-graph.md) into tokens for a Transformer. Standard GTs use a 2-element representation (node features + a single positional encoding). RelGT instead uses a **5-element token** that explicitly decouples different properties of relational data:
+Multi-element tokenization is [RelGT](dwivedi2025relgt.md)'s approach to converting nodes in a [Relational Entity Graph](relational-entity-graph.md) into tokens for a Transformer. Standard GTs use a 2-element representation (node features + a single positional encoding). RelGT instead uses a **5-element token** that explicitly decouples different properties of relational data:
 
 | Element | What it captures | Encoder |
 |---|---|---|
@@ -32,7 +32,7 @@ The five encodings are each projected to $\mathbb{R}^d$, concatenated to $\mathb
 
 ## Appearances in Sources
 
-- [relational-graph-transformer](relational-graph-transformer.md) — core contribution; described in Section 3.1
+- [dwivedi2025relgt](dwivedi2025relgt.md) — core contribution; described in Section 3.1
 
 ## Related Concepts
 

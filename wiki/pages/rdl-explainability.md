@@ -1,13 +1,13 @@
 ---
 title: "Explainability in Relational Deep Learning"
 tags: [query, analysis, relational-deep-learning, explainability]
-sources: [kumorfm-1, kumorfm-2]
+sources: [fey2025kumorfm, fey2025kumorfm2]
 updated: 2026-04-29
 ---
 
 # Explainability in Relational Deep Learning
 
-The only RDL papers in the wiki with explicit explainability methods are [kumorfm-1](kumorfm-1.md) and [kumorfm-2](kumorfm-2.md). No other ingested papers address explainability. See **Gaps** section below.
+The only RDL papers in the wiki with explicit explainability methods are [fey2025kumorfm](fey2025kumorfm.md) and [fey2025kumorfm2](fey2025kumorfm2.md). No other ingested papers address explainability. See **Gaps** section below.
 
 ## KumoRFM Explainability (Two Levels)
 
@@ -48,7 +48,7 @@ Alongside explanations, KumoRFM provides a quantitative evaluation mode to build
 
 ## KumoRFM-2
 
-[kumorfm-2](kumorfm-2.md) states that the system "incorporates mechanisms for explainability, offering insights into the reasoning processes that lead to its predictions" but provides no new technical details beyond v1. The same two-level approach is assumed to carry over.
+[fey2025kumorfm2](fey2025kumorfm2.md) states that the system "incorporates mechanisms for explainability, offering insights into the reasoning processes that lead to its predictions" but provides no new technical details beyond v1. The same two-level approach is assumed to carry over.
 
 ## Gaps
 
@@ -59,7 +59,7 @@ Alongside explanations, KumoRFM provides a quantitative evaluation mode to build
 
 ## Related Pages
 
-- [kumorfm-1](kumorfm-1.md) — source of all explainability technical detail
-- [kumorfm-2](kumorfm-2.md) — mentions explainability as a system feature
+- [fey2025kumorfm](fey2025kumorfm.md) — source of all explainability technical detail
+- [fey2025kumorfm2](fey2025kumorfm2.md) — mentions explainability as a system feature
 - [relational-foundation-model](relational-foundation-model.md) — broader RFM context
 - [rdl-approaches](rdl-approaches.md) — other RDL methods (none address explainability)

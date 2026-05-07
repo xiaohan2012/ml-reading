@@ -1,7 +1,7 @@
 ---
 title: RelBench
 tags: [entity, benchmark, relational-deep-learning]
-sources: [relational-deep-learning-position, relbench-v1, relational-graph-transformer, relbench-v2, relational-transformer, relgnn, griffin]
+sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, gu2026relbench, ranjan2025relationaltr, chen2025relgnn, wang2025griffin]
 updated: 2026-04-29
 ---
 
@@ -9,7 +9,7 @@ updated: 2026-04-29
 
 ## Description
 
-RelBench (Robinson et al., 2025) is the standard benchmark for [Relational Deep Learning](relational-deep-learning.md). **RelBench v1** comprised 7 datasets and 30 prediction tasks (entity classification, entity regression, recommendation). **[RelBench v2](relbench-v2.md)** expands to 11 datasets, 29 tables, 22M+ rows, and adds autocomplete tasks and external benchmark integrations.
+RelBench (Robinson et al., 2025) is the standard benchmark for [Relational Deep Learning](relational-deep-learning.md). **RelBench v1** comprised 7 datasets and 30 prediction tasks (entity classification, entity regression, recommendation). **[RelBench v2](gu2026relbench.md)** expands to 11 datasets, 29 tables, 22M+ rows, and adds autocomplete tasks and external benchmark integrations.
 
 ### v1 Datasets (7)
 - `rel-amazon`: Amazon product/user/review data
@@ -39,13 +39,13 @@ The standard RDL pipeline uses HeteroGraphSAGE + temporal-aware neighbor samplin
 
 ## Appearances in Sources
 
-- [relational-deep-learning-position](relational-deep-learning-position.md) — beta release (2 databases, 4 tasks) accompanying the RDL blueprint paper
-- [relbench-v1](relbench-v1.md) — defines v1: 7 databases, 30 tasks, data scientist baseline, open-source implementation
-- [relational-graph-transformer](relational-graph-transformer.md) — evaluated on 21 v1 tasks; RelGT outperforms HeteroGNN on 10/21
-- [relbench-v2](relbench-v2.md) — v2 expansion paper
-- [relational-transformer](relational-transformer.md) — RT pretrained on 6/7 v1 databases (leave-one-out); strong zero-shot on forecasting tasks
-- [relgnn](relgnn.md) — evaluated on all 30 v1 tasks; SOTA on 27/30 with up to 25% improvement
-- [griffin](griffin.md) — evaluated on RelBench v1 and 4DBInfer; Griffin-RDB-SFT most beneficial in low-data regimes
+- [fey2024rdlposition](fey2024rdlposition.md) — beta release (2 databases, 4 tasks) accompanying the RDL blueprint paper
+- [robinson2024relbench](robinson2024relbench.md) — defines v1: 7 databases, 30 tasks, data scientist baseline, open-source implementation
+- [dwivedi2025relgt](dwivedi2025relgt.md) — evaluated on 21 v1 tasks; RelGT outperforms HeteroGNN on 10/21
+- [gu2026relbench](gu2026relbench.md) — v2 expansion paper
+- [ranjan2025relationaltr](ranjan2025relationaltr.md) — RT pretrained on 6/7 v1 databases (leave-one-out); strong zero-shot on forecasting tasks
+- [chen2025relgnn](chen2025relgnn.md) — evaluated on all 30 v1 tasks; SOTA on 27/30 with up to 25% improvement
+- [wang2025griffin](wang2025griffin.md) — evaluated on RelBench v1 and 4DBInfer; Griffin-RDB-SFT most beneficial in low-data regimes
 
 ## Related Concepts
 

@@ -1,7 +1,7 @@
 ---
 title: Relational Deep Learning (RDL)
 tags: [concept, relational-deep-learning, gnn, database]
-sources: [relational-deep-learning-position, relbench-v1, relational-graph-transformer, relbench-v2, relational-transformer, relgnn, griffin, cvitkovic2020]
+sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, gu2026relbench, ranjan2025relationaltr, chen2025relgnn, wang2025griffin, cvitkovic2020rdb]
 updated: 2026-04-29
 ---
 
@@ -18,9 +18,9 @@ Relational Deep Learning is an end-to-end learning framework that converts multi
 **Task types**: entity classification, entity regression, recommendation (forecasting tasks); and [autocomplete tasks](autocomplete-tasks.md) (predict missing attribute values in existing columns — introduced in RelBench v2).
 
 **Architecture landscape** (as of 2026):
-- *Supervised GNNs*: HeteroGraphSAGE (baseline), [RelGNN](relgnn.md) (composite message passing, SOTA 27/30 RelBench tasks), ContextGNN (recommendation)
-- *Graph Transformers*: [RelGT](relational-graph-transformer.md) — 5-element tokenization, schema-specific, best supervised results
-- *Foundation models*: [Relational Transformer (RT)](relational-transformer.md) — cell-level tokenization, schema-agnostic, zero-shot generalization; [Griffin](griffin.md) — GNN + unified tabular encoders, pretrained across 150M+ nodes
+- *Supervised GNNs*: HeteroGraphSAGE (baseline), [RelGNN](chen2025relgnn.md) (composite message passing, SOTA 27/30 RelBench tasks), ContextGNN (recommendation)
+- *Graph Transformers*: [RelGT](dwivedi2025relgt.md) — 5-element tokenization, schema-specific, best supervised results
+- *Foundation models*: [Relational Transformer (RT)](ranjan2025relationaltr.md) — cell-level tokenization, schema-agnostic, zero-shot generalization; [Griffin](wang2025griffin.md) — GNN + unified tabular encoders, pretrained across 150M+ nodes
 
 
 **Key insight from the literature**: the relational structure (multi-table, primary-foreign key links) consistently outperforms single-table baselines (LightGBM) across all task types, justifying the RDL paradigm.
@@ -29,14 +29,14 @@ The field is moving toward [Relational Foundation Models](relational-foundation-
 
 ## Appearances in Sources
 
-- [relational-deep-learning-position](relational-deep-learning-position.md) — founding blueprint; defines REG, Training Table, temporal neighbor sampling, GNN-as-SQL insight
-- [relbench-v1](relbench-v1.md) — empirical validation at scale; 7 databases, 30 tasks, data scientist comparison
-- [relational-graph-transformer](relational-graph-transformer.md) — RelGT as a GT solution within the RDL framework
-- [relbench-v2](relbench-v2.md) — benchmark expansion; confirms RDL outperforms single-table baselines across all new task types
-- [relational-transformer](relational-transformer.md) — RT as a foundation model approach to RDL
-- [relgnn](relgnn.md) — RelGNN: bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks
-- [griffin](griffin.md) — Griffin: first pretrained foundation model for RDBs; unified text+float encoders + hierarchical aggregation
-- [cvitkovic2020](cvitkovic2020.md) — Cvitkovic (2020): first paper to frame RDB supervised learning as a GNN node classification problem; RDBToGraph algorithm; precursor to RDL blueprint
+- [fey2024rdlposition](fey2024rdlposition.md) — founding blueprint; defines REG, Training Table, temporal neighbor sampling, GNN-as-SQL insight
+- [robinson2024relbench](robinson2024relbench.md) — empirical validation at scale; 7 databases, 30 tasks, data scientist comparison
+- [dwivedi2025relgt](dwivedi2025relgt.md) — RelGT as a GT solution within the RDL framework
+- [gu2026relbench](gu2026relbench.md) — benchmark expansion; confirms RDL outperforms single-table baselines across all new task types
+- [ranjan2025relationaltr](ranjan2025relationaltr.md) — RT as a foundation model approach to RDL
+- [chen2025relgnn](chen2025relgnn.md) — RelGNN: bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks
+- [wang2025griffin](wang2025griffin.md) — Griffin: first pretrained foundation model for RDBs; unified text+float encoders + hierarchical aggregation
+- [cvitkovic2020rdb](cvitkovic2020rdb.md) — Cvitkovic (2020): first paper to frame RDB supervised learning as a GNN node classification problem; RDBToGraph algorithm; precursor to RDL blueprint
 
 ## Related Concepts
 

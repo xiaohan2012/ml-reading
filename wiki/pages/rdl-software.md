@@ -1,7 +1,7 @@
 ---
 title: "Open-Source RDL Software"
 tags: [query, analysis, relational-deep-learning, software]
-sources: [relbench-v1, relbench-v2, tgm-temporal-graph-modelling, relational-deep-learning-position, kumorfm-2]
+sources: [robinson2024relbench, gu2026relbench, chmura2026tgm, fey2024rdlposition, fey2025kumorfm2]
 updated: 2026-04-29
 ---
 
@@ -9,7 +9,7 @@ updated: 2026-04-29
 
 ## 1. RelBench — Core Research Scaffold
 
-**`pip install relbench`** | [relbench-v1](relbench-v1.md), [relbench-v2](relbench-v2.md)
+**`pip install relbench`** | [robinson2024relbench](robinson2024relbench.md), [gu2026relbench](gu2026relbench.md)
 
 Built on PyTorch Frame (multi-modal tabular encoding) + PyTorch Geometric (GNN training). Provides:
 - Database loading (7 → 11 real-world DBs across e-commerce, social, medical, academic, enterprise domains)
@@ -22,7 +22,7 @@ Data scientist baseline notebooks (878 LoC per task) available at `github.com/sn
 
 ## 2. TGM — Temporal Graph Library
 
-**Open-source** | [tgm-temporal-graph-modelling](tgm-temporal-graph-modelling.md)
+**Open-source** | [chmura2026tgm](chmura2026tgm.md)
 
 The only library unifying CTDG and DTDG under a single framework. Treats both paradigms as different iteration strategies over the same event stream. Supports:
 - CTDG models: TGAT, TGN, DyGFormer, TPNet (SOTA on TGB as of Sep 2025)
@@ -34,7 +34,7 @@ The only library unifying CTDG and DTDG under a single framework. Treats both pa
 
 ## 3. PyTorch Frame — Multi-Modal Tabular Encoding
 
-Referenced by [relational-deep-learning-position](relational-deep-learning-position.md) and [relbench-v1](relbench-v1.md) as the node encoder backbone. Handles: numerical, categorical, multi-categorical, text (sentence-BERT), image, timestamp, and embedding columns — the layer that converts heterogeneous table rows into initial node embeddings for downstream GNNs.
+Referenced by [fey2024rdlposition](fey2024rdlposition.md) and [robinson2024relbench](robinson2024relbench.md) as the node encoder backbone. Handles: numerical, categorical, multi-categorical, text (sentence-BERT), image, timestamp, and embedding columns — the layer that converts heterogeneous table rows into initial node embeddings for downstream GNNs.
 
 ## 4. PyTorch Geometric (PyG) — GNN Training
 
@@ -42,7 +42,7 @@ The underlying GNN framework all RDL papers build on. RelGNN, HeteroGraphSAGE, H
 
 ## 5. KumoRFM Python SDK
 
-**`kumorfm.ai`** (commercial, publicly accessible) | [kumorfm-1](kumorfm-1.md), [kumorfm-2](kumorfm-2.md)
+**`kumorfm.ai`** (commercial, publicly accessible) | [fey2025kumorfm](fey2025kumorfm.md), [fey2025kumorfm2](fey2025kumorfm2.md)
 
 End-to-end RFM system with SQL database connectors and a memory-mapped graph engine for billion-scale datasets. Benchmark scripts at `github.com/kumo-ai/kumo-rfm`. LLM agent integration skills at `github.com/kumo-ai/kumo-coding-agent`.
 
@@ -50,11 +50,11 @@ End-to-end RFM system with SQL database connectors and a memory-mapped graph eng
 
 | Tool | Role | Key Feature | Source |
 |---|---|---|---|
-| RelBench | Benchmark + data pipeline | 11 DBs, 30+ tasks, temporal splits, leaderboard | [relbench-v1](relbench-v1.md), [relbench-v2](relbench-v2.md) |
-| TGM | Temporal graph training | CTDG+DTDG unified, 7.8× faster than DyGLib | [tgm-temporal-graph-modelling](tgm-temporal-graph-modelling.md) |
-| PyTorch Frame | Multi-modal node encoding | Handles text/image/numerical/categorical cells | [relational-deep-learning-position](relational-deep-learning-position.md) |
-| PyTorch Geometric | GNN backbone | HeteroData, relation-typed message passing | [relational-deep-learning-position](relational-deep-learning-position.md) |
-| KumoRFM SDK | End-to-end RFM system | PQL interface, SQL connectors, billion-scale | [kumorfm-2](kumorfm-2.md) |
+| RelBench | Benchmark + data pipeline | 11 DBs, 30+ tasks, temporal splits, leaderboard | [robinson2024relbench](robinson2024relbench.md), [gu2026relbench](gu2026relbench.md) |
+| TGM | Temporal graph training | CTDG+DTDG unified, 7.8× faster than DyGLib | [chmura2026tgm](chmura2026tgm.md) |
+| PyTorch Frame | Multi-modal node encoding | Handles text/image/numerical/categorical cells | [fey2024rdlposition](fey2024rdlposition.md) |
+| PyTorch Geometric | GNN backbone | HeteroData, relation-typed message passing | [fey2024rdlposition](fey2024rdlposition.md) |
+| KumoRFM SDK | End-to-end RFM system | PQL interface, SQL connectors, billion-scale | [fey2025kumorfm2](fey2025kumorfm2.md) |
 
 ## Gaps Not Covered by Wiki
 

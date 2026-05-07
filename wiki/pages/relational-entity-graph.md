@@ -1,7 +1,7 @@
 ---
 title: Relational Entity Graph (REG)
 tags: [concept, relational-deep-learning, heterogeneous-graph, temporal-graph]
-sources: [relational-deep-learning-position, relational-graph-transformer, relgnn, griffin]
+sources: [fey2024rdlposition, dwivedi2025relgt, chen2025relgnn, wang2025griffin]
 updated: 2026-04-29
 ---
 
@@ -26,11 +26,11 @@ These properties rule out most standard positional encodings (Laplacian, random 
 
 ## Appearances in Sources
 
-- [relational-deep-learning-position](relational-deep-learning-position.md) — formally defined (Sec. 3.2); introduces $\phi$, $\psi$, $\tau$ mappings and the time-consistent computation graph algorithm
-- [relational-graph-transformer](relational-graph-transformer.md) — defined as the problem domain; RelGT's tokenization is designed around REG's three properties
-- [relational-transformer](relational-transformer.md) — RT operates at cell level on the same relational structure; primary-foreign key links are encoded as attention masks
-- [relgnn](relgnn.md) — first structural characterization of REG topology: bridge nodes (2 FKs) and hub nodes (3+ FKs); atomic routes as schema-derived paths
-- [griffin](griffin.md) — converts RDB to heterogeneous temporal graph; converts rows to nodes with cross-attention over cell features
+- [fey2024rdlposition](fey2024rdlposition.md) — formally defined (Sec. 3.2); introduces $\phi$, $\psi$, $\tau$ mappings and the time-consistent computation graph algorithm
+- [dwivedi2025relgt](dwivedi2025relgt.md) — defined as the problem domain; RelGT's tokenization is designed around REG's three properties
+- [ranjan2025relationaltr](ranjan2025relationaltr.md) — RT operates at cell level on the same relational structure; primary-foreign key links are encoded as attention masks
+- [chen2025relgnn](chen2025relgnn.md) — first structural characterization of REG topology: bridge nodes (2 FKs) and hub nodes (3+ FKs); atomic routes as schema-derived paths
+- [wang2025griffin](wang2025griffin.md) — converts RDB to heterogeneous temporal graph; converts rows to nodes with cross-attention over cell features
 
 ## Related Concepts
 

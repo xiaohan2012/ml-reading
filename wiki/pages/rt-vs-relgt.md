@@ -1,7 +1,7 @@
 ---
 title: "RT vs. RelGT: Relational Transformer vs. Relational Graph Transformer"
 tags: [query, analysis, relational-deep-learning, graph-transformer, foundation-model]
-sources: [relational-transformer, relational-graph-transformer]
+sources: [ranjan2025relationaltr, dwivedi2025relgt]
 updated: 2026-04-29
 ---
 
@@ -9,7 +9,7 @@ updated: 2026-04-29
 
 ## Comparison Table
 
-| Dimension | [RelGT](relational-graph-transformer.md) | [RT](relational-transformer.md) |
+| Dimension | [RelGT](dwivedi2025relgt.md) | [RT](ranjan2025relationaltr.md) |
 |---|---|---|
 | **Granularity** | Row-level tokens (one token per table row/entity) | Cell-level tokens (one token per `(value, column, table)` triple) |
 | **Positional encodings** | Rich 5-element tokenization: node type + hop distance + relative time + subgraph GNN PE | None — deliberately omitted for permutation invariance |
@@ -40,8 +40,8 @@ Can RT's zero-shot approach match RelGT's supervised performance after fine-tuni
 
 ## Related Concepts
 
-- [relational-transformer](relational-transformer.md) — RT source page
-- [relational-graph-transformer](relational-graph-transformer.md) — RelGT source page
+- [ranjan2025relationaltr](ranjan2025relationaltr.md) — RT source page
+- [dwivedi2025relgt](dwivedi2025relgt.md) — RelGT source page
 - [relational-deep-learning](relational-deep-learning.md) — the shared problem setting
 - [relational-foundation-model](relational-foundation-model.md) — RT is the current best zero-shot approach
 - [multi-element-tokenization](multi-element-tokenization.md) — RelGT's 5-element tokenization scheme

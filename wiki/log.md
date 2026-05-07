@@ -5,6 +5,35 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-06] ingest | Predictive Query Language (PQL)
+Pages written: kocijan2026pql
+Pages updated: training-table, index
+
+## [2026-05-06] ingest | Batch rewrite: 6 KumoRFM-2 reading plan predecessors
+Pages updated: fey2024rdlposition, robinson2024relbench, hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, fey2025kumorfm
+
+## [2026-05-06] query | KumoRFM-2 predecessor papers and reading plan
+Filed as: [kumorfm2-reading-plan](pages/kumorfm2-reading-plan.md)
+
+## [2026-05-06] ingest | KumoRFM-2: Scaling Foundation Models for Relational Learning
+Pages written: fey2025kumorfm2
+Pages updated: (index already current)
+
+## [2026-05-06] query | How GraphGPS, Gophormer, NAGphormer relate
+Filed as: [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md)
+
+## [2026-05-06] query | Linear transformer and mathematical form
+Filed as: [linear-transformer](pages/linear-transformer.md)
+
+## [2026-05-06] query | GraphGPS PE/SE taxonomy
+Filed as: [position-structural-embedding](pages/position-structural-embedding.md)
+
+## [2026-05-04] query | Reading plan: Graph Transformers & RelGT
+Filed as: [relgt-reading-plan](pages/relgt-reading-plan.md)
+
+## [2026-05-04] query | RelGT intellectual lineage
+Filed as: [relgt-lineage](pages/relgt-lineage.md)
+
 ## [2026-04-28] init | ML reading and research (GNN & Interpretability)
 
 ## [2026-04-28] ingest | Relational Graph Transformer
@@ -19,7 +48,7 @@ Entity/concept pages created: temporal-graph
 
 ## [2026-04-28] ingest | Relational Transformer: Toward Zero-Shot Foundation Models for Relational Data
 Pages written: relational-transformer
-Pages updated: graph-transformer, relational-deep-learning, relational-entity-graph, relational-graph-transformer, relbench, index, overview, log
+Pages updated: graph-transformer, relational-deep-learning, relational-entity-graph, dwivedi2025relgt, relbench, index, overview, log
 Entity/concept pages created: relational-attention, relational-foundation-model
 
 ## [2026-04-28] ingest | RelBench v2: A Large-Scale Benchmark and Repository for Relational Data
@@ -45,7 +74,7 @@ Pages written: griffin
 Pages updated: relational-deep-learning, relational-entity-graph, relbench, relational-foundation-model, index, overview, log
 
 ## [2026-04-29] ingest | GraphGPS: Recipe for a General, Powerful, Scalable Graph Transformer (NeurIPS 2022)
-Pages written: graphgps, positional-encoding
+Pages written: rampavsek2022graphgps, positional-encoding
 Pages updated: graph-transformer, index, overview, log
 
 ## [2026-04-29] ingest | Heterogeneous Graph Transformer (WWW 2020)
@@ -53,7 +82,7 @@ Pages written: hgt
 Pages updated: heterogeneous-graph-transformer, index, log
 
 ## [2026-04-29] ingest | A Generalization of Transformer Networks to Graphs (AAAI 2021)
-Pages written: generalization-transformer-graphs
+Pages written: dwivedi2021gt
 Pages updated: graph-transformer, positional-encoding (via backlink), index, log
 
 ## [2026-04-29] ingest | GCN: Semi-Supervised Classification with Graph Convolutional Networks (ICLR 2017)
@@ -183,3 +212,101 @@ Filed as: rdl-bioinformatics
 ## [2026-04-30] ingest | Towards Mechanistic Interpretability of Graph Transformers via Attention Graphs
 Pages written: attention-graphs-gt-interpretability
 Pages updated: graph-transformer, index, log
+## [2026-05-04] ingest | Benchmarking Graph Neural Networks (Dwivedi et al. 2020)
+Pages written: dwivedi2020benchmarking
+Pages updated: positional-encoding, graph-transformer, kreuzer2021san, dwivedi2021gt, subgraph-gnn-pe, index
+
+## [2026-05-04] ingest | GraphiT: Encoding Graph Structure in Transformers (Mialon et al. 2021)
+Pages written: mialon2021graphit
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | TokenGT: Pure Transformers are Powerful Graph Learners (Kim et al. NeurIPS 2022)
+Pages written: kim2022pure
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | On the Bottleneck of GNNs (Alon & Yahav, ICLR 2021)
+Pages written: alon2020bottleneck
+Pages updated: graph-neural-network, index
+
+## [2026-05-04] ingest | LSPE: GNNs with Learnable Structural and Positional Representations (Dwivedi et al. ICLR 2022)
+Pages written: dwivedi2022lspe
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | SignNet/BasisNet: Sign and Basis Invariant Networks for Spectral Graph Representation Learning (Lim et al. ICLR 2022)
+Pages written: lim2022signnet
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | SPE: On the Stability of Expressive Positional Encodings for Graphs (Huang et al. ICLR 2024)
+Pages written: huang2024stability
+Pages updated: positional-encoding, index
+
+## [2026-05-04] ingest | PEARL: Learning Efficient Positional Encodings with GNNs (Kanatsoulis et al. ICLR 2025)
+Pages written: kanatsoulis2025pearl
+Pages updated: positional-encoding, subgraph-gnn-pe, index
+
+## [2026-05-04] ingest | Exphormer: Sparse Transformers for Graphs (Shirzad et al. ICML 2023)
+Pages written: shirzad2023exphormer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Hierarchical Graph Transformer with Adaptive Node Sampling (Zhang et al. NeurIPS 2022)
+Pages written: zhang2022hierarchical
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Hierarchical Transformer for Scalable Graph Learning (Zhu et al. 2023)
+Pages written: zhu2023hierarchical
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Gophormer: Ego-Graph Transformer for Node Classification (Zhao et al. 2021)
+Pages written: zhao2021gophormer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | NAGphormer: Tokenized Graph Transformer for Large Graphs (Chen et al. ICLR 2023)
+Pages written: chen2022nagphormer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | Graph Transformers for Large Graphs (Dwivedi et al. 2023)
+Pages written: dwivedi2023largegraphs
+Pages updated: index
+
+## [2026-05-04] ingest | SGFormer: Simplifying and Empowering Transformers for Large Graphs (Wu et al. NeurIPS 2023)
+Pages written: wu2023sgformer
+Pages updated: graph-transformer, index
+
+## [2026-05-04] ingest | HINormer: Representation Learning on HINs with GT (Mao et al. WWW 2023)
+Pages written: mao2023hinormer
+Pages updated: index
+
+## [2026-05-04] ingest | HHGT: Hierarchical Heterogeneous Graph Transformer (Zhu et al. CIKM 2024)
+Pages written: zhu2025hhgt
+Pages updated: index
+
+## [2026-05-04] ingest | Attending to Graph Transformers: survey + taxonomy (Müller et al. 2023)
+Pages written: muller2023attending
+Pages updated: index
+
+## [2026-05-04] ingest | GPSE: Graph Positional and Structural Encoder (Cantürk et al. 2023)
+Pages written: canturk2023graph
+Pages updated: positional-encoding, index
+
+
+## [2026-05-06] ingest | Relational Graph Transformer (re-ingest with v1.1.0 template)
+Pages written: dwivedi2025relgt (rewritten)
+Pages updated: assets/dwivedi2025relgt-model.pdf, assets/dwivedi2025relgt-tokenization.pdf
+
+## [2026-05-06] ingest | Heterogeneous Graph Transformer (HGT) — rewrite with v1.1.0 template
+Pages written: hu2020hgt (rewritten)
+Pages updated: none
+
+## [2026-05-06] ingest | Batch rewrite — 8 RelGT-linked source pages to v1.1.0 template
+Pages written: ying2021graphormer, kreuzer2021san, zhao2021gophormer, chen2022nagphormer, mao2023hinormer, kanatsoulis2025pearl, ranjan2025relationaltr, rampavsek2022graphgps
+Pages updated: assets/rampavsek2022graphgps-layer.png (converted from PDF)
+
+## [2026-05-06] ingest | Batch rewrite — 10 RDL/temporal source pages to v1.1.0 template
+Pages written: chen2025relgnn, chmura2026tgm, cvitkovic2020rdb, gu2026relbench, rossi2020tgn, trivedi2019dyrep, wang2025griffin, xu2020tgat, yu2023dygformer, huang2023tgb
+Pages updated: assets/chen2025relgnn-routes.png, assets/rossi2020tgn-arch.png, assets/wang2025griffin-arch.png, assets/yu2023dygformer-arch.jpg, assets/gu2026relbench-autocomplete.png (figures converted/copied)
+
+## [2026-05-07] ingest | Batch rewrite — 6 core GNN pages to v1.1.0 template
+Pages written: kipf2017gcn, hamilton2017graphsage, gilmer2017mpnn, velickovic2018gat, schlichtkrull2018rgcn, xu2019gin
+
+## [2026-05-07] ingest | Batch rewrite — 21 remaining pages to v1.1.0 template
+Pages written: cong2023graphmixer, somepalli2021saint, kim2024carte, alon2020bottleneck, morris2019kgnn, dwivedi2021gt, mialon2021graphit, kim2022pure, dwivedi2022lspe, lim2022signnet, huang2024stability, dwivedi2020benchmarking, canturk2023graph, muller2023attending, dwivedi2023largegraphs, shirzad2023exphormer, wu2023sgformer, zhang2022hierarchical, zhu2023hierarchical, zhu2025hhgt, el2025attentiongraph

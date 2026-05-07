@@ -1,7 +1,7 @@
 ---
 title: "RDL for Bioinformatics and Transcriptomics"
 tags: [query, analysis, relational-deep-learning, bioinformatics, transcriptomics]
-sources: [relational-deep-learning-position, relgnn, kumorfm-2, relbench-v2]
+sources: [fey2024rdlposition, chen2025relgnn, fey2025kumorfm2, gu2026relbench]
 updated: 2026-04-29
 ---
 
@@ -34,7 +34,7 @@ patients ──< admissions ──< diagnoses
 lab_items ──< lab_events   (itemid FK)
 ```
 
-Temporal: `admissions.admittime`, `lab_events.charttime`. Seed entity = patient or admission. Already in [relbench-v2](relbench-v2.md) (MIMIC-IV, length-of-stay prediction).
+Temporal: `admissions.admittime`, `lab_events.charttime`. Seed entity = patient or admission. Already in [gu2026relbench](gu2026relbench.md) (MIMIC-IV, length-of-stay prediction).
 
 ---
 
@@ -68,7 +68,7 @@ genes ──< pathway_members  ──> pathways       (bridge: 2 FKs — MSigDB,
 genes ──< gene_sets        ──> gene_set_library
 ```
 
-Temporal: if time-course experiment (drug treatment at 0h, 6h, 24h), `samples.timepoint` = seed_time. Scale: Human Cell Atlas = ~50M cells × 30K genes → billion-row expressions table, matching [KumoRFM-2](kumorfm-2.md)'s 500B-row regime.
+Temporal: if time-course experiment (drug treatment at 0h, 6h, 24h), `samples.timepoint` = seed_time. Scale: Human Cell Atlas = ~50M cells × 30K genes → billion-row expressions table, matching [KumoRFM-2](fey2025kumorfm2.md)'s 500B-row regime.
 
 Tasks:
 - Cell-level: cell type classification, perturbation response
@@ -146,10 +146,10 @@ The `genotypes` junction table is potentially billions of rows (individuals × v
 | Pattern | Bioinformatics example | RDL concept |
 |---|---|---|
 | One-to-many, temporal | patient → lab events over time | CTDG edges with timestamps |
-| Bridge node (2 FKs) | gene–pathway membership; ATAC peak–gene link | [RelGNN](relgnn.md) bridge topology |
-| Hub node (3+ FKs) | drug–protein–cell assay conditions | [RelGNN](relgnn.md) hub topology |
+| Bridge node (2 FKs) | gene–pathway membership; ATAC peak–gene link | [RelGNN](chen2025relgnn.md) bridge topology |
+| Hub node (3+ FKs) | drug–protein–cell assay conditions | [RelGNN](chen2025relgnn.md) hub topology |
 | Self-referential edges | gene regulatory network (TF → target) | Homogeneous edges on same node type |
-| Billion-row junction | individual × variant genotypes; cell × gene expressions | [KumoRFM-2](kumorfm-2.md) scale regime |
+| Billion-row junction | individual × variant genotypes; cell × gene expressions | [KumoRFM-2](fey2025kumorfm2.md) scale regime |
 | Heterogeneous node types | cells, genes, pathways, peaks, proteins | Heterogeneous GNN / RelGT |
 
 ---
@@ -168,7 +168,7 @@ The `genotypes` junction table is potentially billions of rows (individuals × v
 
 ## Key Engineering Challenge: High-Dimensional Sparse Node Features
 
-Standard RDL node encoders ([relational-deep-learning-position](relational-deep-learning-position.md), PyTorch Frame) handle tens of columns per row. Gene expression vectors are **30K-dimensional and sparse** — a fundamentally different regime.
+Standard RDL node encoders ([fey2024rdlposition](fey2024rdlposition.md), PyTorch Frame) handle tens of columns per row. Gene expression vectors are **30K-dimensional and sparse** — a fundamentally different regime.
 
 Practical solution: use a domain-specific encoder (scVI, scBERT, Geneformer) as the initial embedding layer to compress expression profiles into dense vectors, then feed those into the RDL GNN. This is analogous to using sentence-BERT for text columns in standard RDL.
 
@@ -180,7 +180,7 @@ This two-stage design (expression encoder → relational GNN) has not yet appear
 
 - [relational-deep-learning](relational-deep-learning.md) — RDL framework
 - [relational-entity-graph](relational-entity-graph.md) — graph abstraction all RDL methods use
-- [relgnn](relgnn.md) — bridge/hub topology analysis directly applicable to pathway/regulatory structures
-- [kumorfm-2](kumorfm-2.md) — billion-scale support relevant to large single-cell atlases
-- [relbench-v2](relbench-v2.md) — MIMIC-IV clinical data already in the benchmark
+- [chen2025relgnn](chen2025relgnn.md) — bridge/hub topology analysis directly applicable to pathway/regulatory structures
+- [fey2025kumorfm2](fey2025kumorfm2.md) — billion-scale support relevant to large single-cell atlases
+- [gu2026relbench](gu2026relbench.md) — MIMIC-IV clinical data already in the benchmark
 - [rdl-approaches](rdl-approaches.md) — which RDL models to use for which tasks

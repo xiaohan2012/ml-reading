@@ -1,7 +1,7 @@
 ---
 title: "Main Approaches to Relational Deep Learning"
 tags: [query, analysis, relational-deep-learning, gnn, graph-transformer, foundation-model]
-sources: [relational-deep-learning-position, relgnn, relational-graph-transformer, relational-transformer, griffin, kumorfm-2]
+sources: [fey2024rdlposition, chen2025relgnn, dwivedi2025relgt, ranjan2025relationaltr, wang2025griffin, fey2025kumorfm2]
 updated: 2026-04-29
 ---
 
@@ -9,26 +9,26 @@ updated: 2026-04-29
 
 ## 1. Heterogeneous GNN (baseline and beyond)
 
-**HeteroGraphSAGE** is the standard RDL baseline from [relational-deep-learning-position](relational-deep-learning-position.md): separate weight matrices per relation type + temporal neighbor sampling (filter to τ(w) ≤ seed_time). Simple and strong enough to beat data scientists on all 30 RelBench tasks.
+**HeteroGraphSAGE** is the standard RDL baseline from [fey2024rdlposition](fey2024rdlposition.md): separate weight matrices per relation type + temporal neighbor sampling (filter to τ(w) ≤ seed_time). Simple and strong enough to beat data scientists on all 30 RelBench tasks.
 
-**RelGNN** ([relgnn](relgnn.md), ICML 2025, Chen, Kanatsoulis, Leskovec) goes further by exploiting PK-FK topology specifically:
+**RelGNN** ([chen2025relgnn](chen2025relgnn.md), ICML 2025, Chen, Kanatsoulis, Leskovec) goes further by exploiting PK-FK topology specifically:
 - Identifies **bridge nodes** (2 FKs) and **hub nodes** (3+ FKs) as the characteristic patterns of relational graphs
 - Replaces 2-hop aggregation with a single **FUSE operation**: `h_fuse = W₁·h_mid + W₂·h_src`, followed by attention at the destination
 - Result: SOTA on 27/30 RelBench v1 tasks, up to 25% gain over HeteroGraphSAGE
 
 ## 2. Graph Transformer (schema-specific, supervised)
 
-**RelGT** ([relational-graph-transformer](relational-graph-transformer.md), 2025): first GT designed for RDL. Solves the PE problem for heterogeneous temporal graphs with **5-element tokenization** per node: multimodal features + node type + hop distance + relative time + subgraph GNN PE (with random resampled init — the most critical component). Combines local all-pair attention (K=300 tokens) with global attention (B=4096 EMA centroids). Best supervised performance on RelBench.
+**RelGT** ([dwivedi2025relgt](dwivedi2025relgt.md), 2025): first GT designed for RDL. Solves the PE problem for heterogeneous temporal graphs with **5-element tokenization** per node: multimodal features + node type + hop distance + relative time + subgraph GNN PE (with random resampled init — the most critical component). Combines local all-pair attention (K=300 tokens) with global attention (B=4096 EMA centroids). Best supervised performance on RelBench.
 
 ## 3. Pretrained Foundation Models (schema-agnostic)
 
-**Relational Transformer** ([relational-transformer](relational-transformer.md), ICLR 2026, Ranjan et al.): tokenizes at the **cell level** — `(value, column, table)` triples — making it universal across schemas. Uses **Relational Attention** (4 mask types: column/feature/neighbor/global) instead of positional encodings. Pretrained via masked token prediction on 6 RelBench databases. Achieves **93% of supervised AUROC zero-shot**, beating Gemma3-27B (27B params) at 22M params.
+**Relational Transformer** ([ranjan2025relationaltr](ranjan2025relationaltr.md), ICLR 2026, Ranjan et al.): tokenizes at the **cell level** — `(value, column, table)` triples — making it universal across schemas. Uses **Relational Attention** (4 mask types: column/feature/neighbor/global) instead of positional encodings. Pretrained via masked token prediction on 6 RelBench databases. Achieves **93% of supervised AUROC zero-shot**, beating Gemma3-27B (27B params) at 22M params.
 
-**Griffin** ([griffin](griffin.md), ICML 2025, Wang et al.): keeps GNN message passing across tables but adds **cross-attention within rows** (query = node+task embedding, keys = column names, values = cell features). Uses unified text+float encoders for schema-agnostic input. Pretrained on 150M+ nodes. Strongest in low-data regimes; gap narrows with more task data.
+**Griffin** ([wang2025griffin](wang2025griffin.md), ICML 2025, Wang et al.): keeps GNN message passing across tables but adds **cross-attention within rows** (query = node+task embedding, keys = column names, values = cell features). Uses unified text+float encoders for schema-agnostic input. Pretrained on 150M+ nodes. Strongest in low-data regimes; gap narrows with more task data.
 
 ## 4. KumoRFM (ICL-based, schema-agnostic)
 
-**KumoRFM-2** ([kumorfm-2](kumorfm-2.md), 2025, Fey et al., Kumo AI/Stanford): combines ICL with end-to-end relational processing. Unlike RT (masked token prediction pretraining) or Griffin (meta-learning), KumoRFM uses **task-conditioned ICL**: labels are injected early so all 4 attention axes (row, column, FK, cross-sample) can filter task-relevant signals. Results: **first few-shot RFM to beat supervised SOTA** — avg AUROC 79.60 vs RelGNN 78.06 on RelBench v1, with only 10k context examples (sometimes 0.2% of available data). Scales to 500B+ rows via SQL pushdown or memory-mapped graph engine.
+**KumoRFM-2** ([fey2025kumorfm2](fey2025kumorfm2.md), 2025, Fey et al., Kumo AI/Stanford): combines ICL with end-to-end relational processing. Unlike RT (masked token prediction pretraining) or Griffin (meta-learning), KumoRFM uses **task-conditioned ICL**: labels are injected early so all 4 attention axes (row, column, FK, cross-sample) can filter task-relevant signals. Results: **first few-shot RFM to beat supervised SOTA** — avg AUROC 79.60 vs RelGNN 78.06 on RelBench v1, with only 10k context examples (sometimes 0.2% of available data). Scales to 500B+ rows via SQL pushdown or memory-mapped graph engine.
 
 ## Summary Comparison
 

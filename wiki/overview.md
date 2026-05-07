@@ -1,7 +1,7 @@
 ---
 title: Overview
 tags: [overview, synthesis]
-sources: [relational-deep-learning-position, relbench-v1, relational-graph-transformer, tgm-temporal-graph-modelling, relational-transformer, relbench-v2, relgnn, griffin, graphgps, gcn, hamilton2017inductive, gat, gin, tgat, tgn, dygformer, tabpfnv2, tabicl, carte, graphormer, san, mpnn, rgcn, k-gnn, tgb, tabpfnv1, saint, cvitkovic2020, dyrep, graphmixer]
+sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, chmura2026tgm, ranjan2025relationaltr, gu2026relbench, chen2025relgnn, wang2025griffin, rampavsek2022graphgps, kipf2017gcn, hamilton2017inductive, velickovic2018gat, xu2019gin, xu2020tgat, rossi2020tgn, yu2023dygformer, hollmann2025tabpfnv2, qu2025tabicl, kim2024carte, ying2021graphormer, kreuzer2021san, gilmer2017mpnn, schlichtkrull2018rgcn, morris2019kgnn, huang2023tgb, hollmann2023tabpfnv1, somepalli2021saint, cvitkovic2020rdb, trivedi2019dyrep, cong2023graphmixer]
 updated: 2026-04-29
 ---
 
@@ -16,11 +16,11 @@ The wiki covers Relational Deep Learning (RDL) from its founding papers through 
 The central question across later sources is: *how do you design architectures that exploit relational structure without expensive global precomputation, while generalizing across diverse schemas?*
 
 Three contrasting answers have emerged:
-- **Schema-specific + rich encodings** ([RelGT](pages/relational-graph-transformer.md)): row-level tokenization with 5-element positional encodings (type, hop, time, subgraph GNN PE); best supervised performance on RelBench.
-- **Schema-agnostic + no encodings** ([Relational Transformer](pages/relational-transformer.md)): cell-level tokenization with Relational Attention masks; enables zero-shot transfer across databases at 22M params outperforming 27B LLMs.
-- **Fixed GNN topology** ([RelGNN](pages/relgnn.md)): identifies bridge/hub structural patterns specific to PK-FK graphs; composite message passing (FUSE operation) replaces 2-hop aggregation; achieves SOTA on 27/30 RelBench v1 tasks without foundation model pretraining.
+- **Schema-specific + rich encodings** ([RelGT](pages/dwivedi2025relgt.md)): row-level tokenization with 5-element positional encodings (type, hop, time, subgraph GNN PE); best supervised performance on RelBench.
+- **Schema-agnostic + no encodings** ([Relational Transformer](pages/ranjan2025relationaltr.md)): cell-level tokenization with Relational Attention masks; enables zero-shot transfer across databases at 22M params outperforming 27B LLMs.
+- **Fixed GNN topology** ([RelGNN](pages/chen2025relgnn.md)): identifies bridge/hub structural patterns specific to PK-FK graphs; composite message passing (FUSE operation) replaces 2-hop aggregation; achieves SOTA on 27/30 RelBench v1 tasks without foundation model pretraining.
 
-Additionally, [Griffin](pages/griffin.md) (Wang et al. 2025, ICML) is the first explicit attempt at a pretrained foundation model for diverse RDBs — combining unified text+float encoders with cross-attention over row cells and GNN message passing across tables. Pretraining on 150M+ nodes helps most in low-data regimes; gap narrows with more task data, consistent with general FM behavior.
+Additionally, [Griffin](pages/wang2025griffin.md) (Wang et al. 2025, ICML) is the first explicit attempt at a pretrained foundation model for diverse RDBs — combining unified text+float encoders with cross-attention over row cells and GNN message passing across tables. Pretraining on 150M+ nodes helps most in low-data regimes; gap narrows with more task data, consistent with general FM behavior.
 
 **Tabular foundation models.** Three distinct approaches compete: TabPFN v2 (Nature 2025, ~130M synthetic datasets, alternating row/col attention, best small-table ICL but capped at 10K samples); TabICL (ICML 2025, three-Transformer decoupled architecture, scales to 500K samples, outperforms TabPFNv2 on large data); and CARTE (ICML 2024, graph-per-row pretraining on YAGO knowledge base, no schema matching, best for string-heavy tables). All three challenge gradient-boosted tree dominance on tabular data, but each targets a different regime.
 
@@ -34,7 +34,7 @@ Additionally, [Griffin](pages/griffin.md) (Wang et al. 2025, ICML) is the first 
 
 **Tabular learning: deeper history.** TabPFN v1 (ICLR 2023) established the Prior-Data Fitted Network paradigm: a Transformer pretrained on SCM+BNN synthetic data approximates Bayesian posterior prediction for small tabular datasets (N≤1000) in a single forward pass. SAINT (2021) introduced intersample (row-level) attention across the batch alongside standard column-level attention, beating boosted trees on average — the architectural insight that TabICL scales up. Cvitkovic (2020) first proposed treating relational database supervised learning as GNN node classification via RDB-as-graph, directly anticipating the RDL blueprint's formalization.
 
-The benchmark ([RelBench](pages/relbench.md), now at v2) is growing in scale (7→11 datasets, 22M+ rows) and task diversity (forecasting + autocomplete) to support both supervised evaluation and foundation model pretraining. The [TGM library](pages/tgm-temporal-graph-modelling.md) provides parallel infrastructure for temporal graph learning (CTDG + DTDG unified), with TGB datasets now bridging into the RelBench ecosystem.
+The benchmark ([RelBench](pages/relbench.md), now at v2) is growing in scale (7→11 datasets, 22M+ rows) and task diversity (forecasting + autocomplete) to support both supervised evaluation and foundation model pretraining. The [TGM library](pages/chmura2026tgm.md) provides parallel infrastructure for temporal graph learning (CTDG + DTDG unified), with TGB datasets now bridging into the RelBench ecosystem.
 
 RDL consistently outperforms single-table baselines (LightGBM) across all task types, confirming that relational structure carries informative signal.
 
@@ -54,7 +54,7 @@ RDL consistently outperforms single-table baselines (LightGBM) across all task t
 - [Tabular Learning](pages/tabular-learning.md) — ICL/PFN paradigm; TabPFNv1→v2/TabICL/CARTE/SAINT; GBDT vs. deep learning competition
 - [Temporal Graph](pages/temporal-graph.md) — CTDG/DTDG; TGAT/TGN/DyGFormer; TGB benchmark calibration
 - [Graph Neural Network](pages/graph-neural-network.md) — GCN/GraphSAGE/GAT/GIN/MPNN/R-GCN/k-GNN; message-passing family; WL expressiveness hierarchy
-- [GraphGPS](pages/graphgps.md) — foundational GT recipe: MPNN ∥ GlobalAttn; PE/SE taxonomy; O(N+E) complexity
+- [GraphGPS](pages/rampavsek2022graphgps.md) — foundational GT recipe: MPNN ∥ GlobalAttn; PE/SE taxonomy; O(N+E) complexity
 - [Relational Deep Learning](pages/relational-deep-learning.md) — the paradigm; from GNNs to GTs to foundation models
 - [Training Table](pages/training-table.md) — (EntityID, seed\_time, label); task specification + temporal leakage prevention in one abstraction
 - [Relational Entity Graph](pages/relational-entity-graph.md) — the graph abstraction of a relational database

@@ -1,7 +1,7 @@
 ---
 title: "Motivation and Applications of Relational Deep Learning"
 tags: [query, analysis, relational-deep-learning]
-sources: [relational-deep-learning-position, relbench-v1, relbench-v2, cvitkovic2020, relbench]
+sources: [fey2024rdlposition, robinson2024relbench, gu2026relbench, cvitkovic2020rdb, relbench]
 updated: 2026-04-29
 ---
 
@@ -11,20 +11,20 @@ updated: 2026-04-29
 
 ### The core problem
 
-Per [relational-deep-learning-position](relational-deep-learning-position.md): **72% of the world's data lives in relational databases**, yet no existing ML method could learn directly from multi-table structures. The standard workflow required:
+Per [fey2024rdlposition](fey2024rdlposition.md): **72% of the world's data lives in relational databases**, yet no existing ML method could learn directly from multi-table structures. The standard workflow required:
 
 1. A data scientist manually writing SQL `JOIN` + `AGGREGATE` queries to flatten the database into a single feature table
 2. Training a model (typically LightGBM/XGBoost) on that flat table
 
-This is expensive, error-prone, and loses information. The joins discard graph structure; the aggregations (mean, count, sum) are hand-chosen and may miss the right statistics. [cvitkovic2020](cvitkovic2020.md) was the first to point out (2020) that this entire pipeline could be replaced by a GNN operating directly on the database-as-graph.
+This is expensive, error-prone, and loses information. The joins discard graph structure; the aggregations (mean, count, sum) are hand-chosen and may miss the right statistics. [cvitkovic2020rdb](cvitkovic2020rdb.md) was the first to point out (2020) that this entire pipeline could be replaced by a GNN operating directly on the database-as-graph.
 
 ### Why GNNs are the natural fit
 
-[relational-deep-learning-position](relational-deep-learning-position.md) formalizes the key insight: **GNN message passing = differentiable SQL JOIN + AGGREGATE**. Instead of a human deciding which aggregations matter, the GNN learns them end-to-end — eliminating the feature engineering bottleneck.
+[fey2024rdlposition](fey2024rdlposition.md) formalizes the key insight: **GNN message passing = differentiable SQL JOIN + AGGREGATE**. Instead of a human deciding which aggregations matter, the GNN learns them end-to-end — eliminating the feature engineering bottleneck.
 
 ### Empirical justification
 
-[relbench-v1](relbench-v1.md) (Robinson et al., NeurIPS 2024) validates this at scale: RDL matches or outperforms a skilled data scientist on all 30 RelBench tasks with **96% fewer human hours** and **94% fewer lines of code**. Relational structure consistently adds signal over single-table baselines (LightGBM) — the multi-table graph structure genuinely matters.
+[robinson2024relbench](robinson2024relbench.md) (Robinson et al., NeurIPS 2024) validates this at scale: RDL matches or outperforms a skilled data scientist on all 30 RelBench tasks with **96% fewer human hours** and **94% fewer lines of code**. Relational structure consistently adds signal over single-table baselines (LightGBM) — the multi-table graph structure genuinely matters.
 
 ## Applications
 
@@ -39,7 +39,7 @@ This is expensive, error-prone, and loses information. The joins discard graph s
 
 ### Domains in RelBench
 
-From [relbench-v2](relbench-v2.md), the benchmark spans 11 databases across:
+From [gu2026relbench](gu2026relbench.md), the benchmark spans 11 databases across:
 
 - **E-commerce** — Amazon product reviews (user/item/review tables)
 - **Q&A platforms** — Stack Exchange (users/posts/votes/badges)

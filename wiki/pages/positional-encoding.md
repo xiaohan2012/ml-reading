@@ -1,8 +1,8 @@
 ---
 title: Positional and Structural Encodings (PE/SE)
 tags: [concept, positional-encoding, graph-transformer]
-sources: [graphgps, relational-graph-transformer, san, graphormer]
-updated: 2026-04-29
+sources: [rampavsek2022graphgps, dwivedi2025relgt, kreuzer2021san, ying2021graphormer, dwivedi2020benchmarking]
+updated: 2026-05-04
 ---
 
 # Positional and Structural Encodings (PE/SE)
@@ -26,14 +26,21 @@ Positional encodings (PE) and structural encodings (SE) are additional node/edge
 - *SignNet*: invariant aggregation of Laplacian eigenvectors via DeepSets/MLP; best single encoding in GPS ablations at moderate cost
 - *Relative PE*: pairwise shortest-path or heat-kernel distances as edge features; enables pair-specific attention biases
 
-**In the relational setting** ([RelGT](relational-graph-transformer.md)): standard PEs (Laplacian, RWSE) cannot be directly applied to heterogeneous temporal graphs. RelGT replaces them with schema-aware encodings: node type, hop distance from seed entity, temporal distance, and subgraph GNN PE.
+**In the relational setting** ([RelGT](dwivedi2025relgt.md)): standard PEs (Laplacian, RWSE) cannot be directly applied to heterogeneous temporal graphs. RelGT replaces them with schema-aware encodings: node type, hop distance from seed entity, temporal distance, and subgraph GNN PE.
 
 ## Appearances in Sources
 
-- [graphgps](graphgps.md) — introduces the local/global/relative PE/SE taxonomy; ablation shows RWSE > LapPE for molecular tasks; MPNN is essential alongside PE/SE
-- [relational-graph-transformer](relational-graph-transformer.md) — 5-element tokenization adapts PE/SE concepts to the RDL setting; [subgraph GNN PE](subgraph-gnn-pe.md) is the RDL analog of RWSE
-- [san](san.md) — Kreuzer et al. (NeurIPS 2021): full Laplacian spectrum as LPE; eigenvectors as graph-domain sine functions; addresses eigenvalue multiplicity and variable eigenvector count; motivates GPS's choice to move to RWSE over LapPE
-- [graphormer](graphormer.md) — Ying et al. (NeurIPS 2021): spatial encoding via shortest-path distance (SPD-indexed learnable bias in attention) + centrality encoding (degree-indexed learnable vectors); relative PE in attention directly
+- [dwivedi2020benchmarking](dwivedi2020benchmarking.md) — **origin of LapPE**: introduced Laplacian eigenvectors as graph positional encodings; demonstrated they enable structural detection tasks where MP-GNNs fail; catalyzed all subsequent PE research
+- [mialon2021graphit](mialon2021graphit.md) — GraphiT: kernel-based **relative PE** that modulates attention scores by graph kernel Gram matrix; avoids LapPE sign/transferability issues; GCKN substructure encoding as complementary mechanism
+- [dwivedi2022lspe](dwivedi2022lspe.md) — **LSPE**: decoupled structural + positional streams updated separately through layers; learnable PE; ICLR 2022; up to 64% improvement on molecular benchmarks
+- [lim2022signnet](lim2022signnet.md) — **SignNet/BasisNet**: invariant to sign flips ($\rho(\phi(v)+\phi(-v))$) and basis symmetries; universally expressive; strictly more expressive than all prior spectral methods; ICLR 2022
+- [huang2024stability](huang2024stability.md) — **SPE**: first provably stable AND expressive PE; eigenvalue soft-partitioning near degeneracies; addresses instability that SignNet ignores; ICLR 2024
+- [kanatsoulis2025pearl](kanatsoulis2025pearl.md) — **PEARL**: GNNs as eigenvector mappings; random/basis init + statistical pooling; linear complexity; 1–2 OOM cheaper than LapPE; theoretical basis for RelGT's subgraph GNN PE; ICLR 2025
+- [canturk2023graph](canturk2023graph.md) — **GPSE**: pre-trained universal PSE encoder combining RWSE/LapPE/SignNet; plug-in PE for any model; from GPS team
+- [rampavsek2022graphgps](rampavsek2022graphgps.md) — introduces the local/global/relative PE/SE taxonomy; ablation shows RWSE > LapPE for molecular tasks; MPNN is essential alongside PE/SE
+- [dwivedi2025relgt](dwivedi2025relgt.md) — 5-element tokenization adapts PE/SE concepts to the RDL setting; [subgraph GNN PE](subgraph-gnn-pe.md) is the RDL analog of RWSE
+- [kreuzer2021san](kreuzer2021san.md) — Kreuzer et al. (NeurIPS 2021): full Laplacian spectrum as LPE; eigenvectors as graph-domain sine functions; addresses eigenvalue multiplicity and variable eigenvector count; motivates GPS's choice to move to RWSE over LapPE
+- [ying2021graphormer](ying2021graphormer.md) — Ying et al. (NeurIPS 2021): spatial encoding via shortest-path distance (SPD-indexed learnable bias in attention) + centrality encoding (degree-indexed learnable vectors); relative PE in attention directly
 
 ## Related Concepts
 
