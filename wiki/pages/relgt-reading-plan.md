@@ -1,7 +1,7 @@
 ---
 title: "Reading Plan: Graph Transformers & RelGT"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [alon2020bottleneck, dwivedi2021graph, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025pearl, rampavsek2022graphgps, zhao2021gophormer, chen2022nagphormer, hu2020hgt, dwivedi2025relgt, muller2023attending, ying2021graphormer, kreuzer2021san]
+sources: [alon2020bottleneck, dwivedi2021gt, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025pearl, rampavsek2022graphgps, zhao2021gophormer, chen2022nagphormer, hu2020hgt, dwivedi2025relgt, muller2023attending, ying2021graphormer, kreuzer2021san]
 updated: 2026-05-04
 ---
 
@@ -14,7 +14,7 @@ Sequenced reading path from GNN limitations to RelGT, ~10–12 papers. Each stag
 ## Stage 1: Why Graph Transformers Exist (2 papers)
 
 1. **[alon2020bottleneck](alon2020bottleneck.md)** — Over-squashing: exponential receptive field compressed to fixed-size vector; the core GNN failure mode that motivates global attention. Short, crisp argument.
-2. **[dwivedi2021graph](dwivedi2021graph.md)** — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge-gated attention. Sets the vocabulary for everything that follows.
+2. **[dwivedi2021gt](dwivedi2021gt.md)** — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge-gated attention. Sets the vocabulary for everything that follows.
 
 ---
 
@@ -53,7 +53,7 @@ Sequenced reading path from GNN limitations to RelGT, ~10–12 papers. Each stag
 - **[muller2023attending](muller2023attending.md)** — Survey + taxonomy of ~40 GTs; PE choice dominates; confirms no prior GT handles REGs. Good landscape map.
 - **[ying2021graphormer](ying2021graphormer.md)** — Full global attention via SPD bias + centrality encoding; good contrast with GPS's hybrid approach.
 - **[kreuzer2021san](kreuzer2021san.md)** — Full Laplacian spectrum as LPE; motivates GraphGPS's shift away from LapPE toward RWSE.
-- **[dwivedi2023graph](dwivedi2023graph.md)** — Survey of scalability strategies for large graphs; contextualizes RelGT's EMA centroid global module.
+- **[dwivedi2023largegraphs](dwivedi2023largegraphs.md)** — Survey of scalability strategies for large graphs; contextualizes RelGT's EMA centroid global module.
 
 ---
 

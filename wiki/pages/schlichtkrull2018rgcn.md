@@ -2,7 +2,7 @@
 title: "R-GCN: Modeling Relational Data with Graph Convolutional Networks"
 tags: [source, gnn, heterogeneous-graph, knowledge-graph, relational]
 sources: [schlichtkrull2018rgcn]
-updated: 2026-04-29
+updated: 2026-05-07
 ---
 
 # R-GCN: Modeling Relational Data with Graph Convolutional Networks
@@ -13,42 +13,66 @@ updated: 2026-04-29
 **Type:** paper
 **Authors:** Schlichtkrull, Kipf, Bloem, van den Berg, Titov, Welling
 **Venue:** ESWC 2018
-**Year:** 2018
 
 ## Summary
 
-Schlichtkrull, Kipf, et al. (ESWC 2018) extend GCN to heterogeneous relational data by introducing **relation-specific weight matrices**. The core motivation: standard GCNs use a single shared weight matrix for all edges, which is inappropriate when edges have different semantic types (e.g., *born_in*, *works_at*, *married_to* in a knowledge graph). R-GCN gives each relation type its own transformation matrix.
+- **What:** Standard GCN uses a single shared weight matrix for all edges, ignoring that edges in knowledge graphs have different semantic relation types (*born_in*, *works_at*, *married_to*).
+- **How:** Assign relation-type-specific weight matrices $W_r^l$ with basis or block-diagonal decomposition to control parameter growth; combine with DistMult decoder for link prediction.
+- **So what:** First GCN for multi-relational graphs; achieves SOTA on entity classification and link prediction on FB15k-237 and WN18; foundational precursor to HGT's meta-relation parameterization.
+
+## Challenges & Novelty
+
+Knowledge graphs and relational databases have edge types that encode fundamentally different semantics. Applying GCN uniformly across all edge types blends incompatible signals — a *born_in* edge and a *works_at* edge should not be aggregated with the same matrix. With potentially thousands of relation types, simply assigning one matrix per relation leads to quadratic parameter growth and poor generalization on rare relations.
+
+- **Relation-specific aggregation:** separate $W_r^l$ matrices per relation type gives each relation type its own message, allowing the model to distinguish *born_in* from *works_at* at the representation level.
+- **Basis decomposition regularizes rare relations:** $W_r^l = \sum_{b=1}^B a_{rb}^l V_b^l$ — all relations share a small set of basis matrices $V_b$; only the scalar coefficients $a_{rb}$ are relation-specific. Rare relations borrow capacity from frequent relations via shared bases.
+- **Block-diagonal decomposition enforces sparsity:** $W_r^l = \text{diag}(Q_{1r}^l, \ldots, Q_{Br}^l)$ — each relation operates on independent sub-spaces of the embedding, preventing cross-feature contamination across relations.
+
+## Relation to Prior Work
+
+| Model | Edge types | Aggregation | Parameter sharing | Task |
+|---|---|---|---|---|
+| [kipf2017gcn](kipf2017gcn.md) | No | Normalized mean | Shared $W$ | Node classification |
+| **R-GCN** | Yes (by $W_r$) | Per-relation mean | Basis / block-diag | Entity class. + link pred. |
+| [hu2020hgt](hu2020hgt.md) | Yes (+ node types) | Attention per meta-relation | Type-specific $K$/$Q$/$V$ | Node classification |
+| [chen2025relgnn](chen2025relgnn.md) | Yes (bridge/hub routes) | Route-specific + FUSE | Shared route weights | RDL forecasting |
+
+- [kipf2017gcn](kipf2017gcn.md): R-GCN replaces GCN's single $W$ with $\{W_r\}$ — adding relation specificity while keeping the same normalized aggregation structure.
+- [hu2020hgt](hu2020hgt.md): HGT extends R-GCN's relation typing to triplets (src_type, edge_type, dst_type) and replaces uniform aggregation with attention, giving finer-grained heterogeneous message passing.
+- [chen2025relgnn](chen2025relgnn.md): RelGNN's composite routes on PK-FK graphs can be seen as a successor to R-GCN's relation-specific aggregation, specialized for the bridge/hub topology of relational databases.
+- [fey2024rdlposition](fey2024rdlposition.md): RDL's blueprint identifies R-GCN as a key ancestor; HeteroGraphSAGE (the RelBench baseline) is an inductive extension of the same multi-relational idea.
+
+## Technical Details
 
 **R-GCN layer update:**
 
-```
-h_i^{l+1} = sigma( sum_{r in R} sum_{j in N_r(i)} (1/c_{i,r}) W_r^l h_j^l + W_0^l h_i^l )
-```
+$$\mathbf{h}_i^{(l+1)} = \sigma\!\left(\sum_{r \in \mathcal{R}} \sum_{j \in \mathcal{N}_r(i)} \frac{1}{c_{i,r}} W_r^{(l)} \mathbf{h}_j^{(l)} + W_0^{(l)} \mathbf{h}_i^{(l)}\right)$$
 
-where `N_r(i)` is the set of neighbors of node `i` under relation `r`, `c_{i,r}` is a normalization constant, and `W_0^l h_i^l` is a self-loop term.
+where $\mathcal{N}_r(i)$ is the set of neighbors of $i$ under relation $r$, $c_{i,r} = |\mathcal{N}_r(i)|$ normalizes by relation-specific degree, and $W_0^{(l)}\mathbf{h}_i^{(l)}$ is a self-loop term.
 
-**Parameter explosion problem**: with `|R|` relation types, each requiring its own `W_r`, parameter count scales linearly with relations. Two regularization strategies address this: (1) **Basis decomposition**: `W_r = sum_b a_{rb} V_b` — shared basis matrices `V_b` with relation-specific coefficients `a_{rb}`; (2) **Block-diagonal decomposition**: `W_r = diag(Q_{1r}, ..., Q_{Br})` — sparse block structure. Basis decomposition enables parameter sharing between rare and frequent relations.
+**Basis decomposition:**
 
-Applied to two knowledge graph completion tasks: **entity classification** (R-GCN as encoder alone) and **link prediction** (R-GCN encoder + DistMult decoder). On FB15k-237, achieves 29.8% MRR improvement over decoder-only DistMult.
+$$W_r^{(l)} = \sum_{b=1}^B a_{rb}^{(l)} V_b^{(l)}$$
 
-## Key Takeaways
+Parameters: $B$ shared basis matrices $V_b$ + per-relation scalar coefficients $a_{rb}$. When $B \ll |\mathcal{R}|$, this drastically reduces parameter count and forces sharing across relations.
 
-- Core idea: relation-type-specific weight matrices `W_r^l` per layer — extends GCN to heterogeneous multi-relational graphs
-- Layer equation: `h_i^{l+1} = sigma( sum_r sum_{j in N_r(i)} (1/c_{ir}) W_r^l h_j^l + W_0^l h_i^l )`
-- Basis decomposition: `W_r = sum a_{rb} V_b` — controls parameter explosion, improves rare-relation generalization
-- Block-diagonal decomposition: `W_r = diag(Q_{1r}, ..., Q_{Br})` — sparsity constraint per relation
-- Combines with factorization decoders (DistMult) for link prediction via encoder-decoder architecture
-- First GCN model for knowledge graphs; precursor to HGT's meta-relation triplet parameterization
+**Block-diagonal decomposition:**
+
+$$W_r^{(l)} = \text{diag}\!\left(Q_{1r}^{(l)}, \ldots, Q_{Br}^{(l)}\right)$$
+
+Each relation operates in $B$ independent sub-spaces of size $d/B$. More efficient than basis decomposition when relations are diverse.
+
+**Encoder-decoder for link prediction.** R-GCN as encoder generates entity embeddings $\{\mathbf{h}_i\}$; DistMult as decoder scores triples: $f(s, r, o) = \mathbf{h}_s^T \text{diag}(w_r) \mathbf{h}_o$. Trained with cross-entropy on negative-sampled triples.
+
+## Experiments
+
+- Entity classification on FB15k-237: R-GCN outperforms Feat (raw features) and DeepWalk by 4–6% accuracy; basis decomposition consistently outperforms block-diagonal.
+- Link prediction: R-GCN+DistMult achieves 29.8% MRR on FB15k-237, a 29.8% relative improvement over DistMult alone (decoder-only baseline).
+- On WN18: similar gains; R-GCN encoder adds largest benefit when entities have few labeled training triples (sparse-relation regime).
+- Basis decomposition with $B=2$ competitive with $B=100$; increasing $B$ beyond 10 shows diminishing returns.
 
 ## Entities & Concepts
 
-- [graph-neural-network](graph-neural-network.md) — R-GCN extends GCN to multi-relational graphs
-- [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md) — HGT's type-parameterized weights generalize R-GCN's relation-specific matrices
-- [relational-entity-graph](relational-entity-graph.md) — REGs are heterogeneous graphs; R-GCN's relation-typing applies directly
-
-## Relation to Other Wiki Pages
-
-- [hu2020hgt](hu2020hgt.md): HGT's meta-relation triplet (source_type, edge_type, target_type) is a generalization of R-GCN's single-relation typing — HGT distinguishes not just edge type but also source and target node types
-- [kipf2017gcn](kipf2017gcn.md): R-GCN extends GCN's `c_vw W h_w` message to `(1/c_{ir}) W_r^l h_j^l` — adding relation specificity
-- [fey2024rdlposition](fey2024rdlposition.md): RDL's blueprint identifies R-GCN as an ancestor; HeteroGraphSAGE in RelBench baseline generalizes the same multi-relational idea to inductive settings
-- [chen2025relgnn](chen2025relgnn.md): RelGNN's FUSE operation on PK-FK graphs can be viewed as a successor to R-GCN's relation-specific aggregation, but specialized for database-style topology
+- [graph-neural-network](graph-neural-network.md)
+- [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md)
+- [relational-entity-graph](relational-entity-graph.md)

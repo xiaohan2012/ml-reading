@@ -2,7 +2,7 @@
 title: "GraphiT: Encoding Graph Structure in Transformers"
 tags: [source, graph-transformer, positional-encoding]
 sources: [mialon2021graphit]
-updated: 2026-05-04
+updated: 2026-05-07
 ---
 
 # GraphiT: Encoding Graph Structure in Transformers
@@ -16,33 +16,56 @@ updated: 2026-05-04
 
 ## Summary
 
-GraphiT proposes two complementary mechanisms for injecting graph structure into a Transformer, both motivated by limitations of absolute LapPE. The first is **relative positional encoding via graph kernels**: instead of adding LapPE vectors to node features, GraphiT modulates the attention scores by elementwise-multiplying with the Gram matrix of a positive-definite kernel on the graph before softmax normalization:
+- **What:** LapPE has sign ambiguity and poor cross-graph transferability; it adds absolute position to node features rather than encoding the *relative* structural relationship between node pairs.
+- **How:** Modulate Transformer attention scores by the Gram matrix of a positive-definite graph kernel (diffusion, random-walk, adjacency), encoding relative structure as an attention bias rather than an absolute feature.
+- **So what:** Competitive with GNNs on ZINC, MNIST, CIFAR10, MUTAG, PROTEINS; enables interpretable attention patterns that identify discriminative substructures.
 
-$$\text{PosAttention}(Q, V, K_r) = \text{normalize}\!\left(\exp\!\left(\tfrac{QQ^\top}{\sqrt{d}}\right) \odot K_r\right) V$$
+## Challenges & Novelty
 
-The kernel $K_r$ can be a diffusion kernel ($e^{-\beta L}$, where $\beta$ controls the attention span), a random-walk kernel (visiting up to $p$-hop neighbors), or the adjacency matrix. This is a relative PE strategy: attention between nodes $i$ and $j$ depends on their structural similarity, not an absolute position — so it transfers naturally across graphs and avoids LapPE's sign-ambiguity problem.
+LapPE encodes the global position of each node independently — it doesn't directly encode the relationship between two nodes that are being attended to. Two nodes close together get similar LapPE vectors, but this is indirect; for attention, a relative encoding of *how similar* node $i$ and $j$ are structurally is more natural. Additionally, LapPE's sign ambiguity (eigenvectors can be negated) and $O(N^3)$ eigendecomposition limit applicability.
 
-The second mechanism is **substructure encoding via GCKN**: a Graph Convolutional Kernel Network layer pre-processes nodes by enumerating short paths and embedding them with a kernel function, producing richer node features that carry local topological information before the Transformer sees them.
+- **Kernel-based relative PE avoids sign ambiguity:** the kernel $\mathcal{K}(i, j)$ between nodes $i$ and $j$ depends on their structural relationship — there is no sign choice, no ambiguity. Different kernels encode different structural priors (local vs. global).
+- **Kernel as attention score modulation:** multiplying (not adding) attention scores by $K_r$ before softmax is a structurally different integration than appending PE to node features — the structural signal controls *which pairs* attend to each other, not just *who* each node is.
+- **GCKN enriches node features with local topology:** Graph Convolutional Kernel Network pre-processing enumerates short paths and embeds them with a kernel function, providing richer initial node features before the Transformer.
 
-GraphiT supports both local (neighborhood) and global (all-pair) attention and is competitive with GNNs on ZINC, MNIST, CIFAR10, MUTAG, PROTEINS. A further advantage is natural interpretability: attention scores reveal which pairs of nodes are mutually important for a prediction, identifying discriminative graph motifs.
+## Relation to Prior Work
 
-## Key Takeaways
+| PE Type | Encoding | Relative/Absolute | Sign ambiguity | Cross-graph |
+|---|---|---|---|---|
+| LapPE ([dwivedi2020benchmarking](dwivedi2020benchmarking.md)) | Eigenvectors | Absolute | Yes | No |
+| RWSE ([rampavsek2022graphgps](rampavsek2022graphgps.md)) | RW diagonals | Absolute | No | Yes |
+| **GraphiT kernel PE** | Gram matrix | Relative | No | Yes |
+| SPD bias ([ying2021graphormer](ying2021graphormer.md)) | Shortest path dist. | Relative | No | Yes |
+| SignNet ([lim2022signnet](lim2022signnet.md)) | Invariant eigenvectors | Absolute (invariant) | Resolved | Yes |
 
-- **Relative PE via graph kernels** avoids LapPE's sign ambiguity and cross-graph transferability issues; kernel choice encodes inductive bias (diffusion: global smooth; random-walk: local $p$-hop).
-- **GCKN substructure encoding** enriches node features with path-enumeration information before attention — more structural content than raw node attributes alone.
-- The kernel-based relative PE is a **multiplication on attention scores** (not addition to features), making it a structurally different approach from LapPE, RWSE, and SignNet.
-- Both mechanisms are complementary and can be combined; either alone already improves over GNN baselines on standard benchmarks.
-- **Interpretability**: attention score maps localize discriminative substructures, useful for scientific applications.
+- [dwivedi2020benchmarking](dwivedi2020benchmarking.md): GraphiT is directly motivated by LapPE's limitations (sign ambiguity, absolute encoding) — relative kernel PE is the complementary design choice.
+- [ying2021graphormer](ying2021graphormer.md): both use relative structural encoding as attention biases; Graphormer uses discrete SPD, GraphiT uses continuous kernel — different inductive biases.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS later encodes RWSE as a node feature (absolute), not a relative kernel — a practical simplification that loses the relative aspect but is cheaper.
+- [kreuzer2021san](kreuzer2021san.md): SAN (same year, NeurIPS 2021) addresses LapPE via full Laplacian spectrum; GraphiT takes the complementary route via kernel modulation of attention.
+
+## Technical Details
+
+**Kernel-modulated attention.** Standard self-attention: $\text{Attn}(Q, K, V) = \text{softmax}(QK^T/\sqrt{d}) V$. GraphiT replaces the softmax argument with an element-wise product with a graph kernel Gram matrix $K_r \in \mathbb{R}^{N \times N}$:
+
+$$\text{PosAttn}(Q, K_r, V) = \text{normalize}\!\left(\exp\!\left(\frac{QQ^T}{\sqrt{d}}\right) \odot K_r\right) V$$
+
+where $[K_r]_{ij} = \mathcal{K}(i, j)$ is a positive-definite kernel on the graph. Three kernel options:
+- **Diffusion kernel:** $K_r = e^{-\beta L}$ — Gaussian with graph Laplacian as the metric. $\beta$ controls the attention span (larger $\beta$ = more local).
+- **$p$-step random walk kernel:** $K_r = (I - \alpha A)^{-p}$ — captures $p$-hop structural similarity.
+- **Adjacency kernel:** $K_r = A$ — restricts attention to 1-hop neighbors (equivalent to sparse GT).
+
+**GCKN substructure encoding.** Pre-process nodes by enumerating short paths of length $l$ emanating from each node; embed each path with a kernel function (e.g., Gaussian on path feature sequences). Output: node feature matrix $X \in \mathbb{R}^{N \times d}$ with richer topological content than raw node attributes.
+
+**Interpretability.** The attention score maps $A_{ij}^{(l)}$ after kernel modulation localize which node pairs drive the prediction — discriminative substructures appear as high-attention subgraphs.
+
+## Experiments
+
+- ZINC: GraphiT with diffusion kernel + GCKN encoding matches or outperforms GCN, GIN, and GAT; competitive with GatedGCN.
+- MNIST/CIFAR10 (superpixel graphs): diffusion kernel PE provides consistent improvements over no-PE Transformer baseline.
+- MUTAG/PROTEINS (molecular classification): GraphiT + GCKN outperforms GCN and GIN; attention maps identify discriminative ring structures.
+- Kernel comparison: diffusion > RW > adjacency for global graph tasks; adjacency best for local tasks — kernel choice encodes the right inductive bias.
 
 ## Entities & Concepts
 
 - [positional-encoding](positional-encoding.md)
 - [graph-transformer](graph-transformer.md)
-- [dwivedi2020benchmarking](dwivedi2020benchmarking.md)
-
-## Relation to Other Wiki Pages
-
-- [positional-encoding](positional-encoding.md): introduces kernel-based relative PE as an alternative to LapPE; pre-dates RWSE/SignNet but shares the motivation of avoiding eigenvector instability.
-- [dwivedi2020benchmarking](dwivedi2020benchmarking.md): GraphiT directly builds on and critiques LapPE from Benchmarking-GNNs; relative PE is motivated by LapPE's sign and transferability issues.
-- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS later generalizes this kind of relative PE into its PE/SE taxonomy; RWSE is the practical successor to kernel-based approaches.
-- [kreuzer2021san](kreuzer2021san.md): SAN (same year, NeurIPS 2021) addresses LapPE issues via full Laplacian spectrum; GraphiT takes the complementary route via kernel modulation of attention.

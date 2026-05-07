@@ -26,7 +26,7 @@
 - [robinson2024relbench](pages/robinson2024relbench.md) — RelBench v1: 7 databases, 30 tasks; RDL beats data-scientist baseline with 96% fewer human hours _(ingested 2026-04-29)_
 - [rampavsek2022graphgps](pages/rampavsek2022graphgps.md) — GPS recipe: MPNN ∥ GlobalAttn per layer; PE/SE taxonomy; O(N+E); SOTA on 11/16 diverse benchmarks _(ingested 2026-04-29)_
 - [hu2020hgt](pages/hu2020hgt.md) — HGT: meta-relation triplet parameterization + RTE; WWW 2020; foundation for heterogeneous graph Transformers _(ingested 2026-04-29)_
-- [dwivedi2021graph](pages/dwivedi2021graph.md) — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge×attention _(ingested 2026-04-29)_
+- [dwivedi2021gt](pages/dwivedi2021gt.md) — Dwivedi & Bresson (AAAI 2021): first GT formalization; sparse attention + LapPE + BatchNorm + edge×attention _(ingested 2026-04-29)_
 - [chen2025relgnn](pages/chen2025relgnn.md) — Bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks _(ingested 2026-04-29)_
 - [wang2025griffin](pages/wang2025griffin.md) — First pretrained RDB foundation model; unified text+float encoders + hierarchical aggregation; 150M+ node pretraining _(ingested 2026-04-29)_
 - [dwivedi2025relgt](pages/dwivedi2025relgt.md) — First GT for relational databases; 5-element tokenization + hybrid local-global attention _(ingested 2026-04-28)_
@@ -41,7 +41,7 @@
 - [mialon2021graphit](pages/mialon2021graphit.md) — GraphiT: relative PE via graph kernel modulation of attention + GCKN substructure encoding; avoids LapPE sign/transferability issues _(ingested 2026-05-04)_
 - [kim2022pure](pages/kim2022pure.md) — TokenGT: pure Transformer with orthonormal node IDs + type IDs; provably ≥ 2-IGN; no graph-specific modifications; NeurIPS 2022 _(ingested 2026-05-04)_
 - [alon2020bottleneck](pages/alon2020bottleneck.md) — Over-squashing in GNNs: exponential receptive field → fixed-size vector bottleneck; FA layer fix; motivates global attention in GTs; ICLR 2021 _(ingested 2026-05-04)_
-- [dwivedi2022graph](pages/dwivedi2022graph.md) — LSPE: decoupled learnable structural + positional streams; up to 64% improvement on molecular tasks; ICLR 2022 _(ingested 2026-05-04)_
+- [dwivedi2022lspe](pages/dwivedi2022lspe.md) — LSPE: decoupled learnable structural + positional streams; up to 64% improvement on molecular tasks; ICLR 2022 _(ingested 2026-05-04)_
 - [lim2022signnet](pages/lim2022signnet.md) — SignNet/BasisNet: sign+basis invariant networks for spectral PE; universally expressive; fixes LapPE sign ambiguity; ICLR 2022 _(ingested 2026-05-04)_
 - [huang2024stability](pages/huang2024stability.md) — SPE: first provably stable+expressive PE; eigenvalue soft-partitioning; addresses instability gap left by SignNet; ICLR 2024 _(ingested 2026-05-04)_
 - [kanatsoulis2025pearl](pages/kanatsoulis2025pearl.md) — PEARL: GNN-based PE with linear complexity; random init + pooling; stable+expressive; theoretical basis for RelGT subgraph GNN PE; ICLR 2025 _(ingested 2026-05-04)_
@@ -50,7 +50,7 @@
 - [zhu2023hierarchical](pages/zhu2023hierarchical.md) — Hierarchical Transformer for scalable graph learning: clustering-based coarsening for hetero+large graphs _(ingested 2026-05-04)_
 - [zhao2021gophormer](pages/zhao2021gophormer.md) — Gophormer: ego-graph GT for node classification; mini-batch via subgraph sampling; ancestor of RelGT's local attention _(ingested 2026-05-04)_
 - [chen2022nagphormer](pages/chen2022nagphormer.md) — NAGphormer: Hop2Token tokenization; per-node hop-sequence; mini-batch training on large graphs; ICLR 2023 _(ingested 2026-05-04)_
-- [dwivedi2023graph](pages/dwivedi2023graph.md) — Graph Transformers for Large Graphs: benchmark + taxonomy of scalability strategies (sparse/hierarchical/sampling/linear); arXiv 2023 _(ingested 2026-05-04)_
+- [dwivedi2023largegraphs](pages/dwivedi2023largegraphs.md) — Graph Transformers for Large Graphs: benchmark + taxonomy of scalability strategies (sparse/hierarchical/sampling/linear); arXiv 2023 _(ingested 2026-05-04)_
 - [wu2023sgformer](pages/wu2023sgformer.md) — SGFormer: single global attention layer + one GNN layer; 141× faster; scales to 111M nodes; NeurIPS 2023 _(ingested 2026-05-04)_
 - [mao2023hinormer](pages/mao2023hinormer.md) — HINormer: local HIN encoder + global Transformer for heterogeneous information networks; WWW 2023 _(ingested 2026-05-04)_
 - [zhu2025hhgt](pages/zhu2025hhgt.md) — HHGT: Type-level + Ring-level Transformer hierarchy for heterogeneous graphs; CIKM 2024 _(ingested 2026-05-04)_

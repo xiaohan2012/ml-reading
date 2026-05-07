@@ -2,7 +2,7 @@
 title: "CARTE: Pretraining and Transfer for Tabular Learning"
 tags: [source, tabular, pretraining, graph, transfer-learning, foundation-model]
 sources: [kim2024carte]
-updated: 2026-04-29
+updated: 2026-05-07
 ---
 
 # CARTE: Pretraining and Transfer for Tabular Learning
@@ -13,43 +13,65 @@ updated: 2026-04-29
 **Type:** paper
 **Authors:** Kim, Grinsztajn, Varoquaux
 **Venue:** ICML 2024
-**Year:** 2024
 
 ## Summary
 
-Kim, Grinsztajn, and Varoquaux (INRIA) introduce CARTE (Context-Aware Representation of Table Entries) — the first pretrained model for tabular data that can generalize across tables with *different* columns and schemas, without requiring entity matching or schema alignment. The key insight: represent each row as a star-shaped graph and use edge features (column names) to contextualize cell values, enabling pretraining across heterogeneous tables.
+- **What:** Tabular foundation models fail to transfer across tables with different columns and schemas because they treat rows as flat feature vectors — there is no schema-agnostic representation.
+- **How:** Represent each row as a star-shaped graph (center = row, leaves = cell values, edges = column names as FastText embeddings), pretrain on YAGO3 knowledge base triples using contrastive loss, then fine-tune.
+- **So what:** First pretrained model that transfers across heterogeneous tables without schema alignment; outperforms 42 baselines including CatBoost, XGBoost, TabPFN, and LLM-based methods across 51 tabular datasets — particularly strong on high-cardinality string/categorical columns.
 
-**Graph representation.** Each table row $i$ becomes a small graph $G_i(X, E)$: a star topology where the center node represents the row and $k$ leaf nodes represent the $k$ cell values. Edges carry column name embeddings. Features are initialized from FastText embeddings — categorical/string cell values get a direct language model embedding; numerical cells get $\text{value} \times \text{column\_embedding}$ (element-wise product). The center node is initialized as the mean of leaf embeddings and serves as the readout.
+## Challenges & Novelty
 
-**Architecture.** CARTE adapts a Transformer encoder to graph attention. The key innovation is incorporating *edge features* (column names) into key and value computation:
+Cross-table transfer is fundamentally blocked by schema heterogeneity: each table has different columns with different names and types. A flat feature vector representation assumes fixed column positions, making transfer impossible when columns differ. CARTE sidesteps this by using the column name itself as a relational edge — placing all tables in the same graphical computation domain.
 
-$$\vec{K}_{ij} = (\vec{X}_i^{(l)} \odot \vec{E}_{ij}^{(l)}) \cdot \mathbf{W}_K, \quad \vec{V}_{ij} = (\vec{X}_i^{(l)} \odot \vec{E}_{ij}^{(l)}) \cdot \mathbf{W}_V$$
+- **Star graph as schema-agnostic representation:** every row becomes a small graph where column names are edge features. The same Transformer can process any row from any table — the column identity is carried by the edge, not the node position.
+- **Edge-augmented attention disambiguates column context:** the element-wise product $\mathbf{X}_i \odot \mathbf{E}_{ij}$ in key/value computation means "George Bush" as value of edge *father-of* vs. *son-of* produces different attention keys — essential for entity-heavy tables.
+- **YAGO3 pretraining provides real-world entity knowledge:** 18.1M knowledge graph triplets (real entities + relations) give CARTE world knowledge without explicit entity linking — any table with string/categorical values implicitly benefits.
 
-This element-wise product between node and edge features (from knowledge graph embedding literature) lets attention weight neighbors by both their value and their semantic relation (column identity). Attention masks enforce the graph structure (only connected neighbors attend).
+## Relation to Prior Work
 
-**Pretraining.** CARTE is pretrained on YAGO3 — a 18.1M-triplet knowledge base extracted from Wikidata. Triplets $(head, relation, tail)$ are converted to star-shaped graphlets matching the table row format. Self-supervised contrastive loss (InfoNCE): original graphlet vs. truncated version (30-70% of edges deleted) as positives; other batch items as negatives.
+| Model | Cross-table transfer | String columns | Pretraining data | Architecture |
+|---|---|---|---|---|
+| CatBoost / XGBoost | No | Limited | None | Tree |
+| [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) | No (fixed columns) | No | Synthetic | Transformer |
+| [somepalli2021saint](somepalli2021saint.md) | No | Limited | None | Transformer |
+| [qu2025tabicl](qu2025tabicl.md) | No (fixed-width) | No | Real + synthetic | Transformer |
+| **CARTE** | Yes (via star graph) | Yes (FastText) | YAGO3 (real KG) | Graph Transformer |
 
-**Fine-tuning.** Reuses the pretrained attention layers + readout layer (not the full network — avoids over-smoothing). Bagging across random train/validation splits for early stopping. Supports:
-- *Single table*: standard supervised fine-tuning
-- *Pairwise transfer*: joint training on source + target table without schema matching (ensemble with single-table model)
-- *Multi-table*: all pairwise learners ensembled with single-table model, weighted by validation performance
+- [qu2025tabicl](qu2025tabicl.md): both from INRIA SODA; CARTE handles strings and cross-table transfer via graphs; TabICL handles large numerical tables in-context — complementary strengths.
+- [somepalli2021saint](somepalli2021saint.md): SAINT uses row-and-column attention with contrastive pretraining; CARTE uses graph-per-row with KG pretraining. Different data regimes: SAINT for structured numeric tables, CARTE for string/entity-heavy tables.
+- [wang2025griffin](wang2025griffin.md): Griffin represents relational database rows similarly (text encoder per cell, cross-attention per row); CARTE is the tabular analogue from the non-RDL community.
 
-**Results.** CARTE outperforms 42 baselines (including CatBoost, XGBoost, TabPFN, LLM-based) across 51 tabular datasets. Particularly strong on tables with high-cardinality string/categorical columns — a regime where tree-based models historically struggle. Robust to missing values (handles them by simply removing leaf nodes). Limitation: significantly slower than tree-based models (85–315 sec vs <1 sec for CatBoost).
+## Technical Details
 
-## Key Takeaways
+**Graph representation.** For a row with $c$ columns:
+- Center node: row representation (initialized as mean of leaf embeddings)
+- $c$ leaf nodes: one per cell; features initialized as FastText embeddings of string/categorical values, or $\text{value} \times \mathbf{e}_\text{col}$ for numerical values
+- Edges: column name embeddings $\mathbf{E}_{ij} \in \mathbb{R}^d$ (FastText of column name)
 
-- **Graph = schema-agnostic representation**: star-shaped graphlet with column names as edges puts rows from different tables in the same computational domain — the key enabling pretraining across heterogeneous tables without data integration.
-- **Edge-augmented attention disambiguates context**: the element-wise product $X_i \odot E_{ij}$ encodes that entry meaning depends on its column — "George Bush" as "son of" vs. "father of" leads to different entity resolutions.
-- **YAGO pretraining provides entity world knowledge**: 6.3M real-world entities with their relations; fine-tuning tables with string entries benefit from this prior even without explicit entity matching.
-- **FastText + value×embedding handles numerical cells**: no special numerical tokenization needed; column name embedding serves as the "unit" and value scales it — a simple but effective approach.
-- **Bagging compensates for small tables**: most tabular benchmarks have small training sets; averaging predictions across different train/validation splits for early stopping consistently helps.
+**Edge-augmented attention:**
+
+$$\vec{K}_{ij} = (\mathbf{X}_i^{(l)} \odot \mathbf{E}_{ij}^{(l)}) \cdot W_K, \qquad \vec{V}_{ij} = (\mathbf{X}_i^{(l)} \odot \mathbf{E}_{ij}^{(l)}) \cdot W_V$$
+
+Queries are from node features only ($\mathbf{X}_i^{(l)} W_Q$). Attention masks enforce star-graph structure — center attends to all leaves; leaves attend only to center.
+
+**Pretraining.** YAGO3 triples $(head, relation, tail)$ → star graphlets matching the row format. InfoNCE contrastive loss: original graphlet vs. truncated version (30–70% of edges deleted) as positive pair; other batch items as negatives.
+
+**Fine-tuning modes:**
+- *Single table*: supervised fine-tuning on the target table
+- *Pairwise transfer*: joint training on source + target; ensemble with single-table model
+- *Multi-table*: all pairwise learners ensembled, weighted by validation performance
+
+**Bagging.** Multiple train/validation splits for early stopping; averaged predictions reduce variance on small tables.
+
+## Experiments
+
+- Outperforms 42 baselines across 51 tabular datasets; especially strong advantage on tables with high-cardinality string/categorical columns.
+- On tables where CatBoost excels (purely numerical, no string features), CARTE advantage is smaller but generally positive.
+- Limitation: 85–315 seconds inference time vs. <1 second for CatBoost — impractical for latency-sensitive applications.
+- Multi-table transfer consistently outperforms single-table fine-tuning when source and target share entity types.
 
 ## Entities & Concepts
 
+- [tabular-learning](tabular-learning.md)
 - [relational-deep-learning](relational-deep-learning.md)
-
-## Relation to Other Wiki Pages
-
-- [relational-deep-learning](relational-deep-learning.md): CARTE's graph representation of rows is closely related to RDL's graph representation of relational databases; both use graph structure to enable cross-table learning.
-- [qu2025tabicl](qu2025tabicl.md): both are tabular foundation models from INRIA's SODA team; CARTE uses graph + pretraining on real knowledge, TabICL uses Transformer + pretraining on synthetic data; CARTE handles strings better, TabICL handles large numerical tables better.
-- [graph-neural-network](graph-neural-network.md): CARTE's architecture is GAT-style with edge features; the edge-in-attention mechanism mirrors HGT's type-specific parameterization for the schema-as-edge case.

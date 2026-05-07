@@ -9,7 +9,7 @@ updated: 2026-05-06
 
 ## Common Ground
 
-All three papers solve the same root problem: standard Graph Transformers require O(N²) attention and can't scale to large graphs. All three cite the same baseline GT papers as prior work — Dwivedi & Bresson's GT ([dwivedi2021graph](dwivedi2021graph.md)), SAN ([kreuzer2021san](kreuzer2021san.md)), and Graphormer ([ying2021graphormer](ying2021graphormer.md)).
+All three papers solve the same root problem: standard Graph Transformers require O(N²) attention and can't scale to large graphs. All three cite the same baseline GT papers as prior work — Dwivedi & Bresson's GT ([dwivedi2021gt](dwivedi2021gt.md)), SAN ([kreuzer2021san](kreuzer2021san.md)), and Graphormer ([ying2021graphormer](ying2021graphormer.md)).
 
 ## Direct Citation Chain
 

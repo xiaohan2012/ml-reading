@@ -39,7 +39,7 @@ Prior Graph Transformers either required custom architectures or struggled to sc
 
 - [kreuzer2021san](kreuzer2021san.md): SAN uses full Laplacian spectrum for PE; Graphormer uses SPD-based spatial encoding — cheaper and more directly structural, less theoretically motivated.
 - [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS uses MPNN ∥ GlobalAttn with separate PE injection; Graphormer bakes structure directly into attention biases — both achieve global receptive field by different mechanisms.
-- [dwivedi2021graph](dwivedi2021graph.md): earlier GT using k lowest LapPE eigenvectors; Graphormer replaces with SPD-based spatial encoding, more informative and without sign ambiguity.
+- [dwivedi2021gt](dwivedi2021gt.md): earlier GT using k lowest LapPE eigenvectors; Graphormer replaces with SPD-based spatial encoding, more informative and without sign ambiguity.
 
 ## Technical Details
 

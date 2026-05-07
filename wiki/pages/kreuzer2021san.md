@@ -32,12 +32,12 @@ Partial LapPE (k lowest eigenvectors) loses high-frequency structural informatio
 
 | Model | Spectrum used | Full attention | Sign-invariant |
 |---|---|---|---|
-| [dwivedi2021graph](dwivedi2021graph.md) | k lowest eigenvectors | No (MPNN) | No |
+| [dwivedi2021gt](dwivedi2021gt.md) | k lowest eigenvectors | No (MPNN) | No |
 | **SAN** | Full spectrum | Yes | Yes |
 | [ying2021graphormer](ying2021graphormer.md) | SPD-based spatial | Yes | N/A |
 | [rampavsek2022graphgps](rampavsek2022graphgps.md) | RWSE / LapPE | Hybrid | Via SignNet |
 
-- [dwivedi2021graph](dwivedi2021graph.md): the direct predecessor — uses k-lowest LapPE; SAN shows this loses structural information by not considering the full spectrum.
+- [dwivedi2021gt](dwivedi2021gt.md): the direct predecessor — uses k-lowest LapPE; SAN shows this loses structural information by not considering the full spectrum.
 - [ying2021graphormer](ying2021graphormer.md): uses SPD-based spatial encoding instead of spectral; cheaper but less theoretically motivated than full spectrum.
 - [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS explicitly builds on SAN-style full-spectrum LapPE in its PE taxonomy, and later work (SignNet) addresses the sign-invariance issue SAN acknowledged.
 

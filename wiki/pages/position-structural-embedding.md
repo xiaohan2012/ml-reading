@@ -1,7 +1,7 @@
 ---
 title: "GraphGPS PE/SE Taxonomy"
 tags: [query, analysis, concept, positional-encoding, graph-transformer]
-sources: [rampavsek2022graphgps, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025pearl, huang2024stability, dwivedi2022graph, mialon2021graphit, ying2021graphormer]
+sources: [rampavsek2022graphgps, dwivedi2020benchmarking, lim2022signnet, kanatsoulis2025pearl, huang2024stability, dwivedi2022lspe, mialon2021graphit, ying2021graphormer]
 updated: 2026-05-06
 ---
 
@@ -35,7 +35,7 @@ They are **complementary** — one can sometimes approximate the other (nearby n
 
 | Scope | Feature type | Description | Examples |
 |---|---|---|---|
-| **Local SE** | node features | Subgraph membership around a node. Nodes in similar $m$-hop subgraphs → similar SE. | Diagonal of $m$-step RW matrix (RWSE) [dwivedi2022graph](dwivedi2022graph.md) — for odd $m$, indicates membership in $m$-long cycle; node degree; triangle/ring counts; Ricci curvature |
+| **Local SE** | node features | Subgraph membership around a node. Nodes in similar $m$-hop subgraphs → similar SE. | Diagonal of $m$-step RW matrix (RWSE) [dwivedi2022lspe](dwivedi2022lspe.md) — for odd $m$, indicates membership in $m$-long cycle; node degree; triangle/ring counts; Ricci curvature |
 | **Global SE** | graph features | Global structure of the entire graph. Similar graphs → similar SE. | Eigenvalues of Laplacian/adjacency [kreuzer2021san](kreuzer2021san.md); graph diameter, girth, #components, #nodes/#edges |
 | **Relative SE** | edge features | Structural difference between two nodes. | Pairwise gradient of any local SE; boolean: do two nodes share a sub-structure? |
 
@@ -85,5 +85,5 @@ The modular design means any cell of the taxonomy can be swapped independently �
 - [rampavsek2022graphgps](rampavsek2022graphgps.md) — source paper introducing this taxonomy
 - [lim2022signnet](lim2022signnet.md) — SignNet: best Global PE in GPS ablations
 - [kanatsoulis2025pearl](kanatsoulis2025pearl.md) — PEARL: linear-complexity replacement for Global PE cell
-- [dwivedi2022graph](dwivedi2022graph.md) — LSPE: RWSE origin; Local SE
+- [dwivedi2022lspe](dwivedi2022lspe.md) — LSPE: RWSE origin; Local SE
 - [subgraph-gnn-pe](subgraph-gnn-pe.md) — RelGT's analog of Local SE for the RDL setting

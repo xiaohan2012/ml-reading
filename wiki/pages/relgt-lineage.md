@@ -1,7 +1,7 @@
 ---
 title: "RelGT Intellectual Lineage"
 tags: [query, analysis, graph-transformer, relational-deep-learning, positional-encoding]
-sources: [dwivedi2025relgt, rampavsek2022graphgps, ying2021graphormer, kreuzer2021san, dwivedi2021graph, dwivedi2020benchmarking, dwivedi2022graph, dwivedi2023graph, lim2022signnet, huang2024stability, kanatsoulis2025pearl, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hu2020hgt, schlichtkrull2018rgcn, xu2020tgat, fey2024rdlposition, robinson2024relbench]
+sources: [dwivedi2025relgt, rampavsek2022graphgps, ying2021graphormer, kreuzer2021san, dwivedi2021gt, dwivedi2020benchmarking, dwivedi2022lspe, dwivedi2023largegraphs, lim2022signnet, huang2024stability, kanatsoulis2025pearl, canturk2023graph, zhao2021gophormer, chen2022nagphormer, zhang2022hierarchical, wu2023sgformer, alon2020bottleneck, kim2022pure, mao2023hinormer, zhu2025hhgt, muller2023attending, hu2020hgt, schlichtkrull2018rgcn, xu2020tgat, fey2024rdlposition, robinson2024relbench]
 updated: 2026-05-06
 ---
 
@@ -41,7 +41,7 @@ The three challenges RelGT must solve — schema-defined, temporal, multi-type h
 
 > Vaswani et al. 2017 — Transformer: attention as pairwise interaction
 > ↓
-> [dwivedi2021graph](dwivedi2021graph.md) (Dwivedi & Bresson 2021) — first GT: LapPE + sparse local attention + BatchNorm + edge-gated attention
+> [dwivedi2021gt](dwivedi2021gt.md) (Dwivedi & Bresson 2021) — first GT: LapPE + sparse local attention + BatchNorm + edge-gated attention
 > ↓
 
 | [ying2021graphormer](ying2021graphormer.md) (Ying et al. 2021) | [kreuzer2021san](kreuzer2021san.md) (Kreuzer et al. 2021) |
@@ -59,7 +59,7 @@ The three challenges RelGT must solve — schema-defined, temporal, multi-type h
 
 > [dwivedi2020benchmarking](dwivedi2020benchmarking.md) (Dwivedi et al. 2020) — LapPE: Laplacian eigenvectors as node PE; first systematic GNN benchmark
 > ↓
-> [dwivedi2022graph](dwivedi2022graph.md) / LSPE (Dwivedi et al. 2022) — decoupled structural+positional streams; learnable PE through layers
+> [dwivedi2022lspe](dwivedi2022lspe.md) / LSPE (Dwivedi et al. 2022) — decoupled structural+positional streams; learnable PE through layers
 > ↓
 > [lim2022signnet](lim2022signnet.md) / SignNet (Lim et al. 2022) — ρ(φ(v)+φ(−v)): sign-invariant aggregation; universally expressive
 > ↓
@@ -89,7 +89,7 @@ Side branch: [canturk2023graph](canturk2023graph.md) / GPSE — pre-trained mult
 > ↓
 > Kong et al. 2023 / GOAT — EMA centroids as global summary tokens; nodes attend to B learned centroids; O(NB) instead of O(N²)
 > ↓
-> [dwivedi2023graph](dwivedi2023graph.md) (Dwivedi et al. 2023) — GT for large graphs: survey + benchmarks; validates centroid-based global attention
+> [dwivedi2023largegraphs](dwivedi2023largegraphs.md) (Dwivedi et al. 2023) — GT for large graphs: survey + benchmarks; validates centroid-based global attention
 >
 > [wu2023sgformer](wu2023sgformer.md) / SGFormer (Wu et al. 2023) — single global attention layer; 141× speedup; scales to 111M nodes
 > ↓
@@ -139,7 +139,7 @@ Side branch: [canturk2023graph](canturk2023graph.md) / GPSE — pre-trained mult
 |---|---|
 | Hybrid local+global attention | [rampavsek2022graphgps](rampavsek2022graphgps.md) |
 | Local ego-graph attention | [zhao2021gophormer](zhao2021gophormer.md), [chen2022nagphormer](chen2022nagphormer.md) |
-| EMA centroid global tokens | GOAT → [dwivedi2023graph](dwivedi2023graph.md) |
+| EMA centroid global tokens | GOAT → [dwivedi2023largegraphs](dwivedi2023largegraphs.md) |
 | Subgraph GNN PE | [kanatsoulis2025pearl](kanatsoulis2025pearl.md) / PEARL |
 | Node type encoding | [hu2020hgt](hu2020hgt.md) |
 | Temporal Δt encoding | [xu2020tgat](xu2020tgat.md), [rossi2020tgn](rossi2020tgn.md), [yu2023dygformer](yu2023dygformer.md) |

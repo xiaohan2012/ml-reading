@@ -2,7 +2,7 @@
 title: "GraphSAGE: Inductive Representation Learning on Large Graphs"
 tags: [source, gnn, inductive-learning, neighborhood-sampling]
 sources: [hamilton2017graphsage]
-updated: 2026-04-29
+updated: 2026-05-07
 ---
 
 # GraphSAGE: Inductive Representation Learning on Large Graphs
@@ -13,42 +13,66 @@ updated: 2026-04-29
 **Type:** paper
 **Authors:** Hamilton, Ying, Leskovec
 **Venue:** NeurIPS 2017
-**Year:** 2017
 
 ## Summary
 
-Hamilton, Ying, and Leskovec (Stanford) introduce GraphSAGE (SAmple and aggreGatE), the first *inductive* framework for node representation learning. The key problem with prior methods (DeepWalk, GCN): they are transductive — they learn embeddings for fixed nodes in a fixed graph. GraphSAGE instead learns an *aggregation function* that generates embeddings from a node's sampled neighborhood, enabling generalization to unseen nodes and new graphs.
+- **What:** Prior GNNs (DeepWalk, GCN) are transductive — they learn per-node embeddings for a fixed graph and cannot generalize to unseen nodes or new graphs.
+- **How:** Learn aggregation functions over fixed-size sampled neighborhoods; concatenate each node's self-embedding with its aggregated neighborhood representation.
+- **So what:** First inductive GNN framework; scales to 2.2M-node Reddit graphs and generalizes to completely unseen protein-interaction graphs; the direct ancestor of HeteroGraphSAGE used in all RDL baselines.
 
-**Core idea.** Instead of learning a single embedding per node, GraphSAGE learns a sequence of aggregator functions that sample and aggregate neighborhood features:
+## Challenges & Novelty
 
-$$h_{\mathcal{N}(v)}^k = \text{AGGREGATE}_k(\{h_u^{k-1} : u \in \mathcal{N}(v)\})$$
-$$h_v^k = \sigma(W^k \cdot [h_v^{k-1} \| h_{\mathcal{N}(v)}^k])$$
+DeepWalk and node2vec learn one embedding vector per node — they cannot embed nodes not seen during training, and retraining on a new graph is prohibitively expensive. GCN (Kipf 2017) requires the full graph adjacency matrix during training and inference, making it transductive by design.
 
-where neighborhood $\mathcal{N}(v)$ is *sampled* to a fixed size at each layer — making mini-batch training possible on graphs with millions of nodes.
+- **Aggregation functions as the learned object:** instead of embedding vectors, GraphSAGE learns functions that generate embeddings from a node's neighborhood, enabling embedding any node with features — seen or unseen.
+- **Neighborhood sampling enables mini-batch training:** sampling a fixed number of neighbors per layer bounds memory and compute regardless of node degree — critical for scaling to millions of nodes.
+- **Concatenation preserves self-identity:** using $[h_v \| h_{\mathcal{N}(v)}]$ rather than pure aggregation ensures the node's own representation is not lost in the neighborhood average — a design choice later validated in many architectures.
+
+## Relation to Prior Work
+
+| Model | Inductive | Sampling | Aggregator | Scalable |
+|---|---|---|---|---|
+| DeepWalk / node2vec | No | Random walk | — | Yes |
+| [kipf2017gcn](kipf2017gcn.md) | No | Full graph | Normalized mean | No (dense $\hat{A}$) |
+| **GraphSAGE-mean** | Yes | Fixed-size | Mean | Yes |
+| **GraphSAGE-max** | Yes | Fixed-size | Max-pool MLP | Yes |
+| [velickovic2018gat](velickovic2018gat.md) | Yes | Full neighborhood | Attention-weighted | No (full $\mathcal{N}$) |
+
+- [kipf2017gcn](kipf2017gcn.md): GraphSAGE directly addresses GCN's transductive limitation; GraphSAGE-mean approximates GCN without the renormalization trick.
+- [velickovic2018gat](velickovic2018gat.md): GAT improves over GraphSAGE's fixed aggregation with learned neighbor importance, but requires the full neighborhood (no sampling).
+- [xu2019gin](xu2019gin.md): GIN's expressiveness analysis shows GraphSAGE-mean is not injective (same limitation as GCN); max-pool variant is also strictly weaker than WL.
+- [chen2025relgnn](chen2025relgnn.md): RelGNN's HeteroGraphSAGE baseline (the RDL benchmark reference) directly extends this with type-specific aggregators for heterogeneous FK/PK graphs.
+
+## Technical Details
+
+**Core update equations.**
+
+$$h_{\mathcal{N}(v)}^k = \text{AGGREGATE}_k\!\left(\{h_u^{k-1} : u \in \mathcal{N}(v)\}\right)$$
+
+$$h_v^k = \sigma\!\left(W^k \cdot \left[h_v^{k-1} \| h_{\mathcal{N}(v)}^k\right]\right)$$
 
 **Aggregator variants:**
-- *Mean*: element-wise mean of neighbor features + self (≈ GCN with no renormalization)
-- *LSTM*: LSTM applied to a random permutation of neighbors — not permutation-invariant but empirically works
-- *Max pooling*: element-wise max over MLP-transformed neighbor features — most expressive; captures representative features
 
-**Inductive setting.** After training, embedding a new node requires only its features and neighborhood — no re-training. Demonstrated on: (1) citation networks (PPI protein interaction), (2) Reddit (2.2M posts), (3) completely unseen protein-protein interaction graphs.
+- *Mean:* $h_{\mathcal{N}(v)}^k = \text{mean}(\{h_u^{k-1}\})$ — element-wise mean; equivalent to GCN without degree renormalization.
+- *LSTM:* apply an LSTM to a random permutation of neighbor embeddings — not permutation-invariant but empirically strong.
+- *Max-pool:* $h_{\mathcal{N}(v)}^k = \max(\{\text{ReLU}(W_\text{pool} h_u^{k-1} + b)\})$ — element-wise max over MLP-transformed neighbors; captures the most salient representative feature.
 
-**HeteroGraphSAGE.** The standard RDL baseline (used in RelBench) is a heterogeneous extension of GraphSAGE that handles multiple node/edge types — directly derived from this paper.
+**Neighborhood sampling.** At each layer $k$, sample $S_k$ neighbors uniformly at random (without replacement). For $K=2$ layers with $S_1=25, S_2=10$, each node aggregates at most 250 2-hop neighbors — memory is bounded regardless of actual degree.
 
-## Key Takeaways
+**Unsupervised training.** When labels are unavailable, train with a graph-based loss: nearby nodes (co-occurring in random walks) should have similar embeddings; distant nodes should differ. This is a noise-contrastive approach:
 
-- **Inductive vs. transductive**: GraphSAGE learns *functions* not embeddings — the single most important distinction from prior work; enables deployment on evolving graphs and new nodes.
-- **Neighborhood sampling enables scalability**: fixed-size neighborhood samples at each layer give bounded memory and compute — critical for Reddit (2.2M nodes) and production deployment.
-- **Concatenation over summation**: `[h_v || h_N(v)]` concatenation preserves the self vs. neighbor distinction; pure aggregation loses this.
-- **Max pooling is the best aggregator**: empirically outperforms mean and LSTM aggregators; captures "representative" neighbors rather than averaging all.
-- **Foundation for RDL baseline**: HeteroGraphSAGE (used in RelBench) directly extends this with type-specific aggregator weights — the canonical heterogeneous GNN baseline that all RDL methods are measured against.
+$$J_\mathcal{G}(z_u) = -\log\sigma(z_u^\top z_v) - Q \cdot \mathbb{E}_{v_n \sim P_n} \log\sigma(-z_u^\top z_{v_n})$$
+
+**HeteroGraphSAGE.** The standard RDL baseline adds type-specific weight matrices $W_r^k$ per relation type, making it a heterogeneous extension directly analogous to R-GCN's relation-specific formulation.
+
+## Experiments
+
+- Reddit (2.2M nodes, 11M edges): GraphSAGE-LSTM achieves F1=0.953 vs. DeepWalk 0.650 — inductive setting, 30% of nodes unseen during training.
+- PPI (20 training graphs, 2 unseen test graphs): micro-F1=0.768 (unsupervised) to 0.612 (supervised LSTM) — demonstrates generalization to entirely new graphs.
+- Max-pool aggregator consistently outperforms mean and LSTM on most benchmarks; concatenation outperforms mean-only aggregation by ~2–4% F1.
+- 3–4× speedup over full-batch GCN on large graphs due to neighborhood sampling.
 
 ## Entities & Concepts
 
 - [graph-neural-network](graph-neural-network.md)
-
-## Relation to Other Wiki Pages
-
-- [graph-neural-network](graph-neural-network.md): GraphSAGE introduces the inductive learning paradigm that enables GNNs to scale to large and evolving graphs.
-- [relational-deep-learning](relational-deep-learning.md): HeteroGraphSAGE (the RDL baseline) is a direct heterogeneous extension — the benchmark all RDL papers beat.
-- [kipf2017gcn](kipf2017gcn.md): GraphSAGE addresses GCN's transductive limitation; mean aggregator ≈ GCN without renormalization.
+- [relational-deep-learning](relational-deep-learning.md)

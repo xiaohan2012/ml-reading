@@ -1,7 +1,7 @@
 ---
 title: Linear Transformer
 tags: [concept, attention, scalability]
-sources: [rampavsek2022graphgps, wu2023sgformer, dwivedi2023graph]
+sources: [rampavsek2022graphgps, wu2023sgformer, dwivedi2023largegraphs]
 updated: 2026-05-06
 ---
 
@@ -35,7 +35,7 @@ With enough samples m, $\mathbb{E}[\phi(q)^\top \phi(k)] = \exp(q^\top k / \sqrt
 
 [rampavsek2022graphgps](rampavsek2022graphgps.md) is the main source that makes linear attention practically useful for graph learning: edge features only go to the MPNN stream (not global attention), which means the global stream can freely use linear attention without losing edge information. This design choice is what enables O(N+E) overall GPS complexity.
 
-[dwivedi2023graph](dwivedi2023graph.md) includes "linear attention" as one of four scalability strategies in its taxonomy (alongside sparse attention, hierarchical coarsening, and neighborhood sampling).
+[dwivedi2023largegraphs](dwivedi2023largegraphs.md) includes "linear attention" as one of four scalability strategies in its taxonomy (alongside sparse attention, hierarchical coarsening, and neighborhood sampling).
 
 [wu2023sgformer](wu2023sgformer.md) pushes this further: a single global kernel attention layer + one GNN layer is sufficient for SOTA on graphs up to 111M nodes.
 

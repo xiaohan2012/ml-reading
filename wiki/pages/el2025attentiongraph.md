@@ -2,12 +2,13 @@
 title: "Towards Mechanistic Interpretability of Graph Transformers via Attention Graphs"
 tags: [source, graph-transformer, interpretability, gnn, attention]
 sources: [el2025attentiongraph]
-updated: 2026-04-30
+updated: 2026-05-07
 ---
 
 # Towards Mechanistic Interpretability of Graph Transformers via Attention Graphs
 
 **Source:** https://arxiv.org/abs/2502.12352
+**Title:** Towards Mechanistic Interpretability of Graph Transformers via Attention Graphs
 **Date ingested:** 2026-04-30
 **Type:** paper
 **Authors:** Batu El, Deepro Choudhury, Pietro Liò, Chaitanya K. Joshi
@@ -15,31 +16,63 @@ updated: 2026-04-30
 
 ## Summary
 
-This paper introduces **Attention Graphs**, a mechanistic interpretability framework for GNNs and Graph Transformers. The core insight is that message passing in GNNs and self-attention in Transformers are mathematically equivalent — both propagate information along weighted edges. Attention Graphs make this explicit by aggregating learned attention matrices into a single directed graph that represents actual information routing, independently of the input graph topology.
+- **What:** Graph Transformer accuracy metrics don't reveal *how* the model routes information internally — two models with identical test accuracy can implement fundamentally different computational strategies, and it is unknown whether GTs learn to follow graph structure or ignore it.
+- **How:** Construct an **Attention Graph** by aggregating learned attention matrices across heads (average) and across layers (matrix multiply) into a single directed graph that captures all indirect information routing; compare it to the input graph topology.
+- **So what:** Reveals that pure Transformer models (DL class) recover less than 4% of input graph structure yet match accuracy; structurally-biased models (DLB class, e.g., Graphormer) recover 28–86%; same accuracy can be achieved via fundamentally different internal algorithms.
 
-Aggregation works in two steps: (1) **across heads** — simple averaging; (2) **across layers** — matrix multiplication, so that the entry (i,j) in the final Attention Graph reflects all indirect paths (i→k→j across layers). The resulting graph is compared to the original input graph to measure whether the model learned to follow the graph structure or deviate from it.
+## Challenges & Novelty
 
-Experiments on node classification tasks reveal that identical accuracy can be achieved via fundamentally different internal strategies. Dense-learned (DL) models recover <4% of input graph structure (F1), while models with graph structural bias (DLB, e.g. Graphormer) recover 28–86%. On heterophilous graphs, DLB models rely heavily on self-attention (diagonal attention pattern = feature identity preservation), while DL models develop "reference nodes" — hubs receiving near-universal attention that act as comparison anchors for classification.
+Standard interpretability tools (GNNExplainer, gradient saliency) perturb inputs to identify important features — they don't analyze the information routing structure of the model itself. For GTs, which blend local MPNN computation with global attention, it is unclear whether the model learns to follow edges or discovers its own routing.
 
-## Key Takeaways
+- **Attention Graph construction captures multi-layer information flow:** averaging across heads then matrix-multiplying across layers produces entry $(i, j)$ proportional to the total attention influence of node $j$ on node $i$ across all indirect paths — a compact summary of actual information routing.
+- **Four GT variants classified by design:** SC (static, sparse = GCN-style), SL (sparse learned = GAT-style), DLB (dense learned with structural bias = Graphormer), DL (dense learned, no bias = pure Transformer). Each class exhibits distinct Attention Graph patterns.
+- **Same accuracy, different algorithms:** the central finding is that mechanistic analysis is necessary — end-to-end metrics hide divergent computational strategies. DL models develop "reference nodes" (attention hubs that aggregate global context) while DLB models use self-attention diagonals (preserve own features).
 
-- **Attention Graph construction**: average across heads, multiply across layers → encodes full multi-hop information flow in one matrix
-- **Four GT variants** classified by parametrization × sparsity: SC (GCN), SL (GAT), DLB (Graphormer), DL (pure Transformer)
-- **Structure recovery**: DL models learn attention nearly orthogonal to input graph (<4% F1); DLB models retain moderate-to-high alignment (28–86%)
-- **Attention distance decay**: DLB concentrates on 1-hop neighbors (sharp locality); DL distributes uniformly across all distances regardless of graph connectivity
-- **Heterophilous strategies diverge**: DLB → diagonal self-attention (rely on own features); DL → vertical "reference node" patterns (classify by comparing to anchor nodes)
-- **Same accuracy, different algorithms**: mechanistic analysis is necessary — end-to-end metrics hide divergent computational strategies
+## Relation to Prior Work
+
+| GT class | Representative | Structure recovery | Strategy |
+|---|---|---|---|
+| SC (static sparse) | GCN ([kipf2017gcn](kipf2017gcn.md)) | High (by design) | Follow graph edges |
+| SL (sparse learned) | GAT ([velickovic2018gat](velickovic2018gat.md)) | Moderate | Learned edge weights |
+| DLB (dense + bias) | Graphormer ([ying2021graphormer](ying2021graphormer.md)) | 28–86% | Locality + bias |
+| DL (dense) | Pure Transformer | $<$ 4% | Reference nodes |
+
+- [ying2021graphormer](ying2021graphormer.md): Graphormer's SPD bias (DLB class) causes high structure recovery (locality decay) and intermediate behavior between local GNN and pure Transformer — Attention Graphs explain *why* the bias matters mechanistically.
+- [kreuzer2021san](kreuzer2021san.md): SAN and Graphormer both enable full global attention; Attention Graphs distinguish their internal routing strategies despite similar benchmark performance.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS's hybrid MPNN + global attention would be a natural next subject for Attention Graph analysis — local vs. global component contributions not yet studied.
+- [velickovic2018gat](velickovic2018gat.md): GAT (SL class) shows intermediate structure recovery; learned attention selectively follows edges but doesn't match the input graph perfectly.
+
+## Technical Details
+
+**Attention Graph construction.**
+
+Step 1 — Head aggregation: for each layer $l$, average attention matrices across $H$ heads:
+$$A^{(l)} = \frac{1}{H} \sum_{h=1}^H A_h^{(l)} \in \mathbb{R}^{N \times N}$$
+
+Step 2 — Layer composition: multiply across $L$ layers to capture all indirect paths:
+$$A^\text{total} = A^{(L)} \cdot A^{(L-1)} \cdots A^{(1)} \in \mathbb{R}^{N \times N}$$
+
+Entry $[A^\text{total}]_{ij}$ reflects all indirect attention paths $i \to k \to \cdots \to j$ — the total influence of node $j$ on node $i$ across all layers.
+
+**Structure recovery metric.** Compare $A^\text{total}$ to the adjacency matrix $\mathcal{A}$ of the input graph via:
+$$\text{F1} = \text{F1}\!\left(\text{top-}|\mathcal{E}|(A^\text{total}),\; \mathcal{A}\right)$$
+
+where $\text{top-}|\mathcal{E}|$ takes the $|\mathcal{E}|$ largest entries of $A^\text{total}$.
+
+**Key Attention Graph patterns:**
+
+1. *Locality decay* (DLB): $[A^\text{total}]_{ij}$ decreases with graph distance $\text{dist}(i, j)$ — model preferentially routes through short paths.
+2. *Diagonal self-attention* (DLB on heterophilous graphs): $A^\text{total} \approx I$ — each node mostly attends to itself, preserving own features for classification.
+3. *Reference nodes* (DL): a small set of nodes receive near-universal attention — they aggregate global context and serve as comparison anchors for all other nodes' predictions.
+4. *Uniform attention* (DL base): $A^\text{total} \approx \frac{1}{N}\mathbf{1}\mathbf{1}^T$ — pure Transformer without structural bias distributes attention uniformly.
+
+## Experiments
+
+- Node classification benchmarks (Cora, CiteSeer, heterophilous graphs): all four GT classes achieve similar test accuracy (within 2%); Attention Graphs reveal fundamentally different internal routing.
+- DL models: structure recovery F1 $< 4\%$; develop reference node patterns (2–5 nodes receive $> 50\%$ of total attention).
+- DLB models (Graphormer): structure recovery F1 = 28–86% depending on dataset; higher on homophilous graphs.
+- Heterophilous graphs: DLB models shift to diagonal self-attention (rely on own features); DL models shift to reference nodes (classify by comparison).
 
 ## Entities & Concepts
 
-- [graph-transformer](graph-transformer.md) — Attention Graphs apply to GTs across the SC/SL/DLB/DL design space
-- [ying2021graphormer](ying2021graphormer.md) — DLB archetype; spatial bias retains graph structure in attention
-- [velickovic2018gat](velickovic2018gat.md) — SL archetype; sparse learned attention
-- [kipf2017gcn](kipf2017gcn.md) — SC archetype; constant sparse attention
-
-## Relation to Other Wiki Pages
-
-- vs. [ying2021graphormer](ying2021graphormer.md): Graphormer's SPD bias (graph structural bias) causes DLB-type behavior — high structure recovery, locality decay. Attention Graphs give a new lens on *why* this bias matters mechanistically.
-- vs. [kreuzer2021san](kreuzer2021san.md): SAN and Graphormer both enable full global attention; Attention Graphs distinguish their information routing strategies despite similar benchmark performance.
-- vs. [rampavsek2022graphgps](rampavsek2022graphgps.md): GPS hybrid (MPNN ∥ GlobalAttn) would be interesting to analyze via Attention Graphs — local vs. global component contributions not yet studied.
-- **Gap**: No wiki page yet on GNN-specific explainability methods (GNNExplainer, PGExplainer, SubgraphX). This paper is complementary — it analyzes emergent attention routing rather than perturbing inputs.
+- [graph-transformer](graph-transformer.md)

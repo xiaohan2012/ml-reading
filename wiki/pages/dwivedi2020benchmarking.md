@@ -2,7 +2,7 @@
 title: "Benchmarking Graph Neural Networks"
 tags: [source, graph-neural-network, positional-encoding, benchmark]
 sources: [dwivedi2020benchmarking]
-updated: 2026-05-04
+updated: 2026-05-07
 ---
 
 # Benchmarking Graph Neural Networks
@@ -16,29 +16,63 @@ updated: 2026-05-04
 
 ## Summary
 
-This paper establishes an open-source benchmarking framework for GNNs built around a curated collection of 12 medium-scale datasets spanning real-world domains (chemistry: ZINC, AQSOL; computer vision: MNIST, CIFAR10; social/academic: WikiCS, OGBL-COLLAB) and mathematical graphs designed to test specific structural properties (PATTERN, CLUSTER, CSL, CYCLES, TSP, GraphTheoryProp). The central design principle is a fixed parameter budget (100k or 500k parameters) applied uniformly to all models, enabling fair architectural comparison and separating modeling gains from raw capacity gains. The PyTorch/DGL infrastructure is modular, making it easy to swap datasets, layers, or training protocols.
+- **What:** GNN evaluation used small, non-representative benchmarks (Cora, Citeseer, Pubmed) with inconsistent parameter budgets, making architectural comparisons unreliable.
+- **How:** Establish 12 medium-scale datasets across chemistry, computer vision, and mathematical graph theory with a fixed 100k/500k parameter budget; introduce Laplacian eigenvectors as graph positional encodings (LapPE).
+- **So what:** The benchmark and LapPE became the standard for all subsequent Graph Transformer papers (SAN, GraphGPS, Graphormer, LSPE, SignNet, RelGT); LapPE catalyzed an entire PE research direction.
 
-The paper's most consequential contribution is the introduction of **Laplacian eigenvectors as graph positional encodings (LapPE)**: nodes lack canonical positions, so Laplacian eigenvectors of the graph Laplacian matrix serve as a structural signal analogous to sinusoidal PEs in sequence Transformers. LapPE substantially improved performance on structural detection tasks (CSL, CYCLES, PATTERN) where message-passing GNNs fail entirely. This proposal catalyzed a wave of PE research — SAN, SignNet, GraphGPS, Graphormer, and RelGT all trace their PE lineage here, whether building on LapPE directly or proposing alternatives to overcome its limitations (sign ambiguity, O(N³) precomputation, heterogeneous inapplicability).
+## Challenges & Novelty
 
-## Key Takeaways
+Prior GNN evaluation used citation networks (Cora, Citeseer) with at most a few thousand nodes — too small for meaningful architecture comparisons and too homophilous to test structural discrimination. Moreover, papers used widely varying parameter counts (10k–10M), making any comparison meaningless.
 
-- **12 medium-scale datasets** covering graph/node/edge tasks across chemistry, vision, and mathematical graph theory — enabled fair academic-scale GNN comparison.
-- **Fixed parameter budget** (100k/500k): separates architectural gains from capacity gains; standard for GT papers since 2020.
-- **Introduced LapPE**: Laplacian eigenvectors as node positional encodings — the origin of the PE research direction now central to all Graph Transformers.
-- **Origin of a field**: SAN, GraphGPS, SignNet, Graphormer, LSPE all cite this as the PE starting point they build on or improve.
-- **Historical note**: the benchmark pre-dates Graph Transformers; the PE insight emerged from noticing that message-passing GNNs fail on structural tasks without positional information.
+- **Fixed parameter budget enables fair comparison:** all models constrained to 100k or 500k parameters; a GCN and a Transformer are compared at the same capacity rather than different scales.
+- **LapPE introduces positional identity to GNNs:** message-passing GNNs cannot distinguish node positions in structurally symmetric graphs (e.g., two nodes in a regular graph with identical neighborhoods). LapPE — the $k$ smallest non-trivial eigenvectors of the normalized graph Laplacian — provides each node with a unique positional signature that captures global graph structure. This catalyzed the entire PE research direction: SAN, SignNet, RWSE, SPE, PEARL, and RelGT's subgraph GNN PE all trace their lineage here.
+- **Structural benchmarks expose GNN limitations:** PATTERN and CLUSTER require structural discrimination that pure aggregation-based GNNs fail on without PE — GCN without LapPE performs at random on CSL (cycle detection). These datasets don't appear in TU datasets or OGB and were specifically designed to test structural reasoning.
+
+## Relation to Prior Work
+
+| Benchmark | Size | Structural tasks | PE provided | Fixed budget |
+|---|---|---|---|---|
+| Cora/Citeseer | ~3K nodes | No | No | No |
+| TU Datasets | Varies | No | No | No |
+| **Benchmarking-GNNs** | 10K–500K nodes | Yes (PATTERN, CSL) | Yes (LapPE) | Yes (100k/500k) |
+| OGB | Up to 3.8M nodes | No | No | No |
+| [huang2023tgb](huang2023tgb.md) | 4M–67M edges | No | No | No |
+
+- [dwivedi2021gt](dwivedi2021gt.md): the first GT to use this benchmark and LapPE; same lead author formalizes the GT architecture using this framework.
+- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS uses this benchmark for all experiments; extends LapPE to RWSE/SignNet.
+- [kreuzer2021san](kreuzer2021san.md): SAN (NeurIPS 2021) builds on LapPE and evaluates on this benchmark.
+- [lim2022signnet](lim2022signnet.md): SignNet addresses LapPE's sign ambiguity — a fundamental problem introduced with LapPE here.
+- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT benchmarks LapPE on REGs (heterogeneous temporal graphs) and finds it expensive and inferior to subgraph GNN PE — showing the limits of molecular-graph PE on relational graphs.
+
+## Technical Details
+
+**Datasets (12 total).**
+
+Molecular/chemical: ZINC (graph regression, 12K graphs, predict molecular properties); AQSOL (solubility prediction); OGBL-COLLAB (link prediction).
+
+Computer vision (superpixels): MNIST (75 nodes/graph), CIFAR10 (150 nodes/graph) — edges connect spatially proximate superpixels.
+
+Mathematical/structural: PATTERN (node classification, 10K graphs; detect specific graph patterns), CLUSTER (node clustering, community structure), CSL (Circular Skip Link: graph isomorphism test — GCN fails completely), CYCLES (detect cycles of specific length), GraphTheoryProp.
+
+**Laplacian positional encoding.** For a graph $G$ with normalized Laplacian $L_\text{sym} = I - D^{-1/2}AD^{-1/2}$:
+
+$$L_\text{sym} = U \Lambda U^T, \quad 0 = \lambda_0 \leq \lambda_1 \leq \cdots \leq \lambda_{N-1}$$
+
+LapPE of node $v$: $\text{PE}(v) = [u_1(v), u_2(v), \ldots, u_k(v)] \in \mathbb{R}^k$ — the $v$-th entries of the $k$ smallest non-trivial eigenvectors. Concatenated with node features or added to input embeddings.
+
+**Practical considerations:** eigendecomposition is $O(N^3)$; for large graphs this is prohibitive. The sign ambiguity ($u_i$ vs. $-u_i$) is handled by random sign-flipping during training — later rigorously resolved by SignNet.
+
+**Parameter budget enforcement:** all weight matrices, embedding dimensions, and number of layers are constrained to match the 100k or 500k budget. Results are reported at both budgets for fair comparison across architecture families.
+
+## Experiments
+
+- GCN without LapPE: 0% accuracy on CSL (random baseline) — cannot distinguish any of the non-isomorphic circulant graphs. GCN + LapPE: 100% on CSL — LapPE is essential.
+- PATTERN: GCN fails at ~50% (random); GatedGCN + LapPE: 85.6%. GT (Dwivedi & Bresson) with LapPE: 86.7%.
+- ZINC: GatedGCN outperforms GCN/GAT/GIN significantly at same parameter budget; edge features are critical.
+- BatchNorm consistently outperforms LayerNorm across all datasets — a finding later validated by Dwivedi & Bresson (AAAI 2021).
 
 ## Entities & Concepts
 
 - [positional-encoding](positional-encoding.md)
 - [graph-neural-network](graph-neural-network.md)
 - [graph-transformer](graph-transformer.md)
-
-## Relation to Other Wiki Pages
-
-- [positional-encoding](positional-encoding.md): LapPE was introduced here — this is the origin page for the PE concept in graphs.
-- [rampavsek2022graphgps](rampavsek2022graphgps.md): GraphGPS benchmarks against this framework's datasets and extends PE to the RWSE/SignNet era.
-- [kreuzer2021san](kreuzer2021san.md): SAN (Kreuzer 2021) builds on LapPE, using the full Laplacian spectrum to address sign ambiguity.
-- [ying2021graphormer](ying2021graphormer.md): Graphormer proposes SPD-based spatial encoding as an alternative to LapPE.
-- [dwivedi2021graph](dwivedi2021graph.md): Dwivedi & Bresson (AAAI 2021) formalizes GTs using LapPE from this benchmark.
-- [dwivedi2025relgt](dwivedi2025relgt.md): RelGT explicitly benchmarks Laplacian PE on REGs (finds it expensive and underperforms subgraph GNN PE).
