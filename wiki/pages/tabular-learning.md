@@ -1,8 +1,8 @@
 ---
 title: Tabular Learning
 tags: [concept, tabular, foundation-model, in-context-learning]
-sources: [hollmann2025tabpfnv2, qu2025tabicl, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint]
-updated: 2026-04-29
+sources: [hollmann2025tabpfnv2, qu2025tabicl, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint, muller2022pfn]
+updated: 2026-05-08
 ---
 
 # Tabular Learning
@@ -31,7 +31,8 @@ Tabular learning refers to machine learning on structured data organized in rows
 
 ## Appearances in Sources
 
-- [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) — establishes the PFN paradigm; SCM+BNN prior; N≤1000 in-context classification; ICLR 2023
+- [muller2022pfn](muller2022pfn.md) — original PFN paper; proves Prior-Data NLL ↔ KL-divergence minimization; GP/BNN approximation + tabular; ICLR 2022
+- [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) — establishes the PFN paradigm for tabular classification; SCM+BNN prior; N≤1000 in-context classification; ICLR 2023
 - [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) — extends v1 with 130M synthetic datasets, row/col attention, N≤10K; SOTA small tables; Nature 2025
 - [qu2025tabicl](qu2025tabicl.md) — extends ICL to 500K samples via distribution-aware column embedding + patching analogy; outperforms TabPFNv2 on large tables; ICML 2025
 - [kim2024carte](kim2024carte.md) — graph-based representation for cross-table pretraining without schema matching; YAGO knowledge pretraining; handles string-heavy tables; ICML 2024

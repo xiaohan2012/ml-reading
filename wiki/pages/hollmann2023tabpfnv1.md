@@ -38,6 +38,7 @@ Tabular datasets are heterogeneous in schema, size, and feature type, making it 
 | [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) | No | Yes | 2.8 sec | N≤10K |
 | [qu2025tabicl](qu2025tabicl.md) | No | Yes | Fast | N≤500K |
 
+- [muller2022pfn](muller2022pfn.md): the original PFN paper (ICLR 2022) that proves minimizing Prior-Data NLL ≡ minimizing KL to the exact PPD; TabPFN v1 is a direct application of this framework to tabular classification with a richer SCM+BNN prior.
 - [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md): v2 extends with 130M synthetic datasets, alternating row/col attention, and N≤10K scope; v1 is the conceptual and architectural foundation.
 - [qu2025tabicl](qu2025tabicl.md): TabICL explicitly extends the ICL-for-tabular paradigm to N≤500K by decoupling column embedding from the ICL Transformer.
 

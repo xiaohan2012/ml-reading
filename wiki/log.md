@@ -310,3 +310,7 @@ Pages written: kipf2017gcn, hamilton2017graphsage, gilmer2017mpnn, velickovic201
 
 ## [2026-05-07] ingest | Batch rewrite — 21 remaining pages to v1.1.0 template
 Pages written: cong2023graphmixer, somepalli2021saint, kim2024carte, alon2020bottleneck, morris2019kgnn, dwivedi2021gt, mialon2021graphit, kim2022pure, dwivedi2022lspe, lim2022signnet, huang2024stability, dwivedi2020benchmarking, canturk2023graph, muller2023attending, dwivedi2023largegraphs, shirzad2023exphormer, wu2023sgformer, zhang2022hierarchical, zhu2023hierarchical, zhu2025hhgt, el2025attentiongraph
+
+## [2026-05-08] ingest | Transformers Can Do Bayesian Inference (PFN)
+Pages written: muller2022pfn
+Pages updated: hollmann2023tabpfnv1, tabular-learning, kumorfm2-reading-plan, index

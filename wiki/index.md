@@ -17,6 +17,7 @@
 - [schlichtkrull2018rgcn](pages/schlichtkrull2018rgcn.md) — R-GCN: relation-specific weight matrices; basis/block decomposition; knowledge graph completion; ESWC 2018 _(ingested 2026-04-29)_
 - [morris2019kgnn](pages/morris2019kgnn.md) — k-GNN: 1-GNNs ≡ 1-WL; k-tuples message passing exceeds 1-WL; hierarchical 1-k-GNN; AAAI 2019 _(ingested 2026-04-29)_
 - [huang2023tgb](pages/huang2023tgb.md) — TGB: large-scale temporal benchmark (4M-67M edges); temporal negative sampling; finds simple baselines often best; NeurIPS 2023 _(ingested 2026-04-29)_
+- [muller2022pfn](pages/muller2022pfn.md) — PFN: Prior-Data Fitted Networks; Transformer trained on prior samples approximates PPD in one forward pass; proves Prior-Data NLL ≡ KL minimization; 200-8000× faster than MCMC; ICLR 2022 _(ingested 2026-05-08)_
 - [hollmann2023tabpfnv1](pages/hollmann2023tabpfnv1.md) — TabPFN v1: PFN paradigm; SCM+BNN prior; N≤1000 ICL classification; 5700× faster than AutoML; ICLR 2023 _(ingested 2026-04-29)_
 - [somepalli2021saint](pages/somepalli2021saint.md) — SAINT: column + intersample attention; contrastive pretraining; beats boosted trees on average; 2021 _(ingested 2026-04-29)_
 - [cvitkovic2020rdb](pages/cvitkovic2020rdb.md) — First RDB-as-GNN paper; RDBToGraph algorithm; node classification = supervised learning on RDB; 2020 _(ingested 2026-04-29)_

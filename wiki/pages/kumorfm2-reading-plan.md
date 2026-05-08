@@ -1,8 +1,8 @@
 ---
 title: "KumoRFM-2 Reading Plan: Predecessor Papers and Techniques"
 tags: [query, analysis, relational-deep-learning, foundation-model, in-context-learning]
-sources: [fey2025kumorfm2, fey2025kumorfm, fey2024rdlposition, robinson2024relbench, hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, rampavsek2022graphgps, dwivedi2025relgt]
-updated: 2026-05-06
+sources: [fey2025kumorfm2, fey2025kumorfm, fey2024rdlposition, robinson2024relbench, muller2022pfn, hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, rampavsek2022graphgps, dwivedi2025relgt]
+updated: 2026-05-08
 ---
 
 # KumoRFM-2 Reading Plan: Predecessor Papers and Techniques
@@ -20,17 +20,18 @@ KumoRFM-2 sits at the intersection of three lines of work. You need all three.
 
 **KumoRFM-2's most distinctive idea — injecting labels as context for a frozen model — comes directly from tabular ICL.**
 
-3. [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) — TabPFN v1: the origin of the ICL-for-tables idea. A prior-fitted network trained on synthetic data predicts any table in a single forward pass by treating training rows as context. This is the paradigm KumoRFM-2 extends to multi-table relational data.
-4. [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) — TabPFN v2: adds alternating row/column attention within a table — this is exactly Stage 1 of KumoRFM-2's hierarchical design (column attention + row attention within a table, before FK/cross-sample attention across tables).
-5. [qu2025tabicl](qu2025tabicl.md) — TabICL: 3-Transformer stack (column → row → ICL Transformer). KumoRFM-2 is essentially TabICL + a relational graph layer inserted between Stage 1 (intra-table) and Stage 2 (inter-table/cross-sample).
+3. [muller2022pfn](muller2022pfn.md) — PFN (Prior-Data Fitted Networks): the theoretical foundation. Proves that training a Transformer on samples from a prior minimizes KL to the exact Bayesian PPD. Establishes the core idea that *any* Bayesian model can be amortized into a single forward pass given a sampable prior. Read this before TabPFN to understand *why* the ICL paradigm works, not just that it does.
+4. [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) — TabPFN v1: PFNs applied to tabular classification. A prior-fitted network trained on SCM+BNN synthetic data predicts any table in a single forward pass by treating training rows as context. This is the paradigm KumoRFM-2 extends to multi-table relational data.
+5. [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) — TabPFN v2: adds alternating row/column attention within a table — this is exactly Stage 1 of KumoRFM-2's hierarchical design (column attention + row attention within a table, before FK/cross-sample attention across tables).
+6. [qu2025tabicl](qu2025tabicl.md) — TabICL: 3-Transformer stack (column → row → ICL Transformer). KumoRFM-2 is essentially TabICL + a relational graph layer inserted between Stage 1 (intra-table) and Stage 2 (inter-table/cross-sample).
 
 ## Thread 3 — Graph Transformers for relational structure (the graph layer)
 
 **KumoRFM-2's FK-level and cross-sample attention over the relational entity graph builds on GT work.**
 
-6. [rampavsek2022graphgps](rampavsek2022graphgps.md) — GraphGPS: the architectural backbone. MPNN ∥ GlobalAttn in parallel; PE/SE taxonomy. KumoRFM-1 used RelGT (which is built on GPS) as its table-wise interaction module.
-7. [dwivedi2025relgt](dwivedi2025relgt.md) — RelGT: the direct supervised predecessor to KumoRFM's relational GT module. 5-element tokenization (features, type, hop, time, subgraph GNN PE); hybrid local+global attention on the REG. KumoRFM-1 used RelGT explicitly as Stage 2; KumoRFM-2 replaces it with hierarchical 4-axis attention but the concepts carry over.
-8. [fey2025kumorfm](fey2025kumorfm.md) — KumoRFM-1: the direct predecessor. Three stages: table-invariant encoder → RelGT → ICL module. V2 flattens this into a single hierarchical 4-axis attention model with early label injection.
+7. [rampavsek2022graphgps](rampavsek2022graphgps.md) — GraphGPS: the architectural backbone. MPNN ∥ GlobalAttn in parallel; PE/SE taxonomy. KumoRFM-1 used RelGT (which is built on GPS) as its table-wise interaction module.
+8. [dwivedi2025relgt](dwivedi2025relgt.md) — RelGT: the direct supervised predecessor to KumoRFM's relational GT module. 5-element tokenization (features, type, hop, time, subgraph GNN PE); hybrid local+global attention on the REG. KumoRFM-1 used RelGT explicitly as Stage 2; KumoRFM-2 replaces it with hierarchical 4-axis attention but the concepts carry over.
+9. [fey2025kumorfm](fey2025kumorfm.md) — KumoRFM-1: the direct predecessor. Three stages: table-invariant encoder → RelGT → ICL module. V2 flattens this into a single hierarchical 4-axis attention model with early label injection.
 
 ## How Threads 2 and 3 Relate
 
@@ -48,7 +49,8 @@ The seam between them is exactly where single-table tabular models break down. T
 | Order | Paper | Why |
 |---|---|---|
 | 1 | [fey2024rdlposition](fey2024rdlposition.md) | Understand REGs and the RDL task formulation |
-| 2 | [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) | Understand ICL as a training paradigm |
+| 2 | [muller2022pfn](muller2022pfn.md) | Understand *why* PFN training = Bayesian inference (the theory) |
+| 2b | [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) | Understand ICL applied to tabular data (the practice) |
 | 3 | [dwivedi2025relgt](dwivedi2025relgt.md) | Understand how GTs handle heterogeneous temporal relational graphs |
 | 4 | [fey2025kumorfm](fey2025kumorfm.md) | Understand V1; V2 is then a legible architectural evolution |
 
