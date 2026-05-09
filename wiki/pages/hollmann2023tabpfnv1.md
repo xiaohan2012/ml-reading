@@ -17,7 +17,8 @@ updated: 2026-05-06
 ## Summary
 
 - **What:** Tabular ML requires expensive per-dataset training, cross-validation, and hyperparameter tuning — prohibitive for low-latency or low-resource settings.
-- **How:** TabPFN trains a Transformer offline on synthetic datasets (Structural Causal Models + Bayesian Neural Networks) to approximate the Bayesian posterior predictive distribution; at inference, the training set is passed as context and predictions are made in a single forward pass with frozen weights.
+- **How:** TabPFN trains a Transformer offline on synthetic datasets (Structural Causal Models + Bayesian Neural Networks) to approximate the Bayesian posterior predictive distribution; 
+	- at inference, the training set is passed as context and predictions are made in a single forward pass with frozen weights.
 - **So what:** First practical ICL model for tabular data — outperforms XGBoost/LightGBM/AutoML on small tables (N≤1000) in under 1 second (5700× speedup), establishing the PFN paradigm that TabPFN v2, TabICL, and KumoRFM all build on.
 
 ## Challenges & Novelty
@@ -30,15 +31,18 @@ Tabular datasets are heterogeneous in schema, size, and feature type, making it 
 
 ## Relation to Prior Work
 
-| Method | Per-dataset training | ICL | Speed | Scale |
-|---|---|---|---|---|
-| XGBoost / LightGBM | Yes | No | Minutes | Large |
-| AutoML (AutoGluon) | Yes (hours) | No | Hours | Large |
-| **TabPFN v1** | No (pretrained) | Yes | <1 sec | N≤1000 |
-| [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) | No | Yes | 2.8 sec | N≤10K |
-| [qu2025tabicl](qu2025tabicl.md) | No | Yes | Fast | N≤500K |
+| Method                                          | Per-dataset training | ICL | Speed   | Scale  |
+| ----------------------------------------------- | -------------------- | --- | ------- | ------ |
+| XGBoost / LightGBM                              | Yes                  | No  | Minutes | Large  |
+| AutoML (AutoGluon)                              | Yes (hours)          | No  | Hours   | Large  |
+| **TabPFN v1**                                   | No (pretrained)      | Yes | <1 sec  | N≤1000 |
+| [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) | No                   | Yes | 2.8 sec | N≤10K  |
+| [qu2025tabicl](qu2025tabicl.md)                 | No                   | Yes | Fast    | N≤500K |
 
-- [muller2022pfn](muller2022pfn.md): the original PFN paper (ICLR 2022) that proves minimizing Prior-Data NLL ≡ minimizing KL to the exact PPD; TabPFN v1 is a direct application of this framework to tabular classification with a richer SCM+BNN prior.
+- [muller2022pfn](muller2022pfn.md): the original PFN paper (ICLR 2022) that proves minimizing Prior-Data NLL ≡ minimizing KL to the exact PPD; TabPFN v1 directly applies this framework to tabular classification, addressing three limitations of the original: 
+	1. a more realistic SCM+BNN prior with Occam's razor bias vs. plain BNN/GP priors; 
+	2. scale from N=30 to N≤1000 with proper OpenML-CC18 evaluation; 
+	3. categorical features and multi-class support (see below).
 - [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md): v2 extends with 130M synthetic datasets, alternating row/col attention, and N≤10K scope; v1 is the conceptual and architectural foundation.
 - [qu2025tabicl](qu2025tabicl.md): TabICL explicitly extends the ICL-for-tabular paradigm to N≤500K by decoupling column embedding from the ICL Transformer.
 
@@ -53,9 +57,35 @@ At inference, $\mathcal{D}_\text{train}$ is passed as context; the Transformer o
 - *Structural Causal Models (SCMs)*: DAG-based generation with MLP functions + noise
 - *Bayesian Neural Networks (BNNs)*: random network weights sample function families
 
-Occam's razor bias: simpler structures (fewer nodes/parameters) have higher prior probability, matching the real-world distribution of tabular datasets.
+**Occam's razor bias**: simpler structures (fewer nodes/parameters) have higher prior probability, matching the real-world distribution of tabular datasets.
 
-**Scope.** N≤1000 training examples, ≤100 numerical features, ≤10 classes. Missing values and categoricals are not natively handled in v1.
+
+**Scope.** N≤1000 training examples, ≤100 numerical features, ≤10 classes. Missing values handled only by zero-imputation; categorical performance weaker than numerical.
+
+## Changes from [muller2022pfn](muller2022pfn.md) (per Appendix A.6 of the paper):
+
+1. **Multi-class support.** The original PFN produced scalar regression labels then binarized them — only balanced binary classification. TabPFN samples $N_c \sim p(N_c)$ classes, draws $N_c - 1$ random boundaries from the continuous label distribution $\hat{y}$, and maps $\hat{y}_i \mapsto \sum_j [B_j < \hat{y}_i]$ to produce imbalanced multi-class labels. Class labels are then randomly shuffled to remove ordering.
+
+2. **Preprocessing.** Not done at all in the original. TabPFN adds z-score normalization, power scaling (Yeo-Johnson) at inference to handle exponentially scaled tabular data, and random rotation of feature column indices and class labels during training for invariance.
+
+3. **Ensembling.** Ensemble over $2kj$ combinations of feature column rotation ($k$), class label rotation ($j$), and power transform (on/off). This is the "32 permutations" referenced in results tables.
+
+4. **Faster attention.** Shrinks attention matrix from $(n+m)^2$ to $n^2 + n \cdot m$, where $n$ = training (context) tokens and $m$ = test (query) tokens: training tokens attend to each other ($n^2$), test tokens attend only to training tokens ($n \cdot m$), but test tokens never attend to each other.
+
+5. **SCM prior.** Replaces the plain BNN prior with a novel Structural Causal Model (SCM) prior, plus an improved BNN prior; SCM+BNN combined gives ~2% gain over BNN alone.
+
+6. **Categorical features.** A random fraction $p_{cat}$ of features are discretized via the same interval-mapping as multi-class labels, with optional category reshuffling. Not natively strong — performance degrades on purely categorical datasets.
+
+**BNN vs. SCM prior.**
+
+| | BNN prior | SCM prior |
+|---|---|---|
+| Structure | Feedforward NN (inputs → output) | DAG with arbitrary inter-feature dependencies |
+| Feature relationships | All features are independent inputs | Features can causally depend on each other |
+| Inductive bias | Smooth function families | Causal/sparse dependency structure |
+| Realism for tabular | Weaker | Stronger (matches real column correlations) |
+
+Ablation: SCM alone outperforms BNN alone; SCM+BNN mixture gives marginal further gain. The SCM is the dominant contributor — TabPFN's key prior innovation over [muller2022pfn](muller2022pfn.md).
 
 ## Experiments
 

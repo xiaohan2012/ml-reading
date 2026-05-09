@@ -28,9 +28,13 @@ updated: 2026-05-09
 
 KumoRFM sits at the intersection of two research lines, each with limitations that motivate the design.
 
-**Relational Deep Learning (RDL).** RDL ([fey2024rdlposition](fey2024rdlposition.md)) recasts relational tables as a temporal heterogeneous graph and trains GNNs or Graph Transformers end-to-end, removing manual feature engineering. *Limitation:* every (dataset, task) pair still requires its own model trained from scratch — there is no transfer across schemas or tasks. KumoRFM keeps the RDL graph representation but replaces per-task training with in-context learning over a frozen pre-trained model.
+**Relational Deep Learning (RDL)** ([fey2024rdlposition](fey2024rdlposition.md))
 
-**Foundation models for structured data.** The paper groups prior attempts into three families, all of which fall short of a true relational foundation model:
+- Recasts relational tables as a temporal heterogeneous graph; GNNs/Graph Transformers learn end-to-end → no manual feature engineering.
+- *Limitation:* every (dataset, task) pair needs its own model trained from scratch — no transfer.
+- KumoRFM keeps the RDL graph view but swaps per-task training for ICL over a frozen pre-trained model.
+
+**Foundation models for structured data** — three families, all insufficient for relational DBs:
 
 | Family | Examples | Why insufficient for relational DBs |
 |---|---|---|
@@ -38,9 +42,9 @@ KumoRFM sits at the intersection of two research lines, each with limitations th
 | Graph foundation models via text-attributed graphs | OFA, ZeroG, GFT | Each node must be LLM-encoded (expensive); positive transfer is mostly within-domain because structural patterns differ across graphs. |
 | Tabular foundation models | [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md), [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md), [qu2025tabicl](qu2025tabicl.md) | Confined to a *single flat* table; limited context length, feature count, class size; multi-table data must be manually joined and flattened. |
 
-KumoRFM extends the tabular-FM ICL paradigm to native multi-table relational databases, while keeping RDL's schema-agnostic graph view.
+→ KumoRFM extends the tabular-FM ICL paradigm to native multi-table relational DBs while keeping RDL's schema-agnostic graph view.
 
-**Direct lineage / contrasts.**
+**Direct lineage / contrasts**
 
 - [dwivedi2025relgt](dwivedi2025relgt.md) — RelGT is reused as the cross-table attention block (Stage 2 of the architecture).
 - [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) — tabular ICL ancestor; KumoRFM lifts the same prior-fitted-network idea from one table to a database.
@@ -59,7 +63,7 @@ KumoRFM extends the tabular-FM ICL paradigm to native multi-table relational dat
 
 ![Figure 2: KumoRFM architecture overview|697](assets/fey2025kumorfm-fig2.png)
 
-The whole system is summarized
+The whole system (excluding PQL) is summarized
 
 $$\tilde y_e^{(t)} = \mathrm{KumoRFM}_\theta^{\text{❄}}\!\left(\mathcal G_k^{\le t}[e],\; \big\{\mathcal G_k^{\le \hat t}[\hat e],\, y_{\hat e}^{\hat t}\big\}_{\hat t<t,\,\hat e\sim\mathcal G}\right)$$
 
