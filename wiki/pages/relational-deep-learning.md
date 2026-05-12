@@ -1,7 +1,7 @@
 ---
 title: Relational Deep Learning (RDL)
 tags: [concept, relational-deep-learning, gnn, database]
-sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, gu2026relbench, ranjan2025relationaltr, chen2025relgnn, wang2025griffin, cvitkovic2020rdb]
+sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, gu2026relbenchv2, ranjan2025relationaltr, chen2025relgnn, wang2025griffin, cvitkovic2020rdb]
 updated: 2026-04-29
 ---
 
@@ -32,7 +32,7 @@ The field is moving toward [Relational Foundation Models](relational-foundation-
 - [fey2024rdlposition](fey2024rdlposition.md) — founding blueprint; defines REG, Training Table, temporal neighbor sampling, GNN-as-SQL insight
 - [robinson2024relbench](robinson2024relbench.md) — empirical validation at scale; 7 databases, 30 tasks, data scientist comparison
 - [dwivedi2025relgt](dwivedi2025relgt.md) — RelGT as a GT solution within the RDL framework
-- [gu2026relbench](gu2026relbench.md) — benchmark expansion; confirms RDL outperforms single-table baselines across all new task types
+- [gu2026relbenchv2](gu2026relbenchv2.md) — benchmark expansion; confirms RDL outperforms single-table baselines across all new task types
 - [ranjan2025relationaltr](ranjan2025relationaltr.md) — RT as a foundation model approach to RDL
 - [chen2025relgnn](chen2025relgnn.md) — RelGNN: bridge/hub topology analysis + composite message passing; SOTA 27/30 RelBench v1 tasks
 - [wang2025griffin](wang2025griffin.md) — Griffin: first pretrained foundation model for RDBs; unified text+float encoders + hierarchical aggregation

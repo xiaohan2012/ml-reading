@@ -39,7 +39,7 @@ The temporal graph ecosystem is fragmented: DyGLib supports CTDG methods (TGAT, 
 
 - [yu2023dygformer](yu2023dygformer.md): DyGLib was developed alongside DyGFormer; TGM supersedes DyGLib with broader model coverage and faster execution.
 - [rossi2020tgn](rossi2020tgn.md): TGN's modular memory/embedding design (5 composable components) inspired TGM's hook-based modularity.
-- [gu2026relbench](gu2026relbench.md): TGB datasets are integrated into RelBench v2 via relational schema translation, creating a bridge between TGM and the RDL ecosystem.
+- [gu2026relbenchv2](gu2026relbenchv2.md): TGB datasets are integrated into RelBench v2 via relational schema translation, creating a bridge between TGM and the RDL ecosystem.
 
 ## Technical Details
 

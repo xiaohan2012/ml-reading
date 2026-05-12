@@ -1,7 +1,7 @@
 ---
 title: Temporal Graph
 tags: [concept, temporal-graph]
-sources: [fey2024rdlposition, chmura2026tgm, gu2026relbench, xu2020tgat, rossi2020tgn, yu2023dygformer, huang2023tgb, trivedi2019dyrep, cong2023graphmixer]
+sources: [fey2024rdlposition, chmura2026tgm, gu2026relbenchv2, xu2020tgat, rossi2020tgn, yu2023dygformer, huang2023tgb, trivedi2019dyrep, cong2023graphmixer]
 updated: 2026-04-29
 ---
 
@@ -18,13 +18,13 @@ Both are views of the same underlying event stream. [TGM](chmura2026tgm.md) is t
 
 **Temporal graph learning tasks**: link property prediction, node property prediction, and graph property prediction (predicting global properties of future graph snapshots — enabled by TGM's time-based iteration).
 
-**Connection to Relational Deep Learning**: [Relational Entity Graphs](relational-entity-graph.md) are a special class of temporal heterogeneous graph defined by primary-foreign key schema constraints. [RelBench v2](gu2026relbench.md) integrates TGB temporal graph datasets into relational schemas, creating a unified relational-temporal evaluation framework.
+**Connection to Relational Deep Learning**: [Relational Entity Graphs](relational-entity-graph.md) are a special class of temporal heterogeneous graph defined by primary-foreign key schema constraints. [RelBench v2](gu2026relbenchv2.md) integrates TGB temporal graph datasets into relational schemas, creating a unified relational-temporal evaluation framework.
 
 ## Appearances in Sources
 
 - [fey2024rdlposition](fey2024rdlposition.md) — time-consistent computation graph (Algorithm 1): temporal neighbor sampling filters to $\tau(w) \leq t$; three strategies (uniform, ordered, biased); applied to heterogeneous REGs
 - [chmura2026tgm](chmura2026tgm.md) — defines the formal model; TGM is the software infrastructure
-- [gu2026relbench](gu2026relbench.md) — TGB temporal interaction datasets translated into relational schemas for unified evaluation
+- [gu2026relbenchv2](gu2026relbenchv2.md) — TGB temporal interaction datasets translated into relational schemas for unified evaluation
 - [xu2020tgat](xu2020tgat.md) — TGAT: first transformer-based CTDG encoder; Bochner functional time encoding; inductive single forward pass; ICLR 2020
 - [rossi2020tgn](rossi2020tgn.md) — TGN: memory + temporal graph attention; unifies TGAT/Jodie/DyRep; 30× faster; SOTA 2020
 - [yu2023dygformer](yu2023dygformer.md) — DyGFormer: first-hop Transformer with patching + neighbor co-occurrence; eliminates RNN/multi-hop; NeurIPS 2023 SOTA

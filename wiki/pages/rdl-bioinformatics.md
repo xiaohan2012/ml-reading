@@ -1,7 +1,7 @@
 ---
 title: "RDL for Bioinformatics and Transcriptomics"
 tags: [query, analysis, relational-deep-learning, bioinformatics, transcriptomics]
-sources: [fey2024rdlposition, chen2025relgnn, fey2025kumorfm2, gu2026relbench]
+sources: [fey2024rdlposition, chen2025relgnn, fey2025kumorfm2, gu2026relbenchv2]
 updated: 2026-04-29
 ---
 
@@ -34,7 +34,7 @@ patients ──< admissions ──< diagnoses
 lab_items ──< lab_events   (itemid FK)
 ```
 
-Temporal: `admissions.admittime`, `lab_events.charttime`. Seed entity = patient or admission. Already in [gu2026relbench](gu2026relbench.md) (MIMIC-IV, length-of-stay prediction).
+Temporal: `admissions.admittime`, `lab_events.charttime`. Seed entity = patient or admission. Already in [gu2026relbenchv2](gu2026relbenchv2.md) (MIMIC-IV, length-of-stay prediction).
 
 ---
 
@@ -182,5 +182,5 @@ This two-stage design (expression encoder → relational GNN) has not yet appear
 - [relational-entity-graph](relational-entity-graph.md) — graph abstraction all RDL methods use
 - [chen2025relgnn](chen2025relgnn.md) — bridge/hub topology analysis directly applicable to pathway/regulatory structures
 - [fey2025kumorfm2](fey2025kumorfm2.md) — billion-scale support relevant to large single-cell atlases
-- [gu2026relbench](gu2026relbench.md) — MIMIC-IV clinical data already in the benchmark
+- [gu2026relbenchv2](gu2026relbenchv2.md) — MIMIC-IV clinical data already in the benchmark
 - [rdl-approaches](rdl-approaches.md) — which RDL models to use for which tasks

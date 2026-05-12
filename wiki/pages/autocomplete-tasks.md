@@ -1,7 +1,7 @@
 ---
 title: Autocomplete Tasks
 tags: [concept, benchmark, relational-deep-learning]
-sources: [gu2026relbench, ranjan2025relationaltr]
+sources: [gu2026relbenchv2, ranjan2025relationaltr]
 updated: 2026-04-28
 ---
 
@@ -9,7 +9,7 @@ updated: 2026-04-28
 
 ## Description
 
-Autocomplete tasks are a class of predictive tasks introduced in [RelBench v2](gu2026relbench.md) where the objective is to predict missing or masked attribute values in *existing* relational table columns, as opposed to **forecasting tasks** that predict future outcomes constructed via SQL queries over future rows.
+Autocomplete tasks are a class of predictive tasks introduced in [RelBench v2](gu2026relbenchv2.md) where the objective is to predict missing or masked attribute values in *existing* relational table columns, as opposed to **forecasting tasks** that predict future outcomes constructed via SQL queries over future rows.
 
 Autocomplete is still temporal: a seed time is assigned to each prediction, and only rows created before that seed time are available. A target column's value is masked; the model must infer it from relational and temporal context in the surrounding database.
 
@@ -30,7 +30,7 @@ Autocomplete is still temporal: a seed time is assigned to each prediction, and 
 
 ## Appearances in Sources
 
-- [gu2026relbench](gu2026relbench.md) — introduced as a new benchmark task type (Section 3, 4)
+- [gu2026relbenchv2](gu2026relbenchv2.md) — introduced as a new benchmark task type (Section 3, 4)
 - [ranjan2025relationaltr](ranjan2025relationaltr.md) — framed as masked token prediction alongside forecasting tasks
 
 ## Related Concepts

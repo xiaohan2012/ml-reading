@@ -1,7 +1,7 @@
 ---
 title: "Motivation and Applications of Relational Deep Learning"
 tags: [query, analysis, relational-deep-learning]
-sources: [fey2024rdlposition, robinson2024relbench, gu2026relbench, cvitkovic2020rdb, relbench]
+sources: [fey2024rdlposition, robinson2024relbench, gu2026relbenchv2, cvitkovic2020rdb, relbench]
 updated: 2026-04-29
 ---
 
@@ -39,7 +39,7 @@ This is expensive, error-prone, and loses information. The joins discard graph s
 
 ### Domains in RelBench
 
-From [gu2026relbench](gu2026relbench.md), the benchmark spans 11 databases across:
+From [gu2026relbenchv2](gu2026relbenchv2.md), the benchmark spans 11 databases across:
 
 - **E-commerce** — Amazon product reviews (user/item/review tables)
 - **Q&A platforms** — Stack Exchange (users/posts/votes/badges)

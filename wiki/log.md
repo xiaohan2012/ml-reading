@@ -302,8 +302,8 @@ Pages written: ying2021graphormer, kreuzer2021san, zhao2021gophormer, chen2022na
 Pages updated: assets/rampavsek2022graphgps-layer.png (converted from PDF)
 
 ## [2026-05-06] ingest | Batch rewrite — 10 RDL/temporal source pages to v1.1.0 template
-Pages written: chen2025relgnn, chmura2026tgm, cvitkovic2020rdb, gu2026relbench, rossi2020tgn, trivedi2019dyrep, wang2025griffin, xu2020tgat, yu2023dygformer, huang2023tgb
-Pages updated: assets/chen2025relgnn-routes.png, assets/rossi2020tgn-arch.png, assets/wang2025griffin-arch.png, assets/yu2023dygformer-arch.jpg, assets/gu2026relbench-autocomplete.png (figures converted/copied)
+Pages written: chen2025relgnn, chmura2026tgm, cvitkovic2020rdb, gu2026relbenchv2, rossi2020tgn, trivedi2019dyrep, wang2025griffin, xu2020tgat, yu2023dygformer, huang2023tgb
+Pages updated: assets/chen2025relgnn-routes.png, assets/rossi2020tgn-arch.png, assets/wang2025griffin-arch.png, assets/yu2023dygformer-arch.jpg, assets/gu2026relbenchv2-autocomplete.png (figures converted/copied)
 
 ## [2026-05-07] ingest | Batch rewrite — 6 core GNN pages to v1.1.0 template
 Pages written: kipf2017gcn, hamilton2017graphsage, gilmer2017mpnn, velickovic2018gat, schlichtkrull2018rgcn, xu2019gin

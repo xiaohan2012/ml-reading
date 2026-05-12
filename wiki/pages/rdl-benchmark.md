@@ -1,7 +1,7 @@
 ---
 title: "RDL Benchmark Scales"
 tags: [query, analysis, relational-deep-learning, benchmark]
-sources: [robinson2024relbench, gu2026relbench, huang2023tgb, wang2025griffin, hollmann2025tabpfnv2, qu2025tabicl]
+sources: [robinson2024relbench, gu2026relbenchv2, huang2023tgb, wang2025griffin, hollmann2025tabpfnv2, qu2025tabicl]
 updated: 2026-04-29
 ---
 
@@ -13,7 +13,7 @@ updated: 2026-04-29
 - Databases include Amazon (books/products), Stack Exchange, and others
 - The wiki page focuses on task count and comparison with data scientists rather than row counts — exact row/node counts per database not captured during ingestion
 
-## RelBench v2 ([gu2026relbench](gu2026relbench.md))
+## RelBench v2 ([gu2026relbenchv2](gu2026relbenchv2.md))
 
 - **11 databases**, 22M+ rows across 29 tables (from 4 new datasets alone)
 - **23 autocomplete tasks** (plus v1 forecasting tasks)

@@ -1,7 +1,7 @@
 ---
 title: Overview
 tags: [overview, synthesis]
-sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, chmura2026tgm, ranjan2025relationaltr, gu2026relbench, chen2025relgnn, wang2025griffin, rampavsek2022graphgps, kipf2017gcn, hamilton2017inductive, velickovic2018gat, xu2019gin, xu2020tgat, rossi2020tgn, yu2023dygformer, hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, ying2021graphormer, kreuzer2021san, gilmer2017mpnn, schlichtkrull2018rgcn, morris2019kgnn, huang2023tgb, hollmann2023tabpfnv1, somepalli2021saint, cvitkovic2020rdb, trivedi2019dyrep, cong2023graphmixer]
+sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, chmura2026tgm, ranjan2025relationaltr, gu2026relbenchv2, chen2025relgnn, wang2025griffin, rampavsek2022graphgps, kipf2017gcn, hamilton2017inductive, velickovic2018gat, xu2019gin, xu2020tgat, rossi2020tgn, yu2023dygformer, hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, ying2021graphormer, kreuzer2021san, gilmer2017mpnn, schlichtkrull2018rgcn, morris2019kgnn, huang2023tgb, hollmann2023tabpfnv1, somepalli2021saint, cvitkovic2020rdb, trivedi2019dyrep, cong2023graphmixer]
 updated: 2026-05-11
 ---
 
