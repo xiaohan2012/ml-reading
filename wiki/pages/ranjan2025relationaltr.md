@@ -40,6 +40,24 @@ Foundation models for relational data require schema-agnostic representations �
 - [relbench](relbench.md): RT pretrained leave-one-DB-out on RelBench and evaluated zero-shot; also evaluated on RelBench v2 autocomplete tasks.
 - [relational-foundation-model](relational-foundation-model.md): RT is the first pretrained foundation model for relational databases; RelGT is the strongest supervised model.
 
+### RT vs. KumoRFM v1 / v2 — row-vs-cell tokenisation fork
+
+All three are RFMs for multi-table relational data, but they differ on **tokenisation granularity** and **how relational structure is injected**.
+
+| Axis | [fey2025kumorfm](fey2025kumorfm.md) (v1) | [fey2025kumorfm2](fey2025kumorfm2.md) (v2) | RT |
+|---|---|---|---|
+| Token | Row (subgraph node) | Row (subgraph node) | **Cell** (value, column, table) |
+| Schema-agnostic | Table-invariant row encoder | Hierarchical attention | Cells are the universal atom |
+| Relational structure | RelGT cross-table attention + PEs (node type, hop, time, GNN-PE) | 4-axis attention: column/row + FK/cross-sample, no extra PEs across tables | 4 attention masks (column / feature / neighbor / global), **no PEs** |
+| Task spec | PQL → on-the-fly context table $\hat T$ + ICL head | PQL → context with **early label injection** | Task as an extra relational table, unified as MTP |
+| Inference | ICL (TabPFN-style, frozen) | ICL (frozen) + optional fine-tune | Zero-shot MTP; continued pretrain optional |
+
+**Conceptual relationship:**
+
+- KumoRFM keeps the RDL **graph view** (rows = nodes, FKs = edges) and learns cross-table mixing with RelGT-style attention + PEs (v1) or hierarchical FK attention (v2).
+- RT drops the graph view entirely — cells are tokens, structure is encoded by *attention masks alone*, no PEs — trading peak supervised accuracy for true zero-shot schema transfer.
+- v2 and RT are contemporaneous; v2's Related Work lists RT as the *cell-tokenised* alternative ("schema-agnostic via cell tokens; trades expressivity for PE-free generality").
+
 ## Technical Details
 
 **Cell-level tokenization.** Each cell $(v, c, t)$ — value $v$ in column $c$ of table $t$ — is a universal token. Column and table embeddings are added to encode schema context. This representation is identical across any database schema.

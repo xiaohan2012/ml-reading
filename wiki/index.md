@@ -3,6 +3,7 @@
 ### Sources
 - [hollmann2025tabpfnv2](pages/hollmann2025tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
 - [qu2025tabicl](pages/qu2025tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
+- [qu2026tabiclv2](pages/qu2026tabiclv2.md) — TabICLv2: same 3-stage pipeline + QASSMax (anti attention-fading) + early target embedding + Muon + richer prior; open SOTA beats RealTabPFN-2.5; 1M-row inference; ICML 2026 _(ingested 2026-05-11)_
 - [kim2024carte](pages/kim2024carte.md) — CARTE: graph-per-row + YAGO pretraining; edge-augmented attention; no schema matching; string tables; ICML 2024 _(ingested 2026-04-29)_
 - [xu2020tgat](pages/xu2020tgat.md) — TGAT: Bochner functional time encoding + masked self-attention over temporal neighborhoods; inductive CTDG; ICLR 2020 _(ingested 2026-04-29)_
 - [rossi2020tgn](pages/rossi2020tgn.md) — TGN: memory module + temporal graph attention; unifies TGAT/Jodie/DyRep; 30× faster than TGAT; SOTA 2020 _(ingested 2026-04-29)_

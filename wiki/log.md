@@ -314,3 +314,7 @@ Pages written: cong2023graphmixer, somepalli2021saint, kim2024carte, alon2020bot
 ## [2026-05-08] ingest | Transformers Can Do Bayesian Inference (PFN)
 Pages written: muller2022pfn
 Pages updated: hollmann2023tabpfnv1, tabular-learning, kumorfm2-reading-plan, index
+
+## [2026-05-11] ingest | TabICLv2: A better, faster, scalable, and open tabular foundation model
+Pages written: qu2026tabiclv2
+Pages updated: tabular-learning, fey2025kumorfm2, index, overview
