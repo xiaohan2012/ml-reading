@@ -30,12 +30,12 @@ A benchmark for relational ML must cover database diversity (size, domain, table
 
 ## Relation to Prior Work
 
-| Benchmark | Graph type | Temporal | Multi-table | Human baseline |
-|---|---|---|---|---|
-| OGB | Homogeneous / KG | No | No | No |
-| TGB | Temporal homogeneous | Yes | No | No |
-| **RelBench v1** | Heterogeneous temporal | Yes | Yes | Yes (data scientist) |
-| [gu2026relbench](gu2026relbench.md) (v2) | Heterogeneous temporal | Yes | Yes | Yes |
+| Benchmark                                | Graph type             | Temporal | Multi-table | Human baseline       |
+| ---------------------------------------- | ---------------------- | -------- | ----------- | -------------------- |
+| OGB                                      | Homogeneous / KG       | No       | No          | No                   |
+| TGB                                      | Temporal homogeneous   | Yes      | No          | No                   |
+| **RelBench v1**                          | Heterogeneous temporal | Yes      | Yes         | Yes (data scientist) |
+| [gu2026relbench](gu2026relbench.md) (v2) | Heterogeneous temporal | Yes      | Yes         | Yes                  |
 
 - [fey2024rdlposition](fey2024rdlposition.md): this paper is the empirical companion — implements and validates the RDL pipeline defined in the blueprint at scale.
 - [gu2026relbench](gu2026relbench.md): v2 expands to 11 datasets, adds autocomplete tasks, and integrates TGB and 4DBInfer.
@@ -60,6 +60,12 @@ A benchmark for relational ML must cover database diversity (size, domain, table
 - HeteroGraphSAGE (RDL) matches or outperforms the data scientist LightGBM baseline on all 30 classification and regression tasks with 96% fewer human hours and 94% fewer lines of code.
 - Single-table LightGBM (entity features only, no cross-table joins) is consistently weaker than RDL, gap narrows for tasks with rich single-table features (e.g., rel-trial with 28 columns).
 - Recommendation tasks show a smaller RDL advantage — simple popularity baselines remain competitive, suggesting recommendation over relational graphs is an open problem.
+
+## Useful Resources
+
+- [RelBench getting-started page](https://relbench.stanford.edu/start/) — install, datasets, task API overview.
+  - [Tutorial: load_data.ipynb](https://colab.research.google.com/github/snap-stanford/relbench/blob/main/tutorials/load_data.ipynb) — load a database, inspect tables, materialize a training table.
+  - [Tutorial: train_model.ipynb](https://colab.research.google.com/github/snap-stanford/relbench/blob/main/tutorials/train_model.ipynb) — end-to-end HeteroGraphSAGE training on a RelBench task.
 
 ## Entities & Concepts
 
