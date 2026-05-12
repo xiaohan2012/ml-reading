@@ -34,7 +34,7 @@
 - [dwivedi2025relgt](pages/dwivedi2025relgt.md) — First GT for relational databases; 5-element tokenization + hybrid local-global attention _(ingested 2026-04-28)_
 - [chmura2026tgm](pages/chmura2026tgm.md) — First unified CTDG+DTDG library; 7.8× speedup; hook-based modular system _(ingested 2026-04-28)_
 - [ranjan2025relationaltr](pages/ranjan2025relationaltr.md) — Cell-level zero-shot foundation model for relational data; Relational Attention; 93% supervised AUROC at 22M params _(ingested 2026-04-28)_
-- [gu2026relbench](pages/gu2026relbench.md) — RelBench expansion: 7→11 datasets, autocomplete tasks, TGB/ReDeLEx/4DBInfer integrations _(ingested 2026-04-28)_
+- [gu2026relbenchv2](pages/gu2026relbenchv2.md) — RelBench expansion: 7→11 datasets, autocomplete tasks, TGB/ReDeLEx/4DBInfer integrations _(ingested 2026-04-28)_
 - [fey2025kumorfm](pages/fey2025kumorfm.md) — KumoRFM v1: first RFM; table-invariant encoder + RelGT + ICL module; PQL interface; explainability; 76.71 ICL / 81.14 fine-tuned AUROC on RelBench v1 _(ingested 2026-04-29)_
 - [fey2025kumorfm2](pages/fey2025kumorfm2.md) — KumoRFM-2: task-conditioned ICL + hierarchical 4-scale attention; first few-shot RFM to beat supervised SOTA on RelBench; scales to 500B+ rows _(ingested 2026-04-29)_
 - [kocijan2026pql](pages/kocijan2026pql.md) — PQL: declarative DSL for auto-generating RDL training tables; PREDICT/FOR EACH/ASSUMING; 40× faster than SQL; powers KumoRFM ICL context generation _(ingested 2026-05-06)_

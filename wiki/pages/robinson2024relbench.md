@@ -35,10 +35,10 @@ A benchmark for relational ML must cover database diversity (size, domain, table
 | OGB                                      | Homogeneous / KG       | No       | No          | No                   |
 | TGB                                      | Temporal homogeneous   | Yes      | No          | No                   |
 | **RelBench v1**                          | Heterogeneous temporal | Yes      | Yes         | Yes (data scientist) |
-| [gu2026relbench](gu2026relbench.md) (v2) | Heterogeneous temporal | Yes      | Yes         | Yes                  |
+| [gu2026relbenchv2](gu2026relbenchv2.md) (v2) | Heterogeneous temporal | Yes      | Yes         | Yes                  |
 
 - [fey2024rdlposition](fey2024rdlposition.md): this paper is the empirical companion — implements and validates the RDL pipeline defined in the blueprint at scale.
-- [gu2026relbench](gu2026relbench.md): v2 expands to 11 datasets, adds autocomplete tasks, and integrates TGB and 4DBInfer.
+- [gu2026relbenchv2](gu2026relbenchv2.md): v2 expands to 11 datasets, adds autocomplete tasks, and integrates TGB and 4DBInfer.
 
 ## Technical Details
 

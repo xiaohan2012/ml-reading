@@ -40,7 +40,7 @@ Relational databases have heterogeneous schemas — different table names, colum
 
 - [ranjan2025relationaltr](ranjan2025relationaltr.md): both use masked/cell-level prediction as self-supervised pretraining; RT uses cell-level tokenization across tables, Griffin uses cross-attention within rows + GNN across tables.
 - [fey2025kumorfm](fey2025kumorfm.md): KumoRFM v1 achieves better zero-shot performance via ICL (no pretraining); Griffin focuses on pretraining generalization instead.
-- [gu2026relbench](gu2026relbench.md): Griffin's masked cell completion pretraining directly connects to RelBench v2's autocomplete tasks; ReDeLEx (integrated in v2) provides the pretraining corpus.
+- [gu2026relbenchv2](gu2026relbenchv2.md): Griffin's masked cell completion pretraining directly connects to RelBench v2's autocomplete tasks; ReDeLEx (integrated in v2) provides the pretraining corpus.
 
 ## Technical Details
 

@@ -40,7 +40,7 @@ The dominant CTDG benchmarks at NeurIPS 2023 were Wikipedia and Reddit datasets 
 - [xu2020tgat](xu2020tgat.md): TGAT is a baseline on TGB; TGB's node prediction results show it underperforms simple methods on non-link tasks.
 - [rossi2020tgn](rossi2020tgn.md): TGN is another TGB baseline with the same pattern — strong on link prediction, not dominant on node prediction.
 - [yu2023dygformer](yu2023dygformer.md): DyGFormer is evaluated on TGB; harder negative sampling and larger scale expose limitations invisible on Wikipedia/Reddit.
-- [gu2026relbench](gu2026relbench.md): RelBench v2 integrates TGB datasets via relational schema translation, enabling unified CTDG + RDL evaluation.
+- [gu2026relbenchv2](gu2026relbenchv2.md): RelBench v2 integrates TGB datasets via relational schema translation, enabling unified CTDG + RDL evaluation.
 - [chmura2026tgm](chmura2026tgm.md): TGM implements TGB evaluation protocol natively and supports TGB datasets as first-class citizens.
 
 ## Technical Details
