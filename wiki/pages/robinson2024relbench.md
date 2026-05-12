@@ -64,8 +64,8 @@ A benchmark for relational ML must cover database diversity (size, domain, table
 ## Useful Resources
 
 - [RelBench getting-started page](https://relbench.stanford.edu/start/) — install, datasets, task API overview.
-- [Tutorial: load_data.ipynb](https://colab.research.google.com/github/snap-stanford/relbench/blob/main/tutorials/load_data.ipynb) — load a database, inspect tables, materialize a training table.
-- [Tutorial: train_model.ipynb](https://colab.research.google.com/github/snap-stanford/relbench/blob/main/tutorials/train_model.ipynb) — end-to-end HeteroGraphSAGE training on a RelBench task.
+  - [Tutorial: load_data.ipynb](https://colab.research.google.com/github/snap-stanford/relbench/blob/main/tutorials/load_data.ipynb) — load a database, inspect tables, materialize a training table.
+  - [Tutorial: train_model.ipynb](https://colab.research.google.com/github/snap-stanford/relbench/blob/main/tutorials/train_model.ipynb) — end-to-end HeteroGraphSAGE training on a RelBench task.
 
 ## Entities & Concepts
 
