@@ -3,6 +3,7 @@
 ### Sources
 - [hollmann2025tabpfnv2](pages/hollmann2025tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
 - [qu2025tabicl](pages/qu2025tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
+- [qu2026tabiclv2](pages/qu2026tabiclv2.md) — TabICLv2: same 3-stage pipeline + QASSMax (anti attention-fading) + early target embedding + Muon + richer prior; open SOTA beats RealTabPFN-2.5; 1M-row inference; ICML 2026 _(ingested 2026-05-11)_
 - [kim2024carte](pages/kim2024carte.md) — CARTE: graph-per-row + YAGO pretraining; edge-augmented attention; no schema matching; string tables; ICML 2024 _(ingested 2026-04-29)_
 - [xu2020tgat](pages/xu2020tgat.md) — TGAT: Bochner functional time encoding + masked self-attention over temporal neighborhoods; inductive CTDG; ICLR 2020 _(ingested 2026-04-29)_
 - [rossi2020tgn](pages/rossi2020tgn.md) — TGN: memory module + temporal graph attention; unifies TGAT/Jodie/DyRep; 30× faster than TGAT; SOTA 2020 _(ingested 2026-04-29)_
@@ -17,6 +18,7 @@
 - [schlichtkrull2018rgcn](pages/schlichtkrull2018rgcn.md) — R-GCN: relation-specific weight matrices; basis/block decomposition; knowledge graph completion; ESWC 2018 _(ingested 2026-04-29)_
 - [morris2019kgnn](pages/morris2019kgnn.md) — k-GNN: 1-GNNs ≡ 1-WL; k-tuples message passing exceeds 1-WL; hierarchical 1-k-GNN; AAAI 2019 _(ingested 2026-04-29)_
 - [huang2023tgb](pages/huang2023tgb.md) — TGB: large-scale temporal benchmark (4M-67M edges); temporal negative sampling; finds simple baselines often best; NeurIPS 2023 _(ingested 2026-04-29)_
+- [muller2022pfn](pages/muller2022pfn.md) — PFN: Prior-Data Fitted Networks; Transformer trained on prior samples approximates PPD in one forward pass; proves Prior-Data NLL ≡ KL minimization; 200-8000× faster than MCMC; ICLR 2022 _(ingested 2026-05-08)_
 - [hollmann2023tabpfnv1](pages/hollmann2023tabpfnv1.md) — TabPFN v1: PFN paradigm; SCM+BNN prior; N≤1000 ICL classification; 5700× faster than AutoML; ICLR 2023 _(ingested 2026-04-29)_
 - [somepalli2021saint](pages/somepalli2021saint.md) — SAINT: column + intersample attention; contrastive pretraining; beats boosted trees on average; 2021 _(ingested 2026-04-29)_
 - [cvitkovic2020rdb](pages/cvitkovic2020rdb.md) — First RDB-as-GNN paper; RDBToGraph algorithm; node classification = supervised learning on RDB; 2020 _(ingested 2026-04-29)_
