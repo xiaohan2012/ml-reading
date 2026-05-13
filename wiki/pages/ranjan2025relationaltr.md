@@ -149,6 +149,16 @@ Takeaways:
 - *Feature / neighbor attention* matter more under fine-tuning, where task-specific cross-row reasoning kicks in.
 - *Full attention* is the most expendable layer; layer order within a block also has little effect (App. order ablations).
 
+## Future Interesting Work
+
+**Row generation (not addressed in the paper).** RT's MTP is strictly cell-level on existing rows — the paper does not study generating entirely new rows. Specific gaps:
+
+- Only boolean/numeric cells are masked during training; text/datetime generation isn't trained.
+- Forecasting uses a task table but masks only the single label cell, not whole rows.
+- No autoregressive or iterative decoder — outputs are independent per-cell predictions, so sampling a coherent new row isn't supported.
+
+The cell-level vocabulary is well-suited to it, though: extending masking to all datatypes plus an iterative-refinement decoder (e.g. MaskGIT-style parallel sampling, or autoregressive over a chosen cell order) would turn RT into a generative relational FM. Useful for synthetic-data generation, data augmentation, and privacy-preserving exports — but out of scope for this paper, which positions RT as a *predictive* model.
+
 ## Entities & Concepts
 
 - [relational-foundation-model](relational-foundation-model.md)
