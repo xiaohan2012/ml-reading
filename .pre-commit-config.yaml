@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        files: \.md$
+      - id: end-of-file-fixer
+        files: \.md$
+      - id: mixed-line-ending
+        files: \.md$
+        args: [--fix=lf]
+      - id: check-merge-conflict

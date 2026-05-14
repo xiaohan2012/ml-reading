@@ -62,13 +62,13 @@ All three are RFMs for multi-table relational data, but they differ on **tokenis
 | **Training & task spec** | Standardized PQL interface, but forecasting and autocomplete specified separately. | Single MTP objective unifies forecasting + autocomplete; task spec is ad hoc. |
 | **Scalability / cost** | Asymmetric hierarchical attention scales to 500B+ rows. | Cell-level → context blow-up; relies on sparse attention kernels + BFS-bounded context. |
 
-**Bottom line:** 
-- KumoRFM v2 trades token-level schema-agnosticism for **scale and row expressivity**; 
-- RT trades context-window efficiency for **strict zero-shot and a unified SSL objective**. 
+**Bottom line:**
+- KumoRFM v2 trades token-level schema-agnosticism for **scale and row expressivity**;
+- RT trades context-window efficiency for **strict zero-shot and a unified SSL objective**.
 
-**Framing:** 
-- KumoRFM keeps the RDL **graph view** (rows = nodes, FKs = edges) and learns cross-table mixing with attention + PEs; 
-- RT **drops the graph view** entirely — cells are tokens, structure is encoded by attention masks alone. 
+**Framing:**
+- KumoRFM keeps the RDL **graph view** (rows = nodes, FKs = edges) and learns cross-table mixing with attention + PEs;
+- RT **drops the graph view** entirely — cells are tokens, structure is encoded by attention masks alone.
 
 ## Technical Details
 

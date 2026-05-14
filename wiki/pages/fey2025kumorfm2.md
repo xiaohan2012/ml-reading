@@ -63,9 +63,9 @@ KumoRFM-2 sits between three lines of prior work, each with a specific limitatio
 | **Headline result (RelBenchV1 classification)** | Avg AUROC **76.71** (ICL), **81.14** (fine-tuned); beats supervised HeteroGraphSAGE (75.83).                                                                                        | Avg AUROC **79.60** (ICL); beats supervised **RelGNN** (78.06) → **first few-shot model to surpass supervised RDL**.                                                                                |
 | **RFM equation**                                | $\tilde y_e^{(t)} = \mathrm{KumoRFM}_\theta^{\text{❄}}(\mathcal G^{\le t}[e], \{(\mathcal G^{\le \hat t}[\hat e], y_{\hat e}^{\hat t})\})$                                          | **Identical equation**; only the *internals* of $\mathrm{RFM}_\theta$ change.                                                                                                                       |
 
-**One-liner difference:** 
+**One-liner difference:**
 
-- v1 = tabular row encoder → RelGT → ICL (three stages, late label injection). 
+- v1 = tabular row encoder → RelGT → ICL (three stages, late label injection).
 - v2 = column/row attention (intra-table) → **FK ∥ cross-sample** attention (inter-table) — two stages, label injected upfront so feature extraction is task-conditioned everywhere, and ICL becomes one axis of attention instead of a separate Transformer head.
 
 ## Technical Details

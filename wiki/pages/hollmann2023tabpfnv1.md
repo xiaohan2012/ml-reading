@@ -17,7 +17,7 @@ updated: 2026-05-06
 ## Summary
 
 - **What:** Tabular ML requires expensive per-dataset training, cross-validation, and hyperparameter tuning — prohibitive for low-latency or low-resource settings.
-- **How:** TabPFN trains a Transformer offline on synthetic datasets (Structural Causal Models + Bayesian Neural Networks) to approximate the Bayesian posterior predictive distribution; 
+- **How:** TabPFN trains a Transformer offline on synthetic datasets (Structural Causal Models + Bayesian Neural Networks) to approximate the Bayesian posterior predictive distribution;
 	- at inference, the training set is passed as context and predictions are made in a single forward pass with frozen weights.
 - **So what:** First practical ICL model for tabular data — outperforms XGBoost/LightGBM/AutoML on small tables (N≤1000) in under 1 second (5700× speedup), establishing the PFN paradigm that TabPFN v2, TabICL, and KumoRFM all build on.
 
@@ -39,9 +39,9 @@ Tabular datasets are heterogeneous in schema, size, and feature type, making it 
 | [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md) | No                   | Yes | 2.8 sec | N≤10K  |
 | [qu2025tabicl](qu2025tabicl.md)                 | No                   | Yes | Fast    | N≤500K |
 
-- [muller2022pfn](muller2022pfn.md): the original PFN paper (ICLR 2022) that proves minimizing Prior-Data NLL ≡ minimizing KL to the exact PPD; TabPFN v1 directly applies this framework to tabular classification, addressing three limitations of the original: 
-	1. a more realistic SCM+BNN prior with Occam's razor bias vs. plain BNN/GP priors; 
-	2. scale from N=30 to N≤1000 with proper OpenML-CC18 evaluation; 
+- [muller2022pfn](muller2022pfn.md): the original PFN paper (ICLR 2022) that proves minimizing Prior-Data NLL ≡ minimizing KL to the exact PPD; TabPFN v1 directly applies this framework to tabular classification, addressing three limitations of the original:
+	1. a more realistic SCM+BNN prior with Occam's razor bias vs. plain BNN/GP priors;
+	2. scale from N=30 to N≤1000 with proper OpenML-CC18 evaluation;
 	3. categorical features and multi-class support (see below).
 - [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md): v2 extends with 130M synthetic datasets, alternating row/col attention, and N≤10K scope; v1 is the conceptual and architectural foundation.
 - [qu2025tabicl](qu2025tabicl.md): TabICL explicitly extends the ICL-for-tabular paradigm to N≤500K by decoupling column embedding from the ICL Transformer.

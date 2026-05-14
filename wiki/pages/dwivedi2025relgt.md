@@ -106,4 +106,3 @@ Relative time and GNN PE are the two most critical components. The global module
 - [subgraph-gnn-pe](subgraph-gnn-pe.md)
 - [relbench](relbench.md)
 - [heterogeneous-graph-transformer](heterogeneous-graph-transformer.md)
-

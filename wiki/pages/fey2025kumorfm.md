@@ -70,7 +70,7 @@ $$\tilde y_e^{(t)} = \mathrm{KumoRFM}_\theta^{\text{❄}}\!\left(\mathcal G_k^{\
 
 - $\mathrm{KumoRFM}_\theta^{\text{❄}}$ (the **architecture** (Sec. 2.3) — pre-trained model with weights $\theta$, **frozen** (❄) at inference; adaptation happens via the context, not via gradient updates.
 	- given the **test subgraph** $\mathcal G_k^{\le t}[e]$ and the **context set** $\{(\mathcal G_k^{\le \hat t}[\hat e],\, y_{\hat e}^{\hat t})\}$, predict the label $\tilde y_e^{(t)}$ for entity $e$ at time $t$ in a single forward pass (using in-context learning).
-- The arguments inside the parentheses are produced by **Online Context Generation** (Sec. 2.2); 
+- The arguments inside the parentheses are produced by **Online Context Generation** (Sec. 2.2);
 	- $\mathcal G_k^{\le t}[e]$ — the **test subgraph**: $k$-hop neighborhood of seed entity $e$ at prediction time $t$ (only events $\le t$).
 	- $\big\{\mathcal G_k^{\le \hat t}[\hat e],\, y_{\hat e}^{\hat t}\big\}_{\hat t<t,\,\hat e\sim\mathcal G}$ — the **context set**: pairs of past subgraphs and their ground-truth labels, sampled at past timestamps $\hat t<t$ for entities $\hat e$ drawn from the database graph $\mathcal G$.
 
@@ -78,8 +78,8 @@ $$\tilde y_e^{(t)} = \mathrm{KumoRFM}_\theta^{\text{❄}}\!\left(\mathcal G_k^{\
 
 A SQL-like declarative language with `PREDICT` / `FOR` / `WHERE` clauses. The query alone determines:
 
-- The task type (binary/multi-class/multi-label classification, regression, link prediction) 
-- And the time window. 
+- The task type (binary/multi-class/multi-label classification, regression, link prediction)
+- And the time window.
 
 One line of PQL replaces the ~hundreds of lines of pipeline code a data scientist would otherwise write.
 

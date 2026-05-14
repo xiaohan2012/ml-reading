@@ -41,8 +41,8 @@ TabPFN v1's scope was too narrow for production: N≤1000 excluded most real dat
 
 ## Technical Details
 
-> **Two pivots, one idea.** v1 baked fixed column identity into the network in two ways: 
-> 
+> **Two pivots, one idea.** v1 baked fixed column identity into the network in two ways:
+>
 > 1. it flattened all $N \times M$ cells into one sequence and ran **full joint attention** over them — costing $O(N^2 M^2)$; and
 > 2. it learned **fixed column embeddings** at pretraining time. v2 removes both: attention is **factorized** along the row and column axes, and column tokens are **randomized** at every inference call. Everything else (130M datasets, regression, mixed types, missing values) is the scale and engineering enabled by these two architectural changes.
 
