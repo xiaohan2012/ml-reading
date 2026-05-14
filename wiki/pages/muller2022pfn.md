@@ -77,7 +77,7 @@ updated: 2026-05-08
 
 $$p(y \mid x, \mathcal{D}) = \int p(y \mid x, t)\, p(t \mid \mathcal{D})\, dt$$
 
-where $t$ is the latent data-generating mechanism (e.g. a GP with specific hyperparameters, or a BNN with specific weights), and $p(t \mid \mathcal{D}) \propto p(\mathcal{D} \mid t)\, p(t)$ is the posterior over tasks given the observed data. 
+where $t$ is the latent data-generating mechanism (e.g. a GP with specific hyperparameters, or a BNN with specific weights), and $p(t \mid \mathcal{D}) \propto p(\mathcal{D} \mid t)\, p(t)$ is the posterior over tasks given the observed data.
 
 This integral is intractable for most priors. PFNs learn to approximate it directly.
 **PFN training.** Given a prior $p(\mathcal{D})$ from which datasets can be sampled, train $q_\theta$ to minimize the Prior-Data NLL:
