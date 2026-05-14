@@ -60,3 +60,4 @@ TabPFN v2's joint (row, column) attention avoids committing to a column-dimensio
 ## Entities & Concepts
 
 - [tabular-learning](tabular-learning.md)
+- [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage

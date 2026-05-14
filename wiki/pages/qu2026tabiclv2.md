@@ -133,3 +133,4 @@ Disk offloading lets a 1M × 500 table run in <450 s on <24 GB CPU + <50 GB GPU.
 - [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md)
 - [muller2022pfn](muller2022pfn.md)
 - [fey2025kumorfm2](fey2025kumorfm2.md)
+- [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
