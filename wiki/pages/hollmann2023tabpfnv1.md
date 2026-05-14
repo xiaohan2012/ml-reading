@@ -96,3 +96,4 @@ Ablation: SCM alone outperforms BNN alone; SCM+BNN mixture gives marginal furthe
 ## Entities & Concepts
 
 - [tabular-learning](tabular-learning.md)
+- [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage

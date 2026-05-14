@@ -41,13 +41,20 @@ TabPFN v1's scope was too narrow for production: N≤1000 excluded most real dat
 
 ## Technical Details
 
+> **Two pivots, one idea.** v1 baked fixed column identity into the network in two ways: 
+> 
+> 1. it flattened all $N \times M$ cells into one sequence and ran **full joint attention** over them — costing $O(N^2 M^2)$; and
+> 2. it learned **fixed column embeddings** at pretraining time. v2 removes both: attention is **factorized** along the row and column axes, and column tokens are **randomized** at every inference call. Everything else (130M datasets, regression, mixed types, missing values) is the scale and engineering enabled by these two architectural changes.
+
 **Alternating row/column attention.** A Transformer encoder alternates attention across *rows* (samples) and *columns* (features):
-- *Row attention*: each sample attends to all other samples — captures which training examples are similar to the test instance
-- *Column attention*: each feature position attends to all other feature positions within a sample — captures feature correlations
+- *Row attention*: each sample attends to all other samples — captures which training examples are similar to the test instance.
+- *Column attention*: each feature position attends to all other feature positions within a sample — captures feature correlations.
 
-This bidirectional pattern jointly models sample-level and feature-level dependencies without attending over all (N × M) cells simultaneously.
+This factorization replaces v1's joint cell-attention: complexity drops from $O(N^2 M^2)$ to $O(N^2 M + N M^2)$, unlocking $N \le 10\text{K}$.
 
-**Randomized attribute tokens.** Instead of learned fixed positional/feature embeddings, attribute tokens are *resampled randomly* at each inference call. The model infers feature identities and relationships from the training context alone — enabling zero-shot transfer to tables with arbitrary column schemas.
+**Randomized attribute tokens.** v1 learned **fixed column embeddings** during pretraining, so a new table with a different schema had no matching embedding — v1 was not truly schema-agnostic. v2 instead **resamples attribute tokens randomly at every inference call**: the model must infer "what does column $j$ mean?" purely from the in-context training rows. One checkpoint, any schema, zero-shot — the property that makes v2 a *foundation model* rather than a per-schema PFN.
+
+The two changes compose naturally: factorized column attention treats features as an *unordered set of tokens*, which only makes sense once those tokens carry no fixed identity.
 
 **Pretraining.** Trained on ~130M synthetic tabular datasets (SCMs + BNNs + diverse activation functions), with varied sizes, feature counts, class imbalances, and generating mechanisms.
 
@@ -61,3 +68,4 @@ This bidirectional pattern jointly models sample-level and feature-level depende
 
 - [tabular-learning](tabular-learning.md)
 - [relational-foundation-model](relational-foundation-model.md)
+- [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
