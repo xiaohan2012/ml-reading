@@ -7,6 +7,14 @@ updated: 2026-05-15
 
 # TabPFN v1 — Transformer Architecture Walkthrough
 
+> **Scope: the released TabPFN v1 model is classification-only.** Verified from the paper and shipped artifacts:
+> - **Title**: "TabPFN: A Transformer That Solves Small Tabular *Classification* Problems in a Second."
+> - **Stated scope**: dataset constraints frame the target as "≤ 10 classes" — no regression axis.
+> - **Appendix A.6.1** lists "Multi-class support" as a v1 contribution over Müller 2022 (binary classification only).
+> - **Evaluation**: only OpenML-CC18 (classification) vs. classification baselines (XGBoost, LightGBM, CatBoost, AutoML).
+>
+> Regression code paths exist in the framework (inherited from Müller 2022) but **no pretrained regression weights ship with v1**. First-class regression arrives in [[hollmann2025tabpfnv2]].
+
 A code-grounded tour of the TabPFN v1 model. Source files (Apache-2.0, `automl/TabPFN` at tag `v1.0.0`):
 
 - [`tabpfn/transformer.py`](https://github.com/automl/TabPFN/blob/v1.0.0/tabpfn/transformer.py) — 232 lines, the `TransformerModel` wrapper
@@ -61,7 +69,38 @@ src = torch.cat([global_src, style_src, train_x, x_src[single_eval_pos:]], 0)
 Key points:
 - **`encoder` and `y_encoder` are injected from outside** — typically `Linear(M_max → d)` and `Linear(1 → d)`. The whole feature row collapses into one token via a single linear projection.
 - **Label injection is additive**: training tokens are `embed(x) + embed(y)`; test tokens are `embed(x)` only. The model has to disentangle x and y from a sum.
-- Optional `style` and `global` tokens prepend to the sequence (used in some configs; unused for the released TabPFN classifier weights).
+    - *Why addition specifically:* both embeddings are $d$-dim, so summing keeps the token $d$-dim — no extra parameters, no longer sequence.
+    - Same trick as BERT's `token + position + segment` embeddings.
+    - Train/test asymmetry falls out for free: test rows just skip the y-term, no architectural switch needed.
+    - Concatenation would need a $2d \to d$ projection; adding y as a separate token would double sequence length and quadruple the train-attention cost.
+- **Optional `style` and `global` tokens** prepend to the sequence.
+
+### Note: `style` and `global` tokens
+
+Both are inherited from the **generic PFN codebase** that TabPFN configures, wired into the code but **disabled in the released TabPFN classifier**. For the model you actually run, the sequence is just `[train_tokens, test_tokens]`.
+
+- **`style`** — a single per-dataset conditioning token.
+    - *Origin:* the framework's "informed PFN" mode, where the model conditions on known prior hyperparameters $\phi$ (SCM depth, noise level, etc.) so it can specialize across dataset regimes.
+    - *Why disabled:* real tables don't expose $\phi$ at inference; TabPFN instead marginalizes over $\phi$ implicitly via training-data diversity.
+    - *Where:* hardcoded off via `style_def = None` in [`train.py:55`](https://github.com/automl/TabPFN/blob/v1.0.0/tabpfn/train.py#L55).
+- **`global_src`** — $K$ learnable summary tokens that train rows attend *to* and test queries attend *only* to, bottlenecking the train context from $N$ to $K \ll N$.
+    - *Origin:* Set-Transformer-style attention compression for large $N$.
+    - *Why disabled:* not needed at TabPFN v1's $N \leq 1000$ scale; full attention is already cheap and more accurate.
+    - *Where:* disabled via `num_global_att_tokens = 0`.
+
+v2 drops both hooks entirely — `architectures/base/transformer.py` no longer has either.
+
+### Note: variable column counts and feature rotation
+
+- The fixed `Linear(M_max → d)` encoder assumes $M_{\max} = 100$ slots. Real datasets with $M < M_{\max}$ columns are zero-padded along the feature axis; $M > 100$ is not supported by released v1.
+- Slot identity is *learned* (each column of $W_x$ specializes), so absolute column order would otherwise matter. Two complementary fixes neutralize this:
+    - *Training-time, in data generation:* every synthetic dataset is cyclic-shifted by a random offset in [`priors/mlp.py:167-168`](https://github.com/automl/TabPFN/blob/v1.0.0/tabpfn/priors/mlp.py#L167-L168) *before* reaching the model — slots become exchangeable in expectation, so $W_x[:, j]$ has no incentive to specialize.
+    - *Inference-time, in the sklearn wrapper:* `TabPFNClassifier(N_ensemble_configurations=32)` averages predictions over $k$ cyclically-rotated views of the test dataset (lives in `tabpfn/scripts/transformer_prediction_interface.py`).
+- v2 replaces this entire workaround with **randomized attribute tokens** — column identity becomes random noise instead of a learned weight, so slot order carries no information by construction and rotation is no longer needed.
+
+### Note: `y` encoding is `Linear(1 → d)`, not a lookup table
+
+For classification, `y_encoder = nn.Linear(1, d)`, so the class index $k \in \{0, \ldots, C-1\}$ is fed as a **scalar float** and embedded as $W_y \cdot k + b_y$ — class embeddings are collinear and evenly spaced in $\mathbb{R}^d$. This is *not* an `nn.Embedding(C, d)` lookup. Random class-label rotation during training neutralizes the imposed ordering, and the same encoder works for regression (real-valued $y$) without modification.
 
 ## 2. No row-axis positional encoding
 
@@ -87,10 +126,18 @@ def generate_D_q_matrix(sz, query_size):
     mask |= torch.eye(sz) == 1          # diagonal restored (self-attn)
 ```
 
-Effect:
-- Training tokens attend to all training tokens → $O(N^2)$ pairs.
-- Test tokens attend only to training tokens, plus themselves → $O(N \cdot M)$ pairs.
-- No test→test cross attention → **test rows are independent at inference**.
+`D_q` = **D**ataset rows + **q**ueries. Example with $N=3$, $M=2$ (rows = queriers, cols = keys; `1`=attend):
+
+```
+        d₁ d₂ d₃ q₁ q₂
+   d₁ [  1  1  1  0  0 ]
+   d₂ [  1  1  1  0  0 ]   train ↔ train
+   d₃ [  1  1  1  0  0 ]
+   q₁ [  1  1  1  1  0 ]   query → train + self
+   q₂ [  1  1  1  0  1 ]
+```
+
+Cost: $N^2 + N\cdot M + M$ pairs. Queries are read-only sinks, train rows are the shared K/V bank — so test rows are independent at inference.
 
 When `efficient_eval_masking=True` ([line 120-121](https://github.com/automl/TabPFN/blob/v1.0.0/tabpfn/transformer.py#L120-L121)), the mask collapses to a single integer (the train/test split position), and the custom encoder layer implements the same logic without materializing the full matrix.
 
@@ -131,10 +178,35 @@ self.decoder = nn.Sequential(nn.Linear(ninp, nhid), nn.GELU(), nn.Linear(nhid, n
 ...
 output = self.transformer_encoder(src, src_mask)
 output = self.decoder(output)
-return output[single_eval_pos + len(style_src) + ...:]
+return output[
+	single_eval_pos
+    + len(style_src)
+    + (self.global_att_embeddings.num_embeddings if self.global_att_embeddings else 0):
+    ]
 ```
 
-A two-layer MLP is applied at every token position; the function returns only the test-position outputs. For classification, `n_out = C_max = 10` logits → softmax over the actual classes used.
+The slice offset accounts for all three prepended-token regions: $K$ global tokens (if any), 1 style token (if any), and the $N$ train rows — so what's returned is the $M$ test-row positions only.
+
+A two-layer MLP is applied at every token position; the function returns only the test-position outputs.
+
+### What is `n_out`?
+
+The width of the head's final layer. **Same architecture for every task; only `n_out` and the loss change.** Set in [`train.py:58-63`](https://github.com/automl/TabPFN/blob/v1.0.0/tabpfn/train.py#L58-L63) from the chosen criterion.
+
+> **The released TabPFN v1 model is classification-only.** The paper title and pretrained weights (`pip install tabpfn` exposes only `TabPFNClassifier`) cover the cross-entropy case below. The other rows are *generic PFN framework* support inherited from the Müller-2022 codebase: the code paths exist and you could train your own regression PFN with them, but **no pretrained regression weights ship with v1**. First-class regression arrives in [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md).
+
+- **Classification — `CrossEntropyLoss`** *(released v1 model)*
+    - `n_out = num_classes` (typically the configured maximum, $C_\max = 10$).
+    - Output per test row: a length-$C$ logit vector → softmax → class probabilities.
+- **Regression — Gaussian NLL (`GaussianNLLLoss`)** *(framework-only)*
+    - `n_out = 2`: one scalar for the predicted mean, one for the variance.
+    - Output is a per-test-row Gaussian $\mathcal{N}(\mu, \sigma^2)$.
+- **Regression — point estimate (`MSELoss`)** *(framework-only)*
+    - `n_out = 1`: a single scalar prediction per test row.
+- **Binary classification — `BCEWithLogitsLoss`** *(framework-only)*
+    - `n_out = 1`: one logit per test row → sigmoid.
+- **Regression — bar / Riemann distribution head (`barnll`, see [`bar_distribution.py`](https://github.com/automl/TabPFN/blob/v1.0.0/tabpfn/bar_distribution.py))** *(framework-only)*
+    - `n_out = num_buckets` (default 100). Outputs a categorical distribution over equi-probable bins covering $[\min_y, \max_y]$ — the discretized continuous-target trick from [muller2022pfn](muller2022pfn.md).
 
 ## 7. Training loop — synthetic batches, sampled split, loss on test positions only
 
@@ -229,7 +301,7 @@ if batch % aggregate_k_gradients == aggregate_k_gradients - 1:
 ### Training-loop summary
 
 ```mermaid
-flowchart LR
+flowchart TD
     Prior["prior sampler<br/>(SCM / BNN / GP)"] --> Batch["batch<br/>x: (T,B,M), y: (T,B)<br/>+ single_eval_pos"]
     Batch --> FWD["model(x, y, single_eval_pos)"]
     FWD --> Logits["logits<br/>(T - single_eval_pos, B, n_out)"]
