@@ -5,6 +5,10 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-18] analysis | TabPFN v2 code walkthrough
+Pages written: tabpfn-v2-code
+Pages updated: index, hollmann2025tabpfnv2
+
 ## [2026-05-06] ingest | Predictive Query Language (PQL)
 Pages written: kocijan2026pql
 Pages updated: training-table, index

@@ -69,3 +69,4 @@ The two changes compose naturally: factorized column attention treats features a
 - [tabular-learning](tabular-learning.md)
 - [relational-foundation-model](relational-foundation-model.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
+- [tabpfn-v2-code](tabpfn-v2-code.md) — code-grounded walkthrough of the v2 architecture
