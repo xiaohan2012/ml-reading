@@ -97,3 +97,5 @@
 - [rdl-benchmark](pages/rdl-benchmark.md) — Scale of RDL datasets: RelBench v1/v2, TGB, Griffin pretraining, tabular baselines _(query 2026-04-29)_
 - [rdl-approaches](pages/rdl-approaches.md) — Main RDL approaches: HeteroGraphSAGE / RelGNN / RelGT / Griffin / RT and their tradeoffs _(query 2026-04-29)_
 - [kumorfm2-reading-plan](pages/kumorfm2-reading-plan.md) — 8-paper reading plan for KumoRFM-2 across 3 threads: RDL, Tabular ICL, Graph Transformers _(query 2026-05-06)_
+- [tabpfn-v1-code](pages/tabpfn-v1-code.md) — Code-grounded walkthrough of TabPFN v1 architecture: tokenization, attention mask, training loop, synthetic data prior _(query 2026-05-15)_
+- [tabpfn-v2-code](pages/tabpfn-v2-code.md) — Code-grounded walkthrough of TabPFN v2; delta vs v1: per-(row,feature) tokens, alternating attention, randomized column identity, regression _(query 2026-05-18)_

@@ -93,6 +93,31 @@ Ablation: SCM alone outperforms BNN alone; SCM+BNN mixture gives marginal furthe
 - 5700× speedup over GPU AutoML; errors largely uncorrelated with XGBoost, so ensembling gives further gains.
 - Performance degrades sharply outside the training distribution (N>1000, many features, >10 classes) — the main motivation for TabPFN v2 and TabICL.
 
+## Limitations — schema-shape rigidity
+
+- **Strict sense:** v1 is **not** schema-specific — one pretrained checkpoint handles any classification table in its size envelope, no retraining.
+- **Structural sense:** v1's input contract is *schema-shaped* in four compounding ways. v2 ([hollmann2025tabpfnv2](hollmann2025tabpfnv2.md)) is largely a response to these. See [tabpfn-v1-code](tabpfn-v1-code.md) for code-level mechanics.
+
+1. **Learned per-slot weights** (the headline issue).
+    - Row encoder is `Linear(M_max → d)` with $W_x \in \mathbb{R}^{d \times 100}$.
+    - Column $j$ of the input is only ever multiplied by column $j$ of $W_x$ — a learned, slot-specific weight vector.
+    - That weight develops a *specialty* during pretraining: column identity isn't semantic ("age", "income"), but it isn't free either — it's a learned position.
+
+2. **Cyclic rotation as workaround, not invariance.**
+    - v1 mitigates per-slot specialization by random cyclic column shifts during synthetic data generation, plus **32-way rotation ensembling** at inference.
+    - The need for inference-time ensembling is the smoking gun: if v1 were permutation-invariant by construction, ensembling would be pointless.
+    - The rotation is the *cost* of the rigid encoder, not a property of the architecture.
+
+3. **Fixed-width contract.**
+    - Encoder accepts exactly $M_{\max} = 100$ slots.
+    - Wider tables: unsupported. Narrower tables: zero-padded.
+    - The ceiling is baked into the weights, not a runtime parameter.
+
+4. **No first-class type or missingness semantics.**
+    - Categoricals must be ordinally encoded externally.
+    - Missing values must be imputed externally.
+    - v1 handles every schema by *ignoring* type and missingness structure that real tables actually have.
+
 ## Entities & Concepts
 
 - [tabular-learning](tabular-learning.md)

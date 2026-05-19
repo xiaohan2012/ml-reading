@@ -67,6 +67,19 @@ Higher per-layer cost is absorbed via KV caching and multiquery test attention. 
 - [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md): v1 is the conceptual foundation — PFN objective, SCM prior, single forward pass ICL; v2 fixes scale, schema, and type limitations.
 - [qu2025tabicl](qu2025tabicl.md): TabICL targets the remaining 10K→500K gap by decoupling column embedding from the ICL Transformer, trading v2's joint attention for lower complexity.
 
+### v1 vs v2
+
+v1 is schema-agnostic only on average — rotation ensembling masks learned per-slot biases at inference. v2 removes those biases architecturally; the four schema-shape limitations of v1 (see [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) §Limitations) map directly onto v2 fixes:
+
+| Issue                  | v1                                                               | v2                                                                                                   |
+| ---------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Per-slot weights       | $W_x \in \mathbb{R}^{d \times 100}$, column $j$ uses $W_x[:, j]$ | Shared $W_x \in \mathbb{R}^{d \times g}$ ($g \in \{1, 2\}$), applied to every cell                   |
+| Column identity        | Learned, position-specific; neutralized by rotation ensembling   | Random vector resampled per inference call (`feature_positional_embedding="subspace"`)               |
+| Feature-count contract | Hard cap at $M_{\max} = 100$                                     | Pad to multiple of $g$; release config caps at 85–95 but no $M_{\max}$ in encoder                    |
+| Cat / NaN              | External imputation                                              | First-class encoder steps (`NanHandlingEncoderStep`, `CategoricalInputEncoderPerFeatureEncoderStep`) |
+
+Net effect: v2 makes schema invariance an *architectural property* rather than a statistical hope. The cost is the higher per-layer attention complexity, absorbed via KV caching and multiquery test attention. See [tabpfn-v2-code](tabpfn-v2-code.md) for code-level details.
+
 ## Technical Details
 
 v2 = per-cell tokens + factorized row/column attention + randomized column identity, pretrained on synthetic SCM/BNN tables.
@@ -113,3 +126,4 @@ This gives schema invariance *by construction*: pretraining cannot overfit to "c
 - [tabular-learning](tabular-learning.md)
 - [relational-foundation-model](relational-foundation-model.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
+- [tabpfn-v2-code](tabpfn-v2-code.md) — code-grounded walkthrough of the v2 architecture
