@@ -14,43 +14,61 @@ updated: 2026-05-06
 **Authors:** Noah Hollmann, Samuel Müller, Lennart Purucker, Arjun Garg, Marc Hutter
 **Venue:** Nature 2025
 
+![[Pasted image 20260519093631.png]]
 ## Summary
 
-- **What:** TabPFN v1 was limited to N≤1000, 100 features, and numerical-only inputs — too small for most real-world tabular tasks; it also required fixed column schemas, making zero-shot transfer across tables infeasible.
-- **How:** TabPFN v2 introduces alternating row/column attention within a single Transformer, randomized attribute tokens that remove fixed feature embeddings, and pretraining on ~130M synthetic datasets — extending the ICL paradigm to N≤10K, mixed data types, and arbitrary column schemas.
-- **So what:** SOTA on 261 classification/regression benchmarks; beats 4-hour AutoGluon in 2.8 seconds; the intra-table row/column attention design is the direct architectural ancestor of KumoRFM-2's Stage 1.
+- **What:** v1 collapsed each row into a single token via a `Linear` projection with **learned per-slot column weights** — capping it at small tables, fixed feature count, numeric-only inputs, classification only, and schema-invariant only on average (via rotation ensembling at inference).
+- **How — the conceptual pivot:** v2 changes the *unit of tokenization* from row to **cell**. Per-(row, feature) tokens enable (i) **factorized alternating row/column attention** in place of v1's row-only attention, and (ii) **randomized attribute tokens** resampled every inference call — replacing v1's learned per-column weights with an architectural schema invariance. The same pivot makes regression, categoricals, and missingness first-class per-cell encoder steps rather than external pre-processing.
+- **So what — the consequences:**
+	- *Schema invariance by construction*, not by ensembling — one checkpoint, any schema, one forward pass; v2 is a *foundation model*, v1 was a per-schema PFN.
+	- *Scope expansion*: larger tables, mixed types, NaNs, regression — all unlocked by the cell-token reframing.
+	- *Cost*: per-layer attention complexity rises (row-only → factorized row + column); absorbed via KV caching + multiquery test attention, not a complexity drop.
+	- *Empirics*: SOTA across hundreds of classification/regression benchmarks; the row/column attention block is the direct architectural ancestor of KumoRFM-2's Stage 1.
 
 ## Challenges & Novelty
 
-TabPFN v1's scope was too narrow for production: N≤1000 excluded most real datasets, and its fixed feature embedding scheme required retraining for new column schemas. Scaling ICL to larger tables requires architectural changes — naive extension of v1 hits O(N²M) complexity from full attention over all (sample, feature) cells.
+TabPFN v1's scope was too narrow for production: N≤1000 excluded most real datasets, and its fixed feature embedding scheme required retraining for new column schemas. Scaling ICL to larger tables requires architectural changes — naive extension of v1 hits $O(N^2 M^2)$ complexity from full attention over all (sample, feature) cells.
 
-- **Scale cap at N=1000:** v1's architecture attended over all (sample, feature) pairs jointly — quadratic in both N and M; increasing the cap requires decoupling sample-level and feature-level attention.
+- **Scale cap at N=1000:** v1 attended over rows only ($O(N^2)$) with all features collapsed into one row-token, which limits both expressivity (no per-feature reasoning) and schema flexibility; lifting these constraints means introducing per-feature tokens, which would naively cost $O((NM)^2)$ unless attention is factorized.
 - **Fixed feature embeddings block zero-shot transfer:** v1 learned position-specific column embeddings during pretraining; a new column schema at inference time had no pre-trained embedding.
 - **Missing values and mixed types:** v1 required imputation and numeric-only inputs; real tables have categoricals, text, and missing cells.
 
 ## Relation to Prior Work
 
-| Method | N limit | Schema-agnostic | Mixed types | Architecture |
-|---|---|---|---|---|
-| [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) | 1000 | No | No | Full joint attention |
-| **TabPFN v2** | 10K | Yes (random attr. tokens) | Yes | Alternating row/col attn |
-| [qu2025tabicl](qu2025tabicl.md) | 500K | Yes | Yes | 3-stage (col→row→ICL) |
+| Method | N limit | Schema-agnostic | Mixed types | Architecture | Attention complexity |
+|---|---|---|---|---|---|
+| [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) | 1000 | No | No | Full joint attention | $O(N^2)$ (one token per row, $M$ folded into $d$) |
+| **TabPFN v2** | 10K | Yes (random attr. tokens) | Yes | Alternating row/col attn | $O(N^2 M + N M^2)$ |
+| [qu2025tabicl](qu2025tabicl.md) | 500K | Yes | Yes | 3-stage (col→row→ICL) | $O(N M)$ (induced-point Set Transformer + factored stages) |
 
 - [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md): v1 is the conceptual foundation — PFN objective, SCM prior, single forward pass ICL; v2 fixes scale, schema, and type limitations.
 - [qu2025tabicl](qu2025tabicl.md): TabICL targets the remaining 10K→500K gap by decoupling column embedding from the ICL Transformer, trading v2's joint attention for lower complexity.
+
+### v1 vs v2
+
+v1 is schema-agnostic only on average — rotation ensembling masks learned per-slot biases at inference. v2 removes those biases architecturally; the four schema-shape limitations of v1 (see [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md) §Limitations) map directly onto v2 fixes:
+
+| Issue                  | v1                                                               | v2                                                                                                   |
+| ---------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Per-slot weights       | $W_x \in \mathbb{R}^{d \times 100}$, column $j$ uses $W_x[:, j]$ | Shared $W_x \in \mathbb{R}^{d \times g}$ ($g \in \{1, 2\}$), applied to every cell                   |
+| Column identity        | Learned, position-specific; neutralized by rotation ensembling   | Random vector resampled per inference call (`feature_positional_embedding="subspace"`)               |
+| Feature-count contract | Hard cap at $M_{\max} = 100$                                     | Pad to multiple of $g$; release config caps at 85–95 but no $M_{\max}$ in encoder                    |
+| Cat / NaN              | External imputation                                              | First-class encoder steps (`NanHandlingEncoderStep`, `CategoricalInputEncoderPerFeatureEncoderStep`) |
+
+Net effect: v2 makes schema invariance an *architectural property* rather than a statistical hope. The cost is the higher per-layer attention complexity, absorbed via KV caching and multiquery test attention. See [tabpfn-v2-code](tabpfn-v2-code.md) for code-level details.
 
 ## Technical Details
 
 > **Two pivots, one idea.** v1 baked fixed column identity into the network in two ways:
 >
-> 1. it flattened all $N \times M$ cells into one sequence and ran **full joint attention** over them — costing $O(N^2 M^2)$; and
-> 2. it learned **fixed column embeddings** at pretraining time. v2 removes both: attention is **factorized** along the row and column axes, and column tokens are **randomized** at every inference call. Everything else (130M datasets, regression, mixed types, missing values) is the scale and engineering enabled by these two architectural changes.
+> 1. it **collapsed all $M$ features of a row into a single token** via `Linear(M_max → d)` — one row, one token — and ran $O(N^2)$ row-attention. Features had no token of their own and no way to interact except through the row-level mixing.
+> 2. it learned **fixed column embeddings** (the columns of $W_x$) at pretraining time, so a new schema had no matching weights. v2 removes both: tokens are **per (row, feature)** so attention can be **factorized** along the row and column axes, and column tokens are **randomized** at every inference call. Everything else (130M datasets, regression, mixed types, missing values) is the scale and engineering enabled by these two architectural changes.
 
 **Alternating row/column attention.** A Transformer encoder alternates attention across *rows* (samples) and *columns* (features):
 - *Row attention*: each sample attends to all other samples — captures which training examples are similar to the test instance.
 - *Column attention*: each feature position attends to all other feature positions within a sample — captures feature correlations.
 
-This factorization replaces v1's joint cell-attention: complexity drops from $O(N^2 M^2)$ to $O(N^2 M + N M^2)$, unlocking $N \le 10\text{K}$.
+Per-layer attention cost is $O(N^2 M + N M^2)$ (row-attn over $N$ tokens for each of $M$ feature groups, plus feature-attn over $M$ tokens for each of $N$ rows). This is *higher* than v1's $O(N^2)$ row-only attention in absolute terms, but v2 needs it: per-feature tokens are what let column identity be randomized (and thus schema-agnostic) and what let regression / mixed types / NaNs be modeled per-cell. The $N \le 10\text{K}$ scale is unlocked by KV caching and multiquery test attention amortizing the constants — not by a complexity drop.
 
 **Randomized attribute tokens.** v1 learned **fixed column embeddings** during pretraining, so a new table with a different schema had no matching embedding — v1 was not truly schema-agnostic. v2 instead **resamples attribute tokens randomly at every inference call**: the model must infer "what does column $j$ mean?" purely from the in-context training rows. One checkpoint, any schema, zero-shot — the property that makes v2 a *foundation model* rather than a per-schema PFN.
 

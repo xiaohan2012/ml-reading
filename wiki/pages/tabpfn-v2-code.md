@@ -42,19 +42,6 @@ The model is no longer a wrapper around `torch.nn.TransformerEncoder`: v2 ships 
 
 The two architectural pivots are highlighted: **per-(row, feature) tokens with two-axis attention**, and **randomized column identity**. Everything else follows.
 
-## How v2 removes v1's schema rigidity
-
-v1 is schema-agnostic only on average — its row encoder has learned per-slot weights that bias toward whichever column distributions appeared at each slot during pretraining, and 32-way rotation ensembling at inference is what marginalizes that bias. v2 removes the bias at the architectural level. The four schema-shape limitations of v1 (see [[hollmann2023tabpfnv1]] §Limitations) map directly onto v2 fixes:
-
-| v1 limitation | v2 fix |
-|---|---|
-| `Linear(M_max → d)` with $W_x \in \mathbb{R}^{d \times 100}$ — column $j$ uses a learned weight vector $W_x[:, j]$ that specializes during pretraining | Shared `Linear(g → d)` with $W_x \in \mathbb{R}^{d \times g}$, $g \in \{1, 2\}$ — same tiny weights applied to every cell; no per-column slot to specialize |
-| Column identity is learned and position-specific; mitigated only on average by 32-way rotation ensembling | Column identity is a *random* vector resampled per inference call (`feature_positional_embedding="subspace"`); one forward pass, no ensembling needed |
-| Hard cap at $M_{\max} = 100$ baked into encoder weights | No $M_{\max}$ in the encoder; pad to a multiple of $g$ (released configs cap at 85–95 via config, not architecture) |
-| Categoricals and missing values must be handled externally (ordinal-encode, impute) | First-class encoder steps (`NanHandlingEncoderStep`, `CategoricalInputEncoderPerFeatureEncoderStep`) — type and missingness flow as extra input channels |
-
-Net effect: v2 makes schema invariance an *architectural property* rather than a statistical hope. The cost is the higher per-layer attention complexity ($O(N^2 M + N M^2)$ vs v1's $O(N^2)$), absorbed via KV caching and multiquery test attention.
-
 ## Data flow
 
 **Notation:**
