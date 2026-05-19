@@ -24,25 +24,48 @@ The model is no longer a wrapper around `torch.nn.TransformerEncoder`: v2 ships 
 
 ## v1 vs v2 — at a glance
 
-| Aspect | v1 ([[tabpfn-v1-code]]) | v2 |
-|---|---|---|
-| Token granularity | **1 token per row** (all features collapsed by `Linear(M_max→d)`) | **1 token per (row, feature group)** + 1 target token per row |
-| Tensor shape inside transformer | `(N+M, B, d)` | `(B, N+M, F+1, d)` |
-| Attention block | Single MHA over the row axis (vanilla `TransformerEncoderLayer`) | **`attn_between_features` then `attn_between_items`** — alternating |
-| Feature identity | **Learned** per-column weights $W_x[:,j]$, neutralized by cyclic rotation | **Random embeddings** sampled fresh (`feature_positional_embedding="subspace"`) |
-| Variable column count | Zero-pad to $M_{\max}=100$, then rotate | `features_per_group=1` (or 2); pad to multiple of group size, no $M_{\max}$ cap from the encoder |
-| Train/test asymmetry | Test rows skip `+ embed(y)` | Same: `y` is set to NaN past `single_eval_pos`, then appended as an extra "feature token" |
-| Attention mask | Custom `D_q` (test → train only) | Implicit via `att_src` / `single_eval_pos`: row-attention uses train-only keys |
-| Task head | `Linear → GELU → Linear(d → n_out)` | Same MLP shape; for regression, `n_out = num_buckets` (Riemann bar distribution) |
-| Regression pretrained | No (framework-only) | **Yes**, separate `TabPFNRegressor` checkpoint |
-| Categoricals / NaNs | Imputed externally | First-class encoder steps (`NanHandlingEncoderStep`, `CategoricalInputEncoderPerFeatureEncoderStep`) |
-| Layers / width | 12 / 512 (paper) | **`nlayers=12`**, `emsize ∈ {128, 192}`, `nhead ∈ {4, 6}` (released configs) |
-| N cap | ≤ 1000 | ≤ 10 000 |
-| Backbone | `torch.nn.TransformerEncoder` wrapper | Custom `PerFeatureTransformer` + `PerFeatureEncoderLayer` |
+| Aspect                          | v1 ([[tabpfn-v1-code]])                                                   | v2                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Token granularity               | **1 token per row** (all features collapsed by `Linear(M_max→d)`)         | **1 token per (row, feature group)** + 1 target token per row                                        |
+| Tensor shape inside transformer | `(N+M, B, d)`                                                             | `(B, N+M, F+1, d)`                                                                                   |
+| Attention block                 | Single MHA over the row axis (vanilla `TransformerEncoderLayer`)          | **`attn_between_features` then `attn_between_items`** — alternating                                  |
+| Feature identity                | **Learned** per-column weights $W_x[:,j]$, neutralized by cyclic rotation | **Random embeddings** sampled fresh (`feature_positional_embedding="subspace"`)                      |
+| Variable column count           | Zero-pad to $M_{\max}=100$, then rotate                                   | `features_per_group=1` (or 2); pad to multiple of group size, no $M_{\max}$ cap from the encoder     |
+| Train/test asymmetry            | Test rows skip `+ embed(y)`                                               | Same: `y` is set to NaN past `single_eval_pos`, then appended as an extra "feature token"            |
+| Attention mask                  | Custom `D_q` (test → train only)                                          | Implicit via `att_src` / `single_eval_pos`: row-attention uses train-only keys                       |
+| Task head                       | `Linear → GELU → Linear(d → n_out)`                                       | Same MLP shape; for regression, `n_out = num_buckets` (Riemann bar distribution)                     |
+| Regression pretrained           | No (framework-only)                                                       | **Yes**, separate `TabPFNRegressor` checkpoint                                                       |
+| Categoricals / NaNs             | Imputed externally                                                        | First-class encoder steps (`NanHandlingEncoderStep`, `CategoricalInputEncoderPerFeatureEncoderStep`) |
+| Layers / width                  | 12 / 512 (paper)                                                          | **`nlayers=12`**, `emsize ∈ {128, 192}`, `nhead ∈ {4, 6}` (released configs)                         |
+| N cap                           | ≤ 1000                                                                    | ≤ 10 000                                                                                             |
+| Backbone                        | `torch.nn.TransformerEncoder` wrapper                                     | Custom `PerFeatureTransformer` + `PerFeatureEncoderLayer`                                            |
 
 The two architectural pivots are highlighted: **per-(row, feature) tokens with two-axis attention**, and **randomized column identity**. Everything else follows.
 
+## How v2 removes v1's schema rigidity
+
+v1 is schema-agnostic only on average — its row encoder has learned per-slot weights that bias toward whichever column distributions appeared at each slot during pretraining, and 32-way rotation ensembling at inference is what marginalizes that bias. v2 removes the bias at the architectural level. The four schema-shape limitations of v1 (see [[hollmann2023tabpfnv1]] §Limitations) map directly onto v2 fixes:
+
+| v1 limitation | v2 fix |
+|---|---|
+| `Linear(M_max → d)` with $W_x \in \mathbb{R}^{d \times 100}$ — column $j$ uses a learned weight vector $W_x[:, j]$ that specializes during pretraining | Shared `Linear(g → d)` with $W_x \in \mathbb{R}^{d \times g}$, $g \in \{1, 2\}$ — same tiny weights applied to every cell; no per-column slot to specialize |
+| Column identity is learned and position-specific; mitigated only on average by 32-way rotation ensembling | Column identity is a *random* vector resampled per inference call (`feature_positional_embedding="subspace"`); one forward pass, no ensembling needed |
+| Hard cap at $M_{\max} = 100$ baked into encoder weights | No $M_{\max}$ in the encoder; pad to a multiple of $g$ (released configs cap at 85–95 via config, not architecture) |
+| Categoricals and missing values must be handled externally (ordinal-encode, impute) | First-class encoder steps (`NanHandlingEncoderStep`, `CategoricalInputEncoderPerFeatureEncoderStep`) — type and missingness flow as extra input channels |
+
+Net effect: v2 makes schema invariance an *architectural property* rather than a statistical hope. The cost is the higher per-layer attention complexity ($O(N^2 M + N M^2)$ vs v1's $O(N^2)$), absorbed via KV caching and multiquery test attention.
+
 ## Data flow
+
+**Notation:**
+- **B** — batch size (datasets per step)
+- **S** — sequence length = $N_\text{train} + N_\text{test}$ (rows along the in-context axis)
+- **M** — number of raw input features (columns)
+- **g** — `features_per_group` (1 or 2 in released configs)
+- **F** — number of feature *groups* = $\lceil M / g \rceil$; each group becomes one token via shared `Linear(g → d)`
+- **F+1** — feature axis after appending the target as an extra token
+- **d** — embedding dim (`emsize ∈ {128, 192}`)
+- **`single_eval_pos`** — index along S where train rows end and test rows begin
 
 ```mermaid
 flowchart TD
@@ -59,13 +82,13 @@ flowchart TD
     Y --> EncY["y_encoder:<br/>NanHandlingEncoderStep +<br/>Linear(2→d)"]
     EncY --> Ey["embedded_y: (B, S, d)"]
 
-    Ex --> AddPos["+ subspace feature pos emb<br/>(random, per inference call)"]
+    Ex --> AddPos["⊕ subspace feature pos emb<br/>(random, per inference call)"]
     AddPos --> Concat["concat y as extra<br/>feature token<br/>→ (B, S, F+1, d)"]
     Ey --> Concat
 
     Concat --> Stack["LayerStack: 12 ×<br/>PerFeatureEncoderLayer"]
 
-    subgraph Layer["one PerFeatureEncoderLayer"]
+    subgraph Layer["PerFeatureEncoderLayer"]
         direction TB
         F1["attn_between_features<br/>(across the F+1 axis)"] --> LN1["LayerNorm"]
         LN1 --> F2["attn_between_items<br/>(across the S axis,<br/>test → train only)"]
