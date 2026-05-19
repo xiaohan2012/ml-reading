@@ -25,11 +25,35 @@ Source (Apache-2.0, `PriorLabs/TabPFN` at tag `v2.0.9_`):
 
 Two coupled architectural changes carry the bulk of v2's capability gain:
 
-1. **Tokenization: row → cell.** v1 collapsed each row to one token via `Linear(M_max → d)`. v2 emits one token per **(row, feature-group)** cell.
-2. **Per-layer attention: row-only → alternating row + column.** v1 ran one self-attention over rows. v2 alternates `attn_between_features` (column-axis) then `attn_between_items` (row-axis) per layer.
-3. **Column identity: learned per-slot → randomized per-call.** v1 baked column identity into the columns of its input projection $W_x$ (learned during pretraining). v2 *adds* a fresh random vector per column at every inference call.
+- **Tokenization: row → cell.**
+    - *v1:* each row collapsed to one token via `Linear(M_max → d)`.
+    - *v2:* one token per **(row, feature-group)** cell.
+- **Per-layer attention: row-only → alternating row + column.**
+    - *v1:* one self-attention over rows.
+    - *v2:* alternates `attn_between_features` (column-axis) then `attn_between_items` (row-axis) per layer.
+- **Column identity: learned per-slot → randomized per-call.**
+    - *v1:* baked into the columns of the input projection $W_x$ (learned at pretraining).
+    - *v2:* a fresh random vector *added* per column at every inference call.
 
 The next two sections cover the load-bearing pieces — alternating attention and randomized attribute tokens. NaN/categorical encoder steps and the regression bar-distribution head are mentioned at the end (real changes, but downstream of the two above).
+
+```mermaid
+flowchart TD
+    T["table → cell tokens<br/>(B, S, F, d)"]
+    R["random vec per column<br/>(F, d/4) → Linear → (F, d)<br/><b>Delta 2</b>"]
+    T --> A(("⊕"))
+    R --> A
+    A --> CA["column-attn<br/>over F (per row)"]
+    CA --> RA["row-attn<br/>over S (per column,<br/>via transpose)"]
+    RA --> M["MLP"]
+    M -.->|"× L layers<br/><b>Delta 1</b>"| CA
+    M --> H["task head<br/>(softmax / bar-dist.)"]
+
+    classDef delta fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    class R,CA,RA delta;
+```
+
+The orange nodes are the two deltas: cell-wise random column identity (right branch, added once at the input) and the alternating column/row attention block (looping $L$ times).
 
 ## Delta 1 — Alternating row/column attention
 
