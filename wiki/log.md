@@ -5,6 +5,10 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-20] analysis | TabICL code walkthrough
+Pages written: tabicl-code
+Pages updated: index, qu2025tabicl
+
 ## [2026-05-18] analysis | TabPFN v2 code walkthrough
 Pages written: tabpfn-v2-code
 Pages updated: index, hollmann2025tabpfnv2
