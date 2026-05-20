@@ -111,6 +111,7 @@ updated: 2026-05-06
 
 - [tabular-learning](tabular-learning.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
+- [tabicl-code](tabicl-code.md) — code-grounded walkthrough of the TabICL architecture
 
 ## Appendix — Column identifier choices: RoPE vs random noise
 

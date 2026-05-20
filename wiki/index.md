@@ -99,3 +99,4 @@
 - [kumorfm2-reading-plan](pages/kumorfm2-reading-plan.md) — 8-paper reading plan for KumoRFM-2 across 3 threads: RDL, Tabular ICL, Graph Transformers _(query 2026-05-06)_
 - [tabpfn-v1-code](pages/tabpfn-v1-code.md) — Code-grounded walkthrough of TabPFN v1 architecture: tokenization, attention mask, training loop, synthetic data prior _(query 2026-05-15)_
 - [tabpfn-v2-code](pages/tabpfn-v2-code.md) — Code-grounded walkthrough of TabPFN v2; delta vs v1: per-(row,feature) tokens, alternating attention, randomized column identity, regression _(query 2026-05-18)_
+- [tabicl-code](pages/tabicl-code.md) — Code-grounded walkthrough of TabICL; delta vs TabPFN v2: 3-stage pipeline, ISAB+FiLM column embedding, RoPE columns, Latin-square ensembling _(query 2026-05-20)_
