@@ -17,26 +17,26 @@ A code-grounded tour of [`soda-inria/nanotabicl`](https://github.com/soda-inria/
 
 ```mermaid
 flowchart TD
-    X["X<br/>(B, n_train+n_test, n_cols)"] --> Std["standardize on train rows"]
-    Std --> FG["repeated feature grouping<br/>shifts (2^i - 1) mod n_cols, i ∈ 0..g-1"]
-    FG --> XE["x_embed: Linear(g → d)<br/>→ emb (B, R, C, d)"]
+    X["$$X \in \mathbb{R}^{B \times (n_{tr}+n_{te}) \times m}$$"] --> Std["standardize on train rows"]
+    Std --> FG["$$\text{repeated feature grouping: shifts } (2^i-1) \bmod m,\ i \in [0,g)$$"]
+    FG --> XE["$$\text{Linear}(g \to d) \;\to\; \text{emb} \in \mathbb{R}^{B \times R \times m \times d}$$"]
 
-    Ytr1["y_train"] --> YE1["y_embed_in<br/>(ClassEmb or Linear)"]
-    YE1 --> Add1(("⊕ on train rows"))
+    Ytr1["$$y_{train}$$"] --> YE1["$$\text{y\_embed\_in}$$"]
+    YE1 --> Add1(("⊕ train rows"))
     XE --> Add1
 
-    Add1 --> COL["TF_col<br/>InducedTransformerBlock × col_num_blocks<br/>(col-attn, ISAB, kv = train rows only)"]
+    Add1 --> COL["$$\text{TF}_{col}: \text{InducedTransformerBlock} \times L_{col}$$<br/>col-attn, ISAB + QASSMax, KV = train rows"]
 
-    COL --> CLS["prepend row_cls_tokens<br/>(B, R, n_cls_cols, d) along col axis"]
-    CLS --> ROW["TF_row<br/>TransformerBlock × row_num_blocks<br/>(row-attn + RoPE; last block keeps only CLS queries)"]
-    ROW --> LNF["row_ln + flatten(-2,-1)<br/>→ (B, R, icl_dim = n_cls_cols · d)"]
+    COL --> CLS["$$\text{prepend row\_cls\_tokens} \in \mathbb{R}^{1\times 1 \times n_{cls}\times d}$$"]
+    CLS --> ROW["$$\text{TF}_{row}: \text{TransformerBlock} \times L_{row}$$<br/>row-attn + RoPE; last block: CLS queries only"]
+    ROW --> LNF["$$\text{row\_ln} + \text{flatten} \;\to\; \mathbb{R}^{B\times R\times d_{icl}},\ d_{icl}=n_{cls}\cdot d$$"]
 
-    Ytr2["y_train"] --> YE2["y_embed_icl<br/>(ClassEmb or Linear)"]
-    YE2 --> Add2(("⊕ on train rows"))
+    Ytr2["$$y_{train}$$"] --> YE2["$$\text{y\_embed\_icl}$$"]
+    YE2 --> Add2(("⊕ train rows"))
     LNF --> Add2
 
-    Add2 --> ICL["TF_icl<br/>TransformerBlock × icl_num_blocks<br/>(self-attn + QASSMax; last block: test queries only)"]
-    ICL --> OUT["out_ln → out_mlp<br/>logits / quantiles"]
+    Add2 --> ICL["$$\text{TF}_{icl}: \text{TransformerBlock} \times L_{icl}$$<br/>self-attn + QASSMax; last block: test queries only"]
+    ICL --> OUT["$$\text{out\_ln} \to \text{out\_mlp} \;\to\; \text{logits / quantiles}$$"]
 
     classDef ymark fill:#fff3e0,stroke:#f57c00;
     classDef stage fill:#ede7f6,stroke:#5e35b1;
@@ -44,7 +44,7 @@ flowchart TD
     class COL,ROW,ICL stage;
 ```
 
-Two y-injection points (orange) — once pre-`TF_col` (per-cell), once pre-`TF_icl` (per-row). The three Transformer stages (purple) match the paper's `TF_col → TF_row → TF_icl` factorization.
+Orange = the two y-injection points; purple = the three Transformer stages.
 
 ## 1. Tokenization: standardize → repeated feature grouping → label injection
 
@@ -95,10 +95,8 @@ The whole TF_col stage is two lines because the column-attention semantics is de
 
 The input `emb` here is the **target-injected** tensor from §1 — i.e., paper's $E_2$ (grouped + $\mathrm{Embed}_{\text{TAE}}(y)$ added), not raw column scalars. This is one of the paper's named v1→v2 deltas at TF_col.
 
-What happens conceptually:
-
 - For each of the `C` columns independently, `n_rows` cell tokens attend to each other. Equivalent to a Set Transformer over the column's row-values.
-- **`kv_max_idx=n_train`** restricts the *keys/values* to training rows only — i.e., test rows query against training context, but training rows never see test rows. No attention mask; just a tensor slice (see §5 callout (ii)).
+- **`kv_max_idx=n_train`** restricts the *keys/values* to training rows only — i.e., test rows query against training context, but training rows never see test rows. No attention mask; just a tensor slice (see §5 `TransformerBlock`).
 - Each `InducedTransformerBlock` is ISAB: queries first attend to a fixed-size set of inducing vectors (`n_cls_rows=128` — these are the paper's ISAB inducing points $k=128$; the parameter name is unfortunate), then the original tokens attend to those summaries. Two attention calls per block instead of one `O(N²)`.
 
 ## 3. TF_row — CLS-prepend, row attention with RoPE, CLS-only final pass
@@ -134,7 +132,7 @@ emb = self.icl_blocks[-1](emb[:, n_train:], emb[:, :n_train])  # need only test 
 return self.out_mlp(self.out_ln(emb))  # output MLP
 ```
 
-- **Second y-injection.** `y_embed_icl` (separate lookup/linear at `icl_dim`) is added to training rows again. This is the TabICL v1-style "ICL-stage target embedding" ($\mathrm{Embed}_{\text{ICL}}$ in the paper appendix), retained in v2 on top of the new pre-TF_col `Embed_TAE`. The paper's appendix B summary of "where y enters" focuses on the new pre-TF_col injection and treats this row-level one as the v1 inheritance.
+- **Second y-injection.** `y_embed_icl` (separate lookup/linear at `icl_dim`) is added to training rows again. This is the TabICL v1-style $\mathrm{Embed}_{\text{ICL}}$ row-level injection, retained in v2 on top of the new pre-TF_col `Embed_TAE`.
 - **All-but-last block: `kv_max_idx=n_train`.** Same trick as TF_col — KV restricted to training rows; all rows can query.
 - **Last block: queries are test rows only, KV is training rows.** `emb[:, n_train:]` as Q, `emb[:, :n_train]` as KV. Test predictions emerge here; train rows are dropped from the output entirely.
 - **Output head.** `out_ln` (LayerNorm at `icl_dim`) + `out_mlp` (2-layer MLP with hidden `2 · icl_dim`, output `out_dim`). For classification, `out_dim = max_classes`; for regression, `out_dim = n_quantiles` (e.g., 999 — but nano's MLP just produces the values; quantile post-processing like sort/isotonic/exponential-tail is *not* in nano, see §6).
