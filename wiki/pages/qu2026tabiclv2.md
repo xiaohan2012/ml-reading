@@ -77,18 +77,13 @@ The architecture extends TabICL's three Transformer stages with localized innova
 
 ### 1. Repeated feature grouping
 
-*Motivation:* independent per-column embeddings collapse when columns share marginals; need to break that symmetry without sacrificing per-feature resolution (unlike TabPFN v2's disjoint groups).
-
-- *Share marginals* — two columns whose value distributions $P(X_j)$ look similar (e.g., both standardized ~ N(0,1), or two binary columns with similar prevalence).
-- *Collapse* — TabICL v1's $\mathrm{TF}_{\text{col}}$ embeds each column independently (ISAB sees only that column's $N$ scalars), so columns with similar marginals produce near-identical per-cell embeddings.
-	- RoPE in v1 lives in $\mathrm{TF}_{\text{row}}$ and adds positional identity but cannot recover feature distinction that $\mathrm{TF}_{\text{col}}$ never encoded.
-- *Target-aware embedding (§2) attacks the same problem from the label side* — see §2 for the mechanism.
+*Motivation:* TabICL v1's $\mathrm{TF}_{\text{col}}$ embeds each column independently, so columns with similar marginals $P(X_j)$ (e.g., both ~N(0,1)) produce near-identical per-cell embeddings. RoPE in $\mathrm{TF}_{\text{row}}$ adds positional identity but cannot recover feature distinction $\mathrm{TF}_{\text{col}}$ never encoded. Target-aware embedding (§2) attacks the same problem from the label side.
 
 **Mechanism.** For $m$ columns, build $m$ groups via circular shifts; the $j$-th group is $(j, j+1, j+3) \bmod m$. A shared linear layer $\mathrm{Lin}: \mathbb{R}^3 \to \mathbb{R}^d$ maps each triple to a token:
 
 $$E_1[i,j] = \mathrm{Lin}\big(x_{i,j},\; x_{i,(j+1)\bmod m},\; x_{i,(j+3)\bmod m}\big)$$
 
-Each $\mathrm{TF}_{\text{col}}$ token now encodes the **joint** distribution of three columns; even if columns $j$ and $k$ share marginals individually, their triples differ jointly. The shift pattern $(0,1,3)$ guarantees, for $m \geq 7$, that no two columns co-occur in more than one group (see [Appendix — Why the shift pattern $(0, 1, 3)$?](#appendix--why-the-shift-pattern-0-1-3) for more details).
+The shift pattern $(0,1,3)$ guarantees, for $m \geq 7$, that no two columns co-occur in more than one group (see [Appendix — Why the shift pattern $(0, 1, 3)$?](#appendix--why-the-shift-pattern-0-1-3)).
 
 ### 2. Target-aware embedding (early label injection)
 
@@ -109,7 +104,7 @@ $$E_2[i,j] = E_1[i,j] + \mathrm{Embed}_{\text{TAE}}(y_i), \quad i \in \mathcal{D
 
 *Motivation:* joint attention over the $n \times m$ grid is $O(n^2 m^2)$; factorizing into col → row → ICL drops it to $O(n^2 + nm^2)$ while keeping per-column distribution, per-row identity, and cross-row reasoning all addressable.
 
-**Same 3-stage backbone as TabICL v1** (paper §B.2 keeps the structure unchanged); v2's diffs are localized inside each stage:
+Backbone unchanged from TabICL v1 (paper §B.2); v2's diffs are localized inside each stage:
 
 - **$\mathrm{TF}_{\text{col}}$** — Set Transformer with ISAB inducing points aggregating per-column distribution.
 	- *v2:* input is $E_2$ (grouped + target-injected) instead of raw column scalars.
