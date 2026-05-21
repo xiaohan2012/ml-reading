@@ -245,9 +245,9 @@ Three injection points across the lineage, verified from paper/code:
 | ------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | **TabICL v1** | $\mathrm{TF}_{\text{icl}}$ stage only (post-$\mathrm{TF}_{\text{row}}$) | One-hot, lifted to $4d$, **added** to each training row vector $H_{\text{train}}$                                                     |
 | **TabPFN v2** | After per-cell embedding, before the encoder stack                      | Encoded separately by `y_encoder`, **concatenated as one extra column** ($F{+}1$); test-row $y$ is NaN                                |
-| **TabICL v2** | Before $\mathrm{TF}_{\text{col}}$                                       | Embedded via $\mathrm{Embed}_{\text{TAE}}$, **added to every training cell** $E_2[i,j] = E_1[i,j] + \mathrm{Embed}_{\text{TAE}}(y_i)$ |
+| **TabICL v2** | **Both** before $\mathrm{TF}_{\text{col}}$ *and* before $\mathrm{TF}_{\text{icl}}$ | (1) $\mathrm{Embed}_{\text{TAE}}$ added to every training cell: $E_2[i,j] = E_1[i,j] + \mathrm{Embed}_{\text{TAE}}(y_i)$. (2) $\mathrm{Embed}_{\text{ICL}}$ (inherited from TabICL v1) added to each post-$\mathrm{TF}_{\text{row}}$ training-row vector. |
 
-Reading the spectrum (latest → earliest): **TabICL v1** (ICL only) → **TabPFN v2** (one extra column, throughout encoder) → **TabICL v2** (every cell, pre-$\mathrm{TF}_{\text{col}}$). This grounds the paper's "unlike TabPFNv2 appending the target as an additional column" framing in §2.
+Reading the spectrum (latest → earliest): **TabICL v1** (ICL only) → **TabPFN v2** (one extra column, throughout encoder) → **TabICL v2** (every cell, pre-$\mathrm{TF}_{\text{col}}$ — *plus* a retained TabICL-v1-style row-level injection at $\mathrm{TF}_{\text{icl}}$). This grounds the paper's "unlike TabPFNv2 appending the target as an additional column" framing in §2.
 
 ## Appendix — Mixed-radix decomposition background
 

@@ -93,11 +93,13 @@ for block in self.col_blocks:
 
 The whole TF_col stage is two lines because the column-attention semantics is delegated to two small helpers — `TableAttnBase.col_attn` and `InducedTransformerBlock` (covered in §5).
 
+The input `emb` here is the **target-injected** tensor from §1 — i.e., paper's $E_2$ (grouped + $\mathrm{Embed}_{\text{TAE}}(y)$ added), not raw column scalars. This is one of the paper's named v1→v2 deltas at TF_col.
+
 What happens conceptually:
 
 - For each of the `C` columns independently, `n_rows` cell tokens attend to each other. Equivalent to a Set Transformer over the column's row-values.
 - **`kv_max_idx=n_train`** restricts the *keys/values* to training rows only — i.e., test rows query against training context, but training rows never see test rows. No attention mask; just a tensor slice (see §5 callout (ii)).
-- Each `InducedTransformerBlock` is ISAB: queries first attend to a fixed-size set of inducing vectors, then the original tokens attend to those summaries. Two attention calls per block instead of one `O(N²)`.
+- Each `InducedTransformerBlock` is ISAB: queries first attend to a fixed-size set of inducing vectors (`n_cls_rows=128` — these are the paper's ISAB inducing points $k=128$; the parameter name is unfortunate), then the original tokens attend to those summaries. Two attention calls per block instead of one `O(N²)`.
 
 ## 3. TF_row — CLS-prepend, row attention with RoPE, CLS-only final pass
 
@@ -132,7 +134,7 @@ emb = self.icl_blocks[-1](emb[:, n_train:], emb[:, :n_train])  # need only test 
 return self.out_mlp(self.out_ln(emb))  # output MLP
 ```
 
-- **Second y-injection.** `y_embed_icl` (separate lookup/linear at `icl_dim`) is added to training rows again. The TabICL paper's framing: TF_icl sees labels via a row-level embedding; here that's done by addition into the post-TF_row vector.
+- **Second y-injection.** `y_embed_icl` (separate lookup/linear at `icl_dim`) is added to training rows again. This is the TabICL v1-style "ICL-stage target embedding" ($\mathrm{Embed}_{\text{ICL}}$ in the paper appendix), retained in v2 on top of the new pre-TF_col `Embed_TAE`. The paper's appendix B summary of "where y enters" focuses on the new pre-TF_col injection and treats this row-level one as the v1 inheritance.
 - **All-but-last block: `kv_max_idx=n_train`.** Same trick as TF_col — KV restricted to training rows; all rows can query.
 - **Last block: queries are test rows only, KV is training rows.** `emb[:, n_train:]` as Q, `emb[:, :n_train]` as KV. Test predictions emerge here; train rows are dropped from the output entirely.
 - **Output head.** `out_ln` (LayerNorm at `icl_dim`) + `out_mlp` (2-layer MLP with hidden `2 · icl_dim`, output `out_dim`). For classification, `out_dim = max_classes`; for regression, `out_dim = n_quantiles` (e.g., 999 — but nano's MLP just produces the values; quantile post-processing like sort/isotonic/exponential-tail is *not* in nano, see §6).
@@ -260,7 +262,7 @@ class QASSMax(nn.Module):  # query-aware scalable softmax for better context len
         return self.base_mlp(logn).view(1, num_heads, 1, head_dim) * (1 + torch.tanh(self.query_mlp(q))) * q
 ```
 
-- **Two MLPs as in the paper.** `base_mlp: ℝ → ℝ^(H·d_head)` (scalar `log n` in; full per-`(h, i)` base scaling out). `query_mlp: ℝ^d_head → ℝ^d_head` (one head's query in; per-position gate out).
+- **Two MLPs as in the paper.** `base_mlp: ℝ → ℝ^(H·d_head)` (scalar `log n` in; full per-`(h, i)` base scaling out). `query_mlp: ℝ^d_head → ℝ^d_head` (one head's query in; per-position gate out). Both are 2-layer with `n_hidden=64` and GELU — matches paper §4. **Name mapping:** nano's `base_mlp` = paper's `MLP_base`; nano's `query_mlp` = paper's `MLP_gate`.
 - **`(1 + tanh(...))` ∈ (0, 2).** Bounded gate, with the last layer of `query_mlp` zero-initialized → at init, `tanh(0) = 0` → modulation is identity (factor of 1). The model recovers vanilla softmax at the start of training and learns to bend it.
 - **`base_mlp` shares the result across the seq_len axis** — `view(1, num_heads, 1, head_dim)` broadcasts. The `log n` factor is the same for every token in a given forward pass.
 - This is the entire formula from [qu2026tabiclv2](qu2026tabiclv2.md) §4 in 5 lines of forward.
@@ -273,7 +275,7 @@ Verbatim from the README (and verified by inspection):
 - **No pretraining code** — model accepts checkpoints; training loop, optimizer (Muon), curriculum, and synthetic prior live in the [full repo](https://github.com/soda-inria/tabicl) (or follow [nanoTabPFN](https://github.com/automl/nanoTabPFN) for the PFN-style template).
 - **No inference wrappers** — disk offloading, selective Q/K/V projection (paper §9) are not here; nano just runs the forward in one shot.
 - **No preprocessing beyond standardization** — categorical handling, NaN policies, column-permutation ensembling all live outside the model.
-- **No mixed-radix many-class head** — `out_mlp` produces `out_dim` logits/values directly; the digit decomposition + `D` passes from paper §5 is a runtime wrapper.
+- **No mixed-radix label ensembling** — `out_mlp` produces `out_dim` logits/values directly; the digit decomposition + averaging across `D` TF_col passes from paper §5 is a runtime wrapper around the model, not a head.
 - **No quantile post-processing** — regression outputs `n_quantiles` values from the MLP; the sort + isotonic regression + exponential tail extrapolation (paper §6) is also a wrapper concern.
 - **LayerNorm-with-bias only** — the full TabICLv2 classification checkpoint uses bias; the regression checkpoint uses no-bias. Nano hard-codes the bias variant; loading the regression checkpoint requires a tweak.
 
