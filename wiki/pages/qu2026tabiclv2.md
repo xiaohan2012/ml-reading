@@ -55,7 +55,17 @@ PFN-based TFMs beat GBDTs on small-to-medium tables but hit four pain points (ea
 
 ### vs TabICL (v1)
 
-High-level: v2 keeps the backbone, swaps every other axis.
+v1 and v2 share the same three-stage skeleton; v2's changes are localized inside each block, plus an added pre-$\mathrm{TF}_{\text{col}}$ target injection.
+
+**Internal-mechanism diffs (per-block):**
+
+- $\mathrm{TF}_{\text{col}}$
+	- v1 reads raw column scalars and uses standard attention;
+	- v2 reads target-injected, grouped triples ($E_2$) and uses QASSMax in the inducing-point aggregation.
+- $\mathrm{TF}_{\text{row}}$ — unchanged.
+- $\mathrm{TF}_{\text{icl}}$
+	- v1 uses standard attention;
+	- v2 uses QASSMax.
 
 | Design axis | TabICL (v1) | TabICLv2 |
 |---|---|---|

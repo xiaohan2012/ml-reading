@@ -15,36 +15,71 @@ A code-grounded tour of [`soda-inria/nanotabicl`](https://github.com/soda-inria/
 
 ## Data flow
 
-```mermaid
-flowchart TD
-    X["$$X \in \mathbb{R}^{B \times (n_{tr}+n_{te}) \times m}$$"] --> Std["standardize on train rows"]
-    Std --> FG["$$\text{repeated feature grouping: shifts } (2^i-1) \bmod m,\ i \in [0,g)$$"]
-    FG --> XE["$$\text{Linear}(g \to d) \;\to\; \text{emb} \in \mathbb{R}^{B \times R \times m \times d}$$"]
-
-    Ytr1["$$y_{train}$$"] --> YE1["$$\text{y\_embed\_in}$$"]
-    YE1 --> Add1(("⊕ train rows"))
-    XE --> Add1
-
-    Add1 --> COL["$$\text{TF}_{col}: \text{InducedTransformerBlock} \times L_{col}$$<br/>col-attn, ISAB + QASSMax, KV = train rows"]
-
-    COL --> CLS["$$\text{prepend row\_cls\_tokens} \in \mathbb{R}^{1\times 1 \times n_{cls}\times d}$$"]
-    CLS --> ROW["$$\text{TF}_{row}: \text{TransformerBlock} \times L_{row}$$<br/>row-attn + RoPE; last block: CLS queries only"]
-    ROW --> LNF["$$\text{row\_ln} + \text{flatten} \;\to\; \mathbb{R}^{B\times R\times d_{icl}},\ d_{icl}=n_{cls}\cdot d$$"]
-
-    Ytr2["$$y_{train}$$"] --> YE2["$$\text{y\_embed\_icl}$$"]
-    YE2 --> Add2(("⊕ train rows"))
-    LNF --> Add2
-
-    Add2 --> ICL["$$\text{TF}_{icl}: \text{TransformerBlock} \times L_{icl}$$<br/>self-attn + QASSMax; last block: test queries only"]
-    ICL --> OUT["$$\text{out\_ln} \to \text{out\_mlp} \;\to\; \text{logits / quantiles}$$"]
-
-    classDef ymark fill:#fff3e0,stroke:#f57c00;
-    classDef stage fill:#ede7f6,stroke:#5e35b1;
-    class Ytr1,YE1,Add1,Ytr2,YE2,Add2 ymark;
-    class COL,ROW,ICL stage;
+```
+INPUT: x (B, R, m),  y (B, n_train)            R = n_train + n_test
+                │
+                ▼
+   ┌────────────────────────────────────────┐
+   │ TOKENIZATION                           │
+   │   standardize on train rows            │
+   │   repeated feature grouping → (B,R,m,g)│
+   │   x_embed: Linear(g→d)   → (B,R,m,d)   │   ← per-cell tokens
+   │   + y_embed_in(y) on train rows        │   ← y-injection #1 (per-cell)
+   └────────────────────────────────────────┘
+                │   emb: (B, R, m, d)
+                ▼
+   ┌──────────────────────────────────────┐
+   │ col_blocks  (TF_col, default 3 ISAB) │
+   │   for block in col_blocks:           │
+   │     emb = block.col_attn(emb,        │   ← per-column attn
+   │              kv_max_idx=n_train)     │   ← KV = train rows only
+   └──────────────────────────────────────┘
+                │   emb: (B, R, m, d)
+                ▼
+   ┌──────────────────────────────────────┐
+   │ CLS PREPEND                          │
+   │   emb = cat([cls(B,R,4,d), emb], 2)  │   → (B, R, 4+m, d)
+   ├──────────────────────────────────────┤
+   │ row_blocks  (TF_row, default 3)      │
+   │   for block in row_blocks[:-1]:      │
+   │     emb = block.row_attn(emb)        │   ← per-row attn, RoPE
+   │   emb = row_blocks[-1].row_attn(emb, │
+   │            q_max_idx=4)              │   ← last: keep CLS queries only
+   │   emb = row_ln(emb).flatten(-2,-1)   │   → (B, R, 4d) = (B, R, icl_dim)
+   └──────────────────────────────────────┘
+                │   emb: (B, R, icl_dim)
+                ▼
+   ┌──────────────────────────────────────┐
+   │   + y_embed_icl(y) on train rows     │   ← y-injection #2 (per-row)
+   ├──────────────────────────────────────┤
+   │ icl_blocks  (TF_icl, default 12)     │
+   │   for block in icl_blocks[:-1]:      │
+   │     emb = block(emb, kv_max_idx=     │   ← self-attn, QASSMax
+   │                n_train)              │   ← KV = train rows only
+   │   emb = icl_blocks[-1](              │
+   │     emb[:, n_train:],                │   ← Q = test rows only
+   │     emb[:, :n_train])                │   ← KV = train rows only
+   └──────────────────────────────────────┘
+                │   emb: (B, n_test, icl_dim)
+                ▼
+   out_ln + out_mlp  →  (B, n_test, out_dim)
 ```
 
-Orange = the two y-injection points; purple = the three Transformer stages.
+Two y-injection points (per-cell pre-TF_col, per-row pre-TF_icl); three independent Transformer stacks (`col_blocks`, `row_blocks`, `icl_blocks`) called sequentially. Each stage attends along a different axis of the `(rows, columns, hidden)` cube; train/test asymmetry is enforced at every stage via `kv_max_idx=n_train`.
+
+**Shape handoffs between stages:**
+
+| Stack | Block type | Default count | Attends over | In | Out |
+|---|---|---|---|---|---|
+| `col_blocks` | `InducedTransformerBlock` (ISAB + QASSMax) | 3 | the `R` rows *within each column* | `(B, R, m, d)` | `(B, R, m, d)` |
+| `row_blocks` | `TransformerBlock` (RoPE) | 3 | the `4+m` tokens *within each row* | `(B, R, 4+m, d)` | last block: `(B, R, 4, d)` → flatten → `(B, R, icl_dim)` |
+| `icl_blocks` | `TransformerBlock` (QASSMax) | 12 | the `R` row vectors (no `m` axis) | `(B, R, icl_dim)` | last block: `(B, n_test, icl_dim)` |
+
+**Why this factorization:**
+
+- **`col_blocks`** — how a *single feature* varies across rows → column distribution.
+- **`row_blocks`** — how *features within a row* interact → per-row identity, distilled into 4 CLS.
+- **`icl_blocks`** — how *training rows relate to test rows* → the actual ICL step, $O(R^2)$ with no `m` factor.
 
 ## 1. Tokenization: standardize → repeated feature grouping → label injection
 
@@ -63,10 +98,16 @@ def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
     emb[:, :n_train] += self.y_embed_in(y[:, :, None, None])
 ```
 
-- **Standardization is in-model**, not a preprocessing wrapper — divides by the *train-only* std along the row axis. The model is meant to be called on raw $X$.
-- **Repeated feature grouping in one line.** `(idxs + (2 ** i - 1)) % n_cols` for `i ∈ 0..feature_group_size-1` produces the offsets `(0, 1, 3, 7, ...)` — exactly the $2^l - 1$ family from the paper's Appendix B.1. With `feature_group_size=3` (default), the offsets are `(0, 1, 3)`. `torch.stack(..., dim=-1)` gives shape `(B, R, C, g)`; `x_embed: Linear(g → d)` collapses the last dim, yielding `(B, R, C, d)`.
-- **`y_embed_in` is dual-typed.** `ClassEmbedding(max_classes, d)` for classification, `Linear(1, d)` for regression (`max_classes=0`). Added only to training rows (`emb[:, :n_train] += ...`) — test rows never see their own label, which is how PFN ICL works.
-- **`y[:, :, None, None]`** broadcasts the per-row label across all column tokens. This is the paper's "early target injection": $y$ enters every (row, feature) cell, not as one extra column.
+- **Standardization is in-model**, not a preprocessing wrapper.
+    - Divides by the *train-only* std along the row axis; model is meant to be called on raw $X$.
+- **Repeated feature grouping in one line.** `(idxs + (2 ** i - 1)) % n_cols` for `i ∈ 0..feature_group_size-1`.
+    - *Offsets:* `(0, 1, 3, 7, ...)` — the $2^l - 1$ family from paper Appendix B.1.
+    - *Default `feature_group_size=3`* → offsets `(0, 1, 3)`.
+    - *Shape flow:* `torch.stack(..., dim=-1)` → `(B, R, C, g)`; `x_embed: Linear(g → d)` collapses last dim → `(B, R, C, d)`.
+- **`y_embed_in` is dual-typed.**
+    - `ClassEmbedding(max_classes, d)` for classification; `Linear(1, d)` for regression (`max_classes=0`).
+    - Added only to training rows (`emb[:, :n_train] += ...`) — test rows never see their own label (PFN ICL contract).
+- **`y[:, :, None, None]`** broadcasts the per-row label across all column tokens — paper's "early target injection": $y$ enters every (row, feature) cell, not as one extra column.
 
 The `ClassEmbedding` itself is a 3-line override of `nn.Embedding` to fix the init scale:
 
@@ -80,6 +121,10 @@ class ClassEmbedding(nn.Embedding):
 ```
 
 The init is the variance-equivalent of a one-hot indicator passed through a linear layer — principled scale-matching, not arbitrary.
+
+`ClassEmbedding` appears at **two y-injection points**:
+- `y_embed_in` (pre-TF_col, dim `d`) and `y_embed_icl` (pre-TF_icl, dim `icl_dim`).
+- For regression (`max_classes=0`), both fall back to `nn.Linear(1, d_target)`.
 
 ## 2. TF_col — induced self-attention within each column
 
@@ -97,7 +142,7 @@ The input `emb` here is the **target-injected** tensor from §1 — i.e., paper'
 
 - For each of the `C` columns independently, `n_rows` cell tokens attend to each other. Equivalent to a Set Transformer over the column's row-values.
 - **`kv_max_idx=n_train`** restricts the *keys/values* to training rows only — i.e., test rows query against training context, but training rows never see test rows. No attention mask; just a tensor slice (see §5 `TransformerBlock`).
-- Each `InducedTransformerBlock` is ISAB: queries first attend to a fixed-size set of inducing vectors (`n_cls_rows=128` — these are the paper's ISAB inducing points $k=128$; the parameter name is unfortunate), then the original tokens attend to those summaries. Two attention calls per block instead of one `O(N²)`.
+- Each `InducedTransformerBlock` is ISAB (Induced Set Attention Block, Set Transformer; Lee et al. 2019): queries first attend to a fixed-size set of inducing vectors (`n_cls_rows=128` — these are the paper's ISAB inducing points $k=128$; the parameter name is unfortunate), then the original tokens attend to those summaries. Two attention calls per block instead of one `O(N²)`.
 
 ## 3. TF_row — CLS-prepend, row attention with RoPE, CLS-only final pass
 
@@ -112,10 +157,15 @@ emb = self.row_blocks[-1].row_attn(emb, q_max_idx=self.row_cls_tokens.size(-2)) 
 emb = self.row_ln(emb).flatten(-2, -1)  # norm + merge cls tokens into one bigger token
 ```
 
-- **CLS prepend along the column axis.** `row_cls_tokens` has shape `(1, 1, n_cls_cols, d)` with default `n_cls_cols=4`. Broadcast to `(B, R, 4, d)` and concatenated, the per-row token grid becomes `(B, R, 4 + C, d)`. The 4 CLS tokens act as parallel pooling queries — same trick as the paper's "4 × 128 instead of 1 × 512" decision (see [qu2025tabicl](qu2025tabicl.md) §TF_row).
-- **Row attention** — each row's `4 + C` tokens attend to each other; rows are independent. RoPE is applied to Q/K inside each `TransformerBlock` (`use_rope=True`).
-- **Last block uses `q_max_idx`.** Only the 4 CLS positions are passed as *queries*; KV stays full. The output of the last block has shape `(B, R, 4, d)` — we throw away the feature tokens because they're no longer needed.
-- **Flatten 4 × d → icl_dim.** `flatten(-2, -1)` concatenates the 4 CLS tokens into a single `(B, R, 4d)` row vector. This is the paper's `icl_dim = n_cls_cols · embed_dim` (default `4 · 128 = 512`).
+- **CLS prepend along the column axis.** `row_cls_tokens` of shape `(1, 1, n_cls_cols, d)`, default `n_cls_cols=4`.
+    - Broadcast + concat → per-row grid becomes `(B, R, 4 + C, d)`.
+    - The 4 CLS tokens are parallel pooling queries — the paper's "4 × 128 instead of 1 × 512" decision (see [qu2025tabicl](qu2025tabicl.md) §TF_row).
+- **Row attention** — each row's `4 + C` tokens attend to each other; rows are independent.
+    - RoPE on Q/K inside each `TransformerBlock` (`use_rope=True`).
+- **Last block uses `q_max_idx`.** Only the 4 CLS positions are passed as *queries*; KV stays full.
+    - Output shape `(B, R, 4, d)` — feature tokens are no longer needed and dropped.
+- **Flatten 4 × d → icl_dim.** `flatten(-2, -1)` concatenates the 4 CLS tokens into a single `(B, R, 4d)` row vector.
+    - Paper's `icl_dim = n_cls_cols · embed_dim` (default `4 · 128 = 512`).
 
 ## 4. TF_icl — second y injection, train-attending self-attention, test-only final pass
 
