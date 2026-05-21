@@ -19,19 +19,30 @@ All five papers share the same core recipe:
 
 ## Side-by-side Comparison
 
-| Axis | [muller2022pfn](muller2022pfn.md) | [tabpfnv1](hollmann2023tabpfnv1.md) | [tabpfnv2](hollmann2025tabpfnv2.md) | [tabicl](qu2025tabicl.md) | [tabiclv2](qu2026tabiclv2.md) |
-|---|---|---|---|---|---|
-| **Venue** | ICLR 2022 | ICLR 2023 | Nature 2025 | ICML 2025 | ICML 2026 |
-| **Domain** | General (GP/BNN approx, tiny tabular) | Tabular classification | Tabular cls + reg | Tabular cls | Tabular cls + reg |
-| **N limit** | ~30 | ≤1K | ≤10K | ≤500K | ≤1M |
-| **Feature limit** | small | ≤100, numerical | mixed types | mixed | mixed |
-| **Classes** | binary (binarized regression) | ≤10 | ≤10 | hierarchical | mixed-radix + ECOC, arbitrary |
-| **Prior** | plain BNN / GP | SCM + BNN (Occam bias) | SCM+BNN, 130M datasets | SCM + tree-SCM | Cauchy-DAG + 8 function families, bootstrap-filtered |
-| **Architecture** | vanilla Transformer encoder | full joint attention over (sample, feature) | alternating row/col attention | 3-stage: TF_col (Set Transformer) → TF_row → TF_icl | TabICL pipeline + repeated feature grouping + target-aware embedding + QASSMax |
-| **Complexity** | $O(N^2)$ | $O(N^2 M)$ | $O(N^2 M + N M^2)$ | $O(N^2 + N M^2)$ | same as TabICL |
-| **Schema-agnostic?** | n/a | No (fixed column embedding) | Yes (randomized attribute tokens) | Yes | Yes |
-| **Regression output** | Riemann distribution (equi-prob bins) | n/a | learned | n/a | 999-quantile head, pinball loss |
-| **Optimizer / training trick** | — | preprocessing + ensembling | 130M-dataset pretraining | curriculum 1K→40K→60K | Muon + cautious WD + curriculum |
+### Architecture
+
+| Axis | [tabpfnv1](hollmann2023tabpfnv1.md) | [tabpfnv2](hollmann2025tabpfnv2.md) | [tabicl](qu2025tabicl.md) | [tabiclv2](qu2026tabiclv2.md) |
+|---|---|---|---|---|
+| **Stages** | **1** (one Transformer stack) | **1** stack of `L` layers, each alternating col-attn ↔ row-attn | **3** sequential: $\mathrm{TF}_{\text{col}} \to \mathrm{TF}_{\text{row}} \to \mathrm{TF}_{\text{icl}}$ | Same skeleton as TabICL v1 |
+| **Token granularity** | One token *per row* (columns folded into hidden dim by `Linear(M_max → d)`) | One token *per cell* `(N, M, d)` | One token *per cell* `(N, M, d)` | One token *per cell* — but cell = grouped triple |
+| **Token shape evolution** | `(N, d)` for all `L` layers | `(N, M, d)` for all `L` layers | `(N, M, d)` → `(N, 512)` after $\mathrm{TF}_{\text{row}}$ | Same as TabICL v1 |
+| **Attention factorization** | None — joint attention over `N` rows only | **Interleaved** col-attn ↔ row-attn within each of `L` layers | **Sequential** col → row → ICL, no interleaving | Same as TabICL v1 |
+| **Where columns are mixed** | Pre-encoder by a linear layer; never again | Every layer (col-attn) | Once, inside $\mathrm{TF}_{\text{row}}$ (per-row Transformer over the `M` feature tokens) | Same as TabICL v1 |
+| **Where ICL happens** | Implicit — same Transformer encodes and reasons | Implicit — alternating loop interleaves them | Explicit dedicated final stage $\mathrm{TF}_{\text{icl}}$ over row-vectors only (no `M` axis) | Same as TabICL v1 |
+| **Y-injection** | Additive: `token = embed(x) + embed(y)` at encoder | $y$ as extra column ($F{+}1$), test-row $y$ is NaN | At $\mathrm{TF}_{\text{icl}}$ only ($\mathrm{Embed}_{\text{ICL}}$, additive on row vectors) | **Both** pre-$\mathrm{TF}_{\text{col}}$ (per-cell $\mathrm{Embed}_{\text{TAE}}$) *and* pre-$\mathrm{TF}_{\text{icl}}$ (inherited $\mathrm{Embed}_{\text{ICL}}$) |
+| **Attention complexity** | $O(N^2)$ | $O(N^2 M + N M^2)$ × `L` | $O(N M k + N M^2 + N^2)$ | Same as TabICL v1 |
+
+### Scalability, capabilities, training
+
+| Axis | [tabpfnv1](hollmann2023tabpfnv1.md) | [tabpfnv2](hollmann2025tabpfnv2.md) | [tabicl](qu2025tabicl.md) | [tabiclv2](qu2026tabiclv2.md) |
+|---|---|---|---|---|
+| **Practical $N$** | ~1K | ~10K | ~500K | ~1M |
+| **Classes** | ≤10 | ≤10 | hierarchical tree | mixed-radix + hierarchical |
+| **Regression** | n/a | learned bar | n/a | 999-quantile + pinball |
+| **Schema-agnostic?** | No (fixed column embedding) | Yes (randomized attribute tokens) | Yes (per-column ISAB + RoPE) | Yes |
+| **Prior** | SCM + BNN | SCM + BNN, 130M datasets | SCM + tree-SCM | Cauchy-DAG + 8 function families, bootstrap-filtered |
+| **Optimizer / training trick** | preprocessing + ensembling | 130M-dataset pretraining | curriculum 1K→40K→60K | Muon + cautious WD + curriculum |
+| **Venue** | ICLR 2023 | Nature 2025 | ICML 2025 | ICML 2026 |
 
 ## The Research Arc
 
