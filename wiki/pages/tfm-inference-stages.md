@@ -11,38 +11,27 @@ Four depth-dependent stages of inference observed in tabular foundation models, 
 
 The stages can overlap because of layer redundancy and self-repair.
 
-## 1. Latent mapping
+![Schematic of the four TFM inference stages. Individual per-layer decoders (orange) reach high AUC during *feature engineering and labeling*; the final decoder (blue) catches up during *prediction ensembling*; accuracy completes during *prediction calibration*.](assets/tfm-inference-stages-overview.png)
 
-Early layers extend the input encoder, transforming raw input embeddings into representations that fit the residual-stream geometry. Skipping any of these layers is catastrophic.
+## The four stages
 
-Models with stronger upstream encoders compress this stage:
-
-- [TabICL](qu2025tabicl.md) — column embedder + row-wise interaction module already produce rich features.
-- LimiX-2M — RBF-kernel preprocessing.
-- LimiX-16M — lacks the same preprocessing, so it relies more on its early transformer layers.
-
-## 2. Feature engineering and labeling
-
-Middle layers rapidly improve [tabular-logit-lens](tabular-logit-lens.md) per-layer-decoder performance. The [separation gap](balef2026onelayer.md) grows: same-class feature embeddings move closer, different-class embeddings move apart. Label embeddings form iteratively, slightly trailing feature embeddings.
-
-## 3. Prediction ensembling
-
-The per-layer decoder has saturated, but the *original* decoder is still improving. The model is reshaping representations to align with the original decoder. Clearly visible in [TabPFN v2](hollmann2025tabpfnv2.md) and TabPFN(2.5); much less pronounced in other models.
-
-## 4. Prediction calibration
-
-Per-layer and original decoders match on AUC, but balanced accuracy jumps and output entropy continues to shift. The final stage tunes probability calibration rather than rank order.
+| # | Stage | What happens | Where most visible |
+| - | --- | --- | --- |
+| 1 | **Latent mapping** | Early layers extend the input encoder, mapping raw embeddings into the residual-stream geometry. Skipping is catastrophic. | All models; compressed in [TabICL](qu2025tabicl.md) (column embedder + row-wise interaction) and LimiX-2M (RBF preprocessing). LimiX-16M lacks this preprocessing and depends more on early layers. |
+| 2 | **Feature engineering and labeling** | Middle layers rapidly improve [tabular-logit-lens](tabular-logit-lens.md) per-layer decoders; [separation gap](balef2026onelayer.md) grows; labels form after features. | All 6 models. |
+| 3 | **Prediction ensembling** | Per-layer decoder saturates while the original decoder keeps improving — representations are reshaped to align with the original decoder. | [TabPFN v2](hollmann2025tabpfnv2.md), TabPFN(2.5); weak elsewhere. |
+| 4 | **Prediction calibration** | Per-layer and original decoders match on AUC, but balanced accuracy jumps and entropy keeps shifting — tunes probability calibration, not rank order. | All models, final layers. |
 
 ## Compared to LLMs
 
-| Stage                | LLM (Lad et al.)              | TFM (Balef et al.)                  |
-| -------------------- | ----------------------------- | ----------------------------------- |
-| Early                | Detokenization                | Latent mapping                      |
-| Middle               | Task/entity feature refinement | Feature engineering and labeling   |
-| Mid-to-late          | Prediction ensembling         | Prediction ensembling (weaker)      |
-| Final                | Output sharpening             | Prediction calibration              |
+| Stage | LLM (Lad et al.) | TFM (Balef et al.) |
+| --- | --- | --- |
+| Early | Detokenization | Latent mapping |
+| Middle | Task/entity feature refinement | Feature engineering and labeling |
+| Mid-to-late | Prediction ensembling | Prediction ensembling (weaker) |
+| Final | Output sharpening | Prediction calibration |
 
-Differences: TFMs front-load decisions (high early-exit performance), so middle-stage redundancy and final-stage importance are inverted relative to LLMs.
+TFMs front-load decisions (high early-exit performance), so middle-stage redundancy is *higher* and final-stage importance is *lower* than in LLMs.
 
 ## Appearances in Sources
 

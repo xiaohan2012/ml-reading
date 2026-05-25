@@ -24,9 +24,11 @@ updated: 2026-05-25
 
 ## Summary
 
-- **What:** The internal inference mechanisms of tabular foundation models (TFMs) are unexplored, and it is unclear whether LLM mechanistic-interpretability findings transfer to TFMs (encoder-only, smaller, non-autoregressive, set-invariant, attention-over-features).
-- **How:** Six experiments on six SOTA TFMs — embedding similarity (cosine/CKA), separation gap, probing classifiers, a "tabular logit lens" with per-layer decoders pretrained on TabICL priors, layer-ablation (skip/repeat/swap), self-repair — plus a proof-of-concept *looped nanoTabPFN* that reapplies a single transformer block.
-- **So what:** TFMs front-load decisions in early layers and use the rest for iterative refinement with substantial depth redundancy and self-repair; a looped single-layer model recovers six-layer performance at ~20% of the parameters, motivating shallower / recurrent TFM architectures.
+- **What:** Whether LLM mechanistic-interpretability findings transfer to tabular foundation models (TFMs) is unknown.
+- **How:** Six layer-wise experiments across six SOTA TFMs, plus a looped-block proof-of-concept.
+- **So what:** TFM inference is iteratively refined with heavy depth-redundancy in middle/late layers, motivating shallower or recurrent TFM architectures.
+
+![Individually-trained per-layer decoders peak early (orange); the original decoder shows sudden jumps at later layers (blue) — the motivating observation for the whole study.](assets/balef2026onelayer-early-exit-intro.png)
 
 ## Challenges & Novelty
 
@@ -56,28 +58,32 @@ Prior work on TFM internals is small and TabPFN-only. This paper is the first sy
 
 ## Technical Details
 
-**Models.** [TabPFN v1](hollmann2023tabpfnv1.md) (12-layer vanilla Transformer, 26M params), [TabPFN v2](hollmann2025tabpfnv2.md) (12-layer per-feature Transformer, 7M params, item+feature attention), TabPFN(2.5) (~24-layer scaling of v2), [TabICL](qu2025tabicl.md) (column embedder + row-wise interaction module + ICL transformer), LimiX-2M / LimiX-16M (RBF-kernel preprocessing).
+**Models.** Six TFMs, all encoder-only and set-invariant:
+
+| Model | Architecture | Params |
+| --- | --- | --- |
+| [TabPFN v1](hollmann2023tabpfnv1.md) | 12-layer vanilla Transformer | 26M |
+| [TabPFN v2](hollmann2025tabpfnv2.md) | 12-layer per-feature Transformer (item + feature attention) | 7M |
+| TabPFN(2.5) | ~24-layer scaling of v2 | — |
+| [TabICL](qu2025tabicl.md) | Column embedder + row-wise interaction + ICL transformer | — |
+| LimiX-2M | TFM + RBF-kernel preprocessing | 2M |
+| LimiX-16M | TFM, no RBF preprocessing | 16M |
 
 **Benchmarks.** 15 binary-classification tasks from TabArena (≤10K samples, ≤100 features) and 34 small tasks from PMLBmini (≤500 samples). Multiclass and regression checked in appendix.
 
 **Six experiments.**
 
 1. **Embedding similarity.** Cosine similarity and linear CKA between every pair of layer outputs; blocks of high intra-block similarity emerge in larger models.
+
+![Pairwise layer similarity (upper-triangular: linear CKA; lower-triangular: cosine) across the six TFMs — block structure visible in larger models.](assets/balef2026onelayer-embedding-similarity.png)
+
 2. **Separation gap.** PCA-project hidden states (95% variance), then `mean_inter-class − mean_intra-class` cosine distance per layer. Increases incrementally; label embedding lags feature embedding.
 3. **Probing classifiers.** Logistic regression on query embeddings. Probes trained on layer `i` generalize forward (`j>i`) but not backward → each layer adds features.
 4. **Tabular Logit Lens.** Train fresh per-layer decoders on TabICL synthetic priors, then read predictions from intermediate layers. Reveals decisive representations form early. See [tabular-logit-lens](tabular-logit-lens.md).
 5. **Layer ablation.** Skip / repeat / swap layers in the forward pass. Skipping early layers is catastrophic; middle/late layers are robust; repeating helps LimiX-16M and TabPFN v1; swaps universally hurt.
 6. **Self-repair.** Apply the tabular logit lens after each skip. Middle/late skips are repaired by subsequent layers; early skips are not.
 
-**Looped nanoTabPFN.** Three models trained on the TabICL prior using the [nanoTabPFN](https://github.com/automl-private/nanoTabPFN) codebase ([TabPFN v2](hollmann2025tabpfnv2.md)-style architecture):
-
-| Variant | Layers | Params | Compute |
-| --- | --- | --- | --- |
-| `nanoTabPFN_{6l}` | 6 | full | 6× |
-| `nanoTabPFN_{1l}` | 1 | ~17% | 1× |
-| `nanoTabPFN_{looped}` | 1 (applied 6×) | ~17% | 6× |
-
-The looped variant isolates compute from parameters; see [looped-transformer-tfm](looped-transformer-tfm.md).
+**Looped nanoTabPFN.** Matched-compute comparison of a 6-layer, a 1-layer, and a 1-layer-looped-6× nanoTabPFN; the looped variant isolates compute from parameter count. Details in [looped-transformer-tfm](looped-transformer-tfm.md).
 
 ## Experiments
 
@@ -85,7 +91,7 @@ The looped variant isolates compute from parameters; see [looped-transformer-tfm
 - Separation gap grows monotonically across depth for all 6 models; label embedding rises after feature embedding, supporting a "features first, then labels" inference pattern.
 - Probing classifiers asymmetrically transfer forward, consistent with cumulative-feature accumulation in the residual stream.
 - Tabular logit lens reaches high ROC-AUC in the first few layers; the original decoder needs more layers to catch up, exposing a *prediction-ensembling* gap.
-- Layer-ablation shows early layers are uniquely important; middle/late are nearly free to skip. TabICL and LimiX-2M are even robust to early-layer skips because their upstream encoders already produce strong features.
+- Layer-ablation: early layers are uniquely important, middle/late are nearly free to skip. TabICL and LimiX-2M are robust even to early-layer skips — their upstream encoders front-load the [latent-mapping stage](tfm-inference-stages.md).
 - Self-repair occurs after middle/late skips, especially in TabPFN v2; first-layer skips cannot be repaired.
 - `nanoTabPFN_{looped}` matches `nanoTabPFN_{6l}` AUC on PMLBmini and TabArena; `nanoTabPFN_{1l}` is clearly worse — depth-via-loop suffices.
 - TFMs vs LLMs: middle-layer redundancy is *larger* in TFMs; final layer matters *less* in TFMs; TFMs are *more* swap-sensitive (most pronounced in TabPFN v2).
@@ -94,8 +100,8 @@ The looped variant isolates compute from parameters; see [looped-transformer-tfm
 
 - No systematic study of when effective depth becomes necessary (e.g. by task complexity).
 - Tabular logit lens uses TabICL priors; may under-fit models trained with richer priors (TabPFN(2.5), LimiX).
-- Looped experiment is at nanoTabPFN scale; whether it scales to TabPFN(2.5)/LimiX-16M is unverified.
 - Single seed, no ensembling, two benchmark suites; results are average-case.
+- See also [looped-transformer-tfm](looped-transformer-tfm.md#caveats) for looped-experiment caveats.
 
 ## Entities & Concepts
 

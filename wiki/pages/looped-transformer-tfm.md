@@ -11,17 +11,12 @@ Applying a *single* transformer block recurrently in place of a deep stack — a
 
 ## Background
 
-The looped-transformer idea predates TFMs: Universal Transformer (Dehghani 2018), and more recently scaling work by Gong 2025, Zhu 2025, McLeish 2025. Idea: instead of training `L` distinct blocks, train *one* block and apply it `L` times in the forward pass. Trades parameter count for compute and induces iterative refinement.
+- **Idea:** train one block, apply it `L` times — trade parameters for compute, induce iterative refinement.
+- **Lineage:** Universal Transformer (Dehghani 2018); scaling work by Gong 2025, Zhu 2025, McLeish 2025.
 
 ## TFM-specific motivation
 
-Balef et al.'s mechanistic study shows:
-
-- Middle/late layers in TFMs are largely redundant (layer ablation, self-repair).
-- Block structure in embedding similarity — many consecutive layers operate on near-identical representations.
-- Repeating a layer slightly improves models like LimiX-16M and [TabPFN v1](hollmann2023tabpfnv1.md).
-
-This suggests TFMs' depth mostly buys iterative refinement, not learning fundamentally distinct transformations.
+[Balef et al. 2026](balef2026onelayer.md) finds depth in TFMs mostly buys iterative refinement (depth-redundancy, self-repair, block structure in embedding similarity); repeating a layer even slightly improves LimiX-16M and [TabPFN v1](hollmann2023tabpfnv1.md).
 
 ## nanoTabPFN experiment
 
@@ -38,6 +33,8 @@ On PMLBmini and TabArena:
 - `nanoTabPFN_{looped}` ≈ `nanoTabPFN_{6l}` on AUC.
 - `nanoTabPFN_{1l}` clearly worse.
 - Gains aren't from parameter count (matched to 1l) — they're from the iterative compute.
+
+![Looped 1-layer nanoTabPFN matches the 6-layer baseline; the standalone 1-layer model is clearly worse.](assets/looped-transformer-tfm-nanotabpfn.png)
 
 ## Practical advantages
 

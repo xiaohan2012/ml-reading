@@ -16,7 +16,7 @@ For each transformer layer `l` of a frozen TFM:
 1. Continue-pretrain a **fresh decoder** on synthetic datasets generated from the [TabICL](qu2025tabicl.md) prior, taking as input the hidden state at layer `l`.
 2. At inference, forward the support+query through layers `1..l`, then apply decoder `l` to read out a prediction.
 
-The per-layer decoder is closer to a tuned lens than to a logit lens — the original decoder by itself ("logit lens") gives brittle, sometimes non-monotonic readouts. Per-layer decoders are smooth and reliable.
+![Per-layer-decoder ROC-AUC across the six TFMs studied — high performance is reachable from early layers.](assets/tabular-logit-lens-early-exit.png)
 
 ## Why per-layer decoders, not the original
 
