@@ -1,6 +1,7 @@
 # Wiki Index — ML reading and research (GNN & Interpretability)
 
 ### Sources
+- [balef2026onelayer](pages/balef2026onelayer.md) — First cross-TFM mechanistic study; tabular logit lens + 4-stage inference taxonomy; looped 1-layer nanoTabPFN matches 6-layer at ~20% params; ICML 2026 _(ingested 2026-05-25)_
 - [hollmann2025tabpfnv2](pages/hollmann2025tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
 - [qu2025tabicl](pages/qu2025tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
 - [qu2026tabiclv2](pages/qu2026tabiclv2.md) — TabICLv2: same 3-stage pipeline + QASSMax (anti attention-fading) + early target embedding + Muon + richer prior; open SOTA beats RealTabPFN-2.5; 1M-row inference; ICML 2026 _(ingested 2026-05-11)_
@@ -80,6 +81,9 @@
 - [positional-encoding](pages/positional-encoding.md) — PE/SE taxonomy (local/global/relative); RWSE vs LapPE tradeoffs; RDL adaptations _(ingested 2026-04-29)_
 - [over-squashing](pages/over-squashing.md) — GNN bottleneck: exponential receptive field → fixed-size vector; long-range signals lost; motivates global attention _(ingested 2026-05-04)_
 - [over-smoothing](pages/over-smoothing.md) — GNN depth failure: repeated low-pass filtering collapses node representations; distinct from over-squashing _(ingested 2026-05-04)_
+- [tabular-logit-lens](pages/tabular-logit-lens.md) — Per-layer decoders pretrained on TabICL priors; tuned-lens analogue for TFMs _(ingested 2026-05-25)_
+- [looped-transformer-tfm](pages/looped-transformer-tfm.md) — Recurrent single-block TFM design; nanoTabPFN evidence that depth ≈ recurrence _(ingested 2026-05-25)_
+- [tfm-inference-stages](pages/tfm-inference-stages.md) — Four-stage TFM inference taxonomy (latent mapping / feature engineering / ensembling / calibration) _(ingested 2026-05-25)_
 
 ### Analyses
 - [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md) — Three scalability strategies for GTs: linear attention (GPS) vs ego-graph sampling (Gophormer) vs hop tokenization (NAGphormer) _(query 2026-05-06)_

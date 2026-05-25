@@ -326,3 +326,7 @@ Pages updated: hollmann2023tabpfnv1, tabular-learning, kumorfm2-reading-plan, in
 ## [2026-05-11] ingest | TabICLv2: A better, faster, scalable, and open tabular foundation model
 Pages written: qu2026tabiclv2
 Pages updated: tabular-learning, fey2025kumorfm2, index, overview
+
+## [2026-05-25] ingest | Is One Layer Enough? Understanding Inference Dynamics in Tabular Foundation Models
+Pages written: balef2026onelayer, tabular-logit-lens, looped-transformer-tfm, tfm-inference-stages
+Pages updated: hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, muller2022pfn, tabular-learning, index, overview

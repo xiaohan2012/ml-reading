@@ -1,0 +1,60 @@
+---
+title: Looped Transformer for TFMs
+tags: [tabular, architecture, efficiency, looped-transformer, tabpfn]
+sources: [balef2026onelayer]
+updated: 2026-05-25
+---
+
+# Looped Transformer for Tabular Foundation Models
+
+Applying a *single* transformer block recurrently in place of a deep stack — a parameter-efficient alternative motivated by the depth-redundancy observed in TFMs ([Balef et al. 2026](balef2026onelayer.md)).
+
+## Background
+
+The looped-transformer idea predates TFMs: Universal Transformer (Dehghani 2018), and more recently scaling work by Gong 2025, Zhu 2025, McLeish 2025. Idea: instead of training `L` distinct blocks, train *one* block and apply it `L` times in the forward pass. Trades parameter count for compute and induces iterative refinement.
+
+## TFM-specific motivation
+
+Balef et al.'s mechanistic study shows:
+
+- Middle/late layers in TFMs are largely redundant (layer ablation, self-repair).
+- Block structure in embedding similarity — many consecutive layers operate on near-identical representations.
+- Repeating a layer slightly improves models like LimiX-16M and [TabPFN v1](hollmann2023tabpfnv1.md).
+
+This suggests TFMs' depth mostly buys iterative refinement, not learning fundamentally distinct transformations.
+
+## nanoTabPFN experiment
+
+Three models pretrained on TabICL priors from the open-source [nanoTabPFN](https://github.com/automl-private/nanoTabPFN) codebase ([TabPFN v2](hollmann2025tabpfnv2.md)-style architecture):
+
+| Model                  | Layers | Params  | Compute |
+| ---------------------- | ------ | ------- | ------- |
+| `nanoTabPFN_{6l}`      | 6      | full    | 6x      |
+| `nanoTabPFN_{1l}`      | 1      | ~17%    | 1x      |
+| `nanoTabPFN_{looped}`  | 1 (×6) | ~17%    | 6x      |
+
+On PMLBmini and TabArena:
+
+- `nanoTabPFN_{looped}` ≈ `nanoTabPFN_{6l}` on AUC.
+- `nanoTabPFN_{1l}` clearly worse.
+- Gains aren't from parameter count (matched to 1l) — they're from the iterative compute.
+
+## Practical advantages
+
+- ~5× parameter reduction at equal performance.
+- **Any-time predictions:** loop count is a tunable inference budget; no per-layer decoder pretraining needed (cf. [tabular logit lens](tabular-logit-lens.md)).
+- Adaptive computation: harder tasks could trigger more loops.
+
+## Caveats
+
+- Demonstrated only at the nanoTabPFN scale; no direct evidence that it scales to TabPFN(2.5) or LimiX-16M sizes.
+- Looped models still trail SOTA like TabPFN(2.5) in absolute performance — it's a proof of concept for the design principle, not a replacement.
+
+## Appearances in Sources
+
+- [balef2026onelayer](balef2026onelayer.md) — first TFM application; nanoTabPFN-scale evidence that depth ≈ recurrence.
+
+## Related Concepts
+
+- [tfm-inference-stages](tfm-inference-stages.md) — the redundancy and self-repair findings motivate looping.
+- [tabular-logit-lens](tabular-logit-lens.md) — looping sidesteps the need for per-layer decoders.
