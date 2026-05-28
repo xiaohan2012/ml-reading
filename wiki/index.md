@@ -84,6 +84,10 @@
 - [tabular-logit-lens](pages/tabular-logit-lens.md) — Per-layer decoders pretrained on TabICL priors; tuned-lens analogue for TFMs _(ingested 2026-05-25)_
 - [looped-transformer-tfm](pages/looped-transformer-tfm.md) — Recurrent single-block TFM design; nanoTabPFN evidence that depth ≈ recurrence _(ingested 2026-05-25)_
 - [tfm-inference-stages](pages/tfm-inference-stages.md) — Four-stage TFM inference taxonomy (latent mapping / feature engineering / ensembling / calibration) _(ingested 2026-05-25)_
+- [probing-classifier](pages/probing-classifier.md) — Linear probe on frozen hidden states; cross-layer matrix distinguishes cumulative vs replaced features _(ingested 2026-05-28)_
+- [layer-ablation](pages/layer-ablation.md) — Skip / repeat / swap interventions test necessity / reusability / position-specificity of each layer _(ingested 2026-05-28)_
+- [self-repair](pages/self-repair.md) — Downstream layers reconstruct an ablated layer's computation; distinguishes redundancy from active recovery _(ingested 2026-05-28)_
+- [representation-similarity](pages/representation-similarity.md) — Layer × layer CKA + cosine heatmaps; reveals redundant blocks and stage transitions _(ingested 2026-05-28)_
 
 ### Analyses
 - [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md) — Three scalability strategies for GTs: linear attention (GPS) vs ego-graph sampling (Gophormer) vs hop tokenization (NAGphormer) _(query 2026-05-06)_

@@ -24,11 +24,17 @@ For each transformer layer `l` of a frozen TFM:
 - Early-layer hidden states already contain the predictive features but are not aligned with the original decoder's expected basis.
 - Continued pretraining on a generic prior (TabICL's) is cheap and works across many TFMs.
 
+## Lens vs probe
+
+- **Probe** ([probing-classifier](probing-classifier.md)) asks *is the answer encoded?* — information-theoretic.
+- **Lens** asks *would the model emit the answer?* — functional / behavioral, in the model's own output space.
+- The **gap between them** is itself a diagnostic: the depth where info is encoded but not yet aligned with the original decoder.
+
 ## Use cases in Balef et al.
 
 - **Early-exit study:** how shallow can inference be? — high AUC achievable from very early layers in all 6 TFMs studied.
-- **Self-repair:** apply the lens to *every* layer after a skip intervention to see whether downstream layers compensate for the missing computation.
-- **Inference-stage identification:** the gap between the original decoder and per-layer decoder defines the [prediction-ensembling stage](tfm-inference-stages.md).
+- **Self-repair:** apply the lens at *every* layer after a skip intervention to see whether downstream layers compensate for the missing computation. See [self-repair](self-repair.md).
+- **Prediction-ensembling gap:** the depth range where the per-layer decoder AUC has saturated but the *original* final decoder is still catching up — the residual stream still needs alignment with the original-decoder basis. Also framed as the *prediction-ensembling stage* in the paper's four-stage taxonomy ([tfm-inference-stages](tfm-inference-stages.md)).
 
 ## Limitations
 
@@ -41,5 +47,7 @@ For each transformer layer `l` of a frozen TFM:
 
 ## Related Concepts
 
+- [probing-classifier](probing-classifier.md) — information-theoretic counterpart; reads out via an external classifier.
+- [self-repair](self-repair.md) — uses the lens trajectory after a skip to distinguish redundancy from active recovery.
 - [tfm-inference-stages](tfm-inference-stages.md) — the per-layer-decoder vs original-decoder gap defines the *prediction-ensembling* stage.
 - [looped-transformer-tfm](looped-transformer-tfm.md) — a practical alternative to per-layer decoders for any-time predictions.
