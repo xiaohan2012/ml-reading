@@ -135,15 +135,15 @@ Reverse-engineer **subgraphs** of components solving a task.
 
 **Sparse Autoencoders (SAEs).** Disentangle superposed features via overcomplete dictionary learning. Trained to reconstruct $\mathbf{z}$ with sparsity penalty on activations $h(\mathbf{z})$.
 
-- **Variants:**
+**Variants:**
 
-    | SAE | Activation | Sparsity term | Strength |
-    |---|---|---|---|
-    | **Standard** (ReLU) | ReLU | $\alpha \|h\|_1$ | baseline; suffers *shrinkage* |
-    | **Gated (GSAE)** | ReLU × gated step | $\|h\|_1$ on gate path | decouples magnitude from detection; Pareto-improves baseline |
-    | **TopK** | TopK | none — only reconstruction | constrains exactly $k$ active features; outperforms ReLU |
-    | **BatchTopK** | TopK over batch | none | per-sample flexibility |
-    | **JumpReLU** | JumpReLU($\theta$) | $L_0$ on $\theta$-gated features | decouples activation decision from magnitude |
+| SAE | Activation | Sparsity term | Strength |
+|---|---|---|---|
+| **Standard** (ReLU) | ReLU | $\alpha \|h\|_1$ | baseline; suffers *shrinkage* |
+| **Gated (GSAE)** | ReLU × gated step | $\|h\|_1$ on gate path | decouples magnitude from detection; Pareto-improves baseline |
+| **TopK** | TopK | none — only reconstruction | constrains exactly $k$ active features; outperforms ReLU |
+| **BatchTopK** | TopK over batch | none | per-sample flexibility |
+| **JumpReLU** | JumpReLU($\theta$) | $L_0$ on $\theta$-gated features | decouples activation decision from magnitude |
 
 - **Evaluation:** Pareto frontier of **L0 norm** vs **loss recovered**; feature density histogram; manual or LLM-automated interpretability scoring.
 - **Caveats:** SAE error term ($\epsilon$) shifts predictions more than random noise — faithfulness concern. Marks et al. 2024 incorporate $\epsilon$ as a node in causal graph for **sparse feature circuits**.
