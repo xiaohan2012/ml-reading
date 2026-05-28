@@ -12,6 +12,7 @@ Applying a *single* transformer block recurrently in place of a deep stack — a
 ## Background
 
 - **Idea:** train one block, apply it `L` times — trade parameters for compute, induce iterative refinement.
+- **Weight sharing is the defining property.** All `L` passes reuse the *same* parameters (vs. a standard stack, which has `L` independent weight sets). Hence ~1/L the parameters at equal depth-of-compute.
 - **Lineage:** Universal Transformer (Dehghani 2018); scaling work by Gong 2025, Zhu 2025, McLeish 2025.
 
 ## TFM-specific motivation
