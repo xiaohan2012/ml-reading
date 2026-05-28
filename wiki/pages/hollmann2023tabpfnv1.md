@@ -122,3 +122,4 @@ Ablation: SCM alone outperforms BNN alone; SCM+BNN mixture gives marginal furthe
 
 - [tabular-learning](tabular-learning.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
+- [balef2026onelayer](balef2026onelayer.md) — mechanistic study of TabPFN v1 inference dynamics; repeating a layer slightly improves performance, supporting iterative refinement.

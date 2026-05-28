@@ -127,3 +127,4 @@ This gives schema invariance *by construction*: pretraining cannot overfit to "c
 - [relational-foundation-model](relational-foundation-model.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
 - [tabpfn-v2-code](tabpfn-v2-code.md) — code-grounded walkthrough of the v2 architecture
+- [balef2026onelayer](balef2026onelayer.md) — mechanistic study finds TabPFN v2's middle/late layers are self-repairing and depth-redundant; the "prediction ensembling" stage is most visible in v2.

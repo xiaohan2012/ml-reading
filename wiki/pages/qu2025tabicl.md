@@ -112,6 +112,7 @@ updated: 2026-05-06
 - [tabular-learning](tabular-learning.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
 - [tabicl-code](tabicl-code.md) — code-grounded walkthrough of the TabICL architecture
+- [balef2026onelayer](balef2026onelayer.md) — TabICL's column embedder + row-wise interaction module make it robust to early-layer skips; TabICL's synthetic prior is also reused to train the *tabular logit lens*.
 
 ## Appendix — Column identifier choices: RoPE vs random noise
 

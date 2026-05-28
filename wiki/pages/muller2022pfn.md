@@ -111,3 +111,4 @@ If the model family $q_\theta$ is expressive enough, the optimum satisfies $q_{\
 
 - [tabular-learning](tabular-learning.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
+- [balef2026onelayer](balef2026onelayer.md) — first mechanistic study of how PFN-based TFMs use depth at inference time.

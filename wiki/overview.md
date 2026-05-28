@@ -1,8 +1,8 @@
 ---
 title: Overview
 tags: [overview, synthesis]
-sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, chmura2026tgm, ranjan2025relationaltr, gu2026relbenchv2, chen2025relgnn, wang2025griffin, rampavsek2022graphgps, kipf2017gcn, hamilton2017inductive, velickovic2018gat, xu2019gin, xu2020tgat, rossi2020tgn, yu2023dygformer, hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, ying2021graphormer, kreuzer2021san, gilmer2017mpnn, schlichtkrull2018rgcn, morris2019kgnn, huang2023tgb, hollmann2023tabpfnv1, somepalli2021saint, cvitkovic2020rdb, trivedi2019dyrep, cong2023graphmixer]
-updated: 2026-05-11
+sources: [fey2024rdlposition, robinson2024relbench, dwivedi2025relgt, chmura2026tgm, ranjan2025relationaltr, gu2026relbenchv2, chen2025relgnn, wang2025griffin, rampavsek2022graphgps, kipf2017gcn, hamilton2017inductive, velickovic2018gat, xu2019gin, xu2020tgat, rossi2020tgn, yu2023dygformer, hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, ying2021graphormer, kreuzer2021san, gilmer2017mpnn, schlichtkrull2018rgcn, morris2019kgnn, huang2023tgb, hollmann2023tabpfnv1, somepalli2021saint, cvitkovic2020rdb, trivedi2019dyrep, cong2023graphmixer, balef2026onelayer]
+updated: 2026-05-25
 ---
 
 # ML Reading and Research (GNN & Interpretability) — Overview
@@ -34,6 +34,8 @@ Additionally, [Griffin](pages/wang2025griffin.md) (Wang et al. 2025, ICML) is th
 
 **Tabular learning: deeper history.** TabPFN v1 (ICLR 2023) established the Prior-Data Fitted Network paradigm: a Transformer pretrained on SCM+BNN synthetic data approximates Bayesian posterior prediction for small tabular datasets (N≤1000) in a single forward pass. SAINT (2021) introduced intersample (row-level) attention across the batch alongside standard column-level attention, beating boosted trees on average — the architectural insight that TabICL scales up. Cvitkovic (2020) first proposed treating relational database supervised learning as GNN node classification via RDB-as-graph, directly anticipating the RDL blueprint's formalization.
 
+**TFM mechanistic interpretability.** [Balef et al. 2026](pages/balef2026onelayer.md) provide the first cross-TFM mechanistic study (TabPFN v1/v2/v2.5, TabICL, LimiX-2M/16M). Findings: TFM inference is *iterative* — each layer incrementally enriches features and widens the [separation gap](pages/balef2026onelayer.md) between classes; early layers are uniquely critical (input-encoder extension), while middle/late layers are largely redundant and self-repairing. Authors introduce the [tabular logit lens](pages/tabular-logit-lens.md) (per-layer decoders pretrained on TabICL priors), a four-stage [TFM inference taxonomy](pages/tfm-inference-stages.md), and a proof-of-concept [looped nanoTabPFN](pages/looped-transformer-tfm.md) — one layer applied 6× matches a 6-layer model at ~20% parameters. Relative to LLMs, TFMs front-load decisions in early layers and are more swap-sensitive.
+
 The benchmark ([RelBench](pages/relbench.md), now at v2) is growing in scale (7→11 datasets, 22M+ rows) and task diversity (forecasting + autocomplete) to support both supervised evaluation and foundation model pretraining. The [TGM library](pages/chmura2026tgm.md) provides parallel infrastructure for temporal graph learning (CTDG + DTDG unified), with TGB datasets now bridging into the RelBench ecosystem.
 
 RDL consistently outperforms single-table baselines (LightGBM) across all task types, confirming that relational structure carries informative signal.
@@ -48,6 +50,7 @@ RDL consistently outperforms single-table baselines (LightGBM) across all task t
 - How does snapshot time granularity (TGM finding: daily > hourly for GCN on Wikipedia) interact with RDL's temporal neighbor sampling window?
 - The RDL blueprint paper flagged fine-tuning vs. freezing multimodal column encoders as an open question — how much does end-to-end encoder training improve RelBench results?
 - The blueprint calls for self-supervised pretraining via automatically mined training tables — how does this compare to RT's masked token prediction objective?
+- Does the looped-block depth-substitution observed at nanoTabPFN scale carry up to TabPFN(2.5) / LimiX-16M, and how does it compose with multi-stage upstream encoders like TabICL's?
 
 ## Key Entities / Concepts
 
@@ -66,3 +69,6 @@ RDL consistently outperforms single-table baselines (LightGBM) across all task t
 - [Autocomplete Tasks](pages/autocomplete-tasks.md) — new RelBench v2 task type; predict existing column values from relational context
 - [Temporal Graph](pages/temporal-graph.md) — broader concept; TGM unifies CTDG+DTDG; REGs are a special case
 - [RelBench](pages/relbench.md) — benchmark (v1+v2); 11 datasets, forecasting + autocomplete + recommendation
+- [Tabular Logit Lens](pages/tabular-logit-lens.md) — per-layer decoders for TFM mechanistic interpretability
+- [Looped Transformer for TFMs](pages/looped-transformer-tfm.md) — recurrent single-block TFM design; ~5× parameter reduction at equal performance
+- [TFM Inference Stages](pages/tfm-inference-stages.md) — four-stage TFM inference taxonomy

@@ -1,8 +1,8 @@
 ---
 title: Tabular Learning
 tags: [concept, tabular, foundation-model, in-context-learning]
-sources: [hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint, muller2022pfn]
-updated: 2026-05-11
+sources: [hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint, muller2022pfn, balef2026onelayer]
+updated: 2026-05-25
 ---
 
 # Tabular Learning
@@ -39,6 +39,7 @@ Tabular learning refers to machine learning on structured data organized in rows
 - [qu2026tabiclv2](qu2026tabiclv2.md) — TabICLv2: same 3-stage pipeline + QASSMax (combats attention fading) + early target embedding + Muon + richer prior; open SOTA beating RealTabPFN-2.5; ICML 2026
 - [kim2024carte](kim2024carte.md) — graph-based representation for cross-table pretraining without schema matching; YAGO knowledge pretraining; handles string-heavy tables; ICML 2024
 - [somepalli2021saint](somepalli2021saint.md) — two-attention (column + intersample/row) Transformer + contrastive pretraining; outperforms boosted trees; 2021
+- [balef2026onelayer](balef2026onelayer.md) — first cross-TFM mechanistic study; tabular logit lens + looped nanoTabPFN proof of concept; ICML 2026
 
 ## Related Concepts
 
