@@ -31,6 +31,7 @@ A layer × layer heatmap per model, lower triangle = cosine, upper triangle = CK
 ## Appearances in Sources
 
 - [balef2026onelayer](balef2026onelayer.md) — heatmaps reveal middle/late depth-redundancy in TabPFN(2.5) and LimiX-16M; the cosine ≫ CKA discrepancy in early layers signals non-isotropic head expansion.
+- [ferrando2024primer](ferrando2024primer.md) — complements representational analyses with the residual-stream perspective on layer-to-layer information flow.
 
 ## Related Concepts
 

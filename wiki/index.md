@@ -1,6 +1,7 @@
 # Wiki Index — ML reading and research (GNN & Interpretability)
 
 ### Sources
+- [ferrando2024primer](pages/ferrando2024primer.md) — Survey of LLM mech-interp: localize × decode taxonomy; residual-stream notation; SAEs, patching, circuits, lens; bridge table to balef _(ingested 2026-05-28)_
 - [balef2026onelayer](pages/balef2026onelayer.md) — First cross-TFM mechanistic study; tabular logit lens + 4-stage inference taxonomy; looped 1-layer nanoTabPFN matches 6-layer at ~20% params; ICML 2026 _(ingested 2026-05-25)_
 - [hollmann2025tabpfnv2](pages/hollmann2025tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
 - [qu2025tabicl](pages/qu2025tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_

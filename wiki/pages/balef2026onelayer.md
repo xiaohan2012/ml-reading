@@ -151,4 +151,5 @@ The **gap between them** is itself the diagnostic: where the info is encoded but
 - [looped-transformer-tfm](looped-transformer-tfm.md) — recurrent single-block TFM design
 - [tfm-inference-stages](tfm-inference-stages.md) — four-stage TFM inference taxonomy
 - [tabular-learning](tabular-learning.md) — TFM family context
+- [ferrando2024primer](ferrando2024primer.md) — LLM mech-interp survey; bridge table maps balef techniques to the broader landscape
 - [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md), [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md), [qu2025tabicl](qu2025tabicl.md), [qu2026tabiclv2](qu2026tabiclv2.md), [muller2022pfn](muller2022pfn.md)

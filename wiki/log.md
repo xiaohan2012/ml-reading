@@ -5,6 +5,10 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-28] ingest | A Primer on the Inner Workings of Transformer-based LMs
+Pages written: ferrando2024primer
+Pages updated: index, overview, probing-classifier, tabular-logit-lens, self-repair, layer-ablation, representation-similarity, balef2026onelayer
+
 ## [2026-05-20] analysis | TabICL code walkthrough
 Pages written: tabicl-code
 Pages updated: index, qu2025tabicl

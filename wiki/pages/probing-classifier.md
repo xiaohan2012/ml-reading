@@ -30,6 +30,7 @@ A small supervised classifier trained on a frozen model's hidden state to measur
 ## Appearances in Sources
 
 - [balef2026onelayer](balef2026onelayer.md) — cross-layer probe matrix shows forward-only transfer across six TFMs, evidencing cumulative-feature accumulation in the residual stream.
+- [ferrando2024primer](ferrando2024primer.md) — surveys probing in the broader LLM mech-interp context; control tasks, MDL probes, correlation-vs-causation caveat.
 
 ## Related Concepts
 

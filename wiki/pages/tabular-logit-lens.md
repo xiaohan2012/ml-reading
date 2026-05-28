@@ -44,6 +44,7 @@ For each transformer layer `l` of a frozen TFM:
 ## Appearances in Sources
 
 - [balef2026onelayer](balef2026onelayer.md) — introduces the method; uses it for early-exit, self-repair, and stage-identification analyses across six TFMs.
+- [ferrando2024primer](ferrando2024primer.md) — surveys the LLM lens family (logit lens, tuned lens, attention lens, Patchscopes) the tabular variant adapts.
 
 ## Related Concepts
 
