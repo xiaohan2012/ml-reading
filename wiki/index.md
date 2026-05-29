@@ -89,6 +89,7 @@
 - [layer-ablation](pages/layer-ablation.md) — Skip / repeat / swap interventions test necessity / reusability / position-specificity of each layer _(ingested 2026-05-28)_
 - [self-repair](pages/self-repair.md) — Downstream layers reconstruct an ablated layer's computation; distinguishes redundancy from active recovery _(ingested 2026-05-28)_
 - [representation-similarity](pages/representation-similarity.md) — Layer × layer CKA + cosine heatmaps; reveals redundant blocks and stage transitions _(ingested 2026-05-28)_
+- [transformer-background](pages/transformer-background.md) — Algebraic Transformer view: residual stream + OV/QK + FFN-as-memory + prediction-as-sum; foundation of mech-interp _(ingested 2026-05-29)_
 
 ### Analyses
 - [graphgps-gophormer-nagphormer-comparison](pages/graphgps-gophormer-nagphormer-comparison.md) — Three scalability strategies for GTs: linear attention (GPS) vs ego-graph sampling (Gophormer) vs hop tokenization (NAGphormer) _(query 2026-05-06)_

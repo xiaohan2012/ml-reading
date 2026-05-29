@@ -334,3 +334,8 @@ Pages updated: tabular-learning, fey2025kumorfm2, index, overview
 ## [2026-05-25] ingest | Is One Layer Enough? Understanding Inference Dynamics in Tabular Foundation Models
 Pages written: balef2026onelayer, tabular-logit-lens, looped-transformer-tfm, tfm-inference-stages
 Pages updated: hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, muller2022pfn, tabular-learning, index, overview
+
+## [2026-05-29] update | ferrando2024primer
+Background split → new page residual-stream-view.md; primer keeps condensed Essentials section.
+Pages written: residual-stream-view
+Pages updated: ferrando2024primer, index

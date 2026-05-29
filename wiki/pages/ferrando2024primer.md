@@ -20,27 +20,36 @@ updated: 2026-05-28
 - **Unified residual-stream notation** ties every method (DLA, patching, circuits, lens, SAEs) back to a shared algebraic view.
 - **Synthesis catalogue** of discovered inner behaviors — attention head types, FFN neuron types, residual-stream phenomena, multi-component circuits (IOI, factual recall).
 
-## Why this primer
+## Background: residual-stream view
 
-Earlier interpretability surveys either pre-dated decoder-only LMs (BERTology) or surveyed XAI broadly. Ferrando et al. fill the gap with:
+Every method below is grounded in the residual-stream perspective. Full treatment with derivations, OV/QK factorization, FFN-as-memory, and the shallow-ensemble unroll lives at [transformer-background](transformer-background.md). The minimum required here:
 
-- a **concise, equation-first** introduction to mech-interp methods specific to autoregressive Transformers,
-- **unified notation** across previously fragmented literatures (probing, patching, SAEs, lens),
-- explicit mapping of methods to the **residual-stream perspective** (Elhage et al. 2021).
+**Notation.**
 
-Concurrent broader survey: Bereska & Gavves 2024 (AI-safety-oriented).
+- $l$ — layer; $h$ — head; $i, n$ — positions ($n$ = predicted).
+- $\mathbf{x}^l_i \in \mathbb{R}^d$ — residual stream at layer $l$, position $i$.
+- $\mathbf{W}_U \in \mathbb{R}^{d \times |V|}$ — unembedding (residual → logits).
+- LN — LayerNorm, applied per-token before each sublayer (Pre-LN).
 
-## Background: residual-stream view & unified notation
+**Key facts.**
 
-The whole primer hinges on this perspective. Worth internalising before reading any method section.
+- **Residual stream is additive.** Every sublayer writes back into the same $d$-dim stream:
+  $$\mathbf{x}^l_i = \mathbf{x}^{l-1}_i + \text{Attn}^l(\text{LN}(\mathbf{x}^{l-1}_i)) + \text{FFN}^l(\text{LN}(\cdot))$$
 
-- **Residual stream.** Each token's embedding $\mathbf{x}_i$ is updated **additively** by every attention head and FFN: $\mathbf{x}^l_i = \mathbf{x}^{l-1}_i + \text{Attn}^l(\cdot) + \text{FFN}^l(\cdot)$. The unembedding $\mathbf{W}_U$ reads the final state.
-- **Attention as read-write.** Per-head decomposition collapses $\mathbf{W}_V \mathbf{W}_O$ into the **OV circuit** (what gets written) and $\mathbf{W}_Q \mathbf{W}_K^\top$ into the **QK circuit** (where to read from).
-- **FFN as key-value memory.** Rewrite $\text{FFN}(\mathbf{x}) = \sum_u n_u \mathbf{w}_{\text{out}_u}$: each neuron $u$ contributes a fixed value vector scaled by its activation. Neurons are a **privileged basis** because of the nonlinearity.
-- **Forward pass = sum of component contributions** (Prediction-as-sum). Logits decompose as $\sum_{l,h} \text{Attn}^{l,h}\mathbf{W}_U + \sum_l \text{FFN}^l \mathbf{W}_U + \mathbf{x} \mathbf{W}_U$ — this single rewrite enables Direct Logit Attribution and circuit decomposition.
-- **Shallow-network ensemble view.** A two-layer attention-only model expands into 4 paths: **direct**, **full OV circuits**, **virtual heads (V-composition)**. Q/K-composition extend this to full Transformers.
+- **Attention factorizes into two circuits:**
+    - **OV circuit** $\mathbf{W}_V\mathbf{W}_O$ — *what* is written into the stream.
+    - **QK circuit** $\mathbf{W}_Q\mathbf{W}_K^\top$ — *where* to read from (drives attention weights).
 
-![Residual stream view of a Transformer block (full_transformer figure from the primer).](assets/ferrando2024primer-transformer.png)
+- **Bases:**
+    - FFN neurons = **privileged basis** — readable directly (nonlinearity pins the basis).
+    - Residual stream = **no privileged basis** — rotations absorbable into adjacent weights → features must be *discovered* (motivates SAEs).
+
+- **Prediction-as-sum** — the equation every downstream method depends on (Ferrando Eq. 10):
+  $$f(\mathbf{x}) = \sum_{l,h} \text{Attn}^{l,h}\mathbf{W}_U + \sum_l \text{FFN}^l\mathbf{W}_U + \mathbf{x}_n\mathbf{W}_U$$
+    - **Why it factors.** $\mathbf{W}_U$ is linear, the final residual is a sum of writes — so $\mathbf{W}_U$ distributes.
+    - **What each summand is.** One component's (head / FFN / embedding) **direct contribution to the logits**.
+    - **Downstream uses.** DLA, DLDA, circuit analysis; applied at *intermediate* layers → the logit-lens family.
+
 
 ## The two-axis taxonomy
 
@@ -84,9 +93,34 @@ Estimate contribution of input *tokens* to model output. Faithfulness debates ab
 
 #### Logit Attribution
 
-- **Direct Logit Attribution (DLA).** Decompose the logit of token $w$ into per-component contributions $f^c(\mathbf{x}) \mathbf{W}_{U[:,w]}$ — works because the residual stream view (Prediction-as-sum) makes logits linear in component outputs. Component $c$ = head, FFN, or single neuron.
-- **Direct Logit Difference Attribution (DLDA).** Contrastive form for token pair $(w, o)$: $f^c(\mathbf{x})(\mathbf{W}_{U[:,w]} - \mathbf{W}_{U[:,o]})$. Positive ⇒ component promotes $w$ over $o$.
-- Extends to **per-path** attributions inside an attention head (Ferrando et al. 2023): $a^{l,h}_{n,j} \mathbf{x}^{l-1}_j \mathbf{W}_{OV}^{l,h} \mathbf{W}_{U[:,w]}$.
+**Motivation**
+- Converts the abstract "logit of $w$" into **(component, *source*?, sign, magnitude)** tuples (*source* only via per-path DLA).
+- The atomic unit every downstream mech-interp method (circuits, lens, ablation) builds on.
+
+**Reminder — Prediction-as-sum.**
+$$f(\mathbf{x}) = \sum_{l,h} \text{Attn}^{l,h}\mathbf{W}_U + \sum_l \text{FFN}^l\mathbf{W}_U + \mathbf{x}_n\mathbf{W}_U$$
+
+**What is a "component"?** Any addend in the equation above — its **write into the residual stream** $f^c(\mathbf{x}) \in \mathbb{R}^d$:
+
+- an attention head: $f^c(\mathbf{x}) = \text{Attn}^{l,h}(\cdots)$,
+- an FFN layer: $f^c(\mathbf{x}) = \text{FFN}^l(\cdots)$,
+- a single FFN neuron: $f^c(\mathbf{x}) = n_u\,\mathbf{w}_{\text{out}_u}$,
+- the input embedding: $f^c(\mathbf{x}) = \mathbf{x}_n$,
+- a *path* through several heads (per-path DLA).
+
+**Methods.** All three read off a dot product of a write into the stream against an unembedding column $\mathbf{W}_{U[:,w]} \in \mathbb{R}^d$ (token $w$'s readout direction). Single forward pass, no counterfactual.
+
+**Direct Logit Attribution (DLA).** Component $c$'s push on token $w$:
+$$f^c(\mathbf{x})\,\mathbf{W}_{U[:,w]}$$
+Sign = promote ($>0$) / suppress ($<0$); magnitude = strength. By Prediction-as-sum, $\text{logit}_w = \sum_c$ of these.
+
+**Direct Logit Difference Attribution (DLDA).** Contrastive: how much $c$ favors $w$ over $o$:
+$$f^c(\mathbf{x})(\mathbf{W}_{U[:,w]} - \mathbf{W}_{U[:,o]})$$
+Cancels shared baseline directions (e.g. a uniform frequent-token bias).
+
+**Per-path Direct Logit Attribution** (Ferrando et al. 2023). Attribute through source position $j$ inside head $(l,h)$:
+$$a^{l,h}_{n,j}\,\mathbf{x}^{l-1}_j\,\mathbf{W}_{OV}^{l,h}\,\mathbf{W}_{U[:,w]}$$
+Identifies *which source token*, *through which head*, pushed how hard toward $w$.
 
 #### Causal interventions / activation patching
 
