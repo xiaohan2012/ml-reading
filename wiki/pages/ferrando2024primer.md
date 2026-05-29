@@ -53,6 +53,8 @@ The other two sections of the survey are syntheses — *Discovered Inner Behavio
 
 ## Behavior Localization
 
+**Main idea.** Given a single prediction, identify *which inputs* (tokens, training examples) and *which model components* (heads, FFNs, neurons, edges) are causally responsible — answering the question *"why this output?"* rather than *"what does the model know?"*. Methods split by **target**: input tokens (attribution) vs. internal components (logit attribution, patching, circuits).
+
 ### Input attribution
 
 Estimate contribution of input *tokens* to model output. Faithfulness debates abound; methods often disagree.
@@ -73,15 +75,22 @@ Estimate contribution of input *tokens* to model output. Faithfulness debates ab
 
 ### Component importance
 
+**Progression.** Three subsections form a ladder of increasing structural ambition, then a fourth re-grounds the whole stack:
+
+- **Logit attribution** — *direct* effect of one component on the output logit, computed from a **single forward pass** via residual-stream linearity. No counterfactual needed.
+- **Causal interventions / activation patching** — *total* effect of one component, computed by **replacing** its activation with one from a counterfactual run.
+- **Circuit analysis** — scale-up to **subgraphs**: which *edges* between components carry the signal.
+- **Causal abstraction** — find the *interpretable variables* a circuit implements, not just its components.
+
 #### Logit Attribution
 
-- **Direct Logit Attribution (DLA).** Decompose the logit of token $w$ into per-component contributions $f^c(\mathbf{x}) \mathbf{W}_{U[:,w]}$. Component $c$ = head, FFN, or single neuron.
-- **Direct Logit Difference Attribution (DLDA).** Contrastive form for token pair $(w, o)$.
+- **Direct Logit Attribution (DLA).** Decompose the logit of token $w$ into per-component contributions $f^c(\mathbf{x}) \mathbf{W}_{U[:,w]}$ — works because the residual stream view (Prediction-as-sum) makes logits linear in component outputs. Component $c$ = head, FFN, or single neuron.
+- **Direct Logit Difference Attribution (DLDA).** Contrastive form for token pair $(w, o)$: $f^c(\mathbf{x})(\mathbf{W}_{U[:,w]} - \mathbf{W}_{U[:,o]})$. Positive ⇒ component promotes $w$ over $o$.
 - Extends to **per-path** attributions inside an attention head (Ferrando et al. 2023): $a^{l,h}_{n,j} \mathbf{x}^{l-1}_j \mathbf{W}_{OV}^{l,h} \mathbf{W}_{U[:,w]}$.
 
 #### Causal interventions / activation patching
 
-Express model as a causal DAG; intervene on a node, measure prediction change.
+View the forward pass as a causal DAG (nodes = component outputs, edges = activations). **Activation patching** replaces one node's value $f^c(\mathbf{x})$ with an alternative $\tilde{\mathbf{h}}$ from another forward pass — formally $f(\mathbf{x} \mid \text{do}(f^c(\mathbf{x}) = \tilde{\mathbf{h}}))$ — then measures how the prediction changes. The choice of $\tilde{\mathbf{h}}$ and the *direction* of patching together determine what causal quantity is estimated. This recovers the **total effect** (direct + indirect via downstream components), in contrast to DLA's purely direct effect.
 
 - **Patch sources:**
     - **Resample** — single example from a counterfactual distribution $P_{\text{patch}}$.
@@ -89,23 +98,31 @@ Express model as a causal DAG; intervene on a node, measure prediction change.
     - **Zero** — null vector (risk: OOD).
     - **Noise** — Gaussian-perturbed input.
 - **Direction:**
-    - **Noising** — patch into clean run.
-    - **Denoising** — patch clean activation into corrupted run (Causal Tracing style).
-- **Subspace patching / DII.** Intervene only on a learned linear subspace $U$, not the whole activation; respects the **linear representation hypothesis**.
-- **Component modeling** — learn a linear estimator predicting effects of subset interventions.
+    - **Noising** — patch corrupted activation into a clean run; tests **necessity** ("can the component be broken without breaking the prediction?").
+    - **Denoising** — patch clean activation into a corrupted run (Causal Tracing); tests **sufficiency** ("can restoring the component alone rescue the prediction?").
+- **Component modeling** — learn a linear estimator predicting effects of subset interventions, avoiding combinatorial patching.
 
 #### Circuits Analysis
 
-Reverse-engineer **subgraphs** of components solving a task.
+A **circuit** is a subgraph of components (heads, FFNs, neurons) and the edges between them that *jointly implement* a task — canonical example: the IOI circuit in GPT-2 Small. Circuit discovery scales patching from nodes to edges.
 
-- **Edge / path patching** — patch a single edge in the computational graph; measures **direct vs indirect** effects (Pearl mediation).
-- **ACDC** — iterative edge removal, fully automated but $O(\text{edges})$ forward passes.
-- **EAP / EAP-IG** — linear approximation of patching with **one forward + one backward pass**; orders of magnitude cheaper. **AtP\*** patches false-negative cases.
-- **Information flow routes** — patch-free, single forward pass via context-mixing aggregation.
-- **DAS / Boundless DAS** — distributed alignment search; find non-basis-aligned subspaces with causal influence via gradient descent.
-- **Causal Proxy Models** — interpretable proxies trained to mimic counterfactual behavior.
+- **Edge patching** — patch a single residual-stream edge between two components, leveraging the additive decomposition of each component's input.
+- **Path patching** — generalize to *multi-edge* paths; isolates **direct vs indirect** effects of a sender on a receiver (Pearl mediation).
+- **ACDC** — iterative edge removal, fully automated but $O(\text{edges})$ forward passes — impractical for large models.
+- **EAP** — linear approximation of patching with **one forward + one backward pass**; orders of magnitude cheaper than ACDC.
+- **EAP-IG** — EAP combined with Integrated Gradients; demonstrably **more faithful** circuits than vanilla EAP.
+- **AtP\*** — patches two known false-negative modes of attribution patching while keeping the efficiency.
+- **Information flow routes** (Ferrando 2024) — patch-free, **single forward pass**; extracts a subnetwork via context-mixing aggregation, with no counterfactual dataset and no self-repair risk.
 
 **Limitations of circuit discovery.** (1) requires designing $P_{\text{patch}}$, (2) needs human inspection for subgraph isolation, (3) interventions can trigger **second-order self-repair** that confounds the analysis.
+
+#### Causal Abstraction
+
+A complement to circuits: rather than locating *which* components matter, find the **high-level interpretable variables** they implement. Bridges component-level mechanism to feature-level explanation.
+
+- **Subspace patching / DII** (Geiger 2023) — intervene only on a learned linear subspace $U \subset \mathbb{R}^d$ of an activation, not the whole vector; respects the **linear representation hypothesis**.
+- **DAS / Boundless DAS** — distributed alignment search: find non-basis-aligned subspaces with causal influence via gradient descent. Empirically the strongest causal-intervention method across syntactic / mathematical / attribute benchmarks.
+- **Causal Proxy Models (CPMs)** — interpretable proxies trained to mimic the original model's counterfactual behavior.
 
 ![Activation (resample) patching: source-input FFN activation overwrites target-input forward pass; prediction flips (act_patching).](assets/ferrando2024primer-act-patching.png)
 
