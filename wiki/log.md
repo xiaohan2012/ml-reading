@@ -5,6 +5,10 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-05-28] ingest | A Primer on the Inner Workings of Transformer-based LMs
+Pages written: ferrando2024primer
+Pages updated: index, overview, probing-classifier, tabular-logit-lens, self-repair, layer-ablation, representation-similarity, balef2026onelayer
+
 ## [2026-05-20] analysis | TabICL code walkthrough
 Pages written: tabicl-code
 Pages updated: index, qu2025tabicl
@@ -330,3 +334,8 @@ Pages updated: tabular-learning, fey2025kumorfm2, index, overview
 ## [2026-05-25] ingest | Is One Layer Enough? Understanding Inference Dynamics in Tabular Foundation Models
 Pages written: balef2026onelayer, tabular-logit-lens, looped-transformer-tfm, tfm-inference-stages
 Pages updated: hollmann2023tabpfnv1, hollmann2025tabpfnv2, qu2025tabicl, muller2022pfn, tabular-learning, index, overview
+
+## [2026-05-29] update | ferrando2024primer
+Background split → new page residual-stream-view.md; primer keeps condensed Essentials section.
+Pages written: residual-stream-view
+Pages updated: ferrando2024primer, index

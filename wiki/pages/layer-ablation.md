@@ -31,6 +31,7 @@ Causal interventions on the forward pass to probe what each layer contributes. T
 ## Appearances in Sources
 
 - [balef2026onelayer](balef2026onelayer.md) — applied across 6 TFMs. Findings: early layers necessary, middle/late skippable; repeats help LIMIX-16M and TabPFN v1 (motivating [looped-transformer-tfm](looped-transformer-tfm.md)); swaps universally hurt, more than in LLMs.
+- [ferrando2024primer](ferrando2024primer.md) — places skip/zero-style ablation inside the broader activation-patching family (resample / mean / zero / noise).
 
 ## Related Concepts
 

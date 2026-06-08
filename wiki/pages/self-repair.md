@@ -33,6 +33,7 @@ Both yield identical final-layer accuracy. Distinguishing them is required evide
 ## Appearances in Sources
 
 - [balef2026onelayer](balef2026onelayer.md) — middle/late TFM skips show clear self-repair (especially TabPFN v2); first-layer skips never recover.
+- [ferrando2024primer](ferrando2024primer.md) — flags self-repair as a known confound of causal interventions in LLMs (McGrath et al. 2023; Rushing 2024).
 
 ## Related Concepts
 
