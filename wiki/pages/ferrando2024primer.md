@@ -62,7 +62,10 @@ The other two sections of the survey are syntheses — *Discovered Inner Behavio
 
 ## Behavior Localization
 
-**Main idea.** Given a single prediction, identify *which inputs* (tokens, training examples) and *which model components* (heads, FFNs, neurons, edges) are causally responsible — answering the question *"why this output?"* rather than *"what does the model know?"*. Methods split by **target**: input tokens (attribution) vs. internal components (logit attribution, patching, circuits).
+**Main idea.**
+
+- Given a single prediction, identify *which inputs* (tokens, training examples) and *which model components* (heads, FFNs, neurons, edges) are causally responsible — answering *"why this output?"* rather than *"what does the model know?"*.
+- Methods split by **target**: input tokens (attribution) vs. internal components (logit attribution, patching, circuits).
 
 ### Input attribution
 
@@ -124,7 +127,7 @@ Identifies *which source token*, *through which head*, pushed how hard toward $w
 
 #### Causal interventions / activation patching
 
-View the forward pass as a causal DAG (nodes = component outputs, edges = activations). **Activation patching** replaces one node's value $f^c(\mathbf{x})$ with an alternative $\tilde{\mathbf{h}}$ from another forward pass — formally $f(\mathbf{x} \mid \text{do}(f^c(\mathbf{x}) = \tilde{\mathbf{h}}))$ — then measures how the prediction changes. The choice of $\tilde{\mathbf{h}}$ and the *direction* of patching together determine what causal quantity is estimated. This recovers the **total effect** (direct + indirect via downstream components), in contrast to DLA's purely direct effect.
+**What it does.** Replace one component's activation $f^c(\mathbf{x})$ with an alternative $\tilde{\mathbf{h}}$ from another forward pass — formally $f(\mathbf{x} \mid \text{do}(f^c(\mathbf{x}) = \tilde{\mathbf{h}}))$ — and measure the change in prediction. Recovers the **total effect** (direct + indirect via downstream components), in contrast to DLA's purely direct effect. The patch source and direction jointly determine what causal quantity is estimated.
 
 - **Patch sources:**
     - **Resample** — single example from a counterfactual distribution $P_{\text{patch}}$.
@@ -138,17 +141,61 @@ View the forward pass as a causal DAG (nodes = component outputs, edges = activa
 
 #### Circuits Analysis
 
-A **circuit** is a subgraph of components (heads, FFNs, neurons) and the edges between them that *jointly implement* a task — canonical example: the IOI circuit in GPT-2 Small. Circuit discovery scales patching from nodes to edges.
+**What is a circuit?** A subgraph of the forward-pass DAG (nodes = components, edges = residual-stream reads) that *jointly implements* a task — canonical example: the IOI circuit in GPT-2 Small.
+
+**Origin of the concept.**
+
+- **Olah et al., "Zoom In" (Distill 2020)** — coined "circuits" for vision; defined a circuit as an *interpretable subgraph* of a network, with each node carrying a nameable role.
+- **Elhage et al., "Mathematical Framework" (Anthropic 2021)** — gave Transformer circuits their *algebraic* meaning: edges = OV/QK composition between heads.
+- **Wang et al., IOI (ICLR 2023)** — first fully-specified circuit in a real LM and the source of the three formal criteria below.
+
+**Working definition** (compressed): a circuit is a small subgraph that is
+
+- **sufficient** — running only these nodes reproduces the behavior,
+- **necessary** — ablating any of them breaks it,
+- **interpretable** — each node has a nameable role (Duplicate Token Head, S-Inhibition Head, …).
+
+**Formal criteria** (Wang et al. 2022, IOI):
+
+- **Faithfulness** — the circuit alone, run on the task, reproduces the target metric (e.g. the Mary − John logit difference). ≈ sufficient.
+- **Completeness** — no relevant components are left out; nothing outside the circuit changes the metric.
+- **Minimality** — every node is necessary; removing any one breaks the behavior. ≈ necessary.
+
+Interpretability sits on top of the formal triad — it's what makes a circuit an *explanation* rather than just a high-scoring subgraph.
+
+**Discovery algorithms** — scale patching from nodes to edges.
 
 - **Edge patching** — patch a single residual-stream edge between two components, leveraging the additive decomposition of each component's input.
 - **Path patching** — generalize to *multi-edge* paths; isolates **direct vs indirect** effects of a sender on a receiver (Pearl mediation).
-- **ACDC** — iterative edge removal, fully automated but $O(\text{edges})$ forward passes — impractical for large models.
-- **EAP** — linear approximation of patching with **one forward + one backward pass**; orders of magnitude cheaper than ACDC.
-- **EAP-IG** — EAP combined with Integrated Gradients; demonstrably **more faithful** circuits than vanilla EAP.
-- **AtP\*** — patches two known false-negative modes of attribution patching while keeping the efficiency.
-- **Information flow routes** (Ferrando 2024) — patch-free, **single forward pass**; extracts a subnetwork via context-mixing aggregation, with no counterfactual dataset and no self-repair risk.
+- **ACDC** (Automatic Circuit DisCovery; Conmy et al. 2023) — iterative edge removal, fully automated but $O(\text{edges})$ forward passes — impractical for large models.
+- **EAP** (Edge Attribution Patching; Syed et al. 2023) — linear approximation of patching with **one forward + one backward pass**; orders of magnitude cheaper than ACDC.
+- **EAP-IG** (EAP with Integrated Gradients; Hanna et al. 2024) — EAP combined with Integrated Gradients; demonstrably **more faithful** circuits than vanilla EAP.
+- **AtP\*** (Attribution Patching\*; Kramár et al. 2024) — patches two known false-negative modes of attribution patching while keeping the efficiency.
+- **Information Flow Routes** (Ferrando & Voita 2024) — patch-free, **single forward pass**; extracts a subnetwork via context-mixing aggregation, with no counterfactual dataset and no self-repair risk.
 
-**Limitations of circuit discovery.** (1) requires designing $P_{\text{patch}}$, (2) needs human inspection for subgraph isolation, (3) interventions can trigger **second-order self-repair** that confounds the analysis.
+**Worked example — ACDC** (the reference implementation; everything else is defined relative to it).
+
+- **Inputs.**
+    - *Clean* dataset — prompts exhibiting the behavior (IOI sentences).
+    - *Corrupted* dataset — counterfactual prompts that destroy it (swap names).
+    - *Metric* — typically the logit difference on the clean run.
+    - *Threshold* $\tau$ — tolerated metric drop per pruned edge.
+- **Algorithm.**
+    1. Cache all activations on clean + corrupted runs.
+    2. Sort edges in **reverse topological order** (output → input).
+    3. For each edge $A \to B$: patch $A$'s contribution into $B$'s input using the *corrupted* activation; re-run; measure metric drop $\Delta$.
+    4. If $\Delta < \tau$ → drop the edge; else → keep it.
+    5. Surviving subgraph = the circuit.
+- **Why reverse order.** Pruning from the output backwards means each edge is judged against the *already-pruned* downstream — an edge survives only if it still matters in the current candidate circuit. Forward order would overestimate importance.
+- **Single-edge patch (concretely).** Downstream input is additive over upstream writes (residual-stream identity), so:
+    $$\text{input}_B = \sum_{A' \ne A} f^{A'}(\mathbf{x}_{\text{clean}}) + f^A(\mathbf{x}_{\text{corrupted}})$$
+    Only $A$'s contribution to $B$ uses the corrupted prompt; everything else stays clean.
+- **Threshold trade-off.** Small $\tau$ → conservative, large circuit, high faithfulness. Large $\tau$ → aggressive prune, small circuit, lower faithfulness. Sweep to get a ROC-style curve.
+- **Cost.** $O(|E|)$ forward passes per task (~30k for GPT-2 Small). This is the bottleneck **EAP** removes — same target, 2 passes total.
+- **Validation.** Recovers Wang et al.'s IOI circuit unsupervised — the methodology check that justified the whole automated-discovery program.
+- **Failure modes.** Greedy (never re-evaluates a pruned edge); threshold-sensitive; depends on a well-designed corrupted dataset; **self-repair** can mask edges that *would* matter without backup pathways; doesn't interpret — still need DLA + attention-pattern inspection for step 5 of the recipe.
+
+**Shared limitations of circuit discovery.** (1) requires designing $P_{\text{patch}}$, (2) needs human inspection for subgraph isolation and node-role labeling, (3) interventions can trigger **second-order self-repair** that confounds the analysis.
 
 #### Causal Abstraction
 
@@ -157,8 +204,6 @@ A complement to circuits: rather than locating *which* components matter, find t
 - **Subspace patching / DII** (Geiger 2023) — intervene only on a learned linear subspace $U \subset \mathbb{R}^d$ of an activation, not the whole vector; respects the **linear representation hypothesis**.
 - **DAS / Boundless DAS** — distributed alignment search: find non-basis-aligned subspaces with causal influence via gradient descent. Empirically the strongest causal-intervention method across syntactic / mathematical / attribute benchmarks.
 - **Causal Proxy Models (CPMs)** — interpretable proxies trained to mimic the original model's counterfactual behavior.
-
-![Activation (resample) patching: source-input FFN activation overwrites target-input forward pass; prediction flips (act_patching).](assets/ferrando2024primer-act-patching.png)
 
 ## Information Decoding
 
@@ -307,14 +352,14 @@ Findings catalogued by the survey — exploration is non-exhaustive but represen
 | | **Self-repair (Hydra)** | ✅ | [self-repair](self-repair.md) — lens-after-skip trajectory |
 | **Representation analysis** | Representation similarity (CKA / cosine) | ✅ | [representation-similarity](representation-similarity.md) — not central in this survey but adjacent |
 
-**Headline.** balef occupies a narrow, **layer-level, behavioral** slice — probing + lens + ablation + self-repair + repr-similarity. The big LLM mech-interp toolboxes it skips:
+**Headline.** balef occupies a narrow **layer-level, behavioral** slice — probing + lens + ablation + self-repair + repr-similarity. Skipped LLM toolboxes:
 
 - **SAEs / linear-rep tooling** — no feature-direction dictionary.
-- **Causal interventions with counterfactuals** — TFM ICL queries don't have clean templates like IOI / `(s, r, a)`.
-- **Circuit discovery** — depth-level not head-level granularity.
-- **Input attribution** — TFM "tokens" are columns + rows, not a 1-D text sequence; standard attribution methods don't transfer cleanly.
+- **Counterfactual interventions** — TFM ICL lacks clean templates like IOI / `(s, r, a)`.
+- **Circuit discovery** — depth-level, not head-level granularity.
+- **Input attribution** — TFM "tokens" are columns + rows, not a 1-D text sequence.
 
-Plausible reason: TFMs are still small enough that **depth-level** behavior is the open frontier, and the *tabular-ICL setup* makes feature-direction / circuit decomposition methodologically awkward.
+*Why:* TFMs are small enough that depth-level behavior is the open frontier, and tabular ICL makes feature/circuit decomposition methodologically awkward.
 
 ## Entities & Concepts
 
