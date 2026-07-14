@@ -31,6 +31,7 @@ A small supervised classifier trained on a frozen model's hidden state to measur
 
 - [balef2026onelayer](balef2026onelayer.md) — cross-layer probe matrix shows forward-only transfer across six TFMs, evidencing cumulative-feature accumulation in the residual stream.
 - [ferrando2024primer](ferrando2024primer.md) — surveys probing in the broader LLM mech-interp context; control tasks, MDL probes, correlation-vs-causation caveat.
+- [bilos2026mechanistic](bilos2026mechanistic.md) — layer-wise linear probes locate where each TFM becomes class-readable (TabPFN's sharp L8→L9 jump; TabICL readable at the column-embedder output); frozen-vs-retrained probes distinguish a coordinate-frame change from information loss.
 
 ## Related Concepts
 

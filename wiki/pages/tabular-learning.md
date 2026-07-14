@@ -1,8 +1,8 @@
 ---
 title: Tabular Learning
 tags: [concept, tabular, foundation-model, in-context-learning]
-sources: [hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint, muller2022pfn, balef2026onelayer]
-updated: 2026-05-25
+sources: [hollmann2025tabpfnv2, qu2025tabicl, qu2026tabiclv2, kim2024carte, hollmann2023tabpfnv1, somepalli2021saint, muller2022pfn, balef2026onelayer, bilos2026mechanistic, gupta2026tabpfnheads]
+updated: 2026-07-14
 ---
 
 # Tabular Learning
@@ -39,7 +39,9 @@ Tabular learning refers to machine learning on structured data organized in rows
 - [qu2026tabiclv2](qu2026tabiclv2.md) — TabICLv2: same 3-stage pipeline + QASSMax (combats attention fading) + early target embedding + Muon + richer prior; open SOTA beating RealTabPFN-2.5; ICML 2026
 - [kim2024carte](kim2024carte.md) — graph-based representation for cross-table pretraining without schema matching; YAGO knowledge pretraining; handles string-heavy tables; ICML 2024
 - [somepalli2021saint](somepalli2021saint.md) — two-attention (column + intersample/row) Transformer + contrastive pretraining; outperforms boosted trees; 2021
-- [balef2026onelayer](balef2026onelayer.md) — first cross-TFM mechanistic study; tabular logit lens + looped nanoTabPFN proof of concept; ICML 2026
+- [balef2026onelayer](balef2026onelayer.md) — early cross-TFM mechanistic study; tabular logit lens + looped nanoTabPFN proof of concept; ICML 2026
+- [bilos2026mechanistic](bilos2026mechanistic.md) — mechanistic audit of TabPFNv2/TabICLv2/Mitra: distinct readouts (vote vs. prototype), redundant depth, near-free permutation invariance, mechanism-grounded attacks; NeurIPS 2026
+- [gupta2026tabpfnheads](gupta2026tabpfnheads.md) — head-level causal probe of TabPFN-2.5's feature-attention: one dominant head + late computation heads; activation steering fails to transfer (pure ICL, no function-vector heads); ICML 2026 Workshop
 
 ## Related Concepts
 

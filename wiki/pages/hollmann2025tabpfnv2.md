@@ -128,3 +128,5 @@ This gives schema invariance *by construction*: pretraining cannot overfit to "c
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
 - [tabpfn-v2-code](tabpfn-v2-code.md) — code-grounded walkthrough of the v2 architecture
 - [balef2026onelayer](balef2026onelayer.md) — mechanistic study finds TabPFN v2's middle/late layers are self-repairing and depth-redundant; the "prediction ensembling" stage is most visible in v2.
+- [bilos2026mechanistic](bilos2026mechanistic.md) — identifies TabPFN's readout as an attention-weighted vote over context labels at L9; zeroing the per-feature positional weight matrix $W$ grants *exact* column invariance at no accuracy cost; hub-poison and rank-warp attacks target the vote.
+- [gupta2026tabpfnheads](gupta2026tabpfnheads.md) — head-level causal analysis of the newer TabPFN-2.5 checkpoint's `self_attn_between_features` module (one dominant head + late computation heads; steering fails to transfer).

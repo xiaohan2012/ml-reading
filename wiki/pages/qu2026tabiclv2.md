@@ -291,3 +291,4 @@ Reading the spectrum (latest → earliest): **TabICL v1** (ICL only) → **TabPF
 - [muller2022pfn](muller2022pfn.md)
 - [fey2025kumorfm2](fey2025kumorfm2.md)
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
+- [bilos2026mechanistic](bilos2026mechanistic.md) — mechanistic audit: TabICLv2 reads out via nearest-class-prototype; removing RoPE grants *exact* column invariance for free; its within-row defenses (RoPE + circular grouping + target-aware embedding) are redundant, and stripping them all reproduces representation collapse

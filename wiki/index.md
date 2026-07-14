@@ -2,7 +2,9 @@
 
 ### Sources
 - [ferrando2024primer](pages/ferrando2024primer.md) — Survey of LLM mech-interp: localize × decode taxonomy; residual-stream notation; SAEs, patching, circuits, lens; bridge table to balef _(ingested 2026-05-28)_
-- [balef2026onelayer](pages/balef2026onelayer.md) — First cross-TFM mechanistic study; tabular logit lens + 4-stage inference taxonomy; looped 1-layer nanoTabPFN matches 6-layer at ~20% params; ICML 2026 _(ingested 2026-05-25)_
+- [bilos2026mechanistic](pages/bilos2026mechanistic.md) — Cross-TFM mechanistic audit (TabPFNv2/TabICLv2/Mitra): distinct readouts (attention vote vs. nearest-prototype) jointly designed with backbone; redundant depth; near-free permutation invariance; collapse is architectural; mechanism-grounded attacks; NeurIPS 2026 _(ingested 2026-07-14)_
+- [gupta2026tabpfnheads](pages/gupta2026tabpfnheads.md) — Head-level causal probe of TabPFN-2.5's feature-attention: one dominant head (task-shifting peak layer) + two late computation heads; selectivity ≠ causal necessity; activation steering fails to transfer (no function-vector heads); ICML 2026 Workshop _(ingested 2026-07-14)_
+- [balef2026onelayer](pages/balef2026onelayer.md) — Early cross-TFM mechanistic study; tabular logit lens + 4-stage inference taxonomy; looped 1-layer nanoTabPFN matches 6-layer at ~20% params; ICML 2026 _(ingested 2026-05-25)_
 - [hollmann2025tabpfnv2](pages/hollmann2025tabpfnv2.md) — TabPFN v2: prior-fitted network; 130M synthetic datasets; alternating row/col attention; SOTA small tables (N<10K); Nature 2025 _(ingested 2026-04-29)_
 - [qu2025tabicl](pages/qu2025tabicl.md) — TabICL: 3-Transformer (col→row→ICL); Set Transformer; scales to 500K samples; surpasses TabPFNv2 on large data; ICML 2025 _(ingested 2026-04-29)_
 - [qu2026tabiclv2](pages/qu2026tabiclv2.md) — TabICLv2: same 3-stage pipeline + QASSMax (anti attention-fading) + early target embedding + Muon + richer prior; open SOTA beats RealTabPFN-2.5; 1M-row inference; ICML 2026 _(ingested 2026-05-11)_

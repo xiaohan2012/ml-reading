@@ -5,6 +5,14 @@ Recent entries: `grep "^## \[" log.md | tail -10`
 
 ---
 
+## [2026-07-14] ingest | Where Computation Lives Inside TabPFN: Causal Localisation of Attention Head Function
+Pages written: gupta2026tabpfnheads
+Pages updated: index, overview, tabular-learning, bilos2026mechanistic, balef2026onelayer, hollmann2025tabpfnv2, layer-ablation, ferrando2024primer
+
+## [2026-07-14] ingest | A Mechanistic Study of Tabular Foundation Models
+Pages written: bilos2026mechanistic
+Pages updated: index, overview, tabular-learning, balef2026onelayer, qu2025tabicl, qu2026tabiclv2, hollmann2025tabpfnv2, probing-classifier, layer-ablation, self-repair
+
 ## [2026-05-28] ingest | A Primer on the Inner Workings of Transformer-based LMs
 Pages written: ferrando2024primer
 Pages updated: index, overview, probing-classifier, tabular-logit-lens, self-repair, layer-ablation, representation-similarity, balef2026onelayer

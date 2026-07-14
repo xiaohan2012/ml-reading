@@ -24,7 +24,7 @@ updated: 2026-05-25
 
 ## Summary
 
-First mechanistic-interpretability study of tabular foundation models (TFMs). Three questions, three answers:
+An early mechanistic-interpretability study of tabular foundation models (TFMs), contemporaneous with [bilos2026mechanistic](bilos2026mechanistic.md) (which instead pins down each model's *readout mechanism* and its adversarial failure surface). Three questions, three answers:
 
 - **Q1 — How does inference unfold across depth in a TFM?**
     - **Iterative refinement.** Predictions form in the first few layers; later layers add features without overwriting.
@@ -68,7 +68,7 @@ The three families form a ladder of evidence: **observe → read out → interve
         $$D^{\text{within}}_\ell = \tfrac{1}{|\mathcal{P}^{\text{within}}_\ell|} \sum_{(x_i,x_j) \in \mathcal{P}^{\text{within}}_\ell} d(h_\ell(x_i), h_\ell(x_j))$$
         $$D^{\text{between}}_\ell = \tfrac{1}{|\mathcal{P}^{\text{between}}_\ell|} \sum_{(x_i,x_j) \in \mathcal{P}^{\text{between}}_\ell} d(h_\ell(x_i), h_\ell(x_j))$$
         $$\boxed{\Delta_\ell = D^{\text{between}}_\ell - D^{\text{within}}_\ell}$$
-    - **Defaults:** $d = $ cosine distance; 100 within + 100 between pairs sampled per dataset; PCA at 95% variance applied first to control noise in the high-dim residual stream.
+    - **Defaults:** $d =$ cosine distance; 100 within + 100 between pairs sampled per dataset; PCA at 95% variance applied first to control noise in the high-dim residual stream.
     - **Computed separately** for support vs query, and for per-cell models also feature vs label embeddings — exposes the "features form first, labels follow" pattern.
 
     ![Separation gap across layers](assets/balef2026onelayer-separation-gap.png)
@@ -152,4 +152,6 @@ The **gap between them** is itself the diagnostic: where the info is encoded but
 - [tfm-inference-stages](tfm-inference-stages.md) — four-stage TFM inference taxonomy
 - [tabular-learning](tabular-learning.md) — TFM family context
 - [ferrando2024primer](ferrando2024primer.md) — LLM mech-interp survey; bridge table maps balef techniques to the broader landscape
+- [bilos2026mechanistic](bilos2026mechanistic.md) — contemporaneous cross-TFM mechanistic study; identifies readout mechanisms (vote vs. prototype), symmetry edits, and mechanism-grounded attacks
+- [gupta2026tabpfnheads](gupta2026tabpfnheads.md) — contemporaneous causal probe of TabPFN-2.5's attention heads; echoes the early-critical / distributed-elsewhere theme at head granularity
 - [hollmann2023tabpfnv1](hollmann2023tabpfnv1.md), [hollmann2025tabpfnv2](hollmann2025tabpfnv2.md), [qu2025tabicl](qu2025tabicl.md), [qu2026tabiclv2](qu2026tabiclv2.md), [muller2022pfn](muller2022pfn.md)

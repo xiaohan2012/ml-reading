@@ -32,6 +32,8 @@ Causal interventions on the forward pass to probe what each layer contributes. T
 
 - [balef2026onelayer](balef2026onelayer.md) — applied across 6 TFMs. Findings: early layers necessary, middle/late skippable; repeats help LIMIX-16M and TabPFN v1 (motivating [looped-transformer-tfm](looped-transformer-tfm.md)); swaps universally hurt, more than in LLMs.
 - [ferrando2024primer](ferrando2024primer.md) — places skip/zero-style ablation inside the broader activation-patching family (resample / mean / zero / noise).
+- [bilos2026mechanistic](bilos2026mechanistic.md) — per-block knockouts show one dominant early "coordinate-setting" block per model (block 0 / ColEmb-2) while nearly every other block costs <3pp; uniform-attention interventions causally test each readout.
+- [gupta2026tabpfnheads](gupta2026tabpfnheads.md) — applies ablation at *attention-head* granularity in TabPFN-2.5; shows selectivity (low attention entropy) is necessary but not sufficient for causal necessity.
 
 ## Related Concepts
 

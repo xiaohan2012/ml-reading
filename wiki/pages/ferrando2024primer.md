@@ -2,7 +2,7 @@
 title: A Primer on the Inner Workings of Transformer-based Language Models
 tags: [survey, interpretability, mechanistic-interpretability, llm]
 sources: [ferrando2024primer]
-updated: 2026-05-28
+updated: 2026-07-14
 ---
 
 # A Primer on the Inner Workings of Transformer-based Language Models
@@ -361,6 +361,8 @@ Findings catalogued by the survey — exploration is non-exhaustive but represen
 
 *Why:* TFMs are small enough that depth-level behavior is the open frontier, and tabular ICL makes feature/circuit decomposition methodologically awkward.
 
+**Update.** [gupta2026tabpfnheads](gupta2026tabpfnheads.md) fills three of the ❌ rows balef left open on TabPFN-2.5: **counterfactual activation patching** (with clean/corrupt runs), **per-head analysis** (head taxonomy — one dominant head + late computation heads), and **activation addition / steering** (which it finds *does not transfer*, attributed to the absence of LLM-style function-vector heads). It remains single-module and two-task, so circuit discovery and SAE tooling stay unexplored.
+
 ## Entities & Concepts
 
 - [probing-classifier](probing-classifier.md)
@@ -369,3 +371,4 @@ Findings catalogued by the survey — exploration is non-exhaustive but represen
 - [layer-ablation](layer-ablation.md)
 - [representation-similarity](representation-similarity.md)
 - [balef2026onelayer](balef2026onelayer.md)
+- [gupta2026tabpfnheads](gupta2026tabpfnheads.md) — ports activation patching + per-head analysis + steering to TabPFN-2.5

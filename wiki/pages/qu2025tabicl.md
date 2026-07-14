@@ -11,7 +11,7 @@ updated: 2026-05-06
 **Title:** TabICL: A Tabular Foundation Model for In-Context Learning on Large Data
 **Date ingested:** 2026-04-29
 **Type:** paper
-**Authors:** Jingang Qu, Jiashuo Luo, Guo-Wei Yan, Taoran Sun, Chuanhui Hao, Deyuan Xue, Longbing Liu, Junfeng Chen, Yuantao Yin
+**Authors:** [Jingang Qu](https://arxiv.org/search/cs?searchtype=author&query=Qu,+J), [David Holzmüller](https://arxiv.org/search/cs?searchtype=author&query=Holzm%C3%BCller,+D), [Gaël Varoquaux](https://arxiv.org/search/cs?searchtype=author&query=Varoquaux,+G), [Marine Le Morvan](https://arxiv.org/search/cs?searchtype=author&query=Morvan,+M+L)
 **Venue:** ICML 2025
 
 ![[Pasted image 20260520095310.png]]
@@ -113,6 +113,7 @@ updated: 2026-05-06
 - [tabular-icl-lineage](tabular-icl-lineage.md) — comparison across the PFN → TabPFN → TabICL lineage
 - [tabicl-code](tabicl-code.md) — code-grounded walkthrough of the TabICL architecture
 - [balef2026onelayer](balef2026onelayer.md) — TabICL's column embedder + row-wise interaction module make it robust to early-layer skips; TabICL's synthetic prior is also reused to train the *tabular logit lens*.
+- [bilos2026mechanistic](bilos2026mechanistic.md) — identifies TabICL's readout as a nearest-class-prototype rule built early at the column embedder; revisits the representation-collapse concern and finds the released v2 model redundantly defended against it (removing RoPE alone is free; removing RoPE *and* circular grouping collapses it).
 
 ## Appendix — Column identifier choices: RoPE vs random noise
 
