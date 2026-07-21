@@ -17,16 +17,14 @@ Tabular learning refers to machine learning on structured data organized in rows
 
 **Foundation model approaches:**
 
-| Approach | Method | Strengths | Limits |
-|----------|--------|-----------|--------|
-| Approach | Method | Strengths | Limits |
-|----------|--------|-----------|--------|
-| TabPFN v1 | ICL via SCM+BNN prior | Zero tuning; <1 sec; foundational PFN | N≤1000; ≤100 features; no missing |
-| TabPFN v2 | ICL via synthetic prior; alternating row/col attention | Zero tuning; fast; SOTA small tables | N<10K; <10 classes |
-| TabICL | 3-Transformer (col→row→ICL); Set Transformer embedding | Scalable to 500K; handles large tables | Classification only |
-| TabICLv2 | TabICL + repeated feature grouping + target-aware emb. + QASSMax + Muon + new prior | Open SOTA; beats RealTabPFN-2.5 (tuned); 1M-row inference | Still 100-feature pretrain cap |
-| CARTE | Graph per row + YAGO pretraining; edge = column name | Strings; no schema matching; transfer | Slow; needs fine-tuning |
-| SAINT | Column attention + intersample (row) attention; contrastive pretrain | Beats boosted trees; semi-supervised | Supervised; no ICL |
+| Approach  | Method                                                                              | Strengths                                                 | Limits                            |
+| --------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------- |
+| TabPFN v1 | ICL via SCM+BNN prior                                                               | Zero tuning; <1 sec; foundational PFN                     | N≤1000; ≤100 features; no missing |
+| TabPFN v2 | ICL via synthetic prior; alternating row/col attention                              | Zero tuning; fast; SOTA small tables                      | N<10K; <10 classes                |
+| TabICL    | 3-Transformer (col→row→ICL); Set Transformer embedding                              | Scalable to 500K; handles large tables                    | Classification only               |
+| TabICLv2  | TabICL + repeated feature grouping + target-aware emb. + QASSMax + Muon + new prior | Open SOTA; beats RealTabPFN-2.5 (tuned); 1M-row inference | Still 100-feature pretrain cap    |
+| CARTE     | Graph per row + YAGO pretraining; edge = column name                                | Strings; no schema matching; transfer                     | Slow; needs fine-tuning           |
+| SAINT     | Column attention + intersample (row) attention; contrastive pretrain                | Beats boosted trees; semi-supervised                      | Supervised; no ICL                |
 
 **In-Context Learning (ICL) paradigm.** TabPFNv2 and TabICL both follow the Prior-Data Fitted Network (PFN) approach: pretrain a transformer on many synthetic datasets to approximate $p(y | x, \mathcal{D}_\text{train})$. At inference, training data is passed as context — single forward pass, no parameter updates. ICL eliminates the AutoML search process entirely.
 
