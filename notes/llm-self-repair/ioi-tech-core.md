@@ -181,3 +181,18 @@ IOI 上的实测:
 - **最小**:每个节点都有非平凡影响(至少 $1\%$ logit diff),但有些头单独贡献很小。
 
 一句话串联:**忠实 = 够像;完整 = 别漏(专治自修复的假象);最小 = 别多。**
+
+---
+
+## 6. 附:compensation 的发现始末(self-repair 的最早观察)
+
+这是"self-repair"现象最早的实验记录,但**论文自己不叫 self-repair**——它叫 **compensation / Backup Name Mover / redundant behavior**;"self-repair"是后续工作(Hydra、Rushing & Nanda)的命名。它也是全文唯一一段"实验轶事",恰好把 §4(path patching)与 §5(验证)缝在一起。
+
+- **怎么发现的(一次自查)**——小节原题就叫 *"Did we miss anything?"*:
+  - 动机:发现电路里**每一类头都有多个副本**,疑心模型有冗余,想确认没漏掉 Name Mover 的副本。
+  - 动作:**一次性把所有 Name Mover Heads 全消融**。
+  - 意外:电路**没崩**,logit diff 只掉 **5%**(原文 *"To our surprise, the circuit still worked"*)。
+- **怎么定位的**:消融后**重跑同一个 path patching**(§4 那个),找此刻直接影响 logits 的头 → 取直接影响最大的 **8 个**,命名 **Backup Name Mover Heads**。这是 path patching 的第二次登场。
+- **这些头平时干嘛**:未消融时**并不**把 IO 搬到输出;行为杂(4 个近似 Name Mover、2 个对 IO·S 同等注意并 copy、1 个偏 S1、1 个追踪从句主语 copy S2),主头被砍后才接手——即"平时潜伏、受扰才启动"。
+- **成因:论文只给假说**:推测源于训练时的 **dropout**(模型被优化得对"部件失灵"鲁棒),但**明说** *"More work is needed"*,并未声称理解。
+- **它在论文里的作用(回指 §5)**:正是这次意外让作者写下 *"faithfulness alone is not enough"* → 催生 **completeness / minimality** 两个判据。Backup 头因此成了"忠实度会骗人"的活教材。
