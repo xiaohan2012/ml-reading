@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 700" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arg" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2E7D32"/>
+    </marker>
+    <marker id="arred" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#C0392B"/>
+    </marker>
+  </defs>
+  <style>
+    .lbl{font-size:18px; fill:#222;}
+    .mlbl{font-size:18px; fill:#222; font-style:italic; font-family:Georgia,serif;}
+    .sub{font-size:14px; fill:#666; font-style:italic; font-family:Georgia,serif;}
+    .edge{stroke:#555; stroke-width:1.6; fill:none;}
+    .dash{stroke:#999; stroke-width:1.6; fill:none; stroke-dasharray:4 4;}
+    .gedge{stroke:#2E7D32; stroke-width:2.4; fill:none;}
+    .redge{stroke:#C0392B; stroke-width:2.4; fill:none;}
+  </style>
+
+  <!-- ===== spine (x=310) ===== -->
+  <line class="edge" x1="310" y1="605" x2="310" y2="585"/>            <!-- embed->x0 -->
+  <line class="dash" x1="310" y1="555" x2="310" y2="527"/>           <!-- x0->xi -->
+  <line class="edge" x1="310" y1="525" x2="310" y2="406" marker-end="url(#arr)"/> <!-- xi->senderadd -->
+  <line class="edge" x1="310" y1="384" x2="310" y2="362"/>           <!-- senderadd up -->
+  <line class="dash" x1="310" y1="360" x2="310" y2="315"/>           <!-- gap -->
+  <line class="edge" x1="310" y1="313" x2="310" y2="178" marker-end="url(#arr)"/> <!-- xj->recvadd -->
+  <line class="edge" x1="310" y1="154" x2="310" y2="120" marker-end="url(#arr)"/> <!-- recvadd->unembed(x-1) -->
+  <line class="edge" x1="310" y1="82" x2="310" y2="64" marker-end="url(#arr)"/>   <!-- unembed->logits -->
+  <line class="edge" x1="310" y1="628" x2="310" y2="608" marker-end="url(#arr)"/> <!-- tokens->embed -->
+
+  <!-- residual add circles -->
+  <circle cx="310" cy="395" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="400" text-anchor="middle" font-size="15" fill="#555">+</text>
+  <circle cx="310" cy="165" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="170" text-anchor="middle" font-size="15" fill="#555">+</text>
+
+  <!-- middle-layers gap dots -->
+  <text x="310" y="345" text-anchor="middle" font-size="20" fill="#999">⋮</text>
+  <text class="sub" x="330" y="345">中间层</text>
+
+  <!-- spine side labels -->
+  <text class="sub" x="326" y="132">x<tspan dy="4" font-size="11">-1</tspan></text>
+  <text class="sub" x="326" y="305">x<tspan dy="4" font-size="11">j</tspan></text>
+  <text class="sub" x="326" y="520">x<tspan dy="4" font-size="11">i</tspan></text>
+  <text class="sub" x="326" y="552">x<tspan dy="4" font-size="11">0</tspan></text>
+
+  <!-- ===== sender layer: head inputs ===== -->
+  <path class="edge" d="M310,525 L110,525 L110,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M190,525 L190,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,525 L270,486" marker-end="url(#arr)"/>
+  <!-- sender outputs (h0 = corrupted, red stub only) -->
+  <path class="redge" d="M110,438 L110,420"/>
+  <path class="edge" d="M190,438 L190,420"/>
+  <path class="edge" d="M270,438 L270,420"/>
+  <path class="edge" d="M110,420 L310,420"/>
+
+  <!-- ===== receiver layer: head inputs ===== -->
+  <path class="edge" d="M310,300 L190,300 L190,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,300 L270,261" marker-end="url(#arr)"/>
+  <!-- g0 input = R (green) -->
+  <path class="gedge" d="M310,300 L110,300 L110,261" marker-end="url(#arg)"/>
+  <!-- receiver outputs -->
+  <path class="edge" d="M110,213 L110,190"/>
+  <path class="edge" d="M190,213 L190,190"/>
+  <path class="edge" d="M270,213 L270,190"/>
+  <path class="edge" d="M110,190 L310,190"/>
+
+  <!-- ===== boxes ===== -->
+  <!-- logits (NOT receiver here) -->
+  <rect x="233" y="20" width="154" height="42" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="47" text-anchor="middle">logits</text>
+  <!-- unembed -->
+  <rect x="252" y="82" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="106" text-anchor="middle">unembed</text>
+
+  <!-- receiver heads g (all frozen, blue) -->
+  <rect x="80" y="213" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="110" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="213" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="190" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="213" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="lbl" x="270" y="242" text-anchor="middle">…</text>
+
+  <!-- R label near g0 input -->
+  <circle cx="110" cy="300" r="5" fill="#2E7D32"/>
+  <text x="102" y="292" text-anchor="end" font-size="14" fill="#2E7D32" font-weight="bold">R</text>
+  <text x="102" y="308" text-anchor="end" font-size="11.5" fill="#2E7D32">= g₀ 的 query</text>
+  <text x="102" y="322" text-anchor="end" font-size="11.5" fill="#2E7D32">读出 r*</text>
+
+  <!-- sender heads (h0 red, rest blue) -->
+  <rect x="80" y="438" width="60" height="46" rx="7" fill="#F6B6B6" stroke="#C0392B" stroke-width="2"/>
+  <text class="mlbl" x="110" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <text x="110" y="502" text-anchor="middle" font-size="11.5" fill="#C0392B">= h(污染)</text>
+  <rect x="160" y="438" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="190" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="438" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="lbl" x="270" y="467" text-anchor="middle">…</text>
+
+  <!-- embed / tokens -->
+  <rect x="252" y="570" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="594" text-anchor="middle">embed</text>
+  <rect x="233" y="628" width="154" height="42" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="655" text-anchor="middle">tokens</text>
+
+  <!-- layer tags -->
+  <text x="46" y="465" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 465)">发送层</text>
+  <text x="46" y="240" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 240)">接收层</text>
+
+  <!-- ===== legend ===== -->
+  <text x="440" y="120" font-size="16" fill="#222" font-weight="bold">图例 · C 趟(一般情形)</text>
+  <g font-size="13.5" fill="#333">
+    <rect x="440" y="140" width="24" height="17" rx="4" fill="#F6B6B6" stroke="#C0392B" stroke-width="2"/>
+    <text x="474" y="153">污染 = x<tspan dy="3" font-size="10">new</tspan><tspan dy="-3">(仅 h)</tspan></text>
+    <rect x="440" y="170" width="24" height="17" rx="4" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+    <text x="474" y="183">冻结 = x<tspan dy="3" font-size="10">orig</tspan><tspan dy="-3"> 干净(其余头,含 g)</tspan></text>
+    <rect x="440" y="200" width="24" height="17" rx="4" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+    <text x="474" y="213">重算 = 正常前向(MLP/LN 略)</text>
+    <rect x="440" y="230" width="24" height="17" rx="4" fill="#fff" stroke="#2E7D32" stroke-width="2.4"/>
+    <text x="474" y="243">接收端 R = 下游头 g 的 query</text>
+  </g>
+
+  <text x="440" y="300" font-size="13" fill="#444">
+    <tspan x="440" dy="0" font-weight="bold">C 趟(R = 下游头 g 的 query)</tspan>
+    <tspan x="440" dy="23">① 把 h 换成它在 x_new 的激活(红)</tspan>
+    <tspan x="440" dy="20">② 冻结其余所有头,含接收头 g(蓝)</tspan>
+    <tspan x="440" dy="20">③ 读出 g 的 query 新值 r*(绿点)</tspan>
+    <tspan x="440" dy="26" fill="#2E5FA3">注:g 本身也冻结,我们只读它</tspan>
+    <tspan x="440" dy="18" fill="#2E5FA3">   query 上的 r*,不动它的输出。</tspan>
+    <tspan x="440" dy="26" fill="#C0392B">→ 冻结掐断 h 经其他头的间接路,</tspan>
+    <tspan x="440" dy="18" fill="#C0392B">   只剩 h→g.query 的直接边。</tspan>
+    <tspan x="440" dy="24" fill="#666">h 的污染贡献(红)沿残差流上行,</tspan>
+    <tspan x="440" dy="18" fill="#666">与其他头干净贡献混合,汇入 R。</tspan>
+    <tspan x="440" dy="26">D 趟(另画):解冻、把 g.query 钉成</tspan>
+    <tspan x="440" dy="18">r*、让 g 真跑 → 传到 logits 读差。</tspan>
+  </text>
+</svg>

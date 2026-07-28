@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 700" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arg" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2E7D32"/>
+    </marker>
+  </defs>
+  <style>
+    .lbl{font-size:18px; fill:#222;}
+    .mlbl{font-size:18px; fill:#222; font-style:italic; font-family:Georgia,serif;}
+    .sub{font-size:14px; fill:#666; font-style:italic; font-family:Georgia,serif;}
+    .edge{stroke:#555; stroke-width:1.6; fill:none;}
+    .dash{stroke:#999; stroke-width:1.6; fill:none; stroke-dasharray:4 4;}
+    .gedge{stroke:#2E7D32; stroke-width:2.4; fill:none;}
+  </style>
+
+  <!-- ===== spine (x=310) ===== -->
+  <line class="edge" x1="310" y1="605" x2="310" y2="585"/>
+  <line class="dash" x1="310" y1="555" x2="310" y2="527"/>
+  <line class="edge" x1="310" y1="525" x2="310" y2="406" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="384" x2="310" y2="362"/>
+  <line class="dash" x1="310" y1="360" x2="310" y2="315"/>
+  <line class="edge" x1="310" y1="313" x2="310" y2="178" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="154" x2="310" y2="120" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="82" x2="310" y2="64" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="628" x2="310" y2="608" marker-end="url(#arr)"/>
+
+  <circle cx="310" cy="395" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="400" text-anchor="middle" font-size="15" fill="#555">+</text>
+  <circle cx="310" cy="165" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="170" text-anchor="middle" font-size="15" fill="#555">+</text>
+
+  <text x="310" y="345" text-anchor="middle" font-size="20" fill="#999">⋮</text>
+  <text class="sub" x="330" y="345">中间层</text>
+
+  <text class="sub" x="326" y="132">x<tspan dy="4" font-size="11">-1</tspan></text>
+  <text class="sub" x="326" y="305">x<tspan dy="4" font-size="11">j</tspan></text>
+  <text class="sub" x="326" y="520">x<tspan dy="4" font-size="11">i</tspan></text>
+  <text class="sub" x="326" y="552">x<tspan dy="4" font-size="11">0</tspan></text>
+
+  <!-- ===== sender layer: all normal ===== -->
+  <path class="edge" d="M310,525 L110,525 L110,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M190,525 L190,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,525 L270,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M110,438 L110,420"/>
+  <path class="edge" d="M190,438 L190,420"/>
+  <path class="edge" d="M270,438 L270,420"/>
+  <path class="edge" d="M110,420 L310,420"/>
+
+  <!-- ===== receiver layer ===== -->
+  <path class="edge" d="M310,300 L190,300 L190,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,300 L270,261" marker-end="url(#arr)"/>
+  <!-- g0 query PINNED to r* (green injection) -->
+  <path class="gedge" d="M310,300 L110,300 L110,261" marker-end="url(#arg)"/>
+  <path class="edge" d="M110,213 L110,190"/>
+  <path class="edge" d="M190,213 L190,190"/>
+  <path class="edge" d="M270,213 L270,190"/>
+  <path class="edge" d="M110,190 L310,190"/>
+
+  <!-- ===== boxes ===== -->
+  <!-- logits = read-out (green frame) -->
+  <rect x="233" y="20" width="154" height="42" rx="7" fill="#DCEFD8" stroke="#2E7D32" stroke-width="3"/>
+  <text class="lbl" x="310" y="47" text-anchor="middle">logits</text>
+  <text x="395" y="34" font-size="12" fill="#2E7D32">读差</text>
+
+  <rect x="252" y="82" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="106" text-anchor="middle">unembed</text>
+
+  <!-- receiver heads: all normal; g0 = injection target (green outline) -->
+  <rect x="80" y="213" width="60" height="46" rx="7" fill="#EADFC8" stroke="#2E7D32" stroke-width="2.6"/>
+  <text class="mlbl" x="110" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="213" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="mlbl" x="190" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="213" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="270" y="242" text-anchor="middle">…</text>
+
+  <!-- r* injection label near g0 query -->
+  <circle cx="110" cy="300" r="5" fill="#2E7D32"/>
+  <text x="102" y="292" text-anchor="end" font-size="13" fill="#2E7D32" font-weight="bold">r*</text>
+  <text x="102" y="308" text-anchor="end" font-size="11.5" fill="#2E7D32">钉住(来自 C)</text>
+
+  <!-- sender heads: all normal -->
+  <rect x="80" y="438" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="mlbl" x="110" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="438" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="mlbl" x="190" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="438" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="270" y="467" text-anchor="middle">…</text>
+
+  <rect x="252" y="570" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="594" text-anchor="middle">embed</text>
+  <rect x="233" y="628" width="154" height="42" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="655" text-anchor="middle">tokens</text>
+
+  <text x="46" y="465" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 465)">发送层</text>
+  <text x="46" y="240" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 240)">接收层</text>
+
+  <!-- ===== legend ===== -->
+  <text x="440" y="120" font-size="16" fill="#222" font-weight="bold">图例 · D 趟(一般情形)</text>
+  <g font-size="13.5" fill="#333">
+    <rect x="440" y="140" width="24" height="17" rx="4" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+    <text x="474" y="153">正常前向 = 全网解冻、照常跑</text>
+    <rect x="440" y="170" width="24" height="17" rx="4" fill="#EADFC8" stroke="#2E7D32" stroke-width="2.6"/>
+    <text x="474" y="183">注入点 = g 的 query 钉成 r*(来自 C)</text>
+    <rect x="440" y="200" width="24" height="17" rx="4" fill="#DCEFD8" stroke="#2E7D32" stroke-width="3"/>
+    <text x="474" y="213">读出 = logits(量 logit-diff 变化)</text>
+  </g>
+
+  <text x="440" y="270" font-size="13" fill="#444">
+    <tspan x="440" dy="0" font-weight="bold">D 趟(R = 下游头 g 的 query)</tspan>
+    <tspan x="440" dy="23">① 全网解冻,回到正常前向(棕)</tspan>
+    <tspan x="440" dy="20">② 把 g 的 query 钉成 r*(绿,来自 C)</tspan>
+    <tspan x="440" dy="20">③ 让 g 真跑,一路传到 logits</tspan>
+    <tspan x="440" dy="20">④ 与干净 logits 求差 → Δ(h→R)</tspan>
+    <tspan x="440" dy="26" fill="#2E7D32">对比 C 趟:C 只"抠出"r*(冻结、</tspan>
+    <tspan x="440" dy="18" fill="#2E7D32">不读输出);D 才"量"它的后果。</tspan>
+    <tspan x="440" dy="26" fill="#666">注:R = logits 时 D 退化——直接在</tspan>
+    <tspan x="440" dy="18" fill="#666">C 趟读 logits 即可,无需 D。</tspan>
+  </text>
+</svg>

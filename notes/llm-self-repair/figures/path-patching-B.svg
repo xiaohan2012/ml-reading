@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 700" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arb" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2E5FA3"/>
+    </marker>
+  </defs>
+  <style>
+    .lbl{font-size:18px; fill:#222;}
+    .mlbl{font-size:18px; fill:#222; font-style:italic; font-family:Georgia,serif;}
+    .sub{font-size:14px; fill:#666; font-style:italic; font-family:Georgia,serif;}
+    .edge{stroke:#555; stroke-width:1.6; fill:none;}
+    .dash{stroke:#999; stroke-width:1.6; fill:none; stroke-dasharray:4 4;}
+    .bedge{stroke:#2E5FA3; stroke-width:2.2; fill:none;}
+  </style>
+
+  <line class="edge" x1="310" y1="605" x2="310" y2="585"/>
+  <line class="dash" x1="310" y1="555" x2="310" y2="527"/>
+  <line class="edge" x1="310" y1="525" x2="310" y2="406" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="384" x2="310" y2="362"/>
+  <line class="dash" x1="310" y1="360" x2="310" y2="315"/>
+  <line class="edge" x1="310" y1="313" x2="310" y2="178" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="154" x2="310" y2="120" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="82" x2="310" y2="64" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="628" x2="310" y2="608" marker-end="url(#arr)"/>
+
+  <circle cx="310" cy="395" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="400" text-anchor="middle" font-size="15" fill="#555">+</text>
+  <circle cx="310" cy="165" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="170" text-anchor="middle" font-size="15" fill="#555">+</text>
+
+  <text x="310" y="345" text-anchor="middle" font-size="20" fill="#999">⋮</text>
+  <text class="sub" x="330" y="345">中间层</text>
+  <text class="sub" x="326" y="305">x<tspan dy="4" font-size="11">j</tspan></text>
+  <text class="sub" x="326" y="520">x<tspan dy="4" font-size="11">i</tspan></text>
+
+  <!-- clean wiring -->
+  <path class="edge" d="M310,525 L110,525 L110,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M190,525 L190,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,525 L270,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M110,438 L110,420"/>
+  <path class="edge" d="M190,438 L190,420"/>
+  <path class="edge" d="M270,438 L270,420"/>
+  <path class="edge" d="M110,420 L310,420"/>
+
+  <path class="edge" d="M310,300 L110,300 L110,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M190,300 L190,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,300 L270,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M110,213 L110,190"/>
+  <path class="edge" d="M190,213 L190,190"/>
+  <path class="edge" d="M270,213 L270,190"/>
+  <path class="edge" d="M110,190 L310,190"/>
+
+  <!-- boxes: all clean on x_orig -->
+  <!-- logits = clean baseline (green frame) -->
+  <rect x="233" y="20" width="154" height="42" rx="7" fill="#DCEFD8" stroke="#2E7D32" stroke-width="3"/>
+  <text class="lbl" x="310" y="47" text-anchor="middle">logits</text>
+  <text x="395" y="34" font-size="12" fill="#2E7D32">基线</text>
+
+  <rect x="252" y="82" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="106" text-anchor="middle">unembed</text>
+
+  <!-- all heads: cached clean (blue) -->
+  <rect x="80" y="213" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="110" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="213" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="190" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="213" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="lbl" x="270" y="242" text-anchor="middle">…</text>
+
+  <rect x="80" y="438" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="110" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="438" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="mlbl" x="190" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="438" width="60" height="46" rx="7" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+  <text class="lbl" x="270" y="467" text-anchor="middle">…</text>
+
+  <rect x="252" y="570" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="594" text-anchor="middle">embed</text>
+  <rect x="233" y="628" width="154" height="42" rx="7" fill="#D8E6F6" stroke="#5A85C0" stroke-width="1.8"/>
+  <text class="lbl" x="310" y="655" text-anchor="middle">tokens = x_orig</text>
+
+  <text x="46" y="465" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 465)">发送层</text>
+  <text x="46" y="240" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 240)">接收层</text>
+
+  <!-- legend -->
+  <text x="440" y="130" font-size="16" fill="#222" font-weight="bold">图例 · B 趟</text>
+  <g font-size="13.5" fill="#333">
+    <rect x="440" y="152" width="24" height="17" rx="4" fill="#D8E6F6" stroke="#5A85C0" stroke-width="1.8"/>
+    <text x="474" y="165">输入 = x_orig(干净句子)</text>
+    <rect x="440" y="182" width="24" height="17" rx="4" fill="#AFC7EE" stroke="#2E5FA3" stroke-width="1.8"/>
+    <text x="474" y="195">缓存的干净激活 → C 趟冻结用</text>
+    <rect x="440" y="212" width="24" height="17" rx="4" fill="#DCEFD8" stroke="#2E7D32" stroke-width="3"/>
+    <text x="474" y="225">干净 logits = 基线 → D 趟求差用</text>
+  </g>
+
+  <text x="440" y="285" font-size="13" fill="#444">
+    <tspan x="440" dy="0" font-weight="bold">B 趟:在 x_orig 上跑一遍</tspan>
+    <tspan x="440" dy="23">给出两样东西:</tspan>
+    <tspan x="440" dy="20">① 所有头的干净激活(蓝)→ C 冻结</tspan>
+    <tspan x="440" dy="20">② 干净 logits(绿)= Δ 的基线 → D 求差</tspan>
+    <tspan x="440" dy="26" fill="#666">(全网照常前向,不做任何干预。)</tspan>
+  </text>
+</svg>

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 700" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arred" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#C0392B"/>
+    </marker>
+  </defs>
+  <style>
+    .lbl{font-size:18px; fill:#222;}
+    .mlbl{font-size:18px; fill:#222; font-style:italic; font-family:Georgia,serif;}
+    .sub{font-size:14px; fill:#666; font-style:italic; font-family:Georgia,serif;}
+    .edge{stroke:#555; stroke-width:1.6; fill:none;}
+    .dash{stroke:#999; stroke-width:1.6; fill:none; stroke-dasharray:4 4;}
+    .redge{stroke:#C0392B; stroke-width:2.4; fill:none;}
+  </style>
+
+  <line class="edge" x1="310" y1="605" x2="310" y2="585"/>
+  <line class="dash" x1="310" y1="555" x2="310" y2="527"/>
+  <line class="edge" x1="310" y1="525" x2="310" y2="406" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="384" x2="310" y2="362"/>
+  <line class="dash" x1="310" y1="360" x2="310" y2="315"/>
+  <line class="edge" x1="310" y1="313" x2="310" y2="178" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="154" x2="310" y2="120" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="82" x2="310" y2="64" marker-end="url(#arr)"/>
+  <line class="edge" x1="310" y1="628" x2="310" y2="608" marker-end="url(#arr)"/>
+
+  <circle cx="310" cy="395" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="400" text-anchor="middle" font-size="15" fill="#555">+</text>
+  <circle cx="310" cy="165" r="11" fill="#fff" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="170" text-anchor="middle" font-size="15" fill="#555">+</text>
+
+  <text x="310" y="345" text-anchor="middle" font-size="20" fill="#999">⋮</text>
+  <text class="sub" x="330" y="345">中间层</text>
+
+  <text class="sub" x="326" y="305">x<tspan dy="4" font-size="11">j</tspan></text>
+  <text class="sub" x="326" y="520">x<tspan dy="4" font-size="11">i</tspan></text>
+
+  <path class="edge" d="M310,525 L110,525 L110,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M190,525 L190,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,525 L270,486" marker-end="url(#arr)"/>
+  <path class="edge" d="M110,438 L110,420"/>
+  <path class="edge" d="M190,438 L190,420"/>
+  <path class="edge" d="M270,438 L270,420"/>
+  <path class="edge" d="M110,420 L310,420"/>
+
+  <path class="edge" d="M310,300 L110,300 L110,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M190,300 L190,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M270,300 L270,261" marker-end="url(#arr)"/>
+  <path class="edge" d="M110,213 L110,190"/>
+  <path class="edge" d="M190,213 L190,190"/>
+  <path class="edge" d="M270,213 L270,190"/>
+  <path class="edge" d="M110,190 L310,190"/>
+
+  <!-- boxes: all normal on x_new -->
+  <rect x="233" y="20" width="154" height="42" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="47" text-anchor="middle">logits</text>
+  <rect x="252" y="82" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="106" text-anchor="middle">unembed</text>
+
+  <rect x="80" y="213" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="mlbl" x="110" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="213" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="mlbl" x="190" y="242" text-anchor="middle">g<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="213" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="270" y="242" text-anchor="middle">…</text>
+
+  <!-- sender: h0 = cached corrupted value (red) -->
+  <rect x="80" y="438" width="60" height="46" rx="7" fill="#F6B6B6" stroke="#C0392B" stroke-width="2.4"/>
+  <text class="mlbl" x="110" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">0</tspan></text>
+  <rect x="160" y="438" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="mlbl" x="190" y="467" text-anchor="middle">h<tspan dy="4" font-size="12" font-style="normal" font-family="Arial,sans-serif">1</tspan></text>
+  <rect x="240" y="438" width="60" height="46" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="270" y="467" text-anchor="middle">…</text>
+
+  <!-- cache callout for h0 -->
+  <path class="redge" d="M78,461 L40,461" marker-end="url(#arred)"/>
+  <text x="30" y="450" text-anchor="end" font-size="12" fill="#C0392B" font-weight="bold">缓存</text>
+  <text x="30" y="466" text-anchor="end" font-size="11.5" fill="#C0392B">a_h(x_new)</text>
+  <text x="30" y="482" text-anchor="end" font-size="11.5" fill="#C0392B">→ C 的污染补丁</text>
+
+  <rect x="252" y="570" width="116" height="36" rx="7" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+  <text class="lbl" x="310" y="594" text-anchor="middle">embed</text>
+  <rect x="233" y="628" width="154" height="42" rx="7" fill="#F6D9C0" stroke="#D98C50" stroke-width="1.8"/>
+  <text class="lbl" x="310" y="655" text-anchor="middle">tokens = x_new</text>
+
+  <text x="46" y="465" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 465)">发送层</text>
+  <text x="46" y="240" font-size="12" fill="#888" text-anchor="middle" transform="rotate(-90 46 240)">接收层</text>
+
+  <!-- legend -->
+  <text x="440" y="150" font-size="16" fill="#222" font-weight="bold">图例 · A 趟</text>
+  <g font-size="13.5" fill="#333">
+    <rect x="440" y="172" width="24" height="17" rx="4" fill="#F6D9C0" stroke="#D98C50" stroke-width="1.8"/>
+    <text x="474" y="185">输入 = x_new(污染句子 ABC)</text>
+    <rect x="440" y="202" width="24" height="17" rx="4" fill="#F6B6B6" stroke="#C0392B" stroke-width="2.4"/>
+    <text x="474" y="215">要缓存的 = h 的污染输出</text>
+    <rect x="440" y="232" width="24" height="17" rx="4" fill="#EADFC8" stroke="#C9B892" stroke-width="1.5"/>
+    <text x="474" y="245">其余 = 照常跑(A 趟不关心)</text>
+  </g>
+
+  <text x="440" y="305" font-size="13" fill="#444">
+    <tspan x="440" dy="0" font-weight="bold">A 趟:在 x_new 上跑一遍</tspan>
+    <tspan x="440" dy="23">唯一目的:拿到 h 的污染输出</tspan>
+    <tspan x="440" dy="20">a_h(x_new),供 C 趟当污染补丁。</tspan>
+    <tspan x="440" dy="26" fill="#666">(全网照常前向,不做任何冻结/</tspan>
+    <tspan x="440" dy="18" fill="#666">干预;只把 h 的输出存下来。)</tspan>
+  </text>
+</svg>
