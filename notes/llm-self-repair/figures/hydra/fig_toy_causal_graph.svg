@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 420" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="a-grey" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#555"/></marker>
+    <marker id="a-blue" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2E7D32"/></marker>
+    <marker id="a-org"  markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#D2691E"/></marker>
+    <marker id="a-red"  markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#C0392B"/></marker>
+  </defs>
+  <style>
+    .node{fill:#fff; stroke:#333; stroke-width:1.8;}
+    .nlbl{font-size:20px; fill:#222; font-style:italic; font-family:Georgia,serif;}
+    .grey{stroke:#555; stroke-width:1.8; fill:none;}
+    .blue{stroke:#2E7D32; stroke-width:2.6; fill:none;}
+    .org{stroke:#D2691E; stroke-width:2.6; fill:none;}
+    .red{stroke:#C0392B; stroke-width:2.6; fill:none; stroke-dasharray:6 4;}
+    .elbl{font-size:13px;}
+  </style>
+
+  <!-- edges -->
+  <!-- u->x -->
+  <line class="grey" x1="226.7" y1="70" x2="153.3" y2="180" marker-end="url(#a-grey)"/>
+  <!-- u->f  (bypass, red dashed) -->
+  <line class="red" x1="253.3" y1="70" x2="326.7" y2="180" marker-end="url(#a-red)"/>
+  <!-- x->f -->
+  <line class="grey" x1="164" y1="200" x2="316" y2="200" marker-end="url(#a-grey)"/>
+  <!-- x->y  (direct, DE) -->
+  <line class="blue" x1="153.3" y1="220" x2="226.7" y2="330" marker-end="url(#a-blue)"/>
+  <!-- f->y  (indirect, IE) -->
+  <line class="org" x1="326.7" y1="220" x2="253.3" y2="330" marker-end="url(#a-org)"/>
+
+  <!-- edge labels -->
+  <text class="elbl" x="176" y="120" fill="#555" text-anchor="end">u→x</text>
+  <text class="elbl" x="300" y="118" fill="#C0392B">旁路 u→f</text>
+  <text class="elbl" x="240" y="192" fill="#555" text-anchor="middle">x→f</text>
+  <text class="elbl" x="168" y="285" fill="#2E7D32" text-anchor="end">直连 (DE)</text>
+  <text class="elbl" x="312" y="285" fill="#D2691E">绕道 (IE)</text>
+
+  <!-- nodes -->
+  <circle class="node" cx="240" cy="50"  r="24"/>
+  <text class="nlbl" x="240" y="57"  text-anchor="middle">u</text>
+  <circle class="node" cx="140" cy="200" r="24"/>
+  <text class="nlbl" x="140" y="207" text-anchor="middle">x</text>
+  <circle class="node" cx="340" cy="200" r="24"/>
+  <text class="nlbl" x="340" y="207" text-anchor="middle">f</text>
+  <circle class="node" cx="240" cy="350" r="24"/>
+  <text class="nlbl" x="240" y="357" text-anchor="middle">y</text>
+
+  <!-- node annotations -->
+  <text font-size="12" fill="#888" x="272" y="46">外生 · 真值/上下文</text>
+  <text font-size="12" fill="#888" x="108" y="240" text-anchor="end">主组件 (被 do)</text>
+  <text font-size="12" fill="#888" x="372" y="240">备份/擦除</text>
+  <text font-size="12" fill="#888" x="272" y="356">输出 logit</text>
+
+  <!-- legend -->
+  <text font-size="13" x="380" y="330" fill="#222" font-weight="bold">图例</text>
+  <line class="blue" x1="380" y1="348" x2="410" y2="348"/><text class="elbl" x="416" y="352" fill="#2E7D32">x→y 直连 = DE</text>
+  <line class="org"  x1="380" y1="368" x2="410" y2="368"/><text class="elbl" x="416" y="372" fill="#D2691E">x→f→y 绕道 = IE</text>
+  <line class="red"  x1="380" y1="388" x2="410" y2="388"/><text class="elbl" x="416" y="392" fill="#C0392B">u→f 旁路(命根子)</text>
+</svg>
