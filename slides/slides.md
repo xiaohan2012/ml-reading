@@ -175,15 +175,17 @@ My name is Han, a data scientist in Finland. I will talk about self-repair in ta
 </style>
 
 <!--
-TODO: the phenomenon — ablation is how we attribute behaviour to components.
+Self-repair is widely observed on large language models.
 
-[click] TODO: ablate layer 2 and the model should lose the answer.
+[click] In a nutshell, abalting one layer may cause "damage" to the computation
 
-[click] TODO: but a later layer changes what it writes.
 
-[click] TODO: the logits barely move. The damage never reaches the output — this is self-repair, the Hydra Effect.
 
-[click] TODO: land the research question: does the same happen in tabular foundation models?
+[click] but later layer repairs the damage by changing its behaviour.
+
+[click] As a consequence, the output logits barely move. This is called self-repair (or coined Hydra effect in the literature)
+
+[click] In this project, we ask whether self-repair also exists in different type of models called tabular foundation models
 -->
 
 ---
@@ -195,28 +197,28 @@ TODO: the phenomenon — ablation is how we attribute behaviour to components.
 <div class="tfm-fig">
 
 <div class="col">
-  <div class="fade on">
+  <div class="fade" :class="{ on: $clicks >= 1 }">
     <div class="cap">context table</div>
     <table class="tbl">
-      <tr><td>x<sub>11</sub></td><td>x<sub>12</sub></td><td class="y">y<sub>1</sub></td></tr>
-      <tr><td>x<sub>21</sub></td><td>x<sub>22</sub></td><td class="y">y<sub>2</sub></td></tr>
-      <tr><td>⋯</td><td>⋯</td><td class="y">⋯</td></tr>
-      <tr><td>x<sub>n1</sub></td><td>x<sub>n2</sub></td><td class="y">y<sub>n</sub></td></tr>
+      <tr><td>x<sub>11</sub></td><td>⋯</td><td>x<sub>1m</sub></td><td class="y">y<sub>1</sub></td></tr>
+      <tr><td>x<sub>21</sub></td><td>⋯</td><td>x<sub>2m</sub></td><td class="y">y<sub>2</sub></td></tr>
+      <tr><td>⋯</td><td>⋯</td><td>⋯</td><td class="y">⋯</td></tr>
+      <tr><td>x<sub>n1</sub></td><td>⋯</td><td>x<sub>nm</sub></td><td class="y">y<sub>n</sub></td></tr>
     </table>
   </div>
-  <div class="fade" :class="{ on: $clicks >= 1 }">
+  <div class="fade" :class="{ on: $clicks >= 2 }">
     <div class="cap cap-lo">test table</div>
     <table class="tbl">
-      <tr><td>x<sub>11</sub></td><td>x<sub>12</sub></td><td class="y q">?</td></tr>
-      <tr><td>⋯</td><td>⋯</td><td class="y q">⋯</td></tr>
-      <tr><td>x<sub>k1</sub></td><td>x<sub>k2</sub></td><td class="y q">?</td></tr>
+      <tr><td>x<sub>11</sub></td><td>⋯</td><td>x<sub>1m</sub></td><td class="y q">?</td></tr>
+      <tr><td>⋯</td><td>⋯</td><td>⋯</td><td class="y q">⋯</td></tr>
+      <tr><td>x<sub>k1</sub></td><td>⋯</td><td>x<sub>km</sub></td><td class="y q">?</td></tr>
     </table>
   </div>
 </div>
 
-<div class="arrow fade" :class="{ on: $clicks >= 2 }">&rarr;</div>
+<div class="arrow fade" :class="{ on: $clicks >= 3 }">&rarr;</div>
 
-<div class="model fade" :class="{ on: $clicks >= 2 }">
+<div class="model fade" :class="{ on: $clicks >= 3 }">
   <div class="model-title">Transformer</div>
   <div class="blk">block</div>
   <div class="blk">block</div>
@@ -224,9 +226,9 @@ TODO: the phenomenon — ablation is how we attribute behaviour to components.
   <div class="blk">block</div>
 </div>
 
-<div class="arrow fade" :class="{ on: $clicks >= 3 }">&rarr;</div>
+<div class="arrow fade" :class="{ on: $clicks >= 4 }">&rarr;</div>
 
-<div class="col fade" :class="{ on: $clicks >= 3 }">
+<div class="col fade" :class="{ on: $clicks >= 4 }">
   <div class="cap">prediction</div>
   <table class="tbl">
     <tr><td class="y hat">ŷ<sub>1</sub></td></tr>
@@ -237,14 +239,14 @@ TODO: the phenomenon — ablation is how we attribute behaviour to components.
 
 </div>
 
-<div class="fade" :class="{ on: $clicks >= 4 }">
+<div class="fade" :class="{ on: $clicks >= 5 }">
 
 - TFMs do *in-context learning*, i.e., there is **no** gradient update
 
 </div>
 
 <div class="click-anchors">
-  <span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span><span v-click></span>
   <span v-click></span><span v-click></span>
 </div>
 
@@ -288,15 +290,19 @@ TODO: the phenomenon — ablation is how we attribute behaviour to components.
 </style>
 
 <!--
-TODO: what a TFM is, in one sentence.
+Tabular foundation model is essentially transformers for making predictions on tabular data
 
-[click] TODO: the labelled rows are the context.
+[click] The model operates on two data tables of the same schema.
 
-[click] TODO: the test rows arrive with the label missing.
+Context table: which contains both the data attributes and target labels
 
-[click] TODO: one frozen transformer reads both.
+[click] and test table: which contains only data attributes but misses the labels
 
-[click] TODO: it fills in the missing labels — no gradient update anywhere.
+[click] the model is notably transformer-based, sharing the similar technical backbone as language models
+
+[click] after ingesting the two tables, the model predicts the missing labels on the test data based on the context
+
+[click] TMFs do in-context learning (a prevalent technique used in language models), in other words, the model is never fine-tuned and does not do any gradient update
 -->
 
 ---
@@ -323,7 +329,10 @@ TODO: what a TFM is, in one sentence.
 
 <div class="cmp-sum" :class="{ on: $clicks >= 2 }">TFM = the problem domain of supervised ML, the mechanism of a language model.</div>
 
-<div class="click-anchors"><span v-click></span><span v-click></span></div>
+<div class="click-anchors">
+  <span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
+</div>
 
 <style scoped>
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
@@ -350,15 +359,17 @@ TODO: what a TFM is, in one sentence.
 </style>
 
 <!--
-TODO: same problem domain as supervised ML — classification and regression on tables.
+TFMs are closely related to supervied machine learning and language models
 
-[click] TODO: same mechanism as a language model — in-context, transformer.
+[click] compared to supervised ML for tabular data, tabular models consumes the same data format and highly overlap on practical applications (predicting on tabular data)
+the key difference lies on whether any model parameter update is involved. For supervised ML, a new model needs to be trained for each task, whereas tabular models do not require that
 
-[click] TODO: the one-line summary.
+[click] compared the language models, the main difference lies in the data format.
+
+In contrast to tabular models, Language models predicts next word on text sequence. However, their underlying technology is closely related -- they both use transformer-based architecture and do in-context learning.
 -->
 
----
-clicks: 6
+
 ---
 
 # Why the RQ matters for AI safety
@@ -366,20 +377,20 @@ clicks: 6
 - TFMs are deployed in high-stake domains, e.g., lending: $y = 1$ grant the loan, $y = 0$ deny
 - Ablation is a main tool for understanding how a model works &mdash; and self-repair breaks it
 
-<div class="sf">
+<div class="sf fade" :class="{ on: $clicks >= 1 }">
 
 <div class="col">
   <div class="cap">context table</div>
   <table class="tbl">
-    <tr><td>x<sub>11</sub></td><td>x<sub>12</sub></td><td class="y">1</td></tr>
-    <tr><td>x<sub>21</sub></td><td>x<sub>22</sub></td><td class="y">0</td></tr>
-    <tr><td>⋯</td><td>⋯</td><td class="y">⋯</td></tr>
-    <tr><td>x<sub>n1</sub></td><td>x<sub>n2</sub></td><td class="y">1</td></tr>
+    <tr><td>x<sub>11</sub></td><td>⋯</td><td>x<sub>1m</sub></td><td class="y">1</td></tr>
+    <tr><td>x<sub>21</sub></td><td>⋯</td><td>x<sub>2m</sub></td><td class="y">0</td></tr>
+    <tr><td>⋯</td><td>⋯</td><td>⋯</td><td class="y">⋯</td></tr>
+    <tr><td>x<sub>n1</sub></td><td>⋯</td><td>x<sub>nm</sub></td><td class="y">1</td></tr>
   </table>
   <div class="cap cap-lo">test table</div>
   <table class="tbl">
-    <tr><td>x<sub>11</sub></td><td>x<sub>12</sub></td><td class="y q">?</td></tr>
-    <tr><td>x<sub>21</sub></td><td>x<sub>22</sub></td><td class="y q">?</td></tr>
+    <tr><td>x<sub>11</sub></td><td>⋯</td><td>x<sub>1m</sub></td><td class="y q">?</td></tr>
+    <tr><td>x<sub>21</sub></td><td>⋯</td><td>x<sub>2m</sub></td><td class="y q">?</td></tr>
   </table>
 </div>
 
@@ -388,8 +399,8 @@ clicks: 6
 <div class="model">
   <div class="model-title">Transformer</div>
   <div class="blk">layer 1</div>
-  <div class="blk" :class="$clicks >= 2 ? 'abl' : ($clicks >= 1 ? 'imp blinking' : 'imp')">layer 2</div>
-  <div class="blk" :class="{ comp: $clicks >= 2, blinking: $clicks >= 5 }">layer 3</div>
+  <div class="blk" :class="$clicks >= 3 ? 'abl' : ($clicks >= 2 ? 'imp blinking' : 'imp')">layer 2</div>
+  <div class="blk" :class="{ comp: $clicks >= 3, blinking: $clicks >= 6 }">layer 3</div>
   <div class="blk">layer 4</div>
 </div>
 
@@ -397,30 +408,32 @@ clicks: 6
 
 <div class="col">
   <div class="cap">prediction</div>
-  <div class="pred-box" :class="{ flash: $clicks >= 3 }">
+  <div class="pred-box" :class="{ flash: $clicks >= 4 }">
     <table class="tbl">
       <tr><td class="hat">ŷ<sub>1</sub> = 1</td></tr>
       <tr><td class="hat">ŷ<sub>2</sub> = 0</td></tr>
     </table>
   </div>
-  <div class="same" :class="{ flash: $clicks >= 3 }">unchanged</div>
+  <div class="same" :class="{ flash: $clicks >= 4 }">unchanged</div>
 </div>
 
 </div>
 
 <div class="verdict-wrap">
-  <div class="verdict" :class="{ shown: $clicks >= 4, struck: $clicks >= 6 }">
+  <div class="verdict" :class="{ shown: $clicks >= 5, struck: $clicks >= 7 }">
     &ldquo;Layer 2 does not contribute.&rdquo;
   </div>
 </div>
 
 <div class="click-anchors">
-  <span v-click></span><span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span><span v-click></span><span v-click></span>
   <span v-click></span><span v-click></span><span v-click></span>
 </div>
 
 <style scoped>
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
+.fade { opacity: 0; transition: opacity 0.35s ease; }
+.fade.on { opacity: 1; }
 .sf {
   display: flex; align-items: center; justify-content: center;
   gap: 1.6rem; margin: 1.6rem 0 0.8rem;
@@ -502,19 +515,26 @@ clicks: 6
 </style>
 
 <!--
-TODO: why anyone should care — high-stakes deployment, ablation as the audit tool.
+TFMs are being deployed in high-stake scenarios, for example, loan lending, in which the models decide whether a loan is granted to an applicant or not.
 
-[click] TODO: layer 2 drives the prediction.
+Model transparency and trust-worthiness matters. In order to improve transparency, one needs to open up model and understand how it works.
 
-[click] TODO: we ablate it; layer 3 takes over.
+Ablation is a widely adopted technique to gain such understanding.
 
-[click] TODO: the logits do not move.
 
-[click] TODO: so the audit concludes layer 2 is irrelevant.
+[click] As we show next, self-repair can break the conclusion.
 
-[click] TODO: layer 3 was covering for it.
+[click] In this toy example, layer 2 plays a key role in shaping the final prediction, when nothing is ablated on
 
-[click] TODO: the conclusion is wrong — and this is the failure mode we are testing for.
+[click] We can ablate on it, however, layer 3 repairs the damage
+
+[click] and the output logits barely change
+
+[click] so one concludes that layer 2 do not make a difference
+
+[click] but the reality is that layer 2 does the compensation
+
+[click] in other words, self-repair leads to a seemingly plausible conclusion, which is wrong
 -->
 
 ---
@@ -564,7 +584,7 @@ TODO: why anyone should care — high-stakes deployment, ablation as the audit t
     <li :class="{ on: $clicks >= 7 }"><b>Compensation effect (CE)</b> = DE &minus; TE = &minus;IE: how much B compensates for the ablation of A</li>
   </ul>
   <div class="verdict" :class="{ on: $clicks >= 8 }">
-    <b>self-repair</b> &nbsp;&hArr;&nbsp; <b>CE &gt; 0</b>
+    <b>self-repair</b> &nbsp;&hArr;&nbsp; <b>CE &gt; 0</b> <span class="qual">(consistently)</span>
   </div>
 </div>
 
@@ -609,27 +629,31 @@ TODO: why anyone should care — high-stakes deployment, ablation as the audit t
   color: #16a34a; opacity: 0; transition: opacity 0.3s ease;
 }
 .defs .verdict.on { opacity: 1; }
+.defs .verdict .qual { font-weight: 400; }
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
 </style>
 
 <!--
-TODO: set up the causal model — layer A, everything downstream is B, output y.
+To answer our research question, let's define what self-repair is and how to quantify it.
 
-[click] TODO: the clean run.
+The definition boils down to a few kinds of effects. We measure the effect of an intervention by the change of output logit
 
-[click] TODO: total effect — ablate A and let B react.
+[click] We first run the model without any intervention (called clean run), we save the internal activations for later use
 
-[click] TODO: B reacts freely; this is what plain ablation measures.
+[click] Suppose we want to intervene on layer A by substituting the activations with a corrupted value.
 
-[click] TODO: direct effect — ablate A but hold B at its clean value.
 
-[click] TODO: only the A-to-y path carries the intervention.
+[click] In the case of total effect, we let the downstream layer B react freely and measure the final effect as the total effect
 
-[click] TODO: indirect effect — B's own contribution.
+[click] In direct effect, B uses the clean values we obtained from the clean run.
 
-[click] TODO: compensation effect, the gap between DE and TE.
+[click] Intuitively, only the A-to-y path carries the intervention.
 
-[click] TODO: self-repair is CE > 0.
+[click] Indirect effect is the completement, it measures B's own contribution through the B -> y, as if A is abalted on
+
+[click] finally we define compensation effect as direct effect minus total effect, which measures how much B compensates for the ablation of A
+
+[click] definition of self-repair is therefore, compensation effect is larger than 0 consistently, under different inputs
 -->
 
 ---
@@ -638,8 +662,11 @@ TODO: set up the causal model — layer A, everything downstream is B, output y.
 
 - A two-layer transformer, layer $A$ and layer $B$
 - Layer $A$ constantly writes $a = 1$
-- The intervention is $do(A = 0)$
-- The output $y$ is defined as
+
+<div class="fade" :class="{ on: $clicks >= 1 }">
+
+* The intervention is $do(A = 0)$
+* The output $y$ is defined as
 
 $$
 y = \begin{cases}
@@ -648,7 +675,9 @@ y = \begin{cases}
 \end{cases}
 $$
 
-<div class="toy" :class="{ s1: $clicks === 1, s2: $clicks >= 2 }">
+</div>
+
+<div class="toy fade" :class="{ on: $clicks >= 2, s1: $clicks === 3, s2: $clicks === 4, s3: $clicks >= 5 }">
   <table class="toy-tbl">
     <thead>
       <tr>
@@ -665,16 +694,26 @@ $$
         <td>Repaired</td><td><i>b</i> = 1 &minus; <i>a</i></td><td>1</td><td>1</td>
         <td class="c-te">0</td><td class="c-de">1</td>
       </tr>
+      <tr>
+        <td>Load-bearing</td><td><i>b</i> = 0</td><td>1</td><td>1</td>
+        <td class="c-te">1</td><td class="c-de">1</td>
+      </tr>
     </tbody>
   </table>
-  <div class="ann ann1">self-repair = redundancy &nbsp;&#10060;</div>
-  <div class="ann ann2">self-repair &ne; redundancy &nbsp;&#9989;</div>
+  <div class="ann ann1">TE alone: redundant = repaired &nbsp;&#10060;</div>
+  <div class="ann ann2">DE alone: repaired = load-bearing &nbsp;&#10060;</div>
+  <div class="ann ann3">TE and DE: all three separated &nbsp;&#9989;</div>
 </div>
 
-<div class="click-anchors"><span v-click></span><span v-click></span></div>
+<div class="click-anchors">
+  <span v-click></span><span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
+</div>
 
 <style scoped>
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
+.fade { opacity: 0; transition: opacity 0.35s ease; }
+.fade.on { opacity: 1; }
 .katex-display { font-size: 0.85em; }
 .toy {
   position: relative; width: fit-content;
@@ -686,7 +725,8 @@ $$
   border-bottom: 1px solid rgba(128,128,128,0.3);
 }
 .toy-tbl th:first-child, .toy-tbl td:first-child { text-align: left; }
-.toy-tbl th { font-weight: 600; }
+.toy-tbl th { font-weight: 700; }
+.toy-tbl td:first-child { font-weight: 700; }
 .toy-tbl th.c-te, .toy-tbl td.c-te,
 .toy-tbl th.c-de, .toy-tbl td.c-de {
   border-left: 2px dashed transparent; border-right: 2px dashed transparent;
@@ -695,32 +735,41 @@ $$
 .toy-tbl th.c-te, .toy-tbl th.c-de { border-top: 2px dashed transparent; }
 .toy.s1 th.c-te, .toy.s1 td.c-te { border-left-color: #9ca3af; border-right-color: #9ca3af; }
 .toy.s1 th.c-te { border-top-color: #9ca3af; }
-.toy.s1 tbody tr:last-child td.c-te { border-bottom: 2px dashed #9ca3af; }
-.toy.s2 th.c-te, .toy.s2 td.c-te { border-left-color: #9ca3af; }
-.toy.s2 th.c-de, .toy.s2 td.c-de { border-right-color: #9ca3af; }
-.toy.s2 th.c-te, .toy.s2 th.c-de { border-top-color: #9ca3af; }
-.toy.s2 tbody tr:last-child td.c-te,
-.toy.s2 tbody tr:last-child td.c-de { border-bottom: 2px dashed #9ca3af; }
+.toy.s1 .toy-tbl tbody tr:last-child td.c-te { border-bottom: 2px dashed #9ca3af !important; }
+.toy.s2 th.c-de, .toy.s2 td.c-de { border-left-color: #9ca3af; border-right-color: #9ca3af; }
+.toy.s2 th.c-te, .toy.s2 td.c-te { border-right-color: #9ca3af; }
+.toy.s2 th.c-de { border-top-color: #9ca3af; }
+.toy.s2 .toy-tbl tbody tr:last-child td.c-de { border-bottom: 2px dashed #9ca3af !important; }
+.toy.s3 th.c-te, .toy.s3 td.c-te { border-left-color: #9ca3af; }
+.toy.s3 th.c-de, .toy.s3 td.c-de { border-right-color: #9ca3af; }
+.toy.s3 th.c-te, .toy.s3 th.c-de { border-top-color: #9ca3af; }
+.toy.s3 .toy-tbl tbody tr:last-child td.c-te,
+.toy.s3 .toy-tbl tbody tr:last-child td.c-de { border-bottom: 2px dashed #9ca3af !important; }
 .ann {
-  position: absolute; top: 100%; margin-top: 0.4rem;
-  font-size: 1.15rem; font-weight: 600;
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  margin-top: 0.5rem; font-size: 1.05rem; font-weight: 600;
   white-space: nowrap; opacity: 0; transition: opacity 0.3s ease;
 }
-.ann1 { color: #ef4444; }
-.ann2 { color: #16a34a; }
-.ann1 { left: 62%; }
-.ann2 { left: 68%; }
+.ann1, .ann2 { color: #ef4444; }
+.ann3 { color: #16a34a; }
 .toy.s1 .ann1 { opacity: 1; }
 .toy.s2 .ann2 { opacity: 1; }
+.toy.s3 .ann3 { opacity: 1; }
 </style>
 
 
 <!--
-TODO: the toy model — two layers writing into a shared stream, thresholded output.
+So why both TE and DE are needed to study self-repair? Here is a toy example for illustration
 
-[click] TODO: looking at TE alone, the two scenarios are identical.
+Consider a two layer transformer, with layer A and layer B. A is constant function, always outputing value 1, meanwhile it is the layer we ablate on
 
-[click] TODO: adding DE separates them. This is why both are needed.
+[click] The model predicts 1 if summation of the two layer's output is greater than 1, otherwise, 0 is predicted
+
+[click] There are two possiuble scenarios, layer B is redundant or self-repairs
+
+[click] if we measure total effect only, the two scenarios are indistinguishable
+
+[click] to tell them apart, we have to consider both TE and DE
 -->
 
 ---
@@ -809,14 +858,19 @@ TODO: the toy model — two layers writing into a shared stream, thresholded out
 
 
 <!--
-TODO: the language model result — one point per (layer, prompt).
+Here is our finding. Evidence of self-repair is weak in TFMs.
 
-[click] TODO: the mass sits below the diagonal: DE exceeds TE, so CE > 0.
+For reference, we first illustrate the case of language models, where evidence self-repair is strong
 
-[click] TODO: now the same measurement on a TFM.
+[click] Each dot represents a (layer, input) pair, where input is some text sequence. X and Y axises represent DE and TE respectively
 
-[click] TODO: the below-diagonal region is empty — no evidence of self-repair.
-   Mention the caveat: four models, fifteen tasks, and the two axes are not on a common scale.
+[click] Points below the diagonal line correspond to the cases where self-repair happens, because DE > TE, therefore CE is positive.
+
+For the language model under study, self-repair consistently appears
+
+[click] for tabular models, the lower diagonl is almost empty, indicating self-repair rarely exists
+
+Here, we show only one model because other models have similar results.
 -->
 
 ---
@@ -841,5 +895,5 @@ TODO: the language model result — one point per (layer, prompt).
 </style>
 
 <!--
-TODO: closing line — the full write-up, method and code, is at this link.
+If you want to know more, please check out the full article
 -->
