@@ -93,8 +93,11 @@ My name is Han, a data scientist in Finland. I will talk about self-repair in ta
   <div class="fade strong" :class="{ on: $clicks >= 3 }">the output barely moves</div>
 </div>
 
+<div class="rq fade" :class="{ on: $clicks >= 4 }"><b>Research question</b>: do tabular foundation models repair themselves as well?</div>
+
 <div class="click-anchors">
-  <span v-click></span><span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
 </div>
 
 <style scoped>
@@ -102,6 +105,7 @@ My name is Han, a data scientist in Finland. I will talk about self-repair in ta
 .fade { opacity: 0; transition: opacity 0.35s ease; }
 .fade.on { opacity: 1; }
 .lead-line { font-size: 1.05rem; }
+.rq { text-align: center; font-size: 1.4rem; margin-top: 1rem; }
 .lm-fig {
   display: flex; align-items: center; justify-content: center;
   gap: 1.6rem; margin-top: 1.4rem;
@@ -170,104 +174,16 @@ My name is Han, a data scientist in Finland. I will talk about self-repair in ta
 .lm-note .strong { font-weight: 700; }
 </style>
 
----
-
-# Background (cont'd)
-
-<figure class="hydra">
-  <svg class="hyd" viewBox="0 0 940 430">
-    <line class="ax" x1="80" y1="350" x2="885" y2="350" />
-    <line class="ax" x1="80" y1="30" x2="80" y2="350" />
-    <line class="tick" x1="90" y1="350" x2="90" y2="358" />
-    <text class="ticklab" x="90" y="378" text-anchor="middle">1</text>
-    <line class="tick" x1="176" y1="350" x2="176" y2="358" />
-    <text class="ticklab" x="176" y="378" text-anchor="middle">2</text>
-    <line class="tick" x1="261" y1="350" x2="261" y2="358" />
-    <text class="ticklab" x="261" y="378" text-anchor="middle">3</text>
-    <line class="tick" x1="347" y1="350" x2="347" y2="358" />
-    <text class="ticklab" x="347" y="378" text-anchor="middle">4</text>
-    <line class="tick" x1="432" y1="350" x2="432" y2="358" />
-    <text class="ticklab" x="432" y="378" text-anchor="middle">5</text>
-    <line class="tick" x1="518" y1="350" x2="518" y2="358" />
-    <text class="ticklab" x="518" y="378" text-anchor="middle">6</text>
-    <line class="tick" x1="604" y1="350" x2="604" y2="358" />
-    <text class="ticklab" x="604" y="378" text-anchor="middle">7</text>
-    <line class="tick" x1="689" y1="350" x2="689" y2="358" />
-    <text class="ticklab" x="689" y="378" text-anchor="middle">8</text>
-    <line class="tick" x1="775" y1="350" x2="775" y2="358" />
-    <text class="ticklab" x="775" y="378" text-anchor="middle">9</text>
-    <line class="tick" x1="860" y1="350" x2="860" y2="358" />
-    <text class="ticklab" x="860" y="378" text-anchor="middle">10</text>
-    <line class="vguide" :class="{ on: $clicks >= 1 }" x1="432" y1="30" x2="432" y2="350" />
-    <text class="axlab" x="480" y="412" text-anchor="middle">layer</text>
-    <text class="axlab" x="30" y="190" text-anchor="middle" transform="rotate(-90 30 190)">effect on logits</text>
-    <g class="legend">
-      <line class="clean" x1="686" y1="292" x2="731" y2="292" />
-      <text class="leg" x="741" y="298">pre-ablation</text>
-      <line class="abl on" x1="686" y1="326" x2="731" y2="326" />
-      <text class="leg" x="741" y="332">post-ablation</text>
-    </g>
-    <polyline class="clean" points="90,255 176,242 261,247 347,234 432,126 518,212 604,199 689,204 775,186 860,191" />
-    <polyline class="abl" :class="{ on: $clicks >= 1 }" points="347,234 432,298" />
-    <polyline class="abl" :class="{ on: $clicks >= 2 }" points="432,298 518,66 604,186 689,195 775,178 860,189" />
-    <g class="ann" :class="{ on: $clicks >= 1 }">
-      <text x="418" y="340" text-anchor="end">ablate this layer</text>
-    </g>
-    <g class="ann" :class="{ on: $clicks >= 2 }">
-      <text x="534" y="70">a later layer repairs</text>
-    </g>
-  </svg>
-  <figcaption>
-    Illustration, after McGrath et al., <em>The Hydra Effect</em>, <a href="https://arxiv.org/abs/2307.15771">arXiv:2307.15771</a>, Fig. 1.
-  </figcaption>
-</figure>
-
-<div class="rq fade" :class="{ on: $clicks >= 3 }"><b>Research question</b>: do tabular foundation models repair themselves as well?</div>
-
-<div class="click-anchors"><span v-click></span><span v-click></span><span v-click></span></div>
-
-<style scoped>
-.click-anchors { font-size: 0; line-height: 0; height: 0; }
-.hydra { margin: 0.6rem 0; }
-.lead-line { font-size: 1.05rem; }
-.rq { text-align: center; font-size: 1.5rem; margin-top: 1rem; }
-.fade { opacity: 0; transition: opacity 0.35s ease; }
-.fade.on { opacity: 1; }
-.hyd { width: 78%; display: block; margin: 0 auto; }
-.hyd .ax { stroke: #9ca3af; stroke-width: 2; }
-.hyd .vguide {
-  stroke: #9ca3af; stroke-width: 2; stroke-dasharray: 7 6;
-  opacity: 0; transition: opacity 0.3s ease;
-}
-.hyd .vguide.on { opacity: 1; }
-.hyd .clean { fill: none; stroke: #2563eb; stroke-width: 4; }
-.hyd .abl {
-  fill: none; stroke: #ef4444; stroke-width: 4;
-  opacity: 0; transition: opacity 0.4s ease;
-}
-.hyd .abl.on { opacity: 1; }
-.hyd .axlab { fill: #6b7280; font-size: 22px; }
-.hyd .ann { opacity: 0; transition: opacity 0.3s ease; }
-.hyd .ann.on { opacity: 1; }
-.hyd .ann text { fill: #111; font-size: 24px; font-weight: 700; }
-.hyd .leg { fill: #6b7280; font-size: 19px; }
-.hyd .tick { stroke: #9ca3af; stroke-width: 2; }
-.hyd .ticklab { fill: #9ca3af; font-size: 18px; }
-.hyd .legend line { stroke-width: 4; }
-.hydra figcaption {
-  font-size: 0.7rem; opacity: 0.65; text-align: center; margin-top: 0.3rem;
-}
-</style>
-
-
 <!--
-TODO: the phenomenon — ablation as the standard tool, and what self-repair breaks.
+TODO: the phenomenon — ablation is how we attribute behaviour to components.
 
-[click] TODO: ablate layer 5, the effect on the logits collapses.
+[click] TODO: ablate layer 2 and the model should lose the answer.
 
-[click] TODO: a later layer overshoots — the output recovers. This is the Hydra Effect.
+[click] TODO: but a later layer changes what it writes.
 
-TODO: land the research question: does the same happen in tabular foundation models?
+[click] TODO: the logits barely move. The damage never reaches the output — this is self-repair, the Hydra Effect.
+
+[click] TODO: land the research question: does the same happen in tabular foundation models?
 -->
 
 ---
