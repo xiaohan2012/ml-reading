@@ -16,12 +16,12 @@ mdc: true
 </div>
 
 <style scoped>
-.byline { margin-top: 1.6rem; font-size: 1.1rem; }
-.affil { font-size: 0.85rem; opacity: 0.7; margin-top: 0.3rem; }
+.byline { margin-top: 1.8rem; font-size: 1.5rem; }
+.affil { font-size: 1.15rem; opacity: 0.7; margin-top: 0.45rem; }
 </style>
 
 <!--
-My name is Han, a data scientist in Finland. I will talk about self-repair in tabular foundation models. Thanks for checking this video.
+My name is Han, a data scientist based in Finland. I will talk about self-repair in tabular foundation models.
 -->
 
 ---
@@ -175,17 +175,17 @@ My name is Han, a data scientist in Finland. I will talk about self-repair in ta
 </style>
 
 <!--
-Self-repair is widely observed on large language models.
+Self-repair is widely observed in large language models.
 
-[click] In a nutshell, abalting one layer may cause "damage" to the computation
+Consider the task of next token prediction. In this example, without any intervention, the model predicts 'baseball' with a logit value of 9.2.
 
+[click] Ablating one layer may cause "damage" to the computation,
 
+[click] In a model with self-repair, a later layer compensates for the damage by changing its behaviour.
 
-[click] but later layer repairs the damage by changing its behaviour.
+[click] As a consequence, the output logits barely move. This is called self-repair.
 
-[click] As a consequence, the output logits barely move. This is called self-repair (or coined Hydra effect in the literature)
-
-[click] In this project, we ask whether self-repair also exists in different type of models called tabular foundation models
+[click] In this project, we ask whether self-repair also exists in a different type of model, called tabular foundation models.
 -->
 
 ---
@@ -206,7 +206,7 @@ Self-repair is widely observed on large language models.
       <tr><td>x<sub>n1</sub></td><td>⋯</td><td>x<sub>nm</sub></td><td class="y">y<sub>n</sub></td></tr>
     </table>
   </div>
-  <div class="fade" :class="{ on: $clicks >= 2 }">
+  <div class="fade" :class="{ on: $clicks >= 1 }">
     <div class="cap cap-lo">test table</div>
     <table class="tbl">
       <tr><td>x<sub>11</sub></td><td>⋯</td><td>x<sub>1m</sub></td><td class="y q">?</td></tr>
@@ -216,9 +216,9 @@ Self-repair is widely observed on large language models.
   </div>
 </div>
 
-<div class="arrow fade" :class="{ on: $clicks >= 3 }">&rarr;</div>
+<div class="arrow fade" :class="{ on: $clicks >= 2 }">&rarr;</div>
 
-<div class="model fade" :class="{ on: $clicks >= 3 }">
+<div class="model fade" :class="{ on: $clicks >= 2 }">
   <div class="model-title">Transformer</div>
   <div class="blk">block</div>
   <div class="blk">block</div>
@@ -226,9 +226,9 @@ Self-repair is widely observed on large language models.
   <div class="blk">block</div>
 </div>
 
-<div class="arrow fade" :class="{ on: $clicks >= 4 }">&rarr;</div>
+<div class="arrow fade" :class="{ on: $clicks >= 2 }">&rarr;</div>
 
-<div class="col fade" :class="{ on: $clicks >= 4 }">
+<div class="col fade" :class="{ on: $clicks >= 2 }">
   <div class="cap">prediction</div>
   <table class="tbl">
     <tr><td class="y hat">ŷ<sub>1</sub></td></tr>
@@ -239,7 +239,7 @@ Self-repair is widely observed on large language models.
 
 </div>
 
-<div class="fade" :class="{ on: $clicks >= 5 }">
+<div class="fade" :class="{ on: $clicks >= 3 }">
 
 - TFMs do *in-context learning*, i.e., there is **no** gradient update
 
@@ -247,7 +247,6 @@ Self-repair is widely observed on large language models.
 
 <div class="click-anchors">
   <span v-click></span><span v-click></span><span v-click></span>
-  <span v-click></span><span v-click></span>
 </div>
 
 <style scoped>
@@ -290,19 +289,13 @@ Self-repair is widely observed on large language models.
 </style>
 
 <!--
-Tabular foundation model is essentially transformers for making predictions on tabular data
+A tabular foundation model is a transformer that predicts on tabular data.
 
-[click] The model operates on two data tables of the same schema.
+[click] It reads two tables with the same schema: a context table with attributes and labels, and a test table where the labels are missing.
 
-Context table: which contains both the data attributes and target labels
+[click] One frozen transformer reads both and fills in the missing labels.
 
-[click] and test table: which contains only data attributes but misses the labels
-
-[click] the model is notably transformer-based, sharing the similar technical backbone as language models
-
-[click] after ingesting the two tables, the model predicts the missing labels on the test data based on the context
-
-[click] TMFs do in-context learning (a prevalent technique used in language models), in other words, the model is never fine-tuned and does not do any gradient update
+[click] This is in-context learning, the same mechanism language models use: no fine-tuning, no gradient update.
 -->
 
 ---
@@ -331,7 +324,6 @@ Context table: which contains both the data attributes and target labels
 
 <div class="click-anchors">
   <span v-click></span><span v-click></span>
-  <span v-click></span><span v-click></span>
 </div>
 
 <style scoped>
@@ -359,17 +351,16 @@ Context table: which contains both the data attributes and target labels
 </style>
 
 <!--
-TFMs are closely related to supervied machine learning and language models
+TFMs sit between supervised machine learning and language models.
 
-[click] compared to supervised ML for tabular data, tabular models consumes the same data format and highly overlap on practical applications (predicting on tabular data)
-the key difference lies on whether any model parameter update is involved. For supervised ML, a new model needs to be trained for each task, whereas tabular models do not require that
+[click] Like supervised ML on tables, they take the same input and solve the same tasks. The difference is that supervised ML trains a new model per task, while a TFM does not.
 
-[click] compared the language models, the main difference lies in the data format.
-
-In contrast to tabular models, Language models predicts next word on text sequence. However, their underlying technology is closely related -- they both use transformer-based architecture and do in-context learning.
+[click] Like a language model, a TFM is a transformer that learns in context. The difference is the input: tables instead of token sequences.
 -->
 
 
+---
+hide: true
 ---
 
 # Why the RQ matters for AI safety
@@ -515,26 +506,27 @@ In contrast to tabular models, Language models predicts next word on text sequen
 </style>
 
 <!--
-TFMs are being deployed in high-stake scenarios, for example, loan lending, in which the models decide whether a loan is granted to an applicant or not.
+So why studying self-repair in tabular foundation model matters for AI safety.
 
-Model transparency and trust-worthiness matters. In order to improve transparency, one needs to open up model and understand how it works.
+TFMs are being increasingly deployed in high-stake settings, for example loan lending, where the model decides whether an applicant is granted a loan.
 
-Ablation is a widely adopted technique to gain such understanding.
+Transparency and trustworthiness matter there. To improve transparency, we need to open up the model and understand how it works.
 
+In particular, ablation is a widely used technique for gaining such insight.
 
-[click] As we show next, self-repair can break the conclusion.
+[click] As we show next, self-repair can break the conclusion an ablation gives you.
 
-[click] In this toy example, layer 2 plays a key role in shaping the final prediction, when nothing is ablated on
+[click] In this toy example, layer 2 plays a key role in shaping the prediction when nothing is ablated.
 
-[click] We can ablate on it, however, layer 3 repairs the damage
+[click] We ablate it — but layer 3 repairs the damage,
 
-[click] and the output logits barely change
+[click] and the output barely changes,
 
-[click] so one concludes that layer 2 do not make a difference
+[click] so one concludes that layer 2 does not make a difference.
 
-[click] but the reality is that layer 2 does the compensation
+[click] In reality, layer 3 was compensating for it.
 
-[click] in other words, self-repair leads to a seemingly plausible conclusion, which is wrong
+[click] In other words, self-repair leads to a conclusion that looks plausible and is wrong.
 -->
 
 ---
@@ -556,7 +548,6 @@ Ablation is a widely adopted technique to gain such understanding.
     <rect class="box" :class="{ on: $clicks === 1 }" x="700" y="190" width="400" height="1240" />
     <rect class="box" :class="{ on: $clicks === 2 || $clicks === 3 }" x="1270" y="190" width="930" height="1240" />
     <rect class="box" :class="{ on: $clicks === 4 || $clicks === 5 }" x="2220" y="190" width="800" height="1240" />
-    <rect class="box" :class="{ on: $clicks === 6 }" x="3120" y="190" width="1060" height="1240" />
     <g :class="{ on: $clicks === 1 }">
       <text x="690" y="130">clean run</text>
     </g>
@@ -568,11 +559,11 @@ Ablation is a widely adopted technique to gain such understanding.
       <text x="2000" y="430">B held clean</text>
       <line x1="2330" y1="465" x2="2400" y2="590" marker-end="url(#ar)" />
     </g>
-    <g :class="{ on: $clicks === 6 }">
-      <text x="3100" y="140">B's reaction only</text>
-      <line x1="3450" y1="180" x2="3580" y2="420" marker-end="url(#ar)" />
-    </g>
   </svg>
+</div>
+
+<div class="eff-cite">
+  Figure 5 in McGrath et al., <em>The Hydra Effect</em>, <a href="https://arxiv.org/abs/2307.15771">arXiv:2307.15771</a>
 </div>
 
 <div class="defs">
@@ -580,10 +571,9 @@ Ablation is a widely adopted technique to gain such understanding.
   <ul>
     <li :class="{ on: $clicks >= 2 }"><b>Total effect (TE)</b>: ablate A, let B react freely</li>
     <li :class="{ on: $clicks >= 4 }"><b>Direct effect (DE)</b>: ablate A, freeze B at its clean value</li>
-    <li :class="{ on: $clicks >= 6 }"><b>Indirect effect (IE)</b>: B's direct effect due to the ablation of A</li>
-    <li :class="{ on: $clicks >= 7 }"><b>Compensation effect (CE)</b> = DE &minus; TE = &minus;IE: how much B compensates for the ablation of A</li>
+    <li :class="{ on: $clicks >= 6 }"><b>Compensation effect (CE)</b> = DE &minus; TE: how much B compensates for the ablation of A</li>
   </ul>
-  <div class="verdict" :class="{ on: $clicks >= 8 }">
+  <div class="verdict" :class="{ on: $clicks >= 7 }">
     <b>self-repair</b> &nbsp;&hArr;&nbsp; <b>CE &gt; 0</b> <span class="qual">(consistently)</span>
   </div>
 </div>
@@ -591,10 +581,13 @@ Ablation is a widely adopted technique to gain such understanding.
 <div class="click-anchors">
   <span v-click></span><span v-click></span><span v-click></span>
   <span v-click></span><span v-click></span><span v-click></span>
-  <span v-click></span><span v-click></span>
+  <span v-click></span>
 </div>
 
 <style scoped>
+.eff-cite {
+  text-align: center; font-size: 0.62rem; opacity: 0.55; margin-top: 0.25rem;
+}
 .eff-wrap { position: relative; width: 72%; margin: 0.4rem auto 0; }
 .eff-overlay {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -634,26 +627,23 @@ Ablation is a widely adopted technique to gain such understanding.
 </style>
 
 <!--
-To answer our research question, let's define what self-repair is and how to quantify it.
+To answer the research question, let us define what self-repair is and how to quantify it.
 
-The definition boils down to a few kinds of effects. We measure the effect of an intervention by the change of output logit
+The definition comes down to a few kinds of effects. We measure the effect of an intervention by the change in the output logit.
 
-[click] We first run the model without any intervention (called clean run), we save the internal activations for later use
+[click] First we run the model without any intervention — the clean run — and save the internal activations for later use.
 
-[click] Suppose we want to intervene on layer A by substituting the activations with a corrupted value.
+[click] Now suppose we intervene on layer A by replacing its activations with a corrupted value.
 
+[click] For the total effect, we let the downstream layer B react freely and measure the change at the output.
 
-[click] In the case of total effect, we let the downstream layer B react freely and measure the final effect as the total effect
+[click] For the direct effect, B is held at the clean values we saved earlier,
 
-[click] In direct effect, B uses the clean values we obtained from the clean run.
+[click] so that only the A-to-y path carries the intervention.
 
-[click] Intuitively, only the A-to-y path carries the intervention.
+[click] Finally, the compensation effect is the direct effect minus the total effect, which measures how much B compensates for the ablation of A.
 
-[click] Indirect effect is the completement, it measures B's own contribution through the B -> y, as if A is abalted on
-
-[click] finally we define compensation effect as direct effect minus total effect, which measures how much B compensates for the ablation of A
-
-[click] definition of self-repair is therefore, compensation effect is larger than 0 consistently, under different inputs
+[click] Self-repair is therefore defined as a compensation effect that is consistently greater than zero across inputs.
 -->
 
 ---
@@ -726,25 +716,33 @@ $$
 }
 .toy-tbl th:first-child, .toy-tbl td:first-child { text-align: left; }
 .toy-tbl th { font-weight: 700; }
-.toy-tbl td:first-child { font-weight: 700; }
+.toy-tbl td:first-child { font-weight: 400; font-style: italic; }
 .toy-tbl th.c-te, .toy-tbl td.c-te,
 .toy-tbl th.c-de, .toy-tbl td.c-de {
   border-left: 2px dashed transparent; border-right: 2px dashed transparent;
   transition: border-color 0.3s ease;
 }
 .toy-tbl th.c-te, .toy-tbl th.c-de { border-top: 2px dashed transparent; }
-.toy.s1 th.c-te, .toy.s1 td.c-te { border-left-color: #9ca3af; border-right-color: #9ca3af; }
-.toy.s1 th.c-te { border-top-color: #9ca3af; }
-.toy.s1 .toy-tbl tbody tr:last-child td.c-te { border-bottom: 2px dashed #9ca3af !important; }
-.toy.s2 th.c-de, .toy.s2 td.c-de { border-left-color: #9ca3af; border-right-color: #9ca3af; }
-.toy.s2 th.c-te, .toy.s2 td.c-te { border-right-color: #9ca3af; }
-.toy.s2 th.c-de { border-top-color: #9ca3af; }
-.toy.s2 .toy-tbl tbody tr:last-child td.c-de { border-bottom: 2px dashed #9ca3af !important; }
-.toy.s3 th.c-te, .toy.s3 td.c-te { border-left-color: #9ca3af; }
-.toy.s3 th.c-de, .toy.s3 td.c-de { border-right-color: #9ca3af; }
-.toy.s3 th.c-te, .toy.s3 th.c-de { border-top-color: #9ca3af; }
+.toy.s1 .toy-tbl tbody tr:nth-child(1) td.c-te,
+.toy.s1 .toy-tbl tbody tr:nth-child(2) td.c-te {
+  border-left-color: #ef4444; border-right-color: #ef4444;
+}
+.toy.s1 .toy-tbl tbody tr:nth-child(1) td.c-te { border-top: 2px dashed #ef4444; }
+.toy.s1 .toy-tbl tbody tr:nth-child(2) td.c-te { border-bottom: 2px dashed #ef4444 !important; }
+.toy.s2 .toy-tbl tbody tr:nth-child(2) td.c-de,
+.toy.s2 .toy-tbl tbody tr:nth-child(3) td.c-de {
+  border-left-color: #ef4444; border-right-color: #ef4444;
+}
+.toy.s2 .toy-tbl tbody tr:nth-child(2) td.c-te,
+.toy.s2 .toy-tbl tbody tr:nth-child(3) td.c-te { border-right-color: #ef4444; }
+.toy.s2 .toy-tbl tbody tr:nth-child(2) td.c-de { border-top: 2px dashed #ef4444; }
+.toy.s2 .toy-tbl tbody tr:nth-child(3) td.c-de { border-bottom: 2px dashed #ef4444 !important; }
+.toy.s3 .toy-tbl tbody td.c-te { border-left-color: #16a34a; }
+.toy.s3 .toy-tbl tbody td.c-de { border-right-color: #16a34a; }
+.toy.s3 .toy-tbl tbody tr:first-child td.c-te,
+.toy.s3 .toy-tbl tbody tr:first-child td.c-de { border-top: 2px dashed #16a34a; }
 .toy.s3 .toy-tbl tbody tr:last-child td.c-te,
-.toy.s3 .toy-tbl tbody tr:last-child td.c-de { border-bottom: 2px dashed #9ca3af !important; }
+.toy.s3 .toy-tbl tbody tr:last-child td.c-de { border-bottom: 2px dashed #16a34a !important; }
 .ann {
   position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
   margin-top: 0.5rem; font-size: 1.05rem; font-weight: 600;
@@ -759,22 +757,24 @@ $$
 
 
 <!--
-So why both TE and DE are needed to study self-repair? Here is a toy example for illustration
+So why are both TE and DE needed to study self-repair? Here is a toy example.
 
-Consider a two layer transformer, with layer A and layer B. A is constant function, always outputing value 1, meanwhile it is the layer we ablate on
+Consider a two-layer transformer with layer A and layer B. A is a constant function that always outputs 1, and it is the layer we ablate.
 
-[click] The model predicts 1 if summation of the two layer's output is greater than 1, otherwise, 0 is predicted
+[click] The model predicts 1 if the sum of the two layers' outputs is greater than zero, and 0 otherwise.
 
-[click] There are two possiuble scenarios, layer B is redundant or self-repairs
+[click] There are three possible scenarios: layer B is redundant, it self-repairs, or layer A is load-bearing. All three give the same model output.
 
-[click] if we measure total effect only, the two scenarios are indistinguishable
+[click] If we measure the total effect only, redundant and repaired are indistinguishable — both read zero.
 
-[click] to tell them apart, we have to consider both TE and DE
+[click] If we measure the direct effect only, repaired and load-bearing are indistinguishable — both read one.
+
+[click] Only the two together separate all three. That is why we need both.
 -->
 
 ---
 
-# Main results: language vs. tabular models
+# Our main result: self-repair is weak in TFMs
 
 <div class="res">
 
@@ -858,19 +858,15 @@ Consider a two layer transformer, with layer A and layer B. A is constant functi
 
 
 <!--
-Here is our finding. Evidence of self-repair is weak in TFMs.
+Here is our main finding: the evidence for self-repair is weak in TFMs.
 
-For reference, we first illustrate the case of language models, where evidence self-repair is strong
+For reference, we first show the language-model case, where the evidence is strong. Each dot is a (layer, input) pair, and the x and y axes are DE and TE.
 
-[click] Each dot represents a (layer, input) pair, where input is some text sequence. X and Y axises represent DE and TE respectively
+[click] Points below the diagonal are the cases where self-repair happens, because DE exceeds TE and the compensation effect is therefore positive. For the language model under study, this happens consistently.
 
-[click] Points below the diagonal line correspond to the cases where self-repair happens, because DE > TE, therefore CE is positive.
+[click] Now the same measurement on a tabular foundation model.
 
-For the language model under study, self-repair consistently appears
-
-[click] for tabular models, the lower diagonl is almost empty, indicating self-repair rarely exists
-
-Here, we show only one model because other models have similar results.
+[click] The region below the diagonal is almost empty, which says self-repair is rare. We show one model here; the other three look the same.
 -->
 
 ---
@@ -885,8 +881,8 @@ Here, we show only one model because other models have similar results.
 
 <style scoped>
 .link-wrap {
+  position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  height: 60vh;
 }
 .link-wrap a {
   font-size: 1.9rem; font-weight: 600;
@@ -895,5 +891,5 @@ Here, we show only one model because other models have similar results.
 </style>
 
 <!--
-If you want to know more, please check out the full article
+If you want to know more, please check out the full article.
 -->
