@@ -242,6 +242,7 @@ Consider the task of next token prediction. In this example, without any interve
 <div class="fade" :class="{ on: $clicks >= 3 }">
 
 - TFMs do *in-context learning*, i.e., there is **no** gradient update
+- Same tasks as supervised ML, same mechanism as a language model
 
 </div>
 
@@ -295,69 +296,8 @@ A tabular foundation model is a transformer that predicts on tabular data.
 
 [click] One frozen transformer reads both and fills in the missing labels.
 
-[click] This is in-context learning, the same mechanism language models use: no fine-tuning, no gradient update.
+[click] This is in-context learning, the same mechanism language models use: no fine-tuning, no gradient update. So a TFM solves the problems of supervised machine learning with the mechanism of a language model.
 -->
-
----
-
-# TFM versus supervised ML and language models
-
-<div class="cmp" :class="$clicks >= 2 ? 's3' : ($clicks >= 1 ? 's2' : 's1')">
-  <table class="cmp-tbl">
-    <thead>
-      <tr>
-        <th></th><th class="c-sml">Supervised ML</th>
-        <th class="c-tfm">TFM</th><th class="c-lm">Language model</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Input</td><td class="c-sml">table</td><td class="c-tfm">table</td><td class="c-lm">text sequence</td></tr>
-      <tr><td>Per-task training</td><td class="c-sml">yes</td><td class="c-tfm">no</td><td class="c-lm">no</td></tr>
-      <tr><td>How it predicts</td><td class="c-sml">fitted model</td><td class="c-tfm">in-context</td><td class="c-lm">in-context</td></tr>
-      <tr><td>Architecture</td><td class="c-sml">trees / MLP</td><td class="c-tfm">transformer</td><td class="c-lm">transformer</td></tr>
-      <tr><td>Example</td><td class="c-sml">XGBoost</td><td class="c-tfm">TabPFN-v2, Mitra</td><td class="c-lm">GPT</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="cmp-sum" :class="{ on: $clicks >= 2 }">TFM = the problem domain of supervised ML, the mechanism of a language model.</div>
-
-<div class="click-anchors">
-  <span v-click></span><span v-click></span>
-</div>
-
-<style scoped>
-.click-anchors { font-size: 0; line-height: 0; height: 0; }
-.cmp { width: fit-content; margin: 1.2rem auto 0; }
-.cmp-tbl { border-collapse: collapse; font-size: 1.05rem; }
-.cmp-tbl th, .cmp-tbl td {
-  padding: 0.5rem 1.6rem; text-align: left;
-  border-bottom: 1px solid rgba(128,128,128,0.3);
-}
-.cmp-tbl th { font-weight: 700; }
-.cmp-tbl td:first-child { font-weight: 700; }
-.cmp-tbl .c-sml, .cmp-tbl .c-lm, .cmp-tbl .c-tfm {
-  transition: opacity 0.3s ease;
-}
-.cmp.s1 .c-lm { opacity: 0; }
-.cmp.s2 .c-sml { opacity: 0; }
-
-.cmp-sum {
-  text-align: center; font-size: 1.25rem;
-  margin-top: 1.4rem;
-  opacity: 0; transition: opacity 0.3s ease;
-}
-.cmp-sum.on { opacity: 1; }
-</style>
-
-<!--
-TFMs sit between supervised machine learning and language models.
-
-[click] Like supervised ML on tables, they take the same input and solve the same tasks. The difference is that supervised ML trains a new model per task, while a TFM does not.
-
-[click] Like a language model, a TFM is a transformer that learns in context. The difference is the input: tables instead of token sequences.
--->
-
 
 ---
 hide: true
@@ -546,16 +486,16 @@ In particular, ablation is a widely used technique for gaining such insight.
       <text x="350" y="965">layer A</text>
     </g>
     <rect class="box" :class="{ on: $clicks === 1 }" x="700" y="190" width="400" height="1240" />
-    <rect class="box" :class="{ on: $clicks === 2 || $clicks === 3 }" x="1270" y="190" width="930" height="1240" />
-    <rect class="box" :class="{ on: $clicks === 4 || $clicks === 5 }" x="2220" y="190" width="800" height="1240" />
+    <rect class="box" :class="{ on: $clicks === 2 }" x="1270" y="190" width="930" height="1240" />
+    <rect class="box" :class="{ on: $clicks === 2 }" x="2220" y="190" width="800" height="1240" />
     <g :class="{ on: $clicks === 1 }">
       <text x="690" y="130">clean run</text>
     </g>
-    <g :class="{ on: $clicks === 3 }">
+    <g :class="{ on: $clicks === 2 }">
       <text x="1150" y="320">B reacts freely</text>
       <line x1="1480" y1="355" x2="1680" y2="455" marker-end="url(#ar)" />
     </g>
-    <g :class="{ on: $clicks === 5 }">
+    <g :class="{ on: $clicks === 2 }">
       <text x="2000" y="430">B held clean</text>
       <line x1="2330" y1="465" x2="2400" y2="590" marker-end="url(#ar)" />
     </g>
@@ -570,18 +510,17 @@ In particular, ablation is a widely used technique for gaining such insight.
   <div class="lead"><b>Effect</b> = &Delta;<i> y</i> caused by an intervention</div>
   <ul>
     <li :class="{ on: $clicks >= 2 }"><b>Total effect (TE)</b>: ablate A, let B react freely</li>
-    <li :class="{ on: $clicks >= 4 }"><b>Direct effect (DE)</b>: ablate A, freeze B at its clean value</li>
-    <li :class="{ on: $clicks >= 6 }"><b>Compensation effect (CE)</b> = DE &minus; TE: how much B compensates for the ablation of A</li>
+    <li :class="{ on: $clicks >= 2 }"><b>Direct effect (DE)</b>: ablate A, freeze B at its clean value</li>
+    <li :class="{ on: $clicks >= 3 }"><b>Compensation effect (CE)</b> = DE &minus; TE: how much B compensates for the ablation of A</li>
   </ul>
-  <div class="verdict" :class="{ on: $clicks >= 7 }">
+  <div class="verdict" :class="{ on: $clicks >= 4 }">
     <b>self-repair</b> &nbsp;&hArr;&nbsp; <b>CE &gt; 0</b> <span class="qual">(consistently)</span>
   </div>
 </div>
 
 <div class="click-anchors">
-  <span v-click></span><span v-click></span><span v-click></span>
-  <span v-click></span><span v-click></span><span v-click></span>
-  <span v-click></span>
+  <span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
 </div>
 
 <style scoped>
@@ -627,23 +566,15 @@ In particular, ablation is a widely used technique for gaining such insight.
 </style>
 
 <!--
-To answer the research question, let us define what self-repair is and how to quantify it.
+To answer the research question we need to define self-repair and quantify it. An effect is the change in the output logit caused by an intervention.
 
-The definition comes down to a few kinds of effects. We measure the effect of an intervention by the change in the output logit.
+[click] First the clean run, with no intervention, whose activations we save.
 
-[click] First we run the model without any intervention — the clean run — and save the internal activations for later use.
+[click] Now ablate layer A. If we let everything downstream react, we get the total effect — this is what a plain ablation measures. If instead we hold the downstream at its clean values, only the A-to-y path carries the intervention, and we get the direct effect.
 
-[click] Now suppose we intervene on layer A by replacing its activations with a corrupted value.
+[click] The gap between them is the compensation effect: how much the downstream layers absorbed.
 
-[click] For the total effect, we let the downstream layer B react freely and measure the change at the output.
-
-[click] For the direct effect, B is held at the clean values we saved earlier,
-
-[click] so that only the A-to-y path carries the intervention.
-
-[click] Finally, the compensation effect is the direct effect minus the total effect, which measures how much B compensates for the ablation of A.
-
-[click] Self-repair is therefore defined as a compensation effect that is consistently greater than zero across inputs.
+[click] So self-repair means a compensation effect that stays positive across inputs.
 -->
 
 ---
@@ -653,7 +584,7 @@ The definition comes down to a few kinds of effects. We measure the effect of an
 - A two-layer transformer, layer $A$ and layer $B$
 - Layer $A$ constantly writes $a = 1$
 
-<div class="fade" :class="{ on: $clicks >= 1 }">
+<div>
 
 * The intervention is $do(A = 0)$
 * The output $y$ is defined as
@@ -667,7 +598,7 @@ $$
 
 </div>
 
-<div class="toy fade" :class="{ on: $clicks >= 2, s1: $clicks === 3, s2: $clicks === 4, s3: $clicks >= 5 }">
+<div class="toy fade" :class="{ on: $clicks >= 1, s1: $clicks === 2, s2: $clicks === 3, s3: $clicks >= 4 }">
   <table class="toy-tbl">
     <thead>
       <tr>
@@ -696,7 +627,7 @@ $$
 </div>
 
 <div class="click-anchors">
-  <span v-click></span><span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
   <span v-click></span><span v-click></span>
 </div>
 
@@ -757,19 +688,81 @@ $$
 
 
 <!--
-So why are both TE and DE needed to study self-repair? Here is a toy example.
+So why do we need both? Here is a two-layer toy model. A always writes 1 and is the layer we ablate, and the output is one if the two writes sum above zero.
 
-Consider a two-layer transformer with layer A and layer B. A is a constant function that always outputs 1, and it is the layer we ablate.
+[click] Three scenarios, all with the same clean prediction: B is redundant, B repairs, or A is load-bearing.
 
-[click] The model predicts 1 if the sum of the two layers' outputs is greater than zero, and 0 otherwise.
+[click] Read the total effect alone and redundant and repaired look identical — both zero.
 
-[click] There are three possible scenarios: layer B is redundant, it self-repairs, or layer A is load-bearing. All three give the same model output.
+[click] Read the direct effect alone and repaired and load-bearing look identical — both one.
 
-[click] If we measure the total effect only, redundant and repaired are indistinguishable — both read zero.
+[click] Only the two together tell all three apart.
+-->
 
-[click] If we measure the direct effect only, repaired and load-bearing are indistinguishable — both read one.
+---
 
-[click] Only the two together separate all three. That is why we need both.
+# What we measured
+
+<div class="did">
+
+<div class="did-row">
+  <div class="did-k">Models</div>
+  <div class="did-v">LimiX-2M &middot; Mitra &middot; TabICLv2 &middot; TabFM</div>
+</div>
+<div class="did-row fade" :class="{ on: $clicks >= 1 }">
+  <div class="did-k">Tasks</div>
+  <div class="did-v">15 binary classification datasets</div>
+</div>
+<div class="did-row fade" :class="{ on: $clicks >= 2 }">
+  <div class="did-k">Intervention</div>
+  <div class="did-v">ablate one layer at a time, every layer</div>
+</div>
+<div class="did-row fade" :class="{ on: $clicks >= 2 }">
+  <div class="did-k">TE</div>
+  <div class="did-v">re-run the forward pass, downstream reacts</div>
+</div>
+<div class="did-row fade" :class="{ on: $clicks >= 3 }">
+  <div class="did-k">DE</div>
+  <div class="did-v">path patching &mdash; reuse every downstream write, no second forward pass</div>
+</div>
+
+</div>
+
+<div class="did-foot fade" :class="{ on: $clicks >= 4 }">
+  Two measurement choices matter: <b>resample</b> ablation rather than zeroing, and the
+  <b>logit margin</b> rather than ROC AUC. Both are checked in the write-up.
+</div>
+
+<div class="click-anchors">
+  <span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span>
+</div>
+
+<style scoped>
+.click-anchors { font-size: 0; line-height: 0; height: 0; }
+.fade { opacity: 0; transition: opacity 0.35s ease; }
+.fade.on { opacity: 1; }
+.did { width: fit-content; margin: 2rem auto 0; }
+.did-row { display: flex; align-items: baseline; margin-bottom: 0.85rem; }
+.did-k {
+  width: 9rem; flex: none; font-weight: 700; font-size: 1.05rem;
+}
+.did-v { font-size: 1.05rem; }
+.did-foot {
+  text-align: center; font-size: 0.85rem; opacity: 0.75; margin-top: 1.6rem;
+}
+</style>
+
+<!--
+Here is what we ran. Four state-of-the-art tabular foundation models,
+
+[click] on fifteen binary classification datasets.
+
+[click] We ablate one layer at a time. The total effect is easy: re-run the forward pass and let the downstream react.
+
+[click] The direct effect needs path patching — reuse every downstream write from the clean pass, so only the ablated layer reaches the decoder.
+
+[click] Two choices matter: resample the ablated activations instead of zeroing them, and read the logit margin rather than ROC AUC.
 -->
 
 ---
@@ -867,6 +860,59 @@ For reference, we first show the language-model case, where the evidence is stro
 [click] Now the same measurement on a tabular foundation model.
 
 [click] The region below the diagonal is almost empty, which says self-repair is rare. We show one model here; the other three look the same.
+-->
+
+---
+
+# What it means
+
+<div class="means">
+
+<div class="m-row">
+  <div class="m-mark good">&#10003;</div>
+  <div class="m-txt">Ablation-based attribution on these TFMs is <b>not</b> corrupted by self-repair.
+  A layer that reads as unimportant really is unimportant.</div>
+</div>
+
+<div class="m-row fade" :class="{ on: $clicks >= 1 }">
+  <div class="m-mark">&#8594;</div>
+  <div class="m-txt">The dip-then-recover curve reported before is <b>passive redundancy</b>: the
+  downstream layers already carried the signal, they did not react to the damage.</div>
+</div>
+
+<div class="m-row fade" :class="{ on: $clicks >= 2 }">
+  <div class="m-mark warn">!</div>
+  <div class="m-txt">Scope: four models, fifteen binary tasks, layer-level ablation. It does not
+  carry over to the general case, and a finer granularity may tell a different story.</div>
+</div>
+
+</div>
+
+<div class="click-anchors">
+  <span v-click></span><span v-click></span>
+</div>
+
+<style scoped>
+.click-anchors { font-size: 0; line-height: 0; height: 0; }
+.fade { opacity: 0; transition: opacity 0.35s ease; }
+.fade.on { opacity: 1; }
+.means { max-width: 46rem; margin: 2rem auto 0; }
+.m-row { display: flex; gap: 1rem; margin-bottom: 1.4rem; }
+.m-mark {
+  flex: none; width: 1.6rem; text-align: center;
+  font-size: 1.3rem; font-weight: 700; opacity: 0.55;
+}
+.m-mark.good { color: #16a34a; opacity: 1; }
+.m-mark.warn { color: #ef4444; opacity: 1; }
+.m-txt { font-size: 1.05rem; line-height: 1.6; }
+</style>
+
+<!--
+So: on these models ablation-based attribution is not corrupted by self-repair. A layer that reads as unimportant really is unimportant.
+
+[click] The dip-then-recover behaviour reported earlier is passive redundancy — the downstream layers already carried the signal.
+
+[click] Scope: four models, fifteen tasks, whole-layer ablation. A finer granularity might tell a different story.
 -->
 
 ---
