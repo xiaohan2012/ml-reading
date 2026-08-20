@@ -9,13 +9,170 @@ mdc: true
 
 # Do tabular foundation models repair themselves?
 
-Han Xiao
+<div class="byline">
+  Han Xiao
+  <div class="affil">BlueDot Impact &mdash; Technical AI Safety Project</div>
+  <div class="affil">August 21, 2026</div>
+</div>
+
+<style scoped>
+.byline { margin-top: 1.6rem; font-size: 1.1rem; }
+.affil { font-size: 0.85rem; opacity: 0.7; margin-top: 0.3rem; }
+</style>
+
+<!--
+My name is Han, a data scientist in Finland. I will talk about self-repair in tabular foundation models. Thanks for checking this video.
+-->
 
 ---
 
 # Background
 
 <div class="lead-line">Language models <em>self-repair</em>: ablate one layer, later layers compensate for the damage</div>
+
+<div class="lm-fig">
+
+<div class="lm-col">
+  <div class="cap">prompt</div>
+  <div class="prompt">Honus Wagner professionally plays the sport of &hellip;</div>
+</div>
+
+<div class="arrow">&rarr;</div>
+
+<div class="model-wrap">
+  <div class="labels">
+    <div class="lbl-sp"></div>
+    <div class="lbl"></div>
+    <div class="lbl fade" :class="{ on: $clicks >= 1 }">ablate layer 2 &rarr;</div>
+    <div class="lbl fade" :class="{ on: $clicks >= 2 }">layer 3 repairs &rarr;</div>
+    <div class="lbl"></div>
+  </div>
+  <div class="model">
+    <div class="model-title">Transformer</div>
+    <div class="blk">layer 1</div>
+    <div class="blk" :class="{ abl: $clicks >= 1 }">layer 2</div>
+    <div class="blk" :class="{ rep: $clicks >= 2 }">layer 3</div>
+    <div class="blk">layer 4</div>
+  </div>
+</div>
+
+<div class="arrow">&rarr;</div>
+
+<div class="lm-col">
+  <div class="cap">next token</div>
+  <table class="cand">
+    <thead>
+      <tr><th></th><th>logit</th><th>prob</th></tr>
+    </thead>
+    <tbody>
+      <tr class="hit">
+        <td>baseball</td>
+        <td><span class="old" :class="{ dim: $clicks >= 3 }">9.2</span><span class="post fade" :class="{ on: $clicks >= 3 }"> &rarr; 8.9</span></td>
+        <td><span class="old" :class="{ dim: $clicks >= 3 }">0.71</span><span class="post fade" :class="{ on: $clicks >= 3 }"> &rarr; 0.66</span></td>
+      </tr>
+      <tr>
+        <td>football</td>
+        <td><span class="old" :class="{ dim: $clicks >= 3 }">7.4</span><span class="post fade" :class="{ on: $clicks >= 3 }"> &rarr; 7.5</span></td>
+        <td><span class="old" :class="{ dim: $clicks >= 3 }">0.12</span><span class="post fade" :class="{ on: $clicks >= 3 }"> &rarr; 0.13</span></td>
+      </tr>
+      <tr class="dots">
+        <td>⋯</td><td>⋯</td><td>⋯</td>
+      </tr>
+      <tr>
+        <td>hockey</td>
+        <td><span class="old" :class="{ dim: $clicks >= 3 }">6.9</span><span class="post fade" :class="{ on: $clicks >= 3 }"> &rarr; 7.0</span></td>
+        <td><span class="old" :class="{ dim: $clicks >= 3 }">0.07</span><span class="post fade" :class="{ on: $clicks >= 3 }"> &rarr; 0.08</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+<div class="lm-note">
+  <div class="fade strong" :class="{ on: $clicks >= 3 }">the output barely moves</div>
+</div>
+
+<div class="click-anchors">
+  <span v-click></span><span v-click></span><span v-click></span>
+</div>
+
+<style scoped>
+.click-anchors { font-size: 0; line-height: 0; height: 0; }
+.fade { opacity: 0; transition: opacity 0.35s ease; }
+.fade.on { opacity: 1; }
+.lead-line { font-size: 1.05rem; }
+.lm-fig {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.6rem; margin-top: 1.4rem;
+}
+.lm-col { display: flex; flex-direction: column; align-items: center; }
+.cap { font-size: 0.8rem; opacity: 0.6; margin-bottom: 0.35rem; }
+.prompt {
+  max-width: 13rem; font-size: 0.9rem; line-height: 1.5;
+  border: 1px solid currentColor; border-radius: 0.35rem;
+  padding: 0.5rem 0.7rem;
+}
+.arrow { font-size: 1.6rem; opacity: 0.5; }
+.model-wrap { display: flex; align-items: flex-start; }
+.labels {
+  display: flex; flex-direction: column; align-items: flex-end;
+  padding-top: 0.7rem; margin-right: 0.5rem;
+}
+.lbl-sp { height: 1.76rem; }
+.lbl {
+  height: 1.7rem; margin: 0.18rem 0;
+  display: flex; align-items: center;
+  font-size: 0.8rem; white-space: nowrap;
+}
+.model {
+  display: flex; flex-direction: column; align-items: stretch;
+  border: 1px solid currentColor; border-radius: 0.5rem; padding: 0.7rem 1rem;
+}
+.model-title {
+  font-size: 0.9rem; line-height: 1.4; margin-bottom: 0.5rem; text-align: center;
+}
+.blk {
+  position: relative; box-sizing: border-box;
+  height: 1.7rem; margin: 0.18rem 0; padding: 0 1.3rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid currentColor; border-radius: 0.25rem;
+  font-size: 0.78rem; opacity: 0.75;
+  transition: all 0.35s ease;
+}
+.blk.abl {
+  opacity: 1; color: rgba(120,120,120,0.55); border-color: #ef4444;
+}
+.blk.abl::before, .blk.abl::after {
+  content: ''; position: absolute; left: 4%; right: 4%; top: 50%;
+  height: 2px; background: #ef4444;
+}
+.blk.abl::before { transform: rotate(11deg); }
+.blk.abl::after { transform: rotate(-11deg); }
+.blk.rep {
+  opacity: 1; color: #16a34a; border-color: #16a34a;
+  background: rgba(34,197,94,0.15);
+}
+.cand { border-collapse: collapse; font-size: 0.82rem; }
+.cand th, .cand td {
+  padding: 0.22rem 0.6rem; text-align: right;
+  border-bottom: 1px solid rgba(128,128,128,0.25);
+}
+.cand td:first-child, .cand th:first-child { text-align: left; }
+.cand th { font-weight: 600; opacity: 0.6; font-size: 0.72rem; }
+.cand tr.hit td { font-weight: 700; }
+.cand tr.dots td { opacity: 0.5; }
+.cand .old { transition: color 0.35s ease; }
+.cand tr td .old.dim { color: #9ca3af; }
+.lm-note {
+  text-align: center; font-size: 0.95rem; line-height: 1.9; margin-top: 1.4rem;
+}
+.lm-note .strong { font-weight: 700; }
+</style>
+
+---
+
+# Background (cont'd)
 
 <figure class="hydra">
   <svg class="hyd" viewBox="0 0 940 430">
@@ -65,15 +222,17 @@ Han Xiao
   </figcaption>
 </figure>
 
-<div class="rq"><b>Research question</b>: do tabular foundation models repair themselves as well?</div>
+<div class="rq fade" :class="{ on: $clicks >= 3 }"><b>Research question</b>: do tabular foundation models repair themselves as well?</div>
 
-<div class="click-anchors"><span v-click></span><span v-click></span></div>
+<div class="click-anchors"><span v-click></span><span v-click></span><span v-click></span></div>
 
 <style scoped>
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
 .hydra { margin: 0.6rem 0; }
 .lead-line { font-size: 1.05rem; }
 .rq { text-align: center; font-size: 1.5rem; margin-top: 1rem; }
+.fade { opacity: 0; transition: opacity 0.35s ease; }
+.fade.on { opacity: 1; }
 .hyd { width: 78%; display: block; margin: 0 auto; }
 .hyd .ax { stroke: #9ca3af; stroke-width: 2; }
 .hyd .vguide {
@@ -101,11 +260,21 @@ Han Xiao
 </style>
 
 
+<!--
+TODO: the phenomenon — ablation as the standard tool, and what self-repair breaks.
+
+[click] TODO: ablate layer 5, the effect on the logits collapses.
+
+[click] TODO: a later layer overshoots — the output recovers. This is the Hydra Effect.
+
+TODO: land the research question: does the same happen in tabular foundation models?
+-->
+
 ---
 
 # What is a tabular foundation model (TFM)?
 
-- TFMs $\approx$ transformers for tabular data
+- TFMs $\approx$ transformers for learning on tabular data
 
 <div class="tfm-fig">
 
@@ -202,6 +371,18 @@ Han Xiao
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
 </style>
 
+<!--
+TODO: what a TFM is, in one sentence.
+
+[click] TODO: the labelled rows are the context.
+
+[click] TODO: the test rows arrive with the label missing.
+
+[click] TODO: one frozen transformer reads both.
+
+[click] TODO: it fills in the missing labels — no gradient update anywhere.
+-->
+
 ---
 
 # TFM versus supervised ML and language models
@@ -251,6 +432,14 @@ Han Xiao
 }
 .cmp-sum.on { opacity: 1; }
 </style>
+
+<!--
+TODO: same problem domain as supervised ML — classification and regression on tables.
+
+[click] TODO: same mechanism as a language model — in-context, transformer.
+
+[click] TODO: the one-line summary.
+-->
 
 ---
 clicks: 6
@@ -396,6 +585,22 @@ clicks: 6
 .verdict.struck::after { width: 100%; }
 </style>
 
+<!--
+TODO: why anyone should care — high-stakes deployment, ablation as the audit tool.
+
+[click] TODO: layer 2 drives the prediction.
+
+[click] TODO: we ablate it; layer 3 takes over.
+
+[click] TODO: the logits do not move.
+
+[click] TODO: so the audit concludes layer 2 is irrelevant.
+
+[click] TODO: layer 3 was covering for it.
+
+[click] TODO: the conclusion is wrong — and this is the failure mode we are testing for.
+-->
+
 ---
 
 # Self-repair: definition
@@ -491,6 +696,26 @@ clicks: 6
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
 </style>
 
+<!--
+TODO: set up the causal model — layer A, everything downstream is B, output y.
+
+[click] TODO: the clean run.
+
+[click] TODO: total effect — ablate A and let B react.
+
+[click] TODO: B reacts freely; this is what plain ablation measures.
+
+[click] TODO: direct effect — ablate A but hold B at its clean value.
+
+[click] TODO: only the A-to-y path carries the intervention.
+
+[click] TODO: indirect effect — B's own contribution.
+
+[click] TODO: compensation effect, the gap between DE and TE.
+
+[click] TODO: self-repair is CE > 0.
+-->
+
 ---
 
 # Why both TE and DE are needed
@@ -573,6 +798,14 @@ $$
 .toy.s2 .ann2 { opacity: 1; }
 </style>
 
+
+<!--
+TODO: the toy model — two layers writing into a shared stream, thresholded output.
+
+[click] TODO: looking at TE alone, the two scenarios are identical.
+
+[click] TODO: adding DE separates them. This is why both are needed.
+-->
 
 ---
 
@@ -659,6 +892,17 @@ $$
 
 
 
+<!--
+TODO: the language model result — one point per (layer, prompt).
+
+[click] TODO: the mass sits below the diagonal: DE exceeds TE, so CE > 0.
+
+[click] TODO: now the same measurement on a TFM.
+
+[click] TODO: the below-diagonal region is empty — no evidence of self-repair.
+   Mention the caveat: four models, fifteen tasks, and the two axes are not on a common scale.
+-->
+
 ---
 
 # Want to know more?
@@ -679,3 +923,7 @@ $$
   color: inherit; text-decoration: none;
 }
 </style>
+
+<!--
+TODO: closing line — the full write-up, method and code, is at this link.
+-->
