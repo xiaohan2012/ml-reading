@@ -95,6 +95,11 @@ My name is Han, a data scientist based in Finland. I will talk about self-repair
 
 <div class="rq fade" :class="{ on: $clicks >= 4 }"><b>Research question</b>: do tabular foundation models repair themselves as well?</div>
 
+<div class="rq-cite fade" :class="{ on: $clicks >= 4 }">
+  Balef et al., <em>Is One Layer Enough? Understanding Inference Dynamics in Tabular Foundation Models</em>,
+  ICML 2026 &mdash; report that they do.
+</div>
+
 <div class="click-anchors">
   <span v-click></span><span v-click></span>
   <span v-click></span><span v-click></span>
@@ -106,6 +111,10 @@ My name is Han, a data scientist based in Finland. I will talk about self-repair
 .fade.on { opacity: 1; }
 .lead-line { font-size: 1.05rem; }
 .rq { text-align: center; font-size: 1.4rem; margin-top: 1rem; }
+.rq-cite {
+  text-align: center; font-size: 0.72rem; margin-top: 0.4rem;
+}
+.rq-cite.on { opacity: 0.6; }
 .lm-fig {
   display: flex; align-items: center; justify-content: center;
   gap: 1.6rem; margin-top: 1.4rem;
@@ -185,7 +194,7 @@ Consider the task of next token prediction. In this example, without any interve
 
 [click] As a consequence, the output logits barely move. This is called self-repair.
 
-[click] In this project, we ask whether self-repair also exists in a different type of model, called tabular foundation models.
+[click] In this project, we ask whether self-repair also exists in a different type of model, called tabular foundation models. A recent paper reports that it does — but the criterion it uses cannot separate repair from ordinary redundancy, and that is what we set out to check.
 -->
 
 ---
@@ -486,8 +495,8 @@ In particular, ablation is a widely used technique for gaining such insight.
       <text x="350" y="965">layer A</text>
     </g>
     <rect class="box" :class="{ on: $clicks === 1 }" x="700" y="190" width="400" height="1240" />
-    <rect class="box" :class="{ on: $clicks === 2 }" x="1270" y="190" width="930" height="1240" />
-    <rect class="box" :class="{ on: $clicks === 2 }" x="2220" y="190" width="800" height="1240" />
+    <rect class="box" :class="{ on: $clicks === 2 }" x="1265" y="190" width="895" height="1240" />
+    <rect class="box box-late" :class="{ on: $clicks === 2 }" x="2225" y="190" width="795" height="1240" />
     <g :class="{ on: $clicks === 1 }">
       <text x="690" y="130">clean run</text>
     </g>
@@ -495,7 +504,7 @@ In particular, ablation is a widely used technique for gaining such insight.
       <text x="1150" y="320">B reacts freely</text>
       <line x1="1480" y1="355" x2="1680" y2="455" marker-end="url(#ar)" />
     </g>
-    <g :class="{ on: $clicks === 2 }">
+    <g class="late" :class="{ on: $clicks === 2 }">
       <text x="2000" y="430">B held clean</text>
       <line x1="2330" y1="465" x2="2400" y2="590" marker-end="url(#ar)" />
     </g>
@@ -534,6 +543,7 @@ In particular, ablation is a widely used technique for gaining such insight.
 }
 .eff-overlay g { opacity: 0; transition: opacity 0.3s ease; }
 .eff-overlay g.on { opacity: 1; }
+.eff-overlay g.late { transition-delay: 1.2s; }
 .eff-overlay text {
   fill: #2563eb; font-size: 93px; font-weight: 700;
 }
@@ -544,6 +554,19 @@ In particular, ablation is a widely used technique for gaining such insight.
   rx: 24; opacity: 0; transition: opacity 0.3s ease;
 }
 .eff-overlay .box.on { opacity: 1; animation: box-blink 0.5s ease-in-out 2; }
+.eff-overlay .box-late.on {
+  animation: box-blink-late 1s ease-in-out 1;
+  animation-delay: 1.2s;
+  animation-fill-mode: both;
+}
+@keyframes box-blink-late {
+  0%   { opacity: 0; }
+  2%   { opacity: 1; }
+  25%  { opacity: 0.1; }
+  50%  { opacity: 1; }
+  75%  { opacity: 0.1; }
+  100% { opacity: 1; }
+}
 @keyframes box-blink {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.1; }
@@ -709,34 +732,26 @@ So why do we need both? Here is a two-layer toy model. A always writes 1 and is 
   <div class="did-k">Models</div>
   <div class="did-v">LimiX-2M &middot; Mitra &middot; TabICLv2 &middot; TabFM</div>
 </div>
-<div class="did-row fade" :class="{ on: $clicks >= 1 }">
+<div class="did-row">
   <div class="did-k">Tasks</div>
   <div class="did-v">15 binary classification datasets</div>
 </div>
-<div class="did-row fade" :class="{ on: $clicks >= 2 }">
+<div class="did-row fade" :class="{ on: $clicks >= 1 }">
   <div class="did-k">Intervention</div>
   <div class="did-v">ablate one layer at a time, every layer</div>
 </div>
-<div class="did-row fade" :class="{ on: $clicks >= 2 }">
+<div class="did-row fade" :class="{ on: $clicks >= 1 }">
   <div class="did-k">TE</div>
-  <div class="did-v">re-run the forward pass, downstream reacts</div>
+  <div class="did-v">ablate the layer and re-run</div>
 </div>
-<div class="did-row fade" :class="{ on: $clicks >= 3 }">
+<div class="did-row fade" :class="{ on: $clicks >= 1 }">
   <div class="did-k">DE</div>
-  <div class="did-v">path patching &mdash; reuse every downstream write, no second forward pass</div>
+  <div class="did-v">path patching</div>
 </div>
 
 </div>
 
-<div class="did-foot fade" :class="{ on: $clicks >= 4 }">
-  Two measurement choices matter: <b>resample</b> ablation rather than zeroing, and the
-  <b>logit margin</b> rather than ROC AUC. Both are checked in the write-up.
-</div>
-
-<div class="click-anchors">
-  <span v-click></span><span v-click></span>
-  <span v-click></span><span v-click></span>
-</div>
+<div class="click-anchors"><span v-click></span></div>
 
 <style scoped>
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
@@ -748,21 +763,14 @@ So why do we need both? Here is a two-layer toy model. A always writes 1 and is 
   width: 9rem; flex: none; font-weight: 700; font-size: 1.05rem;
 }
 .did-v { font-size: 1.05rem; }
-.did-foot {
-  text-align: center; font-size: 0.85rem; opacity: 0.75; margin-top: 1.6rem;
-}
 </style>
 
 <!--
-Here is what we ran. Four state-of-the-art tabular foundation models,
+Here is what we ran. Four state-of-the-art tabular foundation models, on fifteen binary classification datasets.
 
-[click] on fifteen binary classification datasets.
+[click] We ablate one layer at a time, every layer in turn. The total effect is easy: re-run the forward pass and let the downstream react. The direct effect needs path patching: we reuse every downstream write from the clean pass, so only the ablated layer's own contribution reaches the decoder.
 
-[click] We ablate one layer at a time. The total effect is easy: re-run the forward pass and let the downstream react.
-
-[click] The direct effect needs path patching — reuse every downstream write from the clean pass, so only the ablated layer reaches the decoder.
-
-[click] Two choices matter: resample the ablated activations instead of zeroing them, and read the logit margin rather than ROC AUC.
+Two further choices matter for the numbers to mean anything: we resample the ablated activations instead of zeroing them, and we read the logit margin rather than ROC AUC.
 -->
 
 ---
@@ -864,33 +872,25 @@ For reference, we first show the language-model case, where the evidence is stro
 
 ---
 
-# What it means
+# Implications
 
 <div class="means">
 
 <div class="m-row">
   <div class="m-mark good">&#10003;</div>
-  <div class="m-txt">Ablation-based attribution on these TFMs is <b>not</b> corrupted by self-repair.
-  A layer that reads as unimportant really is unimportant.</div>
+  <div class="m-txt">Self-repair does not appear to be a serious concern in TFMs &mdash;
+  ablation can be used as it is.</div>
 </div>
 
 <div class="m-row fade" :class="{ on: $clicks >= 1 }">
-  <div class="m-mark">&#8594;</div>
-  <div class="m-txt">The dip-then-recover curve reported before is <b>passive redundancy</b>: the
-  downstream layers already carried the signal, they did not react to the damage.</div>
-</div>
-
-<div class="m-row fade" :class="{ on: $clicks >= 2 }">
   <div class="m-mark warn">!</div>
-  <div class="m-txt">Scope: four models, fifteen binary tasks, layer-level ablation. It does not
-  carry over to the general case, and a finer granularity may tell a different story.</div>
+  <div class="m-txt">Our analysis covers 4 models and 15 datasets.
+  A general claim needs more evidence.</div>
 </div>
 
 </div>
 
-<div class="click-anchors">
-  <span v-click></span><span v-click></span>
-</div>
+<div class="click-anchors"><span v-click></span></div>
 
 <style scoped>
 .click-anchors { font-size: 0; line-height: 0; height: 0; }
@@ -908,11 +908,9 @@ For reference, we first show the language-model case, where the evidence is stro
 </style>
 
 <!--
-So: on these models ablation-based attribution is not corrupted by self-repair. A layer that reads as unimportant really is unimportant.
+What follows from this: self-repair does not look like a serious concern in tabular foundation models, so ablation can be used as it is — a layer that reads as unimportant really is unimportant.
 
-[click] The dip-then-recover behaviour reported earlier is passive redundancy — the downstream layers already carried the signal.
-
-[click] Scope: four models, fifteen tasks, whole-layer ablation. A finer granularity might tell a different story.
+[click] With the obvious caveat: this covers four models and fifteen datasets. A general claim needs more evidence.
 -->
 
 ---
