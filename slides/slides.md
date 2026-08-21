@@ -194,7 +194,7 @@ Consider the task of next token prediction. In this example, without any interve
 
 [click] As a consequence, the output logits barely move. This is called self-repair.
 
-[click] In this project, we ask whether self-repair also exists in a different type of model, called tabular foundation models. A recent paper reports that it does — but the criterion it uses cannot separate repair from ordinary redundancy, and that is what we set out to check.
+[click] In this project, we ask whether self-repair also exists in a different type of model, called tabular foundation models. A recent paper reports that it does, but our results suggest the opposite.
 -->
 
 ---
@@ -303,7 +303,7 @@ A tabular foundation model is a transformer that predicts on tabular data.
 
 [click] It reads two tables with the same schema: a context table with attributes and labels, and a test table where the labels are missing.
 
-[click] One frozen transformer reads both and fills in the missing labels.
+[click] One frozen transformer reads both and predicts the missing labels.
 
 [click] This is in-context learning, the same mechanism language models use: no fine-tuning, no gradient update. So a TFM solves the problems of supervised machine learning with the mechanism of a language model.
 -->
@@ -496,7 +496,7 @@ In particular, ablation is a widely used technique for gaining such insight.
     </g>
     <rect class="box" :class="{ on: $clicks === 1 }" x="700" y="190" width="400" height="1240" />
     <rect class="box" :class="{ on: $clicks === 2 }" x="1265" y="190" width="895" height="1240" />
-    <rect class="box box-late" :class="{ on: $clicks === 2 }" x="2225" y="190" width="795" height="1240" />
+    <rect class="box" :class="{ on: $clicks === 3 }" x="2225" y="190" width="795" height="1240" />
     <g :class="{ on: $clicks === 1 }">
       <text x="690" y="130">clean run</text>
     </g>
@@ -504,7 +504,7 @@ In particular, ablation is a widely used technique for gaining such insight.
       <text x="1150" y="320">B reacts freely</text>
       <line x1="1480" y1="355" x2="1680" y2="455" marker-end="url(#ar)" />
     </g>
-    <g class="late" :class="{ on: $clicks === 2 }">
+    <g :class="{ on: $clicks === 3 }">
       <text x="2000" y="430">B held clean</text>
       <line x1="2330" y1="465" x2="2400" y2="590" marker-end="url(#ar)" />
     </g>
@@ -519,16 +519,16 @@ In particular, ablation is a widely used technique for gaining such insight.
   <div class="lead"><b>Effect</b> = &Delta;<i> y</i> caused by an intervention</div>
   <ul>
     <li :class="{ on: $clicks >= 2 }"><b>Total effect (TE)</b>: ablate A, let B react freely</li>
-    <li :class="{ on: $clicks >= 2 }"><b>Direct effect (DE)</b>: ablate A, freeze B at its clean value</li>
-    <li :class="{ on: $clicks >= 3 }"><b>Compensation effect (CE)</b> = DE &minus; TE: how much B compensates for the ablation of A</li>
+    <li :class="{ on: $clicks >= 3 }"><b>Direct effect (DE)</b>: ablate A, freeze B at its clean value</li>
+    <li :class="{ on: $clicks >= 4 }"><b>Compensation effect (CE)</b> = DE &minus; TE: how much B compensates for the ablation of A</li>
   </ul>
-  <div class="verdict" :class="{ on: $clicks >= 4 }">
+  <div class="verdict" :class="{ on: $clicks >= 5 }">
     <b>self-repair</b> &nbsp;&hArr;&nbsp; <b>CE &gt; 0</b> <span class="qual">(consistently)</span>
   </div>
 </div>
 
 <div class="click-anchors">
-  <span v-click></span><span v-click></span>
+  <span v-click></span><span v-click></span><span v-click></span>
   <span v-click></span><span v-click></span>
 </div>
 
@@ -543,7 +543,6 @@ In particular, ablation is a widely used technique for gaining such insight.
 }
 .eff-overlay g { opacity: 0; transition: opacity 0.3s ease; }
 .eff-overlay g.on { opacity: 1; }
-.eff-overlay g.late { transition-delay: 1.2s; }
 .eff-overlay text {
   fill: #2563eb; font-size: 93px; font-weight: 700;
 }
@@ -554,19 +553,6 @@ In particular, ablation is a widely used technique for gaining such insight.
   rx: 24; opacity: 0; transition: opacity 0.3s ease;
 }
 .eff-overlay .box.on { opacity: 1; animation: box-blink 0.5s ease-in-out 2; }
-.eff-overlay .box-late.on {
-  animation: box-blink-late 1s ease-in-out 1;
-  animation-delay: 1.2s;
-  animation-fill-mode: both;
-}
-@keyframes box-blink-late {
-  0%   { opacity: 0; }
-  2%   { opacity: 1; }
-  25%  { opacity: 0.1; }
-  50%  { opacity: 1; }
-  75%  { opacity: 0.1; }
-  100% { opacity: 1; }
-}
 @keyframes box-blink {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.1; }
@@ -591,13 +577,18 @@ In particular, ablation is a widely used technique for gaining such insight.
 <!--
 To answer the research question we need to define self-repair and quantify it. An effect is the change in the output logit caused by an intervention.
 
-[click] First the clean run, with no intervention, whose activations we save.
+We rely on different types of effects.
 
-[click] Now ablate layer A. If we let everything downstream react, we get the total effect — this is what a plain ablation measures. If instead we hold the downstream at its clean values, only the A-to-y path carries the intervention, and we get the direct effect.
+[click] We first run the clean run, with no intervention, and save the activations for later use.
 
-[click] The gap between them is the compensation effect: how much the downstream layers absorbed.
+[click] Next we ablate layer A and let everything downstream react freely. That gives the total effect.
+This is what a plain ablation measures.
 
-[click] So self-repair means a compensation effect that stays positive across inputs.
+[click] If instead we hold the downstream at its clean values, only the A-to-y path carries the intervention, and we get the direct effect.
+
+[click] The gap between them is the compensation effect: how much damage downstream layers compensate
+
+[click] So self-repair means a compensation effect that is positive across different inputs.
 -->
 
 ---
@@ -711,15 +702,15 @@ $$
 
 
 <!--
-So why do we need both? Here is a two-layer toy model. A always writes 1 and is the layer we ablate, and the output is one if the two writes sum above zero.
+So why do we need both? Here is a two-layer toy model. Layer A always writes 1 and is the layer we ablate, and the output is one if the two layers' total output is above zero.
 
-[click] Three scenarios, all with the same clean prediction: B is redundant, B repairs, or A is load-bearing.
+[click] There are three scenarios, all with the same model output: B is redundant, it repairs, or A is load-bearing.
 
-[click] Read the total effect alone and redundant and repaired look identical — both zero.
+[click] Read the total effect alone and redundant and repaired look identical — both are zero.
 
-[click] Read the direct effect alone and repaired and load-bearing look identical — both one.
+[click] Read the direct effect alone and repaired and load-bearing look identical — both are one.
 
-[click] Only the two together tell all three apart.
+[click] Only looking at the two effects together tells all three apart.
 -->
 
 ---
@@ -742,7 +733,7 @@ So why do we need both? Here is a two-layer toy model. A always writes 1 and is 
 </div>
 <div class="did-row fade" :class="{ on: $clicks >= 1 }">
   <div class="did-k">TE</div>
-  <div class="did-v">ablate the layer and re-run</div>
+  <div class="did-v">ablate the layer and re-run forward pass</div>
 </div>
 <div class="did-row fade" :class="{ on: $clicks >= 1 }">
   <div class="did-k">DE</div>
@@ -766,11 +757,11 @@ So why do we need both? Here is a two-layer toy model. A always writes 1 and is 
 </style>
 
 <!--
-Here is what we ran. Four state-of-the-art tabular foundation models, on fifteen binary classification datasets.
+In our experiment, we check 4 state-of-the-art tabular foundation models, on 15 binary classification datasets.
 
-[click] We ablate one layer at a time, every layer in turn. The total effect is easy: re-run the forward pass and let the downstream react. The direct effect needs path patching: we reuse every downstream write from the clean pass, so only the ablated layer's own contribution reaches the decoder.
-
-Two further choices matter for the numbers to mean anything: we resample the ablated activations instead of zeroing them, and we read the logit margin rather than ROC AUC.
+[click] We ablate one layer at a time, for all the layers.
+The total effect is easy: re-run the forward pass and let the downstream react.
+The direct effect uses a technique called path patching.
 -->
 
 ---
@@ -867,7 +858,7 @@ For reference, we first show the language-model case, where the evidence is stro
 
 [click] Now the same measurement on a tabular foundation model.
 
-[click] The region below the diagonal is almost empty, which says self-repair is rare. We show one model here; the other three look the same.
+[click] The region below the diagonal is almost empty, which says self-repair is rare. We show one model here; the others look very similar.
 -->
 
 ---
@@ -908,9 +899,11 @@ For reference, we first show the language-model case, where the evidence is stro
 </style>
 
 <!--
-What follows from this: self-repair does not look like a serious concern in tabular foundation models, so ablation can be used as it is — a layer that reads as unimportant really is unimportant.
+What does the result mean?
 
-[click] With the obvious caveat: this covers four models and fifteen datasets. A general claim needs more evidence.
+self-repair does not look like a serious concern in tabular foundation models, so ablation can be used as it is — a layer that reads as unimportant is indeed unimportant.
+
+[click] However, our analysis covers four models and fifteen datasets. A general claim needs more evidence.
 -->
 
 ---
@@ -935,5 +928,5 @@ What follows from this: self-repair does not look like a serious concern in tabu
 </style>
 
 <!--
-If you want to know more, please check out the full article.
+If you want to know more, please check out the full article. Thanks for watching this video.
 -->
